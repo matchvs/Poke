@@ -1,0 +1,35 @@
+{
+  "native": {
+    "path_ignore": []
+  },
+  "publish": {
+    "web": 0,
+    "native": 1,
+    "path": "bin-release"
+  },
+  "egret_version": "2.5.5",
+  "modules": [
+    {
+      "name": "egret"
+    },
+    {
+      "name": "game"
+    },
+    {
+      "name": "res"
+    },
+    {
+      "name": "gui"
+    },
+    {
+      "name": "socket"
+    },
+    {
+      "name": "tween"
+    },
+    {
+      "name": "nest",
+      "path": "../sdks/Nest-master/libsrc"
+    }
+  ]
+}

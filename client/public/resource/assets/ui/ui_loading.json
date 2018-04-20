@@ -1,0 +1,10 @@
+{"file":"ui_loading.png","frames":{
+"btn_queding_no":{"x":341,"y":67,"w":130,"h":65,"offX":0,"offY":0,"sourceW":130,"sourceH":65},
+"btn_quxiao":{"x":214,"y":134,"w":130,"h":65,"offX":0,"offY":0,"sourceW":130,"sourceH":65},
+"title1":{"x":214,"y":77,"w":82,"h":38,"offX":0,"offY":0,"sourceW":87,"sourceH":42},
+"ui_loading_top":{"x":0,"y":262,"w":463,"h":23,"offX":2,"offY":2,"sourceW":466,"sourceH":27},
+"ui_panel_bg":{"x":298,"y":77,"w":38,"h":38,"offX":0,"offY":0,"sourceW":43,"sourceH":43},
+"ui_panel_txt":{"x":473,"y":0,"w":21,"h":27,"offX":0,"offY":0,"sourceW":21,"sourceH":27},
+"ui_role1":{"x":0,"y":0,"w":212,"h":260,"offX":0,"offY":0,"sourceW":212,"sourceH":260},
+"ui_tips_bg":{"x":214,"y":0,"w":125,"h":75,"offX":0,"offY":0,"sourceW":129,"sourceH":78},
+"btn_queding":{"x":341,"y":0,"w":130,"h":65,"offX":0,"offY":0,"sourceW":130,"sourceH":65}}}

@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Egret</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="full-screen" content="true"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <meta name="x5-fullscreen" content="true"/>
+    <meta name="360-fullscreen" content="true"/>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <style>
+        html, body {
+            -ms-touch-action: none;
+            background: #888888;
+            padding: 0;
+            border: 0;
+            margin: 0;
+            height: 100%;
+        }
+    </style>
+
+    <!--这个标签为通过egret提供的第三方库的方式生成的 javascript 文件-->
+    <!--modules_files_start-->
+	<script egret="lib" src="libs/modules/egret/egret.js" src-release="libs/modules/egret/egret.min.js"></script>
+	<script egret="lib" src="libs/modules/egret/egret.web.js" src-release="libs/modules/egret/egret.web.min.js"></script>
+	<script egret="lib" src="libs/modules/game/game.js" src-release="libs/modules/game/game.min.js"></script>
+	<script egret="lib" src="libs/modules/game/game.web.js" src-release="libs/modules/game/game.web.min.js"></script>
+	<script egret="lib" src="libs/modules/res/res.js" src-release="libs/modules/res/res.min.js"></script>
+	<script egret="lib" src="libs/modules/gui/gui.js" src-release="libs/modules/gui/gui.min.js"></script>
+	<script egret="lib" src="libs/modules/socket/socket.js" src-release="libs/modules/socket/socket.min.js"></script>
+	<script egret="lib" src="libs/modules/tween/tween.js" src-release="libs/modules/tween/tween.min.js"></script>
+	<script egret="lib" src="libs/modules/nest/nest.js" src-release="libs/modules/nest/nest.min.js"></script>
+	<!--modules_files_end-->
+
+    <!--这个标签为不通过egret提供的第三方库的方式使用的 javascript 文件，请将这些文件放在libs下，但不要放在modules下面。-->
+    
+
+    <!--这个标签会被替换为项目中所有的 javascript 文件-->
+    <!--game_files_start-->
+	<script egret="game" src="bin-debug/AssetAdapter.js"></script>
+	<script egret="game" src="bin-debug/Config.js"></script>
+	<script egret="game" src="bin-debug/controller/EgretSDKMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/EntityMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/game/CardListData.js"></script>
+	<script egret="game" src="bin-debug/controller/game/Compare.js"></script>
+	<script egret="game" src="bin-debug/controller/game/Prompt.js"></script>
+	<script egret="game" src="bin-debug/controller/game/Prompt2.js"></script>
+	<script egret="game" src="bin-debug/controller/game/SendCard.js"></script>
+	<script egret="game" src="bin-debug/controller/game/Types.js"></script>
+	<script egret="game" src="bin-debug/controller/LayerMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/LoadMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/LocalMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/NativeMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/NetMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/RobotGameMgr.js"></script>
+	<script egret="game" src="bin-debug/scene/SceneBase.js"></script>
+	<script egret="game" src="bin-debug/controller/SceneMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/sceneproxy/SceneProxyBase.js"></script>
+	<script egret="game" src="bin-debug/controller/sceneproxy/GameSceneProxy.js"></script>
+	<script egret="game" src="bin-debug/controller/sceneproxy/LobbySceneProxy.js"></script>
+	<script egret="game" src="bin-debug/controller/SoundMgr.js"></script>
+	<script egret="game" src="bin-debug/controller/TestGameMgr.js"></script>
+	<script egret="game" src="bin-debug/data/entity/Player.js"></script>
+	<script egret="game" src="bin-debug/data/entity/MainPlayer.js"></script>
+	<script egret="game" src="bin-debug/data/GameData.js"></script>
+	<script egret="game" src="bin-debug/data/LocalData.js"></script>
+	<script egret="game" src="bin-debug/enums/NativeEvent.js"></script>
+	<script egret="game" src="bin-debug/enums/NetEnum.js"></script>
+	<script egret="game" src="bin-debug/enums/NetEvent.js"></script>
+	<script egret="game" src="bin-debug/interfaces/IInit.js"></script>
+	<script egret="game" src="bin-debug/interfaces/IRelease.js"></script>
+	<script egret="game" src="bin-debug/interfaces/IUpdate.js"></script>
+	<script egret="game" src="bin-debug/interfaces/IWindow.js"></script>
+	<script egret="game" src="bin-debug/Main.js"></script>
+	<script egret="game" src="bin-debug/MD5.js"></script>
+	<script egret="game" src="bin-debug/net/base/SocketBase.js"></script>
+	<script egret="game" src="bin-debug/net/base/SocketIo.js"></script>
+	<script egret="game" src="bin-debug/scene/effects/BombEffect.js"></script>
+	<script egret="game" src="bin-debug/scene/effects/PlaneEffect.js"></script>
+	<script egret="game" src="bin-debug/scene/GameScene.js"></script>
+	<script egret="game" src="bin-debug/scene/LobbyScene.js"></script>
+	<script egret="game" src="bin-debug/scene/proxys/ChatMsgProxy.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/WindowsBase.js"></script>
+	<script egret="game" src="bin-debug/scene/proxys/GameBtnProxy.js"></script>
+	<script egret="game" src="bin-debug/scene/proxys/GameOverAniProxy.js"></script>
+	<script egret="game" src="bin-debug/scene/proxys/GameUIProxy.js"></script>
+	<script egret="game" src="bin-debug/scene/proxys/MyCardProxy.js"></script>
+	<script egret="game" src="bin-debug/scene/proxys/SendCardAniProxy.js"></script>
+	<script egret="game" src="bin-debug/scene/proxys/TableCardProxy.js"></script>
+	<script egret="game" src="bin-debug/scene/render/ChatFaceRender.js"></script>
+	<script egret="game" src="bin-debug/scene/render/ChatWordsRender.js"></script>
+	<script egret="game" src="bin-debug/scene/render/LobbyTableRender.js"></script>
+	<script egret="game" src="bin-debug/scene/TestGameScene.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/Card.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/CircleLoading.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/HouseRunning.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/PlayerHead.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/PlayerHeadFrame.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/PlayerInfo.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/PlayerTime.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/ProgressBar.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/SButton.js"></script>
+	<script egret="game" src="bin-debug/scene/ui/SRadio.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/ActivityOverInst.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/ActivityResoultInst.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/ChargeInst.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/ChatInst.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/CreatRoomInst.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/LoadingInst.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/ResoultInst.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/SettingInst.js"></script>
+	<script egret="game" src="bin-debug/scene/windows/SysTipsInst.js"></script>
+	<script egret="game" src="bin-debug/ThemeAdapter.js"></script>
+	<script egret="game" src="bin-debug/utils/ArrayTools.js"></script>
+	<script egret="game" src="bin-debug/utils/DateTimeTool.js"></script>
+	<script egret="game" src="bin-debug/utils/MandPool.js"></script>
+	<script egret="game" src="bin-debug/utils/math/Vector2D.js"></script>
+	<script egret="game" src="bin-debug/utils/Trace.js"></script>
+	<script egret="game" src="bin-debug/utils/ViewTools.js"></script>
+	<!--game_files_end-->
+</head>
+<body>
+
+    <div style="margin: auto;width: 100%;height: 100%;" class="egret-player"
+         data-entry-class="Main"
+         data-orientation="auto"
+         data-scale-mode="showAll"
+         data-resolution-mode="retina"
+         data-frame-rate="60"
+         data-content-width="640"
+         data-content-height="1136"
+         data-show-paint-rect="false"
+         data-multi-fingered="2"
+         data-show-fps="false" data-show-log="false"
+         data-log-filter="" data-show-fps-style="x:0,y:0,size:30,textColor:0x00c200,bgAlpha:0.5">
+    </div>
+    <script>
+		var _bridge;
+        egret.runEgret();
+        //原生调用js
+				var arg2={};
+				arg2.type="getInitInfo";
+				arg2.value={};
+				arg2.value.flag="group";
+		function native2js(arg)
+		{
+			if(typeof(arg)=="object")
+			{
+				arg=JSON.stringify(arg);//ios会返回object格式
+			}
+			return NativeMgr.Instance.Native2JS(arg);
+		}
+
+        //js调用原生
+		function js2native(arg)
+		{
+			var u = navigator.userAgent;
+			var a;
+			data.GameData.IsInNative=false;
+			if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+				//alert("安卓手机");
+				if(window.NativeInterface)
+				{
+					data.GameData.IsInNative=true;
+					console.log("发送成功: 调用android原生 参数->"+arg);
+					a = window.NativeInterface.js2native(arg);
+				}
+				else
+				{
+					console.log("发送失败: 没有NativeInterface 参数->"+arg);
+				}
+				return a;
+			} else if (u.indexOf('iPhone') > -1) {//苹果手机
+				//alert("苹果手机");
+				if(_bridge)
+				{
+					data.GameData.IsInNative=true;
+					console.log("发送成功: 调用ios原生 参数->"+arg);
+					var backobj=JSON.parse(arg);	//ios原生必须要字典格式
+					_bridge.callHandler("js2native",backobj);
+				}
+				else if(window.WebViewJavascriptBridge)
+				{
+					data.GameData.IsInNative=true;
+					console.log("发送成功: 调用ios原生 参数->"+arg);
+					var backobj=JSON.parse(arg);	//ios原生必须要字典格式
+					a = window.WebViewJavascriptBridge.send(backobj);
+				}
+				else
+				{
+					console.log("发送失败: 没有WebViewJavascriptBridge 参数->"+arg);
+				}
+			} else if (u.indexOf('Windows Phone') > -1) {//winphone手机
+				//alert("winphone手机");
+			}
+			return a;
+		}
+
+		function setupWebViewJavascriptBridge(callback) {
+			if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+			if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+			window.WVJBCallbacks = [callback];
+			var WVJBIframe = document.createElement('iframe');
+			WVJBIframe.style.display = 'none';
+			WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+			document.documentElement.appendChild(WVJBIframe);
+			setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+		}
+
+		setupWebViewJavascriptBridge(function(bridge) {
+			_bridge=bridge;
+
+			function log(message, data) {
+				console.log(message);
+				console.info(data);
+			}
+
+			bridge.registerHandler('native2js', function(data, responseCallback) {
+				log('ObjC called testJavascriptHandler with', data)
+				if(typeof(data)=="object")
+				{
+					data=JSON.stringify(data);//ios会返回object格式
+				}
+				NativeMgr.Instance.Native2JS(data);
+				log('JS responding with', responseData)
+				responseCallback(responseData)
+			})
+
+		})
+
+    </script>
+</body>
+</html>
