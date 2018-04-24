@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  * Created by Administrator on 2015/12/25.
  */
@@ -6,11 +16,11 @@ var scene;
     var PlayerHeadFrame = (function (_super) {
         __extends(PlayerHeadFrame, _super);
         function PlayerHeadFrame() {
-            _super.call(this);
-            this._headsp = null;
+            var _this = _super.call(this) || this;
+            _this._headsp = null;
+            return _this;
         }
-        var d = __define,c=PlayerHeadFrame;p=c.prototype;
-        p.Init = function (avatar) {
+        PlayerHeadFrame.prototype.Init = function (avatar) {
             var bg = new egret.Bitmap(RES.getRes("ui_head_bg"));
             this._headsp = new egret.Sprite();
             this.addChild(this._headsp);
@@ -18,7 +28,7 @@ var scene;
             RES.getResByUrl(avatar, this.getImgOver, this);
             this.touchChildren = false;
         };
-        p.getImgOver = function (data, url) {
+        PlayerHeadFrame.prototype.getImgOver = function (data, url) {
             var bit = new egret.Bitmap(data);
             bit.width = 88;
             bit.height = 88;
@@ -28,7 +38,7 @@ var scene;
                 this._headsp.addChild(bit);
             }
         };
-        p.Release = function () {
+        PlayerHeadFrame.prototype.Release = function () {
             if (this._headsp) {
                 this._headsp.removeChildren();
             }
@@ -38,7 +48,8 @@ var scene;
             }
         };
         return PlayerHeadFrame;
-    })(egret.Sprite);
+    }(egret.Sprite));
     scene.PlayerHeadFrame = PlayerHeadFrame;
-    egret.registerClass(PlayerHeadFrame,"scene.PlayerHeadFrame",["IInit","IRelease"]);
+    __reflect(PlayerHeadFrame.prototype, "scene.PlayerHeadFrame", ["IInit", "IRelease"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=PlayerHeadFrame.js.map

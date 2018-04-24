@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     /**
@@ -7,19 +17,19 @@ var windowui;
     var CreatRoomInst = (function (_super) {
         __extends(CreatRoomInst, _super);
         function CreatRoomInst() {
-            _super.call(this);
-            this._iscreat = false;
-            this._okfun = null;
-            this._okObj = null;
-            this._txtInput = null;
-            this._okBtn = null;
-            this._btn_close = null;
-            this._bg = null;
-            this.touchChildren = true;
-            this.touchEnabled = true;
+            var _this = _super.call(this) || this;
+            _this._iscreat = false;
+            _this._okfun = null;
+            _this._okObj = null;
+            _this._txtInput = null;
+            _this._okBtn = null;
+            _this._btn_close = null;
+            _this._bg = null;
+            _this.touchChildren = true;
+            _this.touchEnabled = true;
+            return _this;
         }
-        var d = __define,c=CreatRoomInst;p=c.prototype;
-        p.createView = function () {
+        CreatRoomInst.prototype.createView = function () {
             if (this._iscreat) {
                 return;
             }
@@ -70,7 +80,7 @@ var windowui;
             this._txtInput.addEventListener(egret.TextEvent.CHANGE, this.onChange, this);
             this._iscreat = true;
         };
-        p.onChange = function (e) {
+        CreatRoomInst.prototype.onChange = function (e) {
             if (this._txtInput.text == "请输入要创建或加入的房间名" || this._txtInput.text == "") {
                 this._okBtn.SetBit("btn_queding_no");
                 this._okBtn.touchEnabled = false;
@@ -80,17 +90,17 @@ var windowui;
                 this._okBtn.touchEnabled = true;
             }
         };
-        p.onFocusin = function (e) {
+        CreatRoomInst.prototype.onFocusin = function (e) {
             if (this._txtInput.text == "请输入要创建或加入的房间名") {
                 this._txtInput.text = "";
             }
         };
-        p.Show = function () {
+        CreatRoomInst.prototype.Show = function () {
             _super.prototype.Show.call(this);
             this.createView();
             LayerMgr.TopWindow.addChild(this);
         };
-        p.onTap = function (e) {
+        CreatRoomInst.prototype.onTap = function (e) {
             if (e.target == this._okBtn) {
                 if (this._txtInput.text == "" || this._txtInput.text == "请输入要创建或加入的房间名" || this._txtInput.text.length > 20) {
                     this._okBtn.SetBit("btn_queding_no");
@@ -105,23 +115,26 @@ var windowui;
                 this.Hide();
             }
         };
-        p.Hide = function () {
+        CreatRoomInst.prototype.Hide = function () {
             _super.prototype.Hide.call(this);
             if (this.parent) {
                 this.parent.removeChild(this);
             }
         };
-        d(CreatRoomInst, "Instance"
-            ,function () {
+        Object.defineProperty(CreatRoomInst, "Instance", {
+            get: function () {
                 if (CreatRoomInst._instance == null) {
                     CreatRoomInst._instance = new CreatRoomInst();
                 }
                 return CreatRoomInst._instance;
-            }
-        );
+            },
+            enumerable: true,
+            configurable: true
+        });
         CreatRoomInst._instance = null;
         return CreatRoomInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.CreatRoomInst = CreatRoomInst;
-    egret.registerClass(CreatRoomInst,"windowui.CreatRoomInst");
+    __reflect(CreatRoomInst.prototype, "windowui.CreatRoomInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=CreatRoomInst.js.map

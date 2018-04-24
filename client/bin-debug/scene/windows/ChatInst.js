@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     /**
@@ -7,11 +17,11 @@ var windowui;
     var ChatInst = (function (_super) {
         __extends(ChatInst, _super);
         function ChatInst() {
-            _super.call(this);
-            this._tabSprite_1 = null;
-            this._tabSprite_2 = null;
-            this._tab = 0;
-            this._faceList = [
+            var _this = _super.call(this) || this;
+            _this._tabSprite_1 = null;
+            _this._tabSprite_2 = null;
+            _this._tab = 0;
+            _this._faceList = [
                 "ani_chat_1",
                 "ani_chat_2",
                 "ani_chat_3",
@@ -22,20 +32,22 @@ var windowui;
                 "ani_chat_8",
                 "ani_chat_9"
             ];
-            this._txtInput = null;
-            this._btnSend = null;
-            this.createView();
+            _this._txtInput = null;
+            _this._btnSend = null;
+            _this.createView();
+            return _this;
         }
-        var d = __define,c=ChatInst;p=c.prototype;
-        d(ChatInst, "Instance"
-            ,function () {
+        Object.defineProperty(ChatInst, "Instance", {
+            get: function () {
                 if (ChatInst._instance == null) {
                     ChatInst._instance = new ChatInst();
                 }
                 return ChatInst._instance;
-            }
-        );
-        p.createView = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ChatInst.prototype.createView = function () {
             this._tab = 0;
             var bg = new egret.Bitmap(RES.getRes("panel_chat"));
             this.addChild(bg);
@@ -76,7 +88,7 @@ var windowui;
                 }
             };
         };
-        p.setTab = function (tab) {
+        ChatInst.prototype.setTab = function (tab) {
             if (this._tab == tab) {
                 return;
             }
@@ -90,13 +102,13 @@ var windowui;
                 this._tabSprite_2.visible = true;
             }
         };
-        p.SetWords = function (txt) {
+        ChatInst.prototype.SetWords = function (txt) {
             if (txt == "" || txt == null || txt == "点击输入文字") {
                 return;
             }
             this._txtInput.text = txt;
         };
-        p.setWordUI = function () {
+        ChatInst.prototype.setWordUI = function () {
             var sp = new egret.Sprite();
             var wlen = ChatInst.WordList.length;
             var i = 0;
@@ -114,7 +126,7 @@ var windowui;
             this.addChild(this._tabSprite_1);
             this._tabSprite_1.visible = false;
         };
-        p.setGifUI = function () {
+        ChatInst.prototype.setGifUI = function () {
             var sp = new egret.Sprite();
             var wlen = this._faceList.length;
             var i = 0;
@@ -132,12 +144,12 @@ var windowui;
             this.addChild(this._tabSprite_2);
             this._tabSprite_2.visible = false;
         };
-        p.onFocusin = function (e) {
+        ChatInst.prototype.onFocusin = function (e) {
             if (this._txtInput.text == "点击输入文字") {
                 this._txtInput.text = "";
             }
         };
-        p.onTouchTap = function (e) {
+        ChatInst.prototype.onTouchTap = function (e) {
             if (e.currentTarget == this._btnSend) {
                 var txt = this._txtInput.text;
                 if (txt == "" || txt == null || txt == "点击输入文字") {
@@ -161,7 +173,7 @@ var windowui;
                 this._tabBtn_2.SetTxt(28, 0xa9d1ed);
             }
         };
-        p.Show = function () {
+        ChatInst.prototype.Show = function () {
             if (data.GameData.IsRobot_Offline) {
                 return;
             }
@@ -169,7 +181,7 @@ var windowui;
             LayerMgr.Window.addChild(this);
             this._txtInput.text = "点击输入文字";
         };
-        p.Hide = function () {
+        ChatInst.prototype.Hide = function () {
             _super.prototype.Hide.call(this);
             if (this.parent) {
                 this.parent.removeChild(this);
@@ -184,7 +196,8 @@ var windowui;
         ];
         ChatInst._instance = null;
         return ChatInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.ChatInst = ChatInst;
-    egret.registerClass(ChatInst,"windowui.ChatInst");
+    __reflect(ChatInst.prototype, "windowui.ChatInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=ChatInst.js.map

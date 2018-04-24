@@ -20,3 +20,4 @@ function traceAndAlert(message) {
     console.log(message, optionalParams);
 }
 //} 
+//# sourceMappingURL=Trace.js.map

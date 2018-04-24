@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * Created by Administrator on 2016/1/1.
  */
@@ -7,7 +10,6 @@ var enums;
     var NetEvent = (function () {
         function NetEvent() {
         }
-        var d = __define,c=NetEvent;p=c.prototype;
         NetEvent.NETEVENT_CONNECT = "NETEVENT_CONNECT"; //socket连接成功
         NetEvent.NETEVENT_CLOSE = "NETEVENT_CLOSE"; //socket关闭
         NetEvent.NETEVENT_ERROR = "NETEVENT_ERROR"; //socket错误
@@ -31,7 +33,8 @@ var enums;
         NetEvent.NETEVENT_LOBBYIN = "NETEVENT_LOBBYIN"; //进入大厅
         NetEvent.NETEVENT_ADDFREEMONEY = "NETEVENT_ADDFREEMONEY"; //送金币
         return NetEvent;
-    })();
+    }());
     enums.NetEvent = NetEvent;
-    egret.registerClass(NetEvent,"enums.NetEvent");
+    __reflect(NetEvent.prototype, "enums.NetEvent");
 })(enums || (enums = {}));
+//# sourceMappingURL=NetEvent.js.map

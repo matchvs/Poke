@@ -1,20 +1,30 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var scene;
 (function (scene) {
     var TestGameScene = (function (_super) {
         __extends(TestGameScene, _super);
         function TestGameScene() {
-            _super.call(this);
-            this._textType = null;
-            this._textValue = null;
-            this._backValue = null;
-            this._cardlist0 = [];
-            this._cardlist1 = [];
-            this._cardlist2 = [];
+            var _this = _super.call(this) || this;
+            _this._textType = null;
+            _this._textValue = null;
+            _this._backValue = null;
+            _this._cardlist0 = [];
+            _this._cardlist1 = [];
+            _this._cardlist2 = [];
             //            this.skinName = "skins.scene.LobbySceneSkin";
-            this.initListData();
+            _this.initListData();
+            return _this;
         }
-        var d = __define,c=TestGameScene;p=c.prototype;
-        p.initListData = function () {
+        TestGameScene.prototype.initListData = function () {
             var bg = new egret.Bitmap(RES.getRes("bg_lobby_jpg"));
             this.addChild(bg);
             this.touchEnabled = true;
@@ -27,7 +37,7 @@ var scene;
             SoundMgr.Instance.PlaySound("bg_lobby_mp3");
         };
         //提示出牌
-        p.PrompCard = function (id, cld) {
+        TestGameScene.prototype.PrompCard = function (id, cld) {
             if (cld == null) {
                 return;
             }
@@ -49,7 +59,7 @@ var scene;
                 }
             }
         };
-        p.setCard = function (id, isre) {
+        TestGameScene.prototype.setCard = function (id, isre) {
             if (isre === void 0) { isre = false; }
             if (isre) {
                 var rlen = this["_cardlist" + id].length;
@@ -122,7 +132,7 @@ var scene;
             //trace("*********************************");
         };
         //设置3张地主牌
-        p.setDizhuCard3 = function () {
+        TestGameScene.prototype.setDizhuCard3 = function () {
             var clist = TestGameMgr.Instance.GetDizhuCard3();
             var clen = clist.length;
             var i = 0;
@@ -172,7 +182,7 @@ var scene;
             txttip.y = 380;
             this.addChild(txttip);
         };
-        p.onTab = function (e) {
+        TestGameScene.prototype.onTab = function (e) {
             var target = e.target;
             var name = target.name;
             //出牌按钮
@@ -225,7 +235,8 @@ var scene;
             }
         };
         return TestGameScene;
-    })(scene.SceneBase);
+    }(scene.SceneBase));
     scene.TestGameScene = TestGameScene;
-    egret.registerClass(TestGameScene,"scene.TestGameScene");
+    __reflect(TestGameScene.prototype, "scene.TestGameScene");
 })(scene || (scene = {}));
+//# sourceMappingURL=TestGameScene.js.map

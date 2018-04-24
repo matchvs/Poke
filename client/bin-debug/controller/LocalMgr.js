@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  *
  *
@@ -9,20 +12,21 @@ var LocalMgr = (function () {
         this._localData = null;
         this._localData = new data.LocalData();
     }
-    var d = __define,c=LocalMgr;p=c.prototype;
-    d(LocalMgr, "Instance"
-        ,function () {
+    Object.defineProperty(LocalMgr, "Instance", {
+        get: function () {
             if (LocalMgr._instance == null) {
                 LocalMgr._instance = new LocalMgr();
             }
             return LocalMgr._instance;
-        }
-    );
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * 连接服务器
      * @constructor
      */
-    p.LoadData = function () {
+    LocalMgr.prototype.LoadData = function () {
         if (egret.localStorage == null) {
             return;
         }
@@ -30,7 +34,7 @@ var LocalMgr = (function () {
         var obj = JSON.parse(str);
         this._localData.InitThis(obj);
     };
-    p.SetData = function (key, data) {
+    LocalMgr.prototype.SetData = function (key, data) {
         if (egret.localStorage == null) {
             return;
         }
@@ -39,7 +43,7 @@ var LocalMgr = (function () {
         var str = JSON.stringify(obj);
         egret.localStorage.setItem(LocalMgr.DATANAME, str);
     };
-    p.GetData = function (key) {
+    LocalMgr.prototype.GetData = function (key) {
         return this._localData[key];
     };
     LocalMgr.SoundBG_Volume = "SoundBG_Volume"; //游戏背景音量
@@ -48,5 +52,6 @@ var LocalMgr = (function () {
     LocalMgr.DATANAME = "at20151230_doudizhu";
     LocalMgr._instance = null;
     return LocalMgr;
-})();
-egret.registerClass(LocalMgr,"LocalMgr");
+}());
+__reflect(LocalMgr.prototype, "LocalMgr");
+//# sourceMappingURL=LocalMgr.js.map

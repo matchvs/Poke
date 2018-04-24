@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * 控制卡牌显示等规则
  * Created by Administrator on 2015/12/19.
@@ -12,8 +15,7 @@ var scene;
             this._tableSprite_2 = null;
             this._tableSprite_3 = null;
         }
-        var d = __define,c=TableCardProxy;p=c.prototype;
-        p.Init = function (gs) {
+        TableCardProxy.prototype.Init = function (gs) {
             this._gameScene = gs;
             this._landSprite = new egret.Sprite();
             this._tableSprite_1 = new egret.Sprite();
@@ -32,7 +34,7 @@ var scene;
             this._tableSprite_3.x = 20;
             this._tableSprite_3.y = 500;
         };
-        p.clearAll = function (cland) {
+        TableCardProxy.prototype.clearAll = function (cland) {
             if (cland === void 0) { cland = false; }
             this._tableSprite_1.removeChildren();
             this._tableSprite_2.removeChildren();
@@ -41,7 +43,7 @@ var scene;
                 this._landSprite.removeChildren();
             }
         };
-        p.ShowLandCard = function (clist) {
+        TableCardProxy.prototype.ShowLandCard = function (clist) {
             this._landSprite.removeChildren();
             if (clist == null) {
                 return;
@@ -56,7 +58,7 @@ var scene;
                 card.y = 0;
             }
         };
-        p.ShowTableCard = function (localtabel, clist) {
+        TableCardProxy.prototype.ShowTableCard = function (localtabel, clist) {
             switch (localtabel) {
                 case 1:
                     this.init_1(clist);
@@ -72,7 +74,7 @@ var scene;
             }
         };
         // NOTE: 使用场景是什么???
-        p.init_1 = function (clist) {
+        TableCardProxy.prototype.init_1 = function (clist) {
             this._tableSprite_1.removeChildren();
             if (clist == null) {
                 return;
@@ -100,7 +102,7 @@ var scene;
             this._tableSprite_1.alpha = 1;
             egret.Tween.get(this._tableSprite_1).to({ x: 20, y: 300, scaleX: 1, scaleY: 1, alpha: 1 }, 300, egret.Ease.circIn);
         };
-        p.init_2 = function (clist) {
+        TableCardProxy.prototype.init_2 = function (clist) {
             this._tableSprite_2.removeChildren();
             if (clist == null) {
                 return;
@@ -128,7 +130,7 @@ var scene;
             this._tableSprite_2.alpha = 1;
             egret.Tween.get(this._tableSprite_2).to({ x: 340, y: 300, scaleX: 1, scaleY: 1, alpha: 1 }, 300, egret.Ease.circIn);
         };
-        p.init_3 = function (clist) {
+        TableCardProxy.prototype.init_3 = function (clist) {
             this._tableSprite_3.removeChildren();
             if (clist == null) {
                 return;
@@ -165,7 +167,8 @@ var scene;
         };
         TableCardProxy.CardScale = 0.5;
         return TableCardProxy;
-    })();
+    }());
     scene.TableCardProxy = TableCardProxy;
-    egret.registerClass(TableCardProxy,"scene.TableCardProxy");
+    __reflect(TableCardProxy.prototype, "scene.TableCardProxy");
 })(scene || (scene = {}));
+//# sourceMappingURL=TableCardProxy.js.map

@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  * Created by Administrator on 2016/2/4.
  */
@@ -6,10 +16,9 @@ var effect;
     var BombEffect = (function (_super) {
         __extends(BombEffect, _super);
         function BombEffect() {
-            _super.call(this);
+            return _super.call(this) || this;
         }
-        var d = __define,c=BombEffect;p=c.prototype;
-        p.Init = function () {
+        BombEffect.prototype.Init = function () {
             try {
                 this.touchChildren = false;
                 this.touchEnabled = false;
@@ -27,9 +36,9 @@ var effect;
                 this.Release();
             }
         };
-        p.Update = function () {
+        BombEffect.prototype.Update = function () {
         };
-        p.mc1frame = function (e) {
+        BombEffect.prototype.mc1frame = function (e) {
             try {
                 if (this._mc1.currentFrame == this._mc1.totalFrames) {
                     this.Release();
@@ -39,7 +48,7 @@ var effect;
                 this.Release();
             }
         };
-        p.Release = function () {
+        BombEffect.prototype.Release = function () {
             if (this._mc1) {
                 this._mc1.gotoAndStop(1);
                 this._mc1.removeEventListener(egret.Event.ENTER_FRAME, this.mc1frame, this);
@@ -49,7 +58,8 @@ var effect;
             }
         };
         return BombEffect;
-    })(egret.Sprite);
+    }(egret.Sprite));
     effect.BombEffect = BombEffect;
-    egret.registerClass(BombEffect,"effect.BombEffect",["IRelease","IUpdate","IInit"]);
+    __reflect(BombEffect.prototype, "effect.BombEffect", ["IRelease", "IUpdate", "IInit"]);
 })(effect || (effect = {}));
+//# sourceMappingURL=BombEffect.js.map

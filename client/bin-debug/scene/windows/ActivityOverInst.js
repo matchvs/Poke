@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     /**
@@ -7,29 +17,33 @@ var windowui;
     var ActivityOverInst = (function (_super) {
         __extends(ActivityOverInst, _super);
         function ActivityOverInst() {
-            _super.call(this);
-            this._infoSprite = null;
-            this._btn_continue = null;
-            this._whowintxt = null;
-            this._isactover = false;
-            this._btn_exit = null;
-            this.createView();
+            var _this = _super.call(this) || this;
+            _this._infoSprite = null;
+            _this._btn_continue = null;
+            _this._whowintxt = null;
+            _this._isactover = false;
+            _this._btn_exit = null;
+            _this.createView();
+            return _this;
         }
-        var d = __define,c=ActivityOverInst;p=c.prototype;
-        d(ActivityOverInst, "Instance"
-            ,function () {
+        Object.defineProperty(ActivityOverInst, "Instance", {
+            get: function () {
                 if (ActivityOverInst._instance == null) {
                     ActivityOverInst._instance = new ActivityOverInst();
                 }
                 return ActivityOverInst._instance;
-            }
-        );
-        d(p, "IsActOver"
-            ,function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(ActivityOverInst.prototype, "IsActOver", {
+            get: function () {
                 return this._isactover;
-            }
-        );
-        p.createView = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ActivityOverInst.prototype.createView = function () {
             var bg = new egret.Bitmap(RES.getRes("ui_window_bg"));
             bg.scale9Grid = new egret.Rectangle(45, 135, 440, 20);
             this.addChild(bg);
@@ -106,12 +120,12 @@ var windowui;
             this._btn_exit.y = 700;
             this._btn_exit.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchTap, this);
         };
-        p.onTouchTap = function (e) {
+        ActivityOverInst.prototype.onTouchTap = function (e) {
             if (e.currentTarget == this._btn_exit) {
                 NativeMgr.Instance.ExitWindow();
             }
         };
-        p.InitInfo = function (isactover, actrank, actHScore, actmoney) {
+        ActivityOverInst.prototype.InitInfo = function (isactover, actrank, actHScore, actmoney) {
             this._isactover = isactover;
             if (this._infoSprite == null) {
                 this._infoSprite = new egret.Sprite();
@@ -150,12 +164,12 @@ var windowui;
             titletxt.textAlign = egret.HorizontalAlign.RIGHT;
             this._infoSprite.addChild(titletxt);
         };
-        p.Show = function () {
+        ActivityOverInst.prototype.Show = function () {
             _super.prototype.Show.call(this);
             LayerMgr.Window.addChild(this);
             return;
         };
-        p.Hide = function () {
+        ActivityOverInst.prototype.Hide = function () {
             _super.prototype.Hide.call(this);
             if (this.parent) {
                 this.parent.removeChild(this);
@@ -163,7 +177,8 @@ var windowui;
         };
         ActivityOverInst._instance = null;
         return ActivityOverInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.ActivityOverInst = ActivityOverInst;
-    egret.registerClass(ActivityOverInst,"windowui.ActivityOverInst");
+    __reflect(ActivityOverInst.prototype, "windowui.ActivityOverInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=ActivityOverInst.js.map

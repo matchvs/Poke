@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  * Created by Administrator on 2015/12/21.
  */
@@ -7,16 +17,16 @@ var scene;
         __extends(ProgressBar, _super);
         function ProgressBar(bgurl, topurl) {
             if (topurl === void 0) { topurl = null; }
-            _super.call(this);
-            this._bg = null;
-            this._top = null;
-            this._topSp = null;
-            this._mask = null;
-            this._progress = 0;
-            this.init(bgurl, topurl);
+            var _this = _super.call(this) || this;
+            _this._bg = null;
+            _this._top = null;
+            _this._topSp = null;
+            _this._mask = null;
+            _this._progress = 0;
+            _this.init(bgurl, topurl);
+            return _this;
         }
-        var d = __define,c=ProgressBar;p=c.prototype;
-        p.init = function (topurl, bgurl) {
+        ProgressBar.prototype.init = function (topurl, bgurl) {
             if (bgurl === void 0) { bgurl = null; }
             this.touchEnabled = false;
             this.touchChildren = false;
@@ -42,7 +52,7 @@ var scene;
             this._topSp.mask = this._mask;
             this.setProgress(0);
         };
-        p.setProgress = function (prog) {
+        ProgressBar.prototype.setProgress = function (prog) {
             if (prog > 1 || prog < 0) {
                 return;
             }
@@ -50,16 +60,17 @@ var scene;
             var h = this._top.width;
             this._top.x = -h + prog * h;
         };
-        p.GetProgress = function () {
+        ProgressBar.prototype.GetProgress = function () {
             return this._progress;
         };
-        p.Release = function () {
+        ProgressBar.prototype.Release = function () {
             if (this.parent) {
                 this.parent.removeChild(this);
             }
         };
         return ProgressBar;
-    })(egret.Sprite);
+    }(egret.Sprite));
     scene.ProgressBar = ProgressBar;
-    egret.registerClass(ProgressBar,"scene.ProgressBar",["IRelease"]);
+    __reflect(ProgressBar.prototype, "scene.ProgressBar", ["IRelease"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=ProgressBar.js.map

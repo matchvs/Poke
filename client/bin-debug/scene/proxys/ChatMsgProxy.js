@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * 控制卡牌显示等规则
  * Created by Administrator on 2015/12/19.
@@ -20,8 +23,7 @@ var scene;
             this._face_3 = null;
             this._gameScene = null;
         }
-        var d = __define,c=ChatMsgProxy;p=c.prototype;
-        p.Init = function (gs) {
+        ChatMsgProxy.prototype.Init = function (gs) {
             this._gameScene = gs;
             this._gameScene.touchChildren = false;
             this._gameScene.touchEnabled = false;
@@ -98,7 +100,7 @@ var scene;
         //    this._tableSprite_2.removeChildren();
         //    this._tableSprite_3.removeChildren();
         //}
-        p.ShowTableCard = function (localtabel, txt) {
+        ChatMsgProxy.prototype.ShowTableCard = function (localtabel, txt) {
             if (txt.indexOf("ani_chat_") >= 0) {
                 if (this["initface_" + localtabel]) {
                     this["initface_" + localtabel](txt);
@@ -110,7 +112,7 @@ var scene;
                 }
             }
         };
-        p.init_1 = function (txt) {
+        ChatMsgProxy.prototype.init_1 = function (txt) {
             this._chat_1.visible = true;
             egret.Tween.removeTweens(this._chat_1);
             this._txt_1.text = txt;
@@ -132,7 +134,7 @@ var scene;
                 this._chat_1.visible = false;
             }, this);
         };
-        p.init_2 = function (txt) {
+        ChatMsgProxy.prototype.init_2 = function (txt) {
             this._chat_2.visible = true;
             egret.Tween.removeTweens(this._chat_2);
             this._txt_2.text = txt;
@@ -153,7 +155,7 @@ var scene;
                 this._chat_2.visible = false;
             }, this);
         };
-        p.init_3 = function (txt) {
+        ChatMsgProxy.prototype.init_3 = function (txt) {
             this._chat_3.visible = true;
             egret.Tween.removeTweens(this._chat_3);
             this._txt_3.text = txt;
@@ -175,7 +177,7 @@ var scene;
                 this._chat_3.visible = false;
             }, this);
         };
-        p.initface_1 = function (txt) {
+        ChatMsgProxy.prototype.initface_1 = function (txt) {
             this._face_1.visible = true;
             egret.Tween.removeTweens(this._face_1);
             this._face_1.removeChildren();
@@ -192,7 +194,7 @@ var scene;
                 this._face_1.removeChildren();
             }, this);
         };
-        p.initface_2 = function (txt) {
+        ChatMsgProxy.prototype.initface_2 = function (txt) {
             this._face_2.visible = true;
             egret.Tween.removeTweens(this._face_2);
             this._face_2.removeChildren();
@@ -209,7 +211,7 @@ var scene;
                 this._face_2.removeChildren();
             }, this);
         };
-        p.initface_3 = function (txt) {
+        ChatMsgProxy.prototype.initface_3 = function (txt) {
             this._face_3.visible = true;
             egret.Tween.removeTweens(this._face_3);
             this._face_3.removeChildren();
@@ -228,7 +230,8 @@ var scene;
         };
         ChatMsgProxy.flyTime = 3500;
         return ChatMsgProxy;
-    })();
+    }());
     scene.ChatMsgProxy = ChatMsgProxy;
-    egret.registerClass(ChatMsgProxy,"scene.ChatMsgProxy");
+    __reflect(ChatMsgProxy.prototype, "scene.ChatMsgProxy");
 })(scene || (scene = {}));
+//# sourceMappingURL=ChatMsgProxy.js.map

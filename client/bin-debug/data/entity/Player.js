@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var data;
 (function (data) {
     var Player = (function () {
@@ -25,8 +28,7 @@ var data;
                 }
             }
         }
-        var d = __define,c=Player;p=c.prototype;
-        p.Reset = function (obj) {
+        Player.prototype.Reset = function (obj) {
             if (obj === void 0) { obj = null; }
             for (var i in obj) {
                 if (this[i] != undefined) {
@@ -34,12 +36,14 @@ var data;
                 }
             }
         };
-        d(p, "CardNum"
-            ,function () {
+        Object.defineProperty(Player.prototype, "CardNum", {
+            get: function () {
                 return this.CardArr.length;
-            }
-        );
-        p.removeCards = function (arr) {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Player.prototype.removeCards = function (arr) {
             if (arr == null) {
                 return;
             }
@@ -55,7 +59,7 @@ var data;
                 }
             }
         };
-        p.AddCards = function (arr) {
+        Player.prototype.AddCards = function (arr) {
             if (arr == null) {
                 return;
             }
@@ -64,7 +68,8 @@ var data;
             }
         };
         return Player;
-    })();
+    }());
     data.Player = Player;
-    egret.registerClass(Player,"data.Player");
+    __reflect(Player.prototype, "data.Player");
 })(data || (data = {}));
+//# sourceMappingURL=Player.js.map

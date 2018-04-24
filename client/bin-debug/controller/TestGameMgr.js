@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var CardListData = controller.game.CardListData;
 var TestGameScene = scene.TestGameScene;
 var Player = egret.sys.Player;
@@ -25,16 +28,17 @@ var TestGameMgr = (function () {
         this._static = 0; //0,发牌状态,1,叫地主状态,2:正在比赛中,3,胜利结束,4,匹配新人
         this.init();
     }
-    var d = __define,c=TestGameMgr;p=c.prototype;
-    d(TestGameMgr, "Instance"
-        ,function () {
+    Object.defineProperty(TestGameMgr, "Instance", {
+        get: function () {
             if (TestGameMgr._instance == null) {
                 TestGameMgr._instance = new TestGameMgr();
             }
             return TestGameMgr._instance;
-        }
-    );
-    p.init = function () {
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TestGameMgr.prototype.init = function () {
         var player1 = new data.Player();
         var player2 = new data.Player();
         var player3 = new data.Player();
@@ -51,7 +55,7 @@ var TestGameMgr = (function () {
         this._compare = new controller.game.Compare();
         this._prompt = new controller.game.Prompt();
     };
-    p.Start = function (tgs) {
+    TestGameMgr.prototype.Start = function (tgs) {
         this._testGameScene = tgs;
         var cardArr = this._card.GetCardRandom();
         this._playerList[0].CardArr = cardArr[0];
@@ -59,14 +63,14 @@ var TestGameMgr = (function () {
         this._playerList[2].CardArr = cardArr[2];
         this._lanownList = cardArr[3];
     };
-    p.GetPlayerById = function (id) {
+    TestGameMgr.prototype.GetPlayerById = function (id) {
         return this._playerList[id];
     };
-    p.GetDizhuCard3 = function () {
+    TestGameMgr.prototype.GetDizhuCard3 = function () {
         return this._lanownList;
     };
     //出牌
-    p.ShowCard = function (slist, id) {
+    TestGameMgr.prototype.ShowCard = function (slist, id) {
         if (this._landOwner == null) {
             traceAndAlert("TestGameMgr-ShowCard> 没有产生地主,先叫分");
             return false;
@@ -100,7 +104,7 @@ var TestGameMgr = (function () {
         return true;
     };
     //提示牌
-    p.prompCard = function () {
+    TestGameMgr.prototype.prompCard = function () {
         var player = this._playerList[this._playerPoint];
         var pcld = this._type.GetType(player.CardArr);
         var len = this._playerList.length;
@@ -132,7 +136,7 @@ var TestGameMgr = (function () {
             this._testGameScene.PrompCard(this._playerPoint, cld);
     };
     //过,要不起
-    p.Pass = function (id) {
+    TestGameMgr.prototype.Pass = function (id) {
         if (this._landOwner == null) {
             traceAndAlert("TestGameMgr-Pass> 没有产生地主");
             return false;
@@ -155,7 +159,7 @@ var TestGameMgr = (function () {
         return true;
     };
     //叫地主,叫分,玩家id
-    p.CallLandOwners = function (score, id) {
+    TestGameMgr.prototype.CallLandOwners = function (score, id) {
         if (this._playerPoint != id) {
             traceAndAlert("TestGameMgr-CallLandOwners> 没有轮到该玩家");
             return false;
@@ -198,10 +202,11 @@ var TestGameMgr = (function () {
         traceAndAlert("TestGameMgr-CallLandOwners> 玩家" + id + "叫了" + score + "分");
         return false;
     };
-    p.GetLanOwner = function () {
+    TestGameMgr.prototype.GetLanOwner = function () {
         return this._landOwner;
     };
     TestGameMgr._instance = null;
     return TestGameMgr;
-})();
-egret.registerClass(TestGameMgr,"TestGameMgr");
+}());
+__reflect(TestGameMgr.prototype, "TestGameMgr");
+//# sourceMappingURL=TestGameMgr.js.map

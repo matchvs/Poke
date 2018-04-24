@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  *
  * @author
@@ -8,33 +18,33 @@ var scene;
     var Card = (function (_super) {
         __extends(Card, _super);
         function Card(value) {
-            _super.call(this);
-            this._value = 0;
-            this._isselect = false;
-            this._isjump = false;
-            this._bg = null;
-            this._mask = null;
-            this._backbg = null;
-            this._typeimg1 = null;
-            this._typeimg2 = null;
-            this._numimg = null;
-            this._landimg = null;
-            this._value = value;
+            var _this = _super.call(this) || this;
+            _this._value = 0;
+            _this._isselect = false;
+            _this._isjump = false;
+            _this._bg = null;
+            _this._mask = null;
+            _this._backbg = null;
+            _this._typeimg1 = null;
+            _this._typeimg2 = null;
+            _this._numimg = null;
+            _this._landimg = null;
+            _this._value = value;
             if (value == 0) {
-                this.initBack();
+                _this.initBack();
             }
             else {
-                this.init();
+                _this.init();
             }
+            return _this;
         }
-        var d = __define,c=Card;p=c.prototype;
-        p.addLand = function () {
+        Card.prototype.addLand = function () {
             if (this._landimg == null) {
                 this._landimg = new egret.Bitmap(RES.getRes("ui_flag_card"));
             }
             this.addChild(this._landimg);
         };
-        p.initBack = function () {
+        Card.prototype.initBack = function () {
             this.touchEnabled = false;
             this.touchChildren = false;
             if (this._backbg == null) {
@@ -42,12 +52,14 @@ var scene;
             }
             this.addChild(this._backbg);
         };
-        d(p, "Value"
-            ,function () {
+        Object.defineProperty(Card.prototype, "Value", {
+            get: function () {
                 return this._value;
-            }
-        );
-        p.init = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Card.prototype.init = function () {
             this.touchEnabled = true;
             this.touchChildren = false;
             if (this._bg == null) {
@@ -109,11 +121,11 @@ var scene;
             this.addChild(this._mask);
             this._mask.visible = false;
         };
-        d(p, "Select"
-            ,function () {
+        Object.defineProperty(Card.prototype, "Select", {
+            get: function () {
                 return this._isselect;
-            }
-            ,function (isselect) {
+            },
+            set: function (isselect) {
                 if (this._isselect == isselect) {
                     this._mask.visible = this._isselect;
                     if (this._isjump) {
@@ -126,13 +138,15 @@ var scene;
                 if (this._isjump) {
                     this._mask.visible = true;
                 }
-            }
-        );
-        d(p, "Jump"
-            ,function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Card.prototype, "Jump", {
+            get: function () {
                 return this._isjump;
-            }
-            ,function (isjump) {
+            },
+            set: function (isjump) {
                 if (this._isjump == isjump) {
                     this._mask.visible = this._isjump;
                     return;
@@ -148,9 +162,11 @@ var scene;
                 if (this._isjump) {
                     this._isselect = false;
                 }
-            }
-        );
-        p.Release = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Card.prototype.Release = function () {
             //if(this._typeimg1&&this._typeimg1.parent){this._typeimg1.parent.removeChild(this._typeimg1);}
             //if(this._typeimg2&&this._typeimg2.parent){this._typeimg2.parent.removeChild(this._typeimg2);}
             //if(this._backbg&&this._backbg.parent){this._backbg.parent.removeChild(this._backbg);}
@@ -179,7 +195,8 @@ var scene;
         Card.CARDWIDTH = 135;
         Card.CARDHEIGHT = 179;
         return Card;
-    })(egret.Sprite);
+    }(egret.Sprite));
     scene.Card = Card;
-    egret.registerClass(Card,"scene.Card",["IRelease"]);
+    __reflect(Card.prototype, "scene.Card", ["IRelease"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=Card.js.map

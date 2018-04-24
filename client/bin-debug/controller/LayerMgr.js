@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  *
  * @author
@@ -6,16 +9,17 @@
 var LayerMgr = (function () {
     function LayerMgr() {
     }
-    var d = __define,c=LayerMgr;p=c.prototype;
-    d(LayerMgr, "Instance"
-        ,function () {
+    Object.defineProperty(LayerMgr, "Instance", {
+        get: function () {
             if (LayerMgr._instance == null) {
                 LayerMgr._instance = new LayerMgr();
             }
             return LayerMgr._instance;
-        }
-    );
-    p.Init = function (main) {
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LayerMgr.prototype.Init = function (main) {
         LayerMgr.Scene = new egret.Sprite();
         LayerMgr.Window = new egret.Sprite();
         LayerMgr.TopUI = new egret.Sprite();
@@ -37,5 +41,6 @@ var LayerMgr = (function () {
     LayerMgr.SysTip = null; //系统消息
     LayerMgr._instance = null;
     return LayerMgr;
-})();
-egret.registerClass(LayerMgr,"LayerMgr");
+}());
+__reflect(LayerMgr.prototype, "LayerMgr");
+//# sourceMappingURL=LayerMgr.js.map

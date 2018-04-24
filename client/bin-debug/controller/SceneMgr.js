@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var GameScene = scene.GameScene;
 /**
  *
@@ -13,22 +16,23 @@ var SceneMgr = (function () {
         this._gameSceneProxy = new sceneproxy.GameSceneProxy();
         this._lobbySceneProxy = new sceneproxy.LobbySceneProxy();
     }
-    var d = __define,c=SceneMgr;p=c.prototype;
-    d(SceneMgr, "Instance"
-        ,function () {
+    Object.defineProperty(SceneMgr, "Instance", {
+        get: function () {
             if (SceneMgr._instance == null) {
                 SceneMgr._instance = new SceneMgr();
             }
             return SceneMgr._instance;
-        }
-    );
-    p.GetCurrentProxy = function () {
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SceneMgr.prototype.GetCurrentProxy = function () {
         return this._currentProxy;
     };
-    p.GetCurrentScene = function () {
+    SceneMgr.prototype.GetCurrentScene = function () {
         return this._currentScene;
     };
-    p.ShowScene = function (scenecls) {
+    SceneMgr.prototype.ShowScene = function (scenecls) {
         if (this._currentScene == null) {
             this._currentScene = new scenecls();
             LayerMgr.Scene.addChild(this._currentScene);
@@ -56,5 +60,6 @@ var SceneMgr = (function () {
     };
     SceneMgr._instance = null;
     return SceneMgr;
-})();
-egret.registerClass(SceneMgr,"SceneMgr");
+}());
+__reflect(SceneMgr.prototype, "SceneMgr");
+//# sourceMappingURL=SceneMgr.js.map

@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  *
  * @author
@@ -10,44 +20,44 @@ var scene;
         function SButton(downurl, upurl, downtxt) {
             if (upurl === void 0) { upurl = null; }
             if (downtxt === void 0) { downtxt = null; }
-            _super.call(this);
-            this._clickScale = true;
-            this._downSp = null;
-            this._downimg = null;
-            this._grayimg = null;
-            this._txt = null;
-            this._downScale = 0.9;
-            this._offsetX = 0; //缩放左
-            this._offsetY = 0; //缩放上
-            this._bitTxt = null;
-            this._downSp = new egret.Sprite();
-            this._downimg = new egret.Bitmap(RES.getRes(downurl));
-            this._grayimg = new egret.Bitmap(RES.getRes(upurl));
-            this.addChild(this._downSp);
-            this._downSp.addChild(this._downimg);
-            this._downSp.addChild(this._grayimg);
-            this._offsetX = this._downimg.width * (1 - this._downScale) / 2;
-            this._offsetY = this._downimg.height * (1 - this._downScale) / 2;
-            this.touchChildren = false;
-            this.touchEnabled = true;
-            this._grayimg.visible = false;
+            var _this = _super.call(this) || this;
+            _this._clickScale = true;
+            _this._downSp = null;
+            _this._downimg = null;
+            _this._grayimg = null;
+            _this._txt = null;
+            _this._downScale = 0.9;
+            _this._offsetX = 0; //缩放左
+            _this._offsetY = 0; //缩放上
+            _this._bitTxt = null;
+            _this._downSp = new egret.Sprite();
+            _this._downimg = new egret.Bitmap(RES.getRes(downurl));
+            _this._grayimg = new egret.Bitmap(RES.getRes(upurl));
+            _this.addChild(_this._downSp);
+            _this._downSp.addChild(_this._downimg);
+            _this._downSp.addChild(_this._grayimg);
+            _this._offsetX = _this._downimg.width * (1 - _this._downScale) / 2;
+            _this._offsetY = _this._downimg.height * (1 - _this._downScale) / 2;
+            _this.touchChildren = false;
+            _this.touchEnabled = true;
+            _this._grayimg.visible = false;
             var rt = RES.getRes(downtxt);
             if (rt == null) {
-                this._txt = new egret.TextField();
-                this._txt.text = downtxt;
-                this._txt.textColor = 0xffffff;
-                this.addChild(this._txt);
-                this._txt.width = this._downSp.width;
-                this._txt.textAlign = egret.HorizontalAlign.CENTER;
-                this._txt.x = (this._downSp.width - this._txt.width) / 2;
-                this._txt.y = (this._downSp.height - this._txt.height) / 2;
+                _this._txt = new egret.TextField();
+                _this._txt.text = downtxt;
+                _this._txt.textColor = 0xffffff;
+                _this.addChild(_this._txt);
+                _this._txt.width = _this._downSp.width;
+                _this._txt.textAlign = egret.HorizontalAlign.CENTER;
+                _this._txt.x = (_this._downSp.width - _this._txt.width) / 2;
+                _this._txt.y = (_this._downSp.height - _this._txt.height) / 2;
             }
-            this.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onBegin, this);
-            this.addEventListener(egret.TouchEvent.TOUCH_END, this.onEnd, this);
-            this.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.onEnd, this);
+            _this.addEventListener(egret.TouchEvent.TOUCH_BEGIN, _this.onBegin, _this);
+            _this.addEventListener(egret.TouchEvent.TOUCH_END, _this.onEnd, _this);
+            _this.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, _this.onEnd, _this);
+            return _this;
         }
-        var d = __define,c=SButton;p=c.prototype;
-        p.SetWidthHeight = function (w, h) {
+        SButton.prototype.SetWidthHeight = function (w, h) {
             this._downSp.width = w;
             this._downSp.height = h;
             this._grayimg.width = w;
@@ -55,17 +65,19 @@ var scene;
             this._txt.width = this._downSp.width;
             this._txt.y = (this._downSp.height - this._txt.height) / 2;
         };
-        d(p, "ClickScale",undefined
-            ,function (b) {
+        Object.defineProperty(SButton.prototype, "ClickScale", {
+            set: function (b) {
                 this._clickScale = b;
-            }
-        );
-        p.ChangeTxt = function (str) {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SButton.prototype.ChangeTxt = function (str) {
             this._txt.text = str;
             this._txt.x = (this._downSp.width - this._txt.width) / 2;
             this._txt.y = (this._downSp.height - this._txt.height) / 2;
         };
-        p.SetBitTxt = function (str) {
+        SButton.prototype.SetBitTxt = function (str) {
             if (this._bitTxt == null) {
                 this._bitTxt = new egret.BitmapText();
                 this._bitTxt.font = RES.getRes("timefont_fnt");
@@ -76,12 +88,12 @@ var scene;
             this._bitTxt.x = this._downSp.width - this._bitTxt.textWidth * 0.5 - 15;
             this._bitTxt.y = this._downSp.height - this._bitTxt.textHeight * 0.5 - 10;
         };
-        p.SetBit = function (downurl, upurl) {
+        SButton.prototype.SetBit = function (downurl, upurl) {
             if (upurl === void 0) { upurl = null; }
             this._downimg.texture = RES.getRes(downurl);
             this._grayimg.texture = RES.getRes(upurl);
         };
-        p.SetTxt = function (size, color, width, tx, ty) {
+        SButton.prototype.SetTxt = function (size, color, width, tx, ty) {
             if (size === void 0) { size = 30; }
             if (color === void 0) { color = 0xffffff; }
             if (width === void 0) { width = null; }
@@ -103,7 +115,7 @@ var scene;
             this._txt.x = (this._downSp.width - this._txt.width) / 2;
             this._txt.y = (this._downSp.height - this._txt.height) / 2;
         };
-        p.onBegin = function (e) {
+        SButton.prototype.onBegin = function (e) {
             if (this._clickScale) {
                 this._downSp.scaleX = this._downSp.scaleY = this._downScale;
                 this._grayimg.scaleX = this._grayimg.scaleY = this._downScale;
@@ -114,7 +126,7 @@ var scene;
             }
             SoundMgr.Instance.PlayEffect("btn_click_mp3");
         };
-        p.onEnd = function (e) {
+        SButton.prototype.onEnd = function (e) {
             this._downSp.scaleX = this._downSp.scaleY = 1;
             this._grayimg.scaleX = this._grayimg.scaleY = this._downScale;
             this._downSp.x = 0;
@@ -122,10 +134,11 @@ var scene;
             this._grayimg.x = 0;
             this._grayimg.y = 0;
         };
-        p.init = function () {
+        SButton.prototype.init = function () {
         };
         return SButton;
-    })(egret.Sprite);
+    }(egret.Sprite));
     scene.SButton = SButton;
-    egret.registerClass(SButton,"scene.SButton");
+    __reflect(SButton.prototype, "scene.SButton");
 })(scene || (scene = {}));
+//# sourceMappingURL=SButton.js.map

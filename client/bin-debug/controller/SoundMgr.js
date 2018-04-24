@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * Created by yahu on 2015/7/31.
  */
@@ -12,9 +15,8 @@ var SoundMgr = (function () {
         this._soundVolume = LocalMgr.Instance.GetData(LocalMgr.SoundBG_Volume);
         this._effectVolume = LocalMgr.Instance.GetData(LocalMgr.SoundMusic_Volume);
     }
-    var d = __define,c=SoundMgr;p=c.prototype;
-    d(SoundMgr, "Instance"
-        ,function () {
+    Object.defineProperty(SoundMgr, "Instance", {
+        get: function () {
             if (this._instance == null) {
                 this._instance = new SoundMgr();
             }
@@ -23,24 +25,30 @@ var SoundMgr = (function () {
                 this._instance.SetEffectVolume(0);
             }
             return this._instance;
-        }
-    );
-    d(p, "SoundVolume"
-        ,function () {
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SoundMgr.prototype, "SoundVolume", {
+        get: function () {
             return this._soundVolume;
-        }
-    );
-    d(p, "EffectVolume"
-        ,function () {
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SoundMgr.prototype, "EffectVolume", {
+        get: function () {
             return this._effectVolume;
-        }
-    );
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      *  设置总音量
      * @param sv 0到1
      * @constructor
      */
-    p.SetVolume = function (sv) {
+    SoundMgr.prototype.SetVolume = function (sv) {
         this.SetSoundVolume(sv);
         this.SetEffectVolume(sv);
     };
@@ -49,7 +57,7 @@ var SoundMgr = (function () {
      * @param sv 0到1
      * @constructor
      */
-    p.SetSoundVolume = function (sv) {
+    SoundMgr.prototype.SetSoundVolume = function (sv) {
         if (sv < 0.05) {
             sv = 0;
         }
@@ -69,18 +77,20 @@ var SoundMgr = (function () {
      * @param sv 0到1
      * @constructor
      */
-    p.SetEffectVolume = function (sv) {
+    SoundMgr.prototype.SetEffectVolume = function (sv) {
         if (sv < 0.05) {
             sv = 0;
         }
         this._effectVolume = sv;
         LocalMgr.Instance.SetData(LocalMgr.SoundMusic_Volume, sv);
     };
-    d(p, "SoundName"
-        ,function () {
+    Object.defineProperty(SoundMgr.prototype, "SoundName", {
+        get: function () {
             return this._curSound.name;
-        }
-    );
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      *  播放背景音乐
      *  @param sd 音乐资源id,必须mp3格式
@@ -88,7 +98,7 @@ var SoundMgr = (function () {
      *  @param must 是否强制刷新
      * @constructor
      */
-    p.PlaySound = function (sd, loop) {
+    SoundMgr.prototype.PlaySound = function (sd, loop) {
         if (loop === void 0) { loop = 0; }
         if (Config.IsHide)
             return;
@@ -100,6 +110,7 @@ var SoundMgr = (function () {
             if (this._curSound) {
                 this._curSound.channel.volume = 0;
                 this._curSound.channel.stop();
+                //this._curSound.sound.close();
             }
             this._curSound = curSound;
             this._curSound.channel.volume = this._soundVolume;
@@ -112,10 +123,11 @@ var SoundMgr = (function () {
      * 停止播放背景音乐
      * @constructor
      */
-    p.StopSound = function () {
+    SoundMgr.prototype.StopSound = function () {
         try {
             if (this._curSound) {
                 this._curSound.channel.stop();
+                //this._curSound.sound.close();
             }
         }
         catch (e) {
@@ -126,7 +138,7 @@ var SoundMgr = (function () {
      * 播放音效
      * @constructor
      */
-    p.PlayEffect = function (sd, stopsound) {
+    SoundMgr.prototype.PlayEffect = function (sd, stopsound) {
         if (stopsound === void 0) { stopsound = false; }
         if (Config.IsHide)
             return;
@@ -139,12 +151,33 @@ var SoundMgr = (function () {
                 return;
             }
             curSound.channel.volume = this._effectVolume;
+            //if(stopsound)
+            //{
+            //    this._effStopSoundNum++;
+            //    if(this._curSound)
+            //    {
+            //        this._curSound.channel.volume=0;
+            //    }
+            //    curSound.channel.addEventListener(egret.Event.SOUND_COMPLETE, function(){
+            //        this._effStopSoundNum--;
+            //        if(this._effStopSoundNum<=0&&this._curSound)
+            //        {
+            //            try {
+            //                this._curSound.channel.volume = this._soundVolume;
+            //            }
+            //            catch(e)
+            //            {
+            //                trace("[ERROR]->soundMgr->PlayEffect->SOUND_COMPLETE")
+            //            }
+            //        }
+            //    }, this);
+            //}
         }
         catch (e) {
             trace("[ERROR]->soundMgr->PlayEffect");
         }
     };
-    p.getSound = function (mstr, loop) {
+    SoundMgr.prototype.getSound = function (mstr, loop) {
         //if(this._soundDic[mstr])
         //{
         //    var obj=this._soundDic[mstr]
@@ -182,5 +215,6 @@ var SoundMgr = (function () {
     };
     SoundMgr._instance = null;
     return SoundMgr;
-})();
-egret.registerClass(SoundMgr,"SoundMgr");
+}());
+__reflect(SoundMgr.prototype, "SoundMgr");
+//# sourceMappingURL=SoundMgr.js.map

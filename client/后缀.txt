@@ -1,4 +1,0 @@
-index.html后加如下后缀:
-
-
-?platInfo=open_90052_9166&appId=90052&egret.runtime.spid=9166&appId=90052&channelId=9166&isNewApi=1&egretSdkDomain=http://api.egret-labs.org/v2&egretServerDomain=http://api.egret-labs.org/v2&egretRv=168

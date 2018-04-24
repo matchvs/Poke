@@ -4,6 +4,7 @@
 // note: 使用数字,节省
 var enums;
 (function (enums) {
+    var NetEnum;
     (function (NetEnum) {
         // -----------【 系 统 】消息------------
         //探测服务器是否有返回,ping
@@ -68,6 +69,6 @@ var enums;
         NetEnum[NetEnum["GATE_2_CLIENT_ACTIVITY_ONLINE"] = 186] = "GATE_2_CLIENT_ACTIVITY_ONLINE";
         // 【中心服】发送活动金币
         NetEnum[NetEnum["CENTER_2_CLIENT_ADD_FREE_MONEY"] = 187] = "CENTER_2_CLIENT_ADD_FREE_MONEY";
-    })(enums.NetEnum || (enums.NetEnum = {}));
-    var NetEnum = enums.NetEnum;
+    })(NetEnum = enums.NetEnum || (enums.NetEnum = {}));
 })(enums || (enums = {}));
+//# sourceMappingURL=NetEnum.js.map

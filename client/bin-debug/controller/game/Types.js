@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var controller;
 (function (controller) {
     var game;
@@ -10,8 +13,7 @@ var controller;
                 this._tripleArr = [];
                 this._quadrupleArr = [];
             }
-            var d = __define,c=Types;p=c.prototype;
-            p.GetType = function (list) {
+            Types.prototype.GetType = function (list) {
                 if (list == null || list.length < 1) {
                     return new game.CardListData();
                 }
@@ -185,7 +187,7 @@ var controller;
                 return cardlistdata;
             };
             //把取余后的列表划分到各个数组中
-            p.divid = function () {
+            Types.prototype.divid = function () {
                 var i = 0;
                 var len = this._cardsAll.length;
                 for (i = 0; i < this._cardsAll.length; i++) {
@@ -213,7 +215,7 @@ var controller;
                 }
             };
             //计算数量
-            p.NumberOf = function (value) {
+            Types.prototype.NumberOf = function (value) {
                 var tid = value;
                 var totalRepeat = 0;
                 var i = 0;
@@ -241,8 +243,9 @@ var controller;
             Types.Types_DoubleN = 12; //连对
             Types.Types_Bomb = 13; //炸弹
             return Types;
-        })();
+        }());
         game.Types = Types;
-        egret.registerClass(Types,"controller.game.Types");
+        __reflect(Types.prototype, "controller.game.Types");
     })(game = controller.game || (controller.game = {}));
 })(controller || (controller = {}));
+//# sourceMappingURL=Types.js.map

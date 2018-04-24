@@ -1,9 +1,11 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var data;
 (function (data) {
     var GameData = (function () {
         function GameData() {
         }
-        var d = __define,c=GameData;p=c.prototype;
         GameData.IsRobot_Offline = true; //是否单机
         GameData.IsInNative = false; //是否在原生中          //根据环境动态更改
         GameData.IsDebug = true; // 不使用sdk登陆
@@ -31,7 +33,8 @@ var data;
         GameData.playerGuid = 0;
         GameData.IsAuto = false;
         return GameData;
-    })();
+    }());
     data.GameData = GameData;
-    egret.registerClass(GameData,"data.GameData");
+    __reflect(GameData.prototype, "data.GameData");
 })(data || (data = {}));
+//# sourceMappingURL=GameData.js.map

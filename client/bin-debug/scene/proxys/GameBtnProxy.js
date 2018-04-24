@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * 控制卡牌显示等规则
  * Created by Administrator on 2015/12/19.
@@ -31,16 +34,17 @@ var scene;
             this._objStart = null;
             this._myCardProxy = null;
         }
-        var d = __define,c=GameBtnProxy;p=c.prototype;
-        d(p, "State"
-            ,function () {
+        Object.defineProperty(GameBtnProxy.prototype, "State", {
+            get: function () {
                 return this._state;
-            }
-        );
-        p.SetCardProxy = function (mcp) {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        GameBtnProxy.prototype.SetCardProxy = function (mcp) {
             this._myCardProxy = mcp;
         };
-        p.Init = function (gs) {
+        GameBtnProxy.prototype.Init = function (gs) {
             this._gameScene = gs;
             /**
              * btn_setting
@@ -105,7 +109,7 @@ var scene;
             //            };
         };
         //设置托管
-        p.SetPlayerAuto = function (tableid, isauto) {
+        GameBtnProxy.prototype.SetPlayerAuto = function (tableid, isauto) {
             if (tableid != 3) {
                 return;
             }
@@ -114,7 +118,7 @@ var scene;
         };
         // 设置一些按钮样式
         //打牌
-        p.Playing = function (isnew) {
+        GameBtnProxy.prototype.Playing = function (isnew) {
             this._state = GameBtnProxy.STATE_Playing;
             this._readySprite.visible = false;
             this._callSprite.visible = false;
@@ -138,7 +142,7 @@ var scene;
         };
         // 修改一些按钮可点击状态
         //可以出牌
-        p.PlayingShow = function (isshow) {
+        GameBtnProxy.prototype.PlayingShow = function (isshow) {
             if (isshow) {
                 this._sendCard.SetBit("btn_chupai");
                 this._sendCard.touchEnabled = true;
@@ -149,7 +153,7 @@ var scene;
             }
         };
         //叫地主
-        p.CallLandOwner = function (nowscore) {
+        GameBtnProxy.prototype.CallLandOwner = function (nowscore) {
             this._state = GameBtnProxy.STATE_Qiangdizhu;
             this._readySprite.visible = false;
             this._callSprite.visible = true;
@@ -174,14 +178,14 @@ var scene;
             }
         };
         //全部隐藏
-        p.HideAll = function () {
+        GameBtnProxy.prototype.HideAll = function () {
             this._state = GameBtnProxy.STATE_HideAll;
             this._readySprite.visible = false;
             this._callSprite.visible = false;
             this._playSprite.visible = false;
         };
         //进入房间
-        p.RoomIn = function () {
+        GameBtnProxy.prototype.RoomIn = function () {
             this._state = GameBtnProxy.STATE_Ready;
             this._readySprite.visible = true;
             this._callSprite.visible = false;
@@ -193,7 +197,7 @@ var scene;
                 }
             }
         };
-        p.setBtnSprite = function () {
+        GameBtnProxy.prototype.setBtnSprite = function () {
             this._callSprite = new egret.Sprite(); //叫分按钮容器;
             this._callSprite.touchChildren = true;
             this._callSprite.touchEnabled = true;
@@ -273,7 +277,7 @@ var scene;
             this._ready.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
         };
         // 没有调用
-        p.onToouchBegin = function (e) {
+        GameBtnProxy.prototype.onToouchBegin = function (e) {
             this._touchStart = new egret.Point();
             this._objStart = new egret.Point();
             this._touchStart.x = e.stageX;
@@ -283,7 +287,7 @@ var scene;
             this._currentDownSprite = e.currentTarget;
         };
         // 没有调用
-        p.onToouchMove = function (e) {
+        GameBtnProxy.prototype.onToouchMove = function (e) {
             if (e.currentTarget != this._currentDownSprite) {
                 return;
             }
@@ -308,7 +312,7 @@ var scene;
             this._currentDownSprite.touchChildren = false;
         };
         // 没有调用
-        p.onToouchEnd = function (e) {
+        GameBtnProxy.prototype.onToouchEnd = function (e) {
             if (e.currentTarget != this._currentDownSprite) {
                 return;
             }
@@ -335,7 +339,7 @@ var scene;
             this._currentDownSprite.touchChildren = true;
             this._currentDownSprite = null;
         };
-        p.onTap = function (e) {
+        GameBtnProxy.prototype.onTap = function (e) {
             if (e.currentTarget == this._setting) {
                 windowui.SettingInst.Instance.Show();
             }
@@ -396,7 +400,7 @@ var scene;
                 this.HideAll();
             }
         };
-        p.Release = function () {
+        GameBtnProxy.prototype.Release = function () {
             this._gameScene.removeChildren();
             this._gameScene = null;
         };
@@ -405,7 +409,8 @@ var scene;
         GameBtnProxy.STATE_Playing = 2;
         GameBtnProxy.STATE_Ready = 3;
         return GameBtnProxy;
-    })();
+    }());
     scene.GameBtnProxy = GameBtnProxy;
-    egret.registerClass(GameBtnProxy,"scene.GameBtnProxy",["IInit","IRelease"]);
+    __reflect(GameBtnProxy.prototype, "scene.GameBtnProxy", ["IInit", "IRelease"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=GameBtnProxy.js.map

@@ -26,10 +26,12 @@
 //  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////////////////////
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var ThemeAdapter = (function () {
     function ThemeAdapter() {
     }
-    var d = __define,c=ThemeAdapter;p=c.prototype;
     /**
      * 解析主题
      * @param url 待解析的主题url
@@ -37,7 +39,7 @@ var ThemeAdapter = (function () {
      * @param errorFunc 解析失败回调函数，示例：errorFunc():void;
      * @param thisObject 回调的this引用
      */
-    p.getTheme = function (url, compFunc, errorFunc, thisObject) {
+    ThemeAdapter.prototype.getTheme = function (url, compFunc, errorFunc, thisObject) {
         function onGetRes(e) {
             compFunc.call(thisObject, e);
         }
@@ -51,5 +53,6 @@ var ThemeAdapter = (function () {
         RES.getResByUrl(url, onGetRes, this, RES.ResourceItem.TYPE_TEXT);
     };
     return ThemeAdapter;
-})();
-egret.registerClass(ThemeAdapter,"ThemeAdapter",["egret.gui.IThemeAdapter"]);
+}());
+__reflect(ThemeAdapter.prototype, "ThemeAdapter", ["egret.gui.IThemeAdapter"]);
+//# sourceMappingURL=ThemeAdapter.js.map

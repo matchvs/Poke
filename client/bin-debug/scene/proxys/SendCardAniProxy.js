@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * 发牌动画
  * Created by Administrator on 2015/12/19.
@@ -18,11 +21,10 @@ var scene;
             this._mCard2 = null;
             this._mCard3 = null;
         }
-        var d = __define,c=SendCardAniProxy;p=c.prototype;
-        p.Init = function (gs) {
+        SendCardAniProxy.prototype.Init = function (gs) {
             this._gameScene = gs;
         };
-        p.StartAni = function (player, overfun, thisObj) {
+        SendCardAniProxy.prototype.StartAni = function (player, overfun, thisObj) {
             this._overfun = overfun;
             this._overThis = thisObj;
             this._player = player;
@@ -35,7 +37,7 @@ var scene;
             this.sendCardAni();
         };
         //发牌
-        p.sendCardAni = function () {
+        SendCardAniProxy.prototype.sendCardAni = function () {
             //中间发牌
             this._cardLayer.addChild(this._sendLayer);
             var i = 0;
@@ -65,7 +67,7 @@ var scene;
             this._timer1.addEventListener(egret.TimerEvent.TIMER, this.onTimer, this);
             this._timer1.start();
         };
-        p.onTimer = function (e) {
+        SendCardAniProxy.prototype.onTimer = function (e) {
             var ccount = this._timer1.currentCount;
             if (ccount == this._timer1.repeatCount) {
                 egret.Tween.removeTweens(this._mCard1);
@@ -83,7 +85,7 @@ var scene;
                 this.setCard(arr);
             }
         };
-        p.showOwnerAni = function () {
+        SendCardAniProxy.prototype.showOwnerAni = function () {
             //if(this._mCard1.parent)
             //{
             //    this._mCard1.parent.removeChild(this._mCard1);
@@ -112,7 +114,7 @@ var scene;
             this._overfun.call(this._overThis);
             //egret.Tween.get(this._mCard3).to({y: 0}, 300).to({y: 370}, 0).wait(0);
         };
-        p.setCard = function (cardlist) {
+        SendCardAniProxy.prototype.setCard = function (cardlist) {
             var rlen = this._cardVlist.length;
             var ri = 0;
             for (ri = 0; ri < rlen; ri++) {
@@ -170,7 +172,7 @@ var scene;
             }
         };
         //划分为上下显示的两个数组
-        p.dividArr = function (cardlist) {
+        SendCardAniProxy.prototype.dividArr = function (cardlist) {
             var arr1 = [];
             var arr2 = [];
             var len = this._player.CardNum;
@@ -213,7 +215,7 @@ var scene;
             return [arr1, arr2];
         };
         //地主牌飞到指定位置
-        p.Release = function (loctid) {
+        SendCardAniProxy.prototype.Release = function (loctid) {
             if (loctid == 0) {
                 this._gameScene.removeChildren();
                 return;
@@ -249,7 +251,8 @@ var scene;
             }
         };
         return SendCardAniProxy;
-    })();
+    }());
     scene.SendCardAniProxy = SendCardAniProxy;
-    egret.registerClass(SendCardAniProxy,"scene.SendCardAniProxy",["IInit","IRelease"]);
+    __reflect(SendCardAniProxy.prototype, "scene.SendCardAniProxy", ["IInit", "IRelease"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=SendCardAniProxy.js.map

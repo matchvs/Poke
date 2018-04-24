@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /*
  *
  * @author
@@ -6,7 +9,6 @@
 var ArrayTools = (function () {
     function ArrayTools() {
     }
-    var d = __define,c=ArrayTools;p=c.prototype;
     //随机打乱数组
     ArrayTools.RandomSort = function (list) {
         list.sort(function () {
@@ -20,5 +22,6 @@ var ArrayTools = (function () {
         });
     };
     return ArrayTools;
-})();
-egret.registerClass(ArrayTools,"ArrayTools");
+}());
+__reflect(ArrayTools.prototype, "ArrayTools");
+//# sourceMappingURL=ArrayTools.js.map

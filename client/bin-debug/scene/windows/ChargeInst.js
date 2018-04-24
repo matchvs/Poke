@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     /**
@@ -7,24 +17,26 @@ var windowui;
     var ChargeInst = (function (_super) {
         __extends(ChargeInst, _super);
         function ChargeInst() {
-            _super.call(this);
-            this._titleBitmap = null;
-            this._btn_continue1 = null;
-            this._btn_continue2 = null;
-            this._btn_continue3 = null;
-            this._btn_continue4 = null;
-            this.createView();
+            var _this = _super.call(this) || this;
+            _this._titleBitmap = null;
+            _this._btn_continue1 = null;
+            _this._btn_continue2 = null;
+            _this._btn_continue3 = null;
+            _this._btn_continue4 = null;
+            _this.createView();
+            return _this;
         }
-        var d = __define,c=ChargeInst;p=c.prototype;
-        d(ChargeInst, "Instance"
-            ,function () {
+        Object.defineProperty(ChargeInst, "Instance", {
+            get: function () {
                 if (ChargeInst._instance == null) {
                     ChargeInst._instance = new ChargeInst();
                 }
                 return ChargeInst._instance;
-            }
-        );
-        p.createView = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ChargeInst.prototype.createView = function () {
             var bg = new egret.Bitmap(RES.getRes("ui_tips_bg"));
             bg.scale9Grid = new egret.Rectangle(50, 20, 20, 15);
             this.addChild(bg);
@@ -135,7 +147,7 @@ var windowui;
             this._btn_continue4.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchTap, this);
             this._bgshap.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchTap, this);
         };
-        p.onTouchTap = function (e) {
+        ChargeInst.prototype.onTouchTap = function (e) {
             var chargeid = 0;
             if (e.currentTarget == this._bgshap) {
                 this.Hide();
@@ -179,11 +191,11 @@ var windowui;
                 });
             }
         };
-        p.Show = function () {
+        ChargeInst.prototype.Show = function () {
             _super.prototype.Show.call(this);
             LayerMgr.Window.addChild(this);
         };
-        p.Hide = function () {
+        ChargeInst.prototype.Hide = function () {
             _super.prototype.Hide.call(this);
             if (this.parent) {
                 this.parent.removeChild(this);
@@ -191,7 +203,8 @@ var windowui;
         };
         ChargeInst._instance = null;
         return ChargeInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.ChargeInst = ChargeInst;
-    egret.registerClass(ChargeInst,"windowui.ChargeInst");
+    __reflect(ChargeInst.prototype, "windowui.ChargeInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=ChargeInst.js.map

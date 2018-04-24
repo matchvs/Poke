@@ -1,15 +1,25 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     var LoadingInst = (function (_super) {
         __extends(LoadingInst, _super);
         function LoadingInst() {
-            _super.call(this);
-            this._progress = null;
-            this._mask = new egret.Sprite();
-            this.createView();
+            var _this = _super.call(this) || this;
+            _this._progress = null;
+            _this._mask = new egret.Sprite();
+            _this.createView();
+            return _this;
         }
-        var d = __define,c=LoadingInst;p=c.prototype;
-        p.createView = function () {
+        LoadingInst.prototype.createView = function () {
             this.textField = new egret.TextField();
             this.addChild(this.textField);
             this.textField.y = Config.StageHeight / 2 - 15;
@@ -17,25 +27,27 @@ var windowui;
             this.textField.height = 100;
             this.textField.textAlign = "center";
         };
-        p.Show = function () {
+        LoadingInst.prototype.Show = function () {
             LoadMgr.Instance.addEventListener(LoadMgr.LOAD_PROGRESS, this.setProgress, this);
             LayerMgr.TopWindow.addChild(this);
         };
-        p.Hide = function () {
+        LoadingInst.prototype.Hide = function () {
             LoadMgr.Instance.removeEventListener(LoadMgr.LOAD_PROGRESS, this.setProgress, this);
             if (this.parent) {
                 this.parent.removeChild(this);
             }
         };
-        d(LoadingInst, "Instance"
-            ,function () {
+        Object.defineProperty(LoadingInst, "Instance", {
+            get: function () {
                 if (LoadingInst._instance == null) {
                     LoadingInst._instance = new LoadingInst();
                 }
                 return LoadingInst._instance;
-            }
-        );
-        p.setSkin = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        LoadingInst.prototype.setSkin = function () {
             this.removeChildren();
             var bg = new egret.Bitmap(RES.getRes("bg_loading_jpg"));
             this.addChild(bg);
@@ -53,12 +65,12 @@ var windowui;
             this.textField.stroke = 2;
             this.textField.strokeColor = 0x131313;
         };
-        p.onTap = function (e) {
+        LoadingInst.prototype.onTap = function (e) {
         };
-        p.SetText = function (txt) {
+        LoadingInst.prototype.SetText = function (txt) {
             this.textField.text = txt;
         };
-        p.setProgress = function (current, total) {
+        LoadingInst.prototype.setProgress = function (current, total) {
             var per = LoadMgr.Instance.ItemsLoaded / LoadMgr.Instance.ItemsTotal;
             if (per < 0) {
                 per = 0;
@@ -74,7 +86,8 @@ var windowui;
         };
         LoadingInst._instance = null;
         return LoadingInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.LoadingInst = LoadingInst;
-    egret.registerClass(LoadingInst,"windowui.LoadingInst");
+    __reflect(LoadingInst.prototype, "windowui.LoadingInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=LoadingInst.js.map

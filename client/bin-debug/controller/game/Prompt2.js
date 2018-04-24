@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var controller;
 (function (controller) {
     var game;
@@ -8,7 +11,6 @@ var controller;
                 this._types = new game.Types();
                 this._types = new game.Types();
             }
-            var d = __define,c=Prompt2;p=c.prototype;
             /**
              * 选择最优牌
              * @param mylist 玩家自己的手牌
@@ -17,10 +19,10 @@ var controller;
              * @param teamcount 队友的手牌数量
              * @constructor
              */
-            p.GetPrompt = function (mylist, tableList) {
+            Prompt2.prototype.GetPrompt = function (mylist, tableList) {
                 return this.getMinListByType(mylist, tableList.Type, tableList);
             };
-            p.getMinListByType = function (mylist, type, tolist) {
+            Prompt2.prototype.getMinListByType = function (mylist, type, tolist) {
                 switch (type) {
                     case game.Types.Types_Signal:
                         return this.getSigle(mylist, tolist);
@@ -57,7 +59,7 @@ var controller;
              * @param tolist
              * @returns {any}
              */
-            p.getBomb = function (mylist, tolist) {
+            Prompt2.prototype.getBomb = function (mylist, tolist) {
                 var fromlist = mylist.QuadrupleArr;
                 var bigkingcount = mylist.getCountOfNum(99);
                 var tinykingcount = mylist.getCountOfNum(98);
@@ -97,7 +99,7 @@ var controller;
              * @param tolist
              * @returns {any}
              */
-            p.getDoubleN = function (mylist, tolist) {
+            Prompt2.prototype.getDoubleN = function (mylist, tolist) {
                 var fromlist = mylist.DoubleArr;
                 var len = fromlist.length;
                 if (len < 3) {
@@ -180,7 +182,7 @@ var controller;
                 var cld = this._types.GetType(value2);
                 return cld;
             };
-            p.getList = function (mylist, tolist) {
+            Prompt2.prototype.getList = function (mylist, tolist) {
                 var fromlist = mylist.OneArr;
                 var len = fromlist.length;
                 if (len < 5) {
@@ -268,7 +270,7 @@ var controller;
              * @param tolist 要比tolist的牌大
              * @returns {any}
              */
-            p.getThreeN_Signal = function (mylist, tolist) {
+            Prompt2.prototype.getThreeN_Signal = function (mylist, tolist) {
                 var fromlist = mylist.TripleArr;
                 var len = fromlist.length;
                 if (len < 2) {
@@ -351,7 +353,7 @@ var controller;
              * @param tolist 要比tolist的牌大
              * @returns {any}
              */
-            p.getThreeN_Double = function (mylist, tolist) {
+            Prompt2.prototype.getThreeN_Double = function (mylist, tolist) {
                 var fromlist = mylist.TripleArr;
                 var len = fromlist.length;
                 if (len < 2) {
@@ -434,7 +436,7 @@ var controller;
              * @param tolist
              * @returns {any}
              */
-            p.getThreeN = function (mylist, tolist) {
+            Prompt2.prototype.getThreeN = function (mylist, tolist) {
                 var fromlist = mylist.TripleArr;
                 var len = fromlist.length;
                 if (len < 2) {
@@ -504,7 +506,7 @@ var controller;
              * @param tolist 要比tolist的牌大
              * @returns {any}
              */
-            p.getThree_Double = function (mylist, tolist) {
+            Prompt2.prototype.getThree_Double = function (mylist, tolist) {
                 var temp = mylist.OneArr;
                 var fromlist = [];
                 for (var i = 0; i < temp.length; i++) {
@@ -564,7 +566,7 @@ var controller;
              * @param tolist 要比tolist的牌大
              * @returns {any}
              */
-            p.getThree_Signal = function (mylist, tolist) {
+            Prompt2.prototype.getThree_Signal = function (mylist, tolist) {
                 var temp = mylist.OneArr;
                 var fromlist = [];
                 for (var i = 0; i < temp.length; i++) {
@@ -624,7 +626,7 @@ var controller;
              * @param tolist 要比tolist的牌大
              * @returns {any}
              */
-            p.getThree = function (mylist, tolist) {
+            Prompt2.prototype.getThree = function (mylist, tolist) {
                 var temp = mylist.OneArr;
                 var fromlist = [];
                 for (var i = 0; i < temp.length; i++) {
@@ -672,7 +674,7 @@ var controller;
              * @param tolist 要比tolist的牌大
              * @returns {any}
              */
-            p.getDouble = function (mylist, tolist, ismust) {
+            Prompt2.prototype.getDouble = function (mylist, tolist, ismust) {
                 var temp = mylist.OneArr;
                 var fromlist = [];
                 for (var i = 0; i < temp.length; i++) {
@@ -721,7 +723,7 @@ var controller;
              * @param tolist 要比tolist的牌大
              * @returns {any}
              */
-            p.getSigle = function (mylist, tolist, ismust) {
+            Prompt2.prototype.getSigle = function (mylist, tolist, ismust) {
                 var fromlist = mylist.OneArr;
                 var len = fromlist.length;
                 if (len < 1) {
@@ -759,8 +761,9 @@ var controller;
                 return cld;
             };
             return Prompt2;
-        })();
+        }());
         game.Prompt2 = Prompt2;
-        egret.registerClass(Prompt2,"controller.game.Prompt2");
+        __reflect(Prompt2.prototype, "controller.game.Prompt2");
     })(game = controller.game || (controller.game = {}));
 })(controller || (controller = {}));
+//# sourceMappingURL=Prompt2.js.map

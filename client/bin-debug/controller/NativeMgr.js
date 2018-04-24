@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  *
  * 原生交互类
@@ -7,24 +17,25 @@
 var NativeMgr = (function (_super) {
     __extends(NativeMgr, _super);
     function NativeMgr() {
-        _super.call(this);
+        return _super.call(this) || this;
     }
-    var d = __define,c=NativeMgr;p=c.prototype;
-    d(NativeMgr, "Instance"
-        ,function () {
+    Object.defineProperty(NativeMgr, "Instance", {
+        get: function () {
             if (NativeMgr._instance == null) {
                 NativeMgr._instance = new NativeMgr();
             }
             return NativeMgr._instance;
-        }
-    );
-    p.JS2Native = function (obj) {
+        },
+        enumerable: true,
+        configurable: true
+    });
+    NativeMgr.prototype.JS2Native = function (obj) {
         var str = JSON.stringify(obj);
         var backstr = window["js2native"](str);
         //var obj:any=JSON.parse(backstr);
         return backstr;
     };
-    p.Native2JS = function (str) {
+    NativeMgr.prototype.Native2JS = function (str) {
         var backobj = JSON.parse(str);
         trace("native->js", str);
         if (backobj == null) {
@@ -62,13 +73,13 @@ var NativeMgr = (function (_super) {
                 obj.value = Config.IsBgTouch;
                 jstr = JSON.stringify(obj);
                 return jstr;
-            case "disConnect":
+            case "disConnect"://ios进入后台调用
                 NetMgr.Instance.Exit();
                 if (SceneMgr.Instance.GetCurrentScene() instanceof scene.GameScene) {
                     (SceneMgr.Instance.GetCurrentScene()).ReStart();
                 }
                 break;
-            case "connect":
+            case "connect"://ios进入前台调用
                 NetMgr.Instance.Connect();
                 break;
             default:
@@ -76,7 +87,7 @@ var NativeMgr = (function (_super) {
         }
         return "{'js':'null'}";
     };
-    p.MinWindow = function () {
+    NativeMgr.prototype.MinWindow = function () {
         var obj = {};
         obj.type = "min";
         //test
@@ -98,7 +109,7 @@ var NativeMgr = (function (_super) {
             }
         }
     };
-    p.MaxWindow = function () {
+    NativeMgr.prototype.MaxWindow = function () {
         var obj = {};
         obj.type = "max";
         //test
@@ -121,7 +132,7 @@ var NativeMgr = (function (_super) {
             }
         }
     };
-    p.ExitWindow = function () {
+    NativeMgr.prototype.ExitWindow = function () {
         var obj = {};
         obj.type = "exit";
         var value = {};
@@ -138,10 +149,12 @@ var NativeMgr = (function (_super) {
         if (backobj && backobj.value) {
             var value = JSON.parse(backobj.value);
             if (value.reslt) {
+                //Config.IsMin=false;
+                //SceneMgr.Instance.GetCurrentScene().ResetMin();
             }
         }
     };
-    p.GetInitInfo = function () {
+    NativeMgr.prototype.GetInitInfo = function () {
         //var obj:any = {};
         //obj.type = "getInitInfo";
         //var callback = this.JS2Native(obj);
@@ -161,7 +174,7 @@ var NativeMgr = (function (_super) {
         //request.data={token:"",time:,appId:90052,sign:};
         //var loader:egret.URLLoader=new egret.URLLoader();
     };
-    p.waitPlayer = function () {
+    NativeMgr.prototype.waitPlayer = function () {
         var obj = {};
         obj.type = "waitPlayer";
         var value = {};
@@ -179,5 +192,6 @@ var NativeMgr = (function (_super) {
     };
     NativeMgr._instance = null;
     return NativeMgr;
-})(egret.EventDispatcher);
-egret.registerClass(NativeMgr,"NativeMgr");
+}(egret.EventDispatcher));
+__reflect(NativeMgr.prototype, "NativeMgr");
+//# sourceMappingURL=NativeMgr.js.map

@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  * Created by Administrator on 2016/2/14.跑马灯
  */
@@ -6,14 +16,14 @@ var scene;
     var HouseRunning = (function (_super) {
         __extends(HouseRunning, _super);
         function HouseRunning() {
-            _super.call(this);
-            this._strList = null;
-            this._txt = null;
-            this._bgSprite = null;
-            this._scrollRect = null;
+            var _this = _super.call(this) || this;
+            _this._strList = null;
+            _this._txt = null;
+            _this._bgSprite = null;
+            _this._scrollRect = null;
+            return _this;
         }
-        var d = __define,c=HouseRunning;p=c.prototype;
-        p.Init = function () {
+        HouseRunning.prototype.Init = function () {
             this.touchChildren = false;
             this.touchEnabled = false;
             this.cacheAsBitmap = true;
@@ -30,7 +40,7 @@ var scene;
             this._scrollRect = new egret.Rectangle(0, 0, HouseRunning.BGWidth, HouseRunning.BGHeight);
             this.scrollRect = this._scrollRect;
         };
-        p.Push = function (str) {
+        HouseRunning.prototype.Push = function (str) {
             if (this._strList.length > HouseRunning.MaxLen) {
                 this._strList.shift();
             }
@@ -44,7 +54,7 @@ var scene;
             }
             this.scrollRect = this._scrollRect;
         };
-        p.drawBg = function () {
+        HouseRunning.prototype.drawBg = function () {
             if (this._scrollRect == null) {
                 return;
             }
@@ -53,7 +63,7 @@ var scene;
             this._bgSprite.graphics.drawRect(0, 0, this._scrollRect.width + HouseRunning.BGWidth, HouseRunning.BGHeight);
             this._bgSprite.graphics.endFill();
         };
-        p.Update = function () {
+        HouseRunning.prototype.Update = function () {
             if (this._strList.length < 1) {
                 return;
             }
@@ -76,7 +86,8 @@ var scene;
         HouseRunning.BGWidth = 400;
         HouseRunning.MaxLen = 3;
         return HouseRunning;
-    })(egret.Sprite);
+    }(egret.Sprite));
     scene.HouseRunning = HouseRunning;
-    egret.registerClass(HouseRunning,"scene.HouseRunning",["IInit","IUpdate"]);
+    __reflect(HouseRunning.prototype, "scene.HouseRunning", ["IInit", "IUpdate"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=HouseRunning.js.map

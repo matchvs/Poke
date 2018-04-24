@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /*
  *
  * @author
@@ -6,7 +9,6 @@
 var DateTimeTool = (function () {
     function DateTimeTool() {
     }
-    var d = __define,c=DateTimeTool;p=c.prototype;
     //随机打乱数组 2016-12-12 10:30
     DateTimeTool.GetDateString = function (time) {
         var date = new Date(time);
@@ -33,5 +35,6 @@ var DateTimeTool = (function () {
         return minstr + ":" + scestr;
     };
     return DateTimeTool;
-})();
-egret.registerClass(DateTimeTool,"DateTimeTool");
+}());
+__reflect(DateTimeTool.prototype, "DateTimeTool");
+//# sourceMappingURL=DateTimeTool.js.map

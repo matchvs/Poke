@@ -1,35 +1,51 @@
 {
-  "native": {
-    "path_ignore": []
+  "engineVersion": "5.1.5",
+  "compilerVersion": "5.1.5",
+  "template": {},
+  "target": {
+    "current": "web"
   },
-  "publish": {
-    "web": 0,
-    "native": 1,
-    "path": "bin-release"
+  "eui": {
+    "exmlRoot": [
+      "resource/eui_skins"
+    ],
+    "themes": [
+      "resource/default.thm.json"
+    ],
+    "exmlPublishPolicy": "commonjs"
   },
-  "egret_version": "2.5.5",
   "modules": [
-    {
-      "name": "egret"
-    },
-    {
-      "name": "game"
-    },
-    {
-      "name": "res"
-    },
-    {
-      "name": "gui"
-    },
-    {
-      "name": "socket"
-    },
-    {
-      "name": "tween"
-    },
-    {
-      "name": "nest",
-      "path": "../sdks/Nest-master/libsrc"
-    }
+		{
+			"name": "egret",
+			"path": "${EGRET_APP_DATA}/4.0.0"
+		},
+		{
+			"name": "game",
+			"path": "${EGRET_APP_DATA}/4.0.0"
+		},
+		{
+			"name": "res",
+			"path": "${EGRET_APP_DATA}/4.0.0"
+		},
+		{
+			"name": "gui",
+			"path": "${EGRET_APP_DATA}/4.0.0"
+		},
+		{
+			"name": "socket",
+			"path": "${EGRET_APP_DATA}/4.0.0"
+		},
+		{
+			"name": "tween",
+			"path": "${EGRET_APP_DATA}/4.0.0"
+		},
+		{
+			"name": "nest",
+			"path": "../Nest-master/libsrc"
+		},
+		{
+			"name": "matchvs",
+			"path": "../matchvs"
+		}
   ]
 }

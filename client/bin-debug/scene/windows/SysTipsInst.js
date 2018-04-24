@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     /**
@@ -7,19 +17,19 @@ var windowui;
     var SysTipsInst = (function (_super) {
         __extends(SysTipsInst, _super);
         function SysTipsInst() {
-            _super.call(this);
-            this._iscreat = false;
-            this._okfun = null;
-            this._okObj = null;
-            this._txt = null;
-            this._okBtn = null;
-            this._bg = null;
-            this.touchChildren = true;
-            this.touchEnabled = true;
-            this.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+            var _this = _super.call(this) || this;
+            _this._iscreat = false;
+            _this._okfun = null;
+            _this._okObj = null;
+            _this._txt = null;
+            _this._okBtn = null;
+            _this._bg = null;
+            _this.touchChildren = true;
+            _this.touchEnabled = true;
+            _this.addEventListener(egret.TouchEvent.TOUCH_TAP, _this.onTap, _this);
+            return _this;
         }
-        var d = __define,c=SysTipsInst;p=c.prototype;
-        p.createView = function () {
+        SysTipsInst.prototype.createView = function () {
             if (this._iscreat) {
                 return;
             }
@@ -64,7 +74,7 @@ var windowui;
             this.addChild(this._okBtn);
             this._iscreat = true;
         };
-        p.Show = function (txt, okfun, thisObj, hasokbtn, btntxt) {
+        SysTipsInst.prototype.Show = function (txt, okfun, thisObj, hasokbtn, btntxt) {
             if (okfun === void 0) { okfun = null; }
             if (thisObj === void 0) { thisObj = null; }
             if (hasokbtn === void 0) { hasokbtn = false; }
@@ -84,7 +94,7 @@ var windowui;
             this._okfun = okfun;
             this._okObj = thisObj;
         };
-        p.onTap = function (e) {
+        SysTipsInst.prototype.onTap = function (e) {
             if (this._okBtn.visible && e.target == this._okBtn) {
                 if (this._okfun) {
                     if (this._okObj) {
@@ -105,31 +115,34 @@ var windowui;
                 }
             }
         };
-        p.getText = function () {
+        SysTipsInst.prototype.getText = function () {
             if (this._txt) {
                 return this._txt.text;
             }
             return "";
         };
-        p.Hide = function () {
+        SysTipsInst.prototype.Hide = function () {
             _super.prototype.Hide.call(this);
             if (this.parent) {
                 this.parent.removeChild(this);
             }
         };
-        d(SysTipsInst, "Instance"
-            ,function () {
+        Object.defineProperty(SysTipsInst, "Instance", {
+            get: function () {
                 if (SysTipsInst._instance == null) {
                     SysTipsInst._instance = new SysTipsInst();
                 }
                 return SysTipsInst._instance;
-            }
-        );
-        p.setSkin = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SysTipsInst.prototype.setSkin = function () {
         };
         SysTipsInst._instance = null;
         return SysTipsInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.SysTipsInst = SysTipsInst;
-    egret.registerClass(SysTipsInst,"windowui.SysTipsInst");
+    __reflect(SysTipsInst.prototype, "windowui.SysTipsInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=SysTipsInst.js.map

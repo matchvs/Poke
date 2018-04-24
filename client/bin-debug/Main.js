@@ -1,14 +1,56 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
+var numberToBlendMode = egret.sys.numberToBlendMode;
 var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
-        _super.call(this);
-        this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+        var _this = _super.call(this) || this;
+        /**
+         * 引擎初始化回调
+         */
+        _this.initResponse = function (status) {
+            if (status === 200) {
+                PokesData.engine.registerUser();
+            }
+            else {
+                egret.log("初始化失败，错误码" + status);
+            }
+        };
+        /**
+     * 注册用户会掉函数
+     */
+        _this.registerUserResponse = function (userInfo) {
+            if (userInfo.status === 0) {
+                egret.log("注册用户成功");
+                //将ID存储到本地
+                data.GameData.userid = userInfo.id;
+                egret.localStorage.setItem("userId", String(userInfo.id));
+                //token
+                egret.localStorage.setItem("token", userInfo.token);
+                data.GameData.token = userInfo.token;
+                //姓名
+                egret.localStorage.setItem("name", userInfo.name);
+                data.GameData.nickname = userInfo.name;
+            }
+            else {
+                egret.log("注册用户失败,错误码:" + userInfo.status);
+            }
+        };
+        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+        return _this;
     }
-    var d = __define,c=Main;p=c.prototype;
     Main.reconnect = function () {
         Main.instance.preloadover(null);
     };
-    p.onAddToStage = function (event) {
+    Main.prototype.onAddToStage = function (event) {
         Config.StageWidth = this.stage.stageWidth;
         Config.StageHeight = this.stage.stageHeight;
         this.stage.scaleMode = egret.StageScaleMode.EXACT_FIT;
@@ -18,7 +60,13 @@ var Main = (function (_super) {
         //设置加载进度界面
         windowui.LoadingInst.Instance.Show();
         windowui.LoadingInst.Instance.SetText("正在打开游戏");
+        //todo 先将应用初始化
         LoadMgr.Instance.Init();
+        var channel = "MatchVS";
+        var platform = "alpha";
+        this.status = PokesData.engine.init(PokesData.response, channel, platform, PokesData.gameID);
+        PokesData.response.registerUserResponse = this.registerUserResponse.bind(this);
+        PokesData.response.initResponse = this.initResponse.bind(this);
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_PRELOAD, this.preloadover, this);
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_LOBBY, this.createScene, this);
         this.stage.addEventListener(egret.Event.RESIZE, this.resizefun, this);
@@ -28,14 +76,17 @@ var Main = (function (_super) {
             alert("离开将开启自动托管"); //根据自己的需求实现自己的功能 
         }, false);
     };
-    p.pushHistory = function () {
+    /**
+     * 修改网页url
+     */
+    Main.prototype.pushHistory = function () {
         var state = {
             title: "title",
             url: "#"
         };
         window.history.pushState(state, "title", "#");
     };
-    p.setos = function () {
+    Main.prototype.setos = function () {
         var u = navigator.userAgent;
         if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
             Config.System = "Android";
@@ -50,13 +101,16 @@ var Main = (function (_super) {
             Config.System = "Windows";
         }
     };
-    p.resizefun = function (e) {
+    Main.prototype.resizefun = function (e) {
         if (e === void 0) { e = null; }
         var currWidth = this.stage.stageWidth;
         var currHeight = this.stage.stageHeight;
         trace("Main-resizefun->", currWidth, currHeight);
     };
-    p.preloadover = function (e) {
+    /**
+     * 此处替换为注册登录逻辑。
+     */
+    Main.prototype.preloadover = function (e) {
         LoadMgr.Instance.removeEventListener(LoadMgr.LOADOVER_PRELOAD, this.preloadover, this);
         windowui.LoadingInst.Instance.setSkin();
         windowui.LoadingInst.Instance.SetText("正在获取身份信息");
@@ -106,16 +160,15 @@ var Main = (function (_super) {
         Main.textlog.touchEnabled = false;
         this.addChild(Main.textlog);
     };
-    p.onGetNativeInfo = function (e) {
-        var playerinfo = e.data;
-        if (!data.GameData.IsDebug) {
-            data.GameData.token = playerinfo.token;
-        }
-        else {
-            data.GameData.userid = playerinfo.userid;
-            data.GameData.nickname = playerinfo.nickName;
-            data.GameData.avatar = playerinfo.avatar;
-        }
+    Main.prototype.onGetNativeInfo = function (e) {
+        // var playerinfo: any = e.data;
+        // if(!data.GameData.IsDebug) {
+        //     data.GameData.token = playerinfo.token
+        // }  else {
+        //     data.GameData.userid = playerinfo.userid;
+        //     data.GameData.nickname = playerinfo.nickName;
+        //     data.GameData.avatar = playerinfo.avatar;
+        // }
         windowui.LoadingInst.Instance.SetText("正在获取服务器地址");
         var url = data.GameData.SERVER_IP;
         var loader = new egret.URLLoader();
@@ -134,7 +187,7 @@ var Main = (function (_super) {
         }, this);
         loader.load(request);
     };
-    p.onGetIpOver = function (e) {
+    Main.prototype.onGetIpOver = function (e) {
         var loader = (e.target);
         var ips = loader.data.toString();
         if (ips == "-1") {
@@ -148,9 +201,8 @@ var Main = (function (_super) {
         NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_CONNECT, this.onConnect, this);
         NetMgr.Instance.Connect();
     };
-    p.onConnect = function (e) {
+    Main.prototype.onConnect = function (e) {
         NetMgr.Instance.removeEventListener(enums.NetEvent.NETEVENT_CONNECT, this.onConnect, this);
-        NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_LOGINSUCESS, this.onLogin, this);
         var value = {};
         value.time = egret.getTimer();
         value.sign = "sign";
@@ -165,7 +217,7 @@ var Main = (function (_super) {
             NetMgr.Instance.SendMsg(enums.NetEnum.NET_CSC_LOGIN_DEBUG, value);
         }
     };
-    p.onLogin = function (e) {
+    Main.prototype.onLogin = function (e) {
         var valueobj = JSON.parse(e.data.value);
         data.GameData.playerGuid = 1; //valueobj.guid;
         data.GameData.money = valueobj.money;
@@ -178,7 +230,7 @@ var Main = (function (_super) {
      * 创建场景界面
      * Create scene interface
      */
-    p.createScene = function (e) {
+    Main.prototype.createScene = function (e) {
         LocalMgr.Instance.LoadData();
         LoadMgr.Instance.removeEventListener(LoadMgr.LOADOVER_LOBBY, this.createScene, this);
         windowui.LoadingInst.Instance.Hide();
@@ -193,5 +245,6 @@ var Main = (function (_super) {
      */
     Main.textlog = null;
     return Main;
-})(egret.DisplayObjectContainer);
-egret.registerClass(Main,"Main");
+}(egret.DisplayObjectContainer));
+__reflect(Main.prototype, "Main");
+//# sourceMappingURL=Main.js.map

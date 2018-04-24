@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var controller;
 (function (controller) {
     var game;
@@ -14,8 +17,7 @@ var controller;
                 this.TripleArr = []; //数据数组,与100取余过
                 this.QuadrupleArr = []; //数据数组,与100取余过
             }
-            var d = __define,c=CardListData;p=c.prototype;
-            p.PlaySound = function () {
+            CardListData.prototype.PlaySound = function () {
                 var st = "";
                 var num;
                 var st2 = "_mp3";
@@ -80,7 +82,7 @@ var controller;
                 SoundMgr.Instance.PlayEffect(url);
             };
             //获取大于等于某值的牌的数量
-            p.HasBigTo = function (num) {
+            CardListData.prototype.HasBigTo = function (num) {
                 var len = this.List.length;
                 var i = 0;
                 var value;
@@ -93,7 +95,7 @@ var controller;
                 }
                 return false;
             };
-            p.HasBomb = function () {
+            CardListData.prototype.HasBomb = function () {
                 if (this.getCountOfNum(98) > 0 && this.getCountOfNum(99) > 0) {
                     return true;
                 }
@@ -102,7 +104,7 @@ var controller;
                 }
                 return false;
             };
-            p.getSingleValueExceptNum = function (numlist) {
+            CardListData.prototype.getSingleValueExceptNum = function (numlist) {
                 var len1 = this.AllArr.length;
                 var len2 = numlist.length;
                 var value;
@@ -124,7 +126,7 @@ var controller;
                 }
                 return barr;
             };
-            p.getDoubleValueExceptNum = function (numlist) {
+            CardListData.prototype.getDoubleValueExceptNum = function (numlist) {
                 var list = this.DoubleArr.concat(this.TripleArr);
                 var len1 = list.length;
                 var len2 = numlist.length;
@@ -148,7 +150,7 @@ var controller;
                 return barr;
             };
             //根据卡牌数字得到100以上真实值
-            p.getValueByNum = function (num, count, type) {
+            CardListData.prototype.getValueByNum = function (num, count, type) {
                 if (type === void 0) { type = false; }
                 var len = this.List.length;
                 var i = 0;
@@ -174,7 +176,7 @@ var controller;
                 }
                 return barr;
             };
-            p.ContainList = function (hlist) {
+            CardListData.prototype.ContainList = function (hlist) {
                 if (hlist == null || hlist.List == null || hlist.List.length < 1) {
                     return false;
                 }
@@ -201,7 +203,7 @@ var controller;
              * 根据卡牌数字得到数量,几个3,几个2之类的
              * @param num
              */
-            p.getCountOfNum = function (num) {
+            CardListData.prototype.getCountOfNum = function (num) {
                 num = num % 100;
                 var len = this.AllArr.length;
                 var i = 0;
@@ -214,8 +216,9 @@ var controller;
                 return count;
             };
             return CardListData;
-        })();
+        }());
         game.CardListData = CardListData;
-        egret.registerClass(CardListData,"controller.game.CardListData");
+        __reflect(CardListData.prototype, "controller.game.CardListData");
     })(game = controller.game || (controller.game = {}));
 })(controller || (controller = {}));
+//# sourceMappingURL=CardListData.js.map

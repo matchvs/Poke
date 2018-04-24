@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /*
  *
  * @author
@@ -6,7 +9,6 @@
 var ViewTools = (function () {
     function ViewTools() {
     }
-    var d = __define,c=ViewTools;p=c.prototype;
     /**
      * 根据全角半角获取字符串长度,中文2,英文1
      * **/
@@ -97,5 +99,6 @@ var ViewTools = (function () {
     };
     ViewTools.isShake = false;
     return ViewTools;
-})();
-egret.registerClass(ViewTools,"ViewTools");
+}());
+__reflect(ViewTools.prototype, "ViewTools");
+//# sourceMappingURL=ViewTools.js.map

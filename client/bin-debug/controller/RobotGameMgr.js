@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * 伪装成服务器
  * 游戏管理
@@ -23,21 +26,22 @@ var RobotGameMgr = (function () {
         this._lanownList = []; //起始的三张地主牌
         this._timeoutList = [];
     }
-    var d = __define,c=RobotGameMgr;p=c.prototype;
-    d(RobotGameMgr, "Instance"
-        ,function () {
+    Object.defineProperty(RobotGameMgr, "Instance", {
+        get: function () {
             if (RobotGameMgr._instance == null) {
                 RobotGameMgr._instance = new RobotGameMgr();
             }
             return RobotGameMgr._instance;
-        }
-    );
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * 发送消息
      * @param str
      * @constructor
      */
-    p.SendMsg = function (type, value) {
+    RobotGameMgr.prototype.SendMsg = function (type, value) {
         if (value === void 0) { value = null; }
         //test
         var obj = {};
@@ -123,7 +127,7 @@ var RobotGameMgr = (function () {
                 var jstr = JSON.stringify(obj);
                 NetMgr.Instance.OnMessage(jstr);
                 break;
-            case enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER:
+            case enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER://叫地主,1,2,3分
                 obj.type = enums.NetEnum.GAME_2_CLIENT_CALLLANDOWNER;
                 var player = this._playerList[this._playerPoint];
                 var svalue = value;
@@ -185,7 +189,7 @@ var RobotGameMgr = (function () {
                 break;
         }
     };
-    p.checkAllReady = function () {
+    RobotGameMgr.prototype.checkAllReady = function () {
         for (var i in this._playerList) {
             if (this._playerList[i].IsReady == false) {
                 return false;
@@ -193,9 +197,9 @@ var RobotGameMgr = (function () {
         }
         return true;
     };
-    p.init = function () {
+    RobotGameMgr.prototype.init = function () {
     };
-    p.Start = function () {
+    RobotGameMgr.prototype.Start = function () {
         this._gameState = 1;
         this._pointMax = this._playerList.length;
         this._playerPoint = 0;
@@ -218,7 +222,7 @@ var RobotGameMgr = (function () {
         this._timeoutList.push(egret.setTimeout(this.beginCallOwner, this, 4000));
     };
     //开始叫地主
-    p.beginCallOwner = function () {
+    RobotGameMgr.prototype.beginCallOwner = function () {
         var obj = {};
         var player = this._playerList[this._playerPoint];
         if (player == null) {
@@ -264,7 +268,7 @@ var RobotGameMgr = (function () {
         }
     };
     //叫完地主,开始游戏
-    p.BeginPlay = function (isfirst) {
+    RobotGameMgr.prototype.BeginPlay = function (isfirst) {
         var obj = {};
         var player = this._playerList[this._playerPoint];
         if (player == null) {
@@ -334,14 +338,14 @@ var RobotGameMgr = (function () {
             }, this, 1000 + Math.random() * 2000));
         }
     };
-    p.GetPlayerById = function (id) {
+    RobotGameMgr.prototype.GetPlayerById = function (id) {
         return this._playerList[id];
     };
-    p.GetDizhuCard3 = function () {
+    RobotGameMgr.prototype.GetDizhuCard3 = function () {
         return this._lanownList;
     };
     //出牌
-    p.ShowCard = function (slist, id) {
+    RobotGameMgr.prototype.ShowCard = function (slist, id) {
         if (this._landOwner == null) {
             trace("RobotGameMgr-ShowCard> 没有产生地主,先叫分");
             return false;
@@ -402,7 +406,7 @@ var RobotGameMgr = (function () {
         this._tablelistdata.FromId = id;
         return true;
     };
-    p.getEnemy = function (p) {
+    RobotGameMgr.prototype.getEnemy = function (p) {
         var len = this._playerList.length;
         var i = 0;
         var enelist = [];
@@ -413,7 +417,7 @@ var RobotGameMgr = (function () {
         }
         return enelist;
     };
-    p.GameOver = function () {
+    RobotGameMgr.prototype.GameOver = function () {
         this._gameState = 0;
         this._pointMax = 3; //用户数量
         this._playerPoint = 0; //用户指针,指向当前用户,,对应玩家tableid
@@ -463,7 +467,7 @@ var RobotGameMgr = (function () {
         this._playerList = [p1, p2, p3];
     };
     //提示牌
-    p.prompCard = function () {
+    RobotGameMgr.prototype.prompCard = function () {
         var player = this._playerList[this._playerPoint];
         var pcld = this._type.GetType(player.CardArr);
         var len = this._playerList.length;
@@ -494,7 +498,7 @@ var RobotGameMgr = (function () {
         return cld;
     };
     //过,要不起
-    p.Pass = function (id) {
+    RobotGameMgr.prototype.Pass = function (id) {
         if (this._landOwner == null) {
             trace("RobotGameMgr-Pass> 没有产生地主");
             return false;
@@ -516,7 +520,7 @@ var RobotGameMgr = (function () {
         return true;
     };
     //叫地主,叫分,玩家id
-    p.CallLandOwners = function (score, id) {
+    RobotGameMgr.prototype.CallLandOwners = function (score, id) {
         if (this._playerPoint != id) {
             trace("RobotGameMgr-CallLandOwners> 没有轮到该玩家");
             return false;
@@ -562,11 +566,12 @@ var RobotGameMgr = (function () {
         trace("RobotGameMgr-CallLandOwners> 玩家" + id + "叫了" + score + "分");
         return false;
     };
-    p.GetLanOwner = function () {
+    RobotGameMgr.prototype.GetLanOwner = function () {
         return this._landOwner;
     };
     RobotGameMgr.TurnTime = 25000; //一个玩家的思考时间
     RobotGameMgr._instance = null;
     return RobotGameMgr;
-})();
-egret.registerClass(RobotGameMgr,"RobotGameMgr");
+}());
+__reflect(RobotGameMgr.prototype, "RobotGameMgr");
+//# sourceMappingURL=RobotGameMgr.js.map

@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  * Created by Administrator on 2015/12/21.
  */
@@ -6,13 +16,13 @@ var scene;
     var CircleLoading = (function (_super) {
         __extends(CircleLoading, _super);
         function CircleLoading(bgurl) {
-            _super.call(this);
-            this._bg = null;
-            this._mask = null;
-            this.init(bgurl);
+            var _this = _super.call(this) || this;
+            _this._bg = null;
+            _this._mask = null;
+            _this.init(bgurl);
+            return _this;
         }
-        var d = __define,c=CircleLoading;p=c.prototype;
-        p.init = function (bgurl) {
+        CircleLoading.prototype.init = function (bgurl) {
             this.touchEnabled = false;
             this.touchChildren = false;
             this._bg = new egret.Bitmap(RES.getRes(bgurl));
@@ -22,7 +32,7 @@ var scene;
             this.mask = this._mask;
             this.setProgress(0);
         };
-        p.setProgress = function (prog) {
+        CircleLoading.prototype.setProgress = function (prog) {
             if (prog > 1 || prog <= 0) {
                 return;
             }
@@ -31,7 +41,7 @@ var scene;
             var angle = Math.ceil(360 * prog);
             this.DrawSector(this._mask, bgwidth / 2, bgheight / 2, bgwidth / 2, angle, -90);
         };
-        p.DrawSector = function (mc, x, y, r, angle, startFrom) {
+        CircleLoading.prototype.DrawSector = function (mc, x, y, r, angle, startFrom) {
             if (x === void 0) { x = 200; }
             if (y === void 0) { y = 200; }
             if (r === void 0) { r = 100; }
@@ -67,13 +77,14 @@ var scene;
             }
             mc.graphics.endFill(); // if you want a sector without filling color , please remove this line.
         };
-        p.Release = function () {
+        CircleLoading.prototype.Release = function () {
             if (this.parent) {
                 this.parent.removeChild(this);
             }
         };
         return CircleLoading;
-    })(egret.Sprite);
+    }(egret.Sprite));
     scene.CircleLoading = CircleLoading;
-    egret.registerClass(CircleLoading,"scene.CircleLoading",["IRelease"]);
+    __reflect(CircleLoading.prototype, "scene.CircleLoading", ["IRelease"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=CircleLoading.js.map

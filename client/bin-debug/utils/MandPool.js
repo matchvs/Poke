@@ -1,10 +1,12 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * Created by andytang on 2015/4/17.
  */
 var MandPool = (function () {
     function MandPool() {
     }
-    var d = __define,c=MandPool;p=c.prototype;
     MandPool.getInsByParm = function (cT, parm1) {
         if (cT != null) {
             var strT = egret.getQualifiedClassName(cT);
@@ -70,6 +72,8 @@ var MandPool = (function () {
                     obj.onRemand();
                 }
             }
+            /*以上为对象不为空的处理
+            */
         }
     };
     /**
@@ -86,5 +90,6 @@ var MandPool = (function () {
      */
     MandPool.s_dict = {};
     return MandPool;
-})();
-egret.registerClass(MandPool,"MandPool");
+}());
+__reflect(MandPool.prototype, "MandPool");
+//# sourceMappingURL=MandPool.js.map

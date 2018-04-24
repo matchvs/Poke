@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * 控制卡牌显示等规则
  * Created by Administrator on 2015/12/19.
@@ -22,22 +25,23 @@ var scene;
             this._island = false;
             this._canshowAll = false;
         }
-        var d = __define,c=MyCardProxy;p=c.prototype;
-        p.Init = function (gs) {
+        MyCardProxy.prototype.Init = function (gs) {
             this._gameScene = gs;
         };
         //设置地主标
-        p.SetPlayerLandFlag = function (landid) {
+        MyCardProxy.prototype.SetPlayerLandFlag = function (landid) {
             this._island = landid == 3;
             //this.setCard();
         };
-        d(p, "CanShowAll",undefined
+        Object.defineProperty(MyCardProxy.prototype, "CanShowAll", {
             //是否能够全下
-            ,function (c) {
+            set: function (c) {
                 this._canshowAll = c;
-            }
-        );
-        p.SetMainPlayer = function (player) {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        MyCardProxy.prototype.SetMainPlayer = function (player) {
             this._gameScene.removeChildren();
             this._type = new controller.game.Types();
             this._prompt = new controller.game.Prompt();
@@ -57,10 +61,10 @@ var scene;
             //this._cardLayer.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onTouchTap,this);
             this.setCard();
         };
-        p.SetBtnProxy = function (btnproxy) {
+        MyCardProxy.prototype.SetBtnProxy = function (btnproxy) {
             this._btnProxy = btnproxy;
         };
-        p.getHasBigger = function () {
+        MyCardProxy.prototype.getHasBigger = function () {
             if (this._tableList == null || this._tableList.length < 1) {
                 return true;
             }
@@ -89,7 +93,7 @@ var scene;
             }
             return true;
         };
-        p.CanAllShow = function () {
+        MyCardProxy.prototype.CanAllShow = function () {
             var chooselist = this.GetWillShowList();
             if (chooselist != null && chooselist.length > 0) {
                 return true;
@@ -117,7 +121,7 @@ var scene;
             return true;
         };
         //重置
-        p.Reset = function () {
+        MyCardProxy.prototype.Reset = function () {
             var rlen = this._cardVlist.length;
             var ri = 0;
             for (ri = 0; ri < rlen; ri++) {
@@ -127,7 +131,7 @@ var scene;
             }
         };
         //能大过返回true,ismust:强制提示,不管有没有弹起牌
-        p.Prompt = function (isnew, ismust) {
+        MyCardProxy.prototype.Prompt = function (isnew, ismust) {
             if (isnew) {
                 return this.CanAllShow();
             }
@@ -175,14 +179,14 @@ var scene;
             }
             return true;
         };
-        p.SetTableList = function (clist) {
+        MyCardProxy.prototype.SetTableList = function (clist) {
             this._tableList = clist;
         };
         //发送完成,返回消息
-        p.SendOver = function () {
+        MyCardProxy.prototype.SendOver = function () {
             this.setCard();
         };
-        p.GetWillShowList = function (notype) {
+        MyCardProxy.prototype.GetWillShowList = function (notype) {
             if (notype === void 0) { notype = false; }
             var i = 0;
             var len = this._cardVlist.length;
@@ -193,6 +197,8 @@ var scene;
                 if (card.Jump) {
                     //this._cardVlist.splice(i,1);
                     list.push(card.Value);
+                    //this._player.removeCards([card.Value]);
+                    //card.Release();
                 }
             }
             var cls = this._type.GetType(list);
@@ -215,14 +221,16 @@ var scene;
             //this.RemoveJump();
             return list;
         };
-        d(p, "Visible",undefined
-            ,function (v) {
+        Object.defineProperty(MyCardProxy.prototype, "Visible", {
+            set: function (v) {
                 if (this._cardLayer) {
                     this._cardLayer.visible = v;
                 }
-            }
-        );
-        p.onTouchBegin = function (e) {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        MyCardProxy.prototype.onTouchBegin = function (e) {
             var rlen = this._cardVlist.length;
             var ri = 0;
             for (ri = 0; ri < rlen; ri++) {
@@ -238,7 +246,7 @@ var scene;
             }
             this._ismousedown = true;
         };
-        p.onTouchMove = function (e) {
+        MyCardProxy.prototype.onTouchMove = function (e) {
             var target = e.target;
             if (!(target instanceof scene.Card) || this._lastCard == null) {
                 return;
@@ -270,7 +278,7 @@ var scene;
             }
             return;
         };
-        p.onTouchEnd = function (e) {
+        MyCardProxy.prototype.onTouchEnd = function (e) {
             if (this._ismousedown == false) {
                 return;
             }
@@ -289,6 +297,7 @@ var scene;
                 mylist.push(card.Value);
                 if (card == e.target) {
                     card.Select = true;
+                    //break;
                 }
                 if (card.Select == true) {
                     promparr.push(card.Value);
@@ -360,7 +369,7 @@ var scene;
             }
             this.SetBtnVisible();
         };
-        p.SetBtnVisible = function () {
+        MyCardProxy.prototype.SetBtnVisible = function () {
             if (this._btnProxy.State != scene.GameBtnProxy.STATE_Playing) {
                 return;
             }
@@ -385,7 +394,7 @@ var scene;
                 }
             }
         };
-        p.setCard = function () {
+        MyCardProxy.prototype.setCard = function () {
             var rlen = this._cardVlist.length;
             var ri = 0;
             for (ri = 0; ri < rlen; ri++) {
@@ -449,7 +458,7 @@ var scene;
             }
         };
         //划分为上下显示的两个数组
-        p.dividArr = function () {
+        MyCardProxy.prototype.dividArr = function () {
             var arr1 = [];
             var arr2 = [];
             var len = this._player.CardNum;
@@ -491,7 +500,7 @@ var scene;
             }
             return [arr1, arr2];
         };
-        p.Release = function () {
+        MyCardProxy.prototype.Release = function () {
             this._gameScene.removeChildren();
         };
         MyCardProxy.LEFTGAP = 17; //距离左侧距离
@@ -500,7 +509,8 @@ var scene;
         MyCardProxy.VERCARGAP = 35; //纵向卡牌间隔
         MyCardProxy.HORCARGAP = 100; //横向卡牌间隔(最大)
         return MyCardProxy;
-    })();
+    }());
     scene.MyCardProxy = MyCardProxy;
-    egret.registerClass(MyCardProxy,"scene.MyCardProxy");
+    __reflect(MyCardProxy.prototype, "scene.MyCardProxy");
 })(scene || (scene = {}));
+//# sourceMappingURL=MyCardProxy.js.map

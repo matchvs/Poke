@@ -1,21 +1,31 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var sceneproxy;
 (function (sceneproxy) {
     //游戏界面逻辑
     var LobbySceneProxy = (function (_super) {
         __extends(LobbySceneProxy, _super);
         function LobbySceneProxy() {
-            _super.call(this);
-            this._scene = null;
+            var _this = _super.call(this) || this;
+            _this._scene = null;
+            return _this;
         }
-        var d = __define,c=LobbySceneProxy;p=c.prototype;
-        p.Init = function (sb) {
+        LobbySceneProxy.prototype.Init = function (sb) {
             this._scene = sb;
             //NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_ROOMIN,this.onNetMsg,this);
             //NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_CENTER_LOGIN_OK);
             NetMgr.Instance.removeEventListener(enums.NetEvent.NETEVENT_ADDFREEMONEY, this.onNetMsg, this);
             SoundMgr.Instance.PlaySound("bg_lobby_mp3");
         };
-        p.onNetMsg = function (e) {
+        LobbySceneProxy.prototype.onNetMsg = function (e) {
             switch (e.type) {
                 case enums.NetEvent.NETEVENT_ADDFREEMONEY:
                     var valueobj = JSON.parse(e.data.value);
@@ -30,7 +40,8 @@ var sceneproxy;
             }
         };
         return LobbySceneProxy;
-    })(sceneproxy.SceneProxyBase);
+    }(sceneproxy.SceneProxyBase));
     sceneproxy.LobbySceneProxy = LobbySceneProxy;
-    egret.registerClass(LobbySceneProxy,"sceneproxy.LobbySceneProxy");
+    __reflect(LobbySceneProxy.prototype, "sceneproxy.LobbySceneProxy");
 })(sceneproxy || (sceneproxy = {}));
+//# sourceMappingURL=LobbySceneProxy.js.map

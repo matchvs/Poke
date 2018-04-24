@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 /**
  * Created by Administrator on 2015/12/29.
  */
@@ -6,19 +16,19 @@ var scene;
     var PlayerInfo = (function (_super) {
         __extends(PlayerInfo, _super);
         function PlayerInfo() {
-            _super.call(this);
-            this._scoretxt = null;
-            this._cointxt = null;
-            this._player = null;
-            this._jifen = "积分: ";
-            this._jinbi = "金币: ";
+            var _this = _super.call(this) || this;
+            _this._scoretxt = null;
+            _this._cointxt = null;
+            _this._player = null;
+            _this._jifen = "积分: ";
+            _this._jinbi = "金币: ";
+            return _this;
         }
-        var d = __define,c=PlayerInfo;p=c.prototype;
-        p.ReSet = function () {
+        PlayerInfo.prototype.ReSet = function () {
             this._scoretxt.text = this._jifen + this._player.integral;
             this._cointxt.text = this._jinbi + this._player.money;
         };
-        p.Init = function (pld) {
+        PlayerInfo.prototype.Init = function (pld) {
             if (data.GameData.flag == data.GameData.GameFlag_Activity) {
                 this._jifen = "积分: ";
                 this._jinbi = "比赛积分: ";
@@ -65,7 +75,8 @@ var scene;
             }
         };
         return PlayerInfo;
-    })(egret.Sprite);
+    }(egret.Sprite));
     scene.PlayerInfo = PlayerInfo;
-    egret.registerClass(PlayerInfo,"scene.PlayerInfo",["IInit"]);
+    __reflect(PlayerInfo.prototype, "scene.PlayerInfo", ["IInit"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=PlayerInfo.js.map

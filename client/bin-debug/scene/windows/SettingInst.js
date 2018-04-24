@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     /**
@@ -7,23 +17,25 @@ var windowui;
     var SettingInst = (function (_super) {
         __extends(SettingInst, _super);
         function SettingInst() {
-            _super.call(this);
-            this._btn_close = null;
-            this._bg = null;
-            this._yinxiao = null;
-            this._yinyue = null;
-            this.createView();
+            var _this = _super.call(this) || this;
+            _this._btn_close = null;
+            _this._bg = null;
+            _this._yinxiao = null;
+            _this._yinyue = null;
+            _this.createView();
+            return _this;
         }
-        var d = __define,c=SettingInst;p=c.prototype;
-        d(SettingInst, "Instance"
-            ,function () {
+        Object.defineProperty(SettingInst, "Instance", {
+            get: function () {
                 if (SettingInst._instance == null) {
                     SettingInst._instance = new SettingInst();
                 }
                 return SettingInst._instance;
-            }
-        );
-        p.createView = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SettingInst.prototype.createView = function () {
             var aa = RES.getRes("ui_tips_bg");
             this._bg = new egret.Bitmap(aa);
             this._bg.scale9Grid = new egret.Rectangle(50, 20, 20, 15);
@@ -78,7 +90,7 @@ var windowui;
             this._btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchTap, this);
             this._bgshap.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchTap, this);
         };
-        p.onTouchTap = function (e) {
+        SettingInst.prototype.onTouchTap = function (e) {
             if (e.currentTarget == this._bgshap) {
                 this.Hide();
             }
@@ -86,17 +98,18 @@ var windowui;
                 this.Hide();
             }
         };
-        p.Show = function () {
+        SettingInst.prototype.Show = function () {
             LayerMgr.SysTip.addChild(this);
         };
-        p.Hide = function () {
+        SettingInst.prototype.Hide = function () {
             if (this.parent) {
                 this.parent.removeChild(this);
             }
         };
         SettingInst._instance = null;
         return SettingInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.SettingInst = SettingInst;
-    egret.registerClass(SettingInst,"windowui.SettingInst");
+    __reflect(SettingInst.prototype, "windowui.SettingInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=SettingInst.js.map

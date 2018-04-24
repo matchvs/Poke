@@ -1,29 +1,39 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var scene;
 (function (scene) {
     var GameScene = (function (_super) {
         __extends(GameScene, _super);
         function GameScene() {
-            _super.call(this);
-            this._gameoverAniProxy = null;
-            this._chatMsgProxy = null;
-            this._sendCardAniProxy = null;
-            this._mycardProxy = null;
-            this._tableCardProxy = null;
-            this._btnProxy = null;
-            this._uiProxy = null;
-            this._uiSprite = null;
-            this._btnSprite = null;
-            this._sendSprite = null;
-            this._cardSprite = null;
-            this._tableSprite = null;
-            this._effectSprite = null;
-            this._chatSprite = null;
-            this._effectList = null;
-            this._type = new controller.game.Types();
-            this._lastSendPing = 0;
+            var _this = _super.call(this) || this;
+            _this._gameoverAniProxy = null;
+            _this._chatMsgProxy = null;
+            _this._sendCardAniProxy = null;
+            _this._mycardProxy = null;
+            _this._tableCardProxy = null;
+            _this._btnProxy = null;
+            _this._uiProxy = null;
+            _this._uiSprite = null;
+            _this._btnSprite = null;
+            _this._sendSprite = null;
+            _this._cardSprite = null;
+            _this._tableSprite = null;
+            _this._effectSprite = null;
+            _this._chatSprite = null;
+            _this._effectList = null;
+            _this._type = new controller.game.Types();
+            _this._lastSendPing = 0;
+            return _this;
         }
-        var d = __define,c=GameScene;p=c.prototype;
-        p.Init = function () {
+        GameScene.prototype.Init = function () {
             var bg = new egret.Bitmap(RES.getRes("bg_game_jpg"));
             this.addChild(bg);
             bg.touchEnabled = false;
@@ -97,7 +107,7 @@ var scene;
             this.addEventListener(egret.Event.ENTER_FRAME, this.Update, this);
             SoundMgr.Instance.PlaySound("bg_lobby_mp3");
         };
-        p.ReStart = function () {
+        GameScene.prototype.ReStart = function () {
             this._uiProxy.RoomIn([]);
             this._btnProxy.RoomIn();
             this._mycardProxy.Visible = false;
@@ -109,7 +119,7 @@ var scene;
          * 进入游戏房间
          * @constructor
          */
-        p.RoomIn = function (plist) {
+        GameScene.prototype.RoomIn = function (plist) {
             windowui.SysTipsInst.Instance.Hide();
             var playerlist = plist;
             this._uiProxy.RoomIn(playerlist);
@@ -118,11 +128,11 @@ var scene;
             this._mycardProxy.Release();
             this._sendCardAniProxy.Release(0);
         };
-        p.AddFreeMoney = function () {
+        GameScene.prototype.AddFreeMoney = function () {
             this._uiProxy.RefreshPlayerInfo();
         };
         //掉线重连
-        p.ReNet = function (landlist, landplayer, mainplayer, landscore, playerlist) {
+        GameScene.prototype.ReNet = function (landlist, landplayer, mainplayer, landscore, playerlist) {
             this._tableCardProxy.ShowLandCard(landlist);
             this._sendCardAniProxy.Release(0);
             this._mycardProxy.SetMainPlayer(mainplayer);
@@ -138,10 +148,10 @@ var scene;
             this._uiProxy.UpdateAllCardNum();
         };
         //玩家进入房间
-        p.PlayerIn = function (player) {
+        GameScene.prototype.PlayerIn = function (player) {
             this._uiProxy.SetPlayerHead(player, true);
         };
-        p.PlayerOut = function (player, isme) {
+        GameScene.prototype.PlayerOut = function (player, isme) {
             //if(isme)
             //{
             //    this.ReStart();
@@ -157,11 +167,11 @@ var scene;
             //}
         };
         //玩家是否托管
-        p.SetAuto = function (locid, isready) {
+        GameScene.prototype.SetAuto = function (locid, isready) {
             this._btnProxy.SetPlayerAuto(locid, isready);
         };
         //玩家进入房间
-        p.SetReady = function (locid, isready, isme) {
+        GameScene.prototype.SetReady = function (locid, isready, isme) {
             if (isme) {
                 this._btnProxy.HideAll();
             }
@@ -170,7 +180,7 @@ var scene;
             this._chatMsgProxy.ShowTableCard(locid, "准备");
         };
         //发牌动画
-        p.SendCard = function (player) {
+        GameScene.prototype.SendCard = function (player) {
             //发牌动画
             windowui.ResoultInst.Instance.Hide();
             windowui.ActivityResoultInst.Instance.Hide();
@@ -186,7 +196,7 @@ var scene;
             }, this);
         };
         //轮到该玩家叫地主
-        p.TurnCallLand = function (player, isme, nowscore, delaytime) {
+        GameScene.prototype.TurnCallLand = function (player, isme, nowscore, delaytime) {
             if (isme) {
                 this._btnProxy.CallLandOwner(nowscore);
             }
@@ -197,11 +207,11 @@ var scene;
             this._uiProxy.UpdateAllCardNum();
         };
         //轮到该玩家叫地主
-        p.ShowCallLand = function (score, tableid) {
+        GameScene.prototype.ShowCallLand = function (score, tableid) {
             this._chatMsgProxy.ShowTableCard(tableid, score + "分");
         };
         //叫地主结束
-        p.CallLandOver = function (landplayer, landlist, mainplayer, landscore) {
+        GameScene.prototype.CallLandOver = function (landplayer, landlist, mainplayer, landscore) {
             this._tableCardProxy.ShowLandCard(landlist);
             this._uiProxy.SetPlayerLandFlag(landplayer.LocalTableId);
             this._mycardProxy.SetPlayerLandFlag(landplayer.LocalTableId);
@@ -212,7 +222,7 @@ var scene;
             this._uiProxy.SetTimes(landscore);
         };
         //轮到该玩家发牌
-        p.TurnPlay = function (player, isme, isnew, tablelist, delaytime, canshowAll, lastplayer) {
+        GameScene.prototype.TurnPlay = function (player, isme, isnew, tablelist, delaytime, canshowAll, lastplayer) {
             if (lastplayer === void 0) { lastplayer = null; }
             if (isnew) {
                 this._sendCardAniProxy.Release(0);
@@ -244,7 +254,7 @@ var scene;
             this._uiProxy.UpdateAllCardNum();
         };
         //其他玩家发牌,包括主玩家
-        p.ShowPlay = function (player, clist, isme, timestr, yasiloc) {
+        GameScene.prototype.ShowPlay = function (player, clist, isme, timestr, yasiloc) {
             this._uiProxy.UpdateAllCardNum();
             if (isme) {
                 this._mycardProxy.SendOver();
@@ -275,7 +285,7 @@ var scene;
             }
             cld.PlaySound();
         };
-        p.GameOver = function (iswin, p1, p2, p3, islandwin, timestr, isactover, actrank, actHScore, actmoney, winplayer) {
+        GameScene.prototype.GameOver = function (iswin, p1, p2, p3, islandwin, timestr, isactover, actrank, actHScore, actmoney, winplayer) {
             this._uiProxy.SetTimes(timestr);
             this._btnProxy.HideAll();
             this._uiProxy.GameOver();
@@ -317,14 +327,14 @@ var scene;
             }, this, 3500);
         };
         //播放聊天
-        p.PlayChat = function (tableid, txt) {
+        GameScene.prototype.PlayChat = function (tableid, txt) {
             this._chatMsgProxy.ShowTableCard(tableid, txt);
         };
         //播放聊天
-        p.PlayHouseRunning = function (txt) {
+        GameScene.prototype.PlayHouseRunning = function (txt) {
             this._uiProxy.PushHouseRunning(txt);
         };
-        p.Update = function (e) {
+        GameScene.prototype.Update = function (e) {
             if (NetMgr.Instance.IsConnect == false) {
                 return;
             }
@@ -340,7 +350,7 @@ var scene;
                 }
             }
         };
-        p.Release = function () {
+        GameScene.prototype.Release = function () {
             this.ReStart();
             this._uiProxy.Release();
             this._btnProxy.Release();
@@ -350,7 +360,8 @@ var scene;
             _super.prototype.Release.call(this);
         };
         return GameScene;
-    })(scene.SceneBase);
+    }(scene.SceneBase));
     scene.GameScene = GameScene;
-    egret.registerClass(GameScene,"scene.GameScene");
+    __reflect(GameScene.prototype, "scene.GameScene");
 })(scene || (scene = {}));
+//# sourceMappingURL=GameScene.js.map

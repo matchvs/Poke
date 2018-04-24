@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var controller;
 (function (controller) {
     var game;
@@ -6,10 +9,9 @@ var controller;
         var SendCard = (function () {
             function SendCard() {
             }
-            var d = __define,c=SendCard;p=c.prototype;
             //获取初始卡片,四张四张发.容易做规则,客户要求0.5的概率出炸弹
             //返回四个数组,0,1,2为玩家牌,3为地主牌三张
-            p.GetCardRandom = function () {
+            SendCard.prototype.GetCardRandom = function () {
                 var list = null;
                 var list1 = [];
                 var list2 = [];
@@ -106,7 +108,7 @@ var controller;
                 return [list1, list2, list3, list];
             };
             //分配玩家手牌,随机获得炸弹牌
-            p.addplaylist = function (list, bomblist, plist, hasbomb) {
+            SendCard.prototype.addplaylist = function (list, bomblist, plist, hasbomb) {
                 if (hasbomb && bomblist.length > 0) {
                     while (bomblist.length > 0) {
                         plist.push(bomblist.pop());
@@ -118,7 +120,7 @@ var controller;
                 ArrayTools.RandomSort(plist);
             };
             //从原牌中删除炸弹牌,并且返回炸弹拍数组
-            p.doBombArr = function (list) {
+            SendCard.prototype.doBombArr = function (list) {
                 var blist = this.getBombArr();
                 var i = 0;
                 var len = list.length;
@@ -136,7 +138,7 @@ var controller;
                 }
                 return blist;
             };
-            p.getBombArr = function () {
+            SendCard.prototype.getBombArr = function () {
                 var len = SendCard.ValueList.length;
                 var ranid = Math.floor(Math.random() * len);
                 var id = SendCard.ValueList[ranid];
@@ -156,8 +158,9 @@ var controller;
             //不带花色纯数字
             SendCard.ValueList = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 20];
             return SendCard;
-        })();
+        }());
         game.SendCard = SendCard;
-        egret.registerClass(SendCard,"controller.game.SendCard");
+        __reflect(SendCard.prototype, "controller.game.SendCard");
     })(game = controller.game || (controller.game = {}));
 })(controller || (controller = {}));
+//# sourceMappingURL=SendCard.js.map

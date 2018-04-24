@@ -1,23 +1,33 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var sceneproxy;
 (function (sceneproxy) {
     //游戏界面逻辑
     var GameSceneProxy = (function (_super) {
         __extends(GameSceneProxy, _super);
         function GameSceneProxy() {
-            _super.call(this);
-            this._recordObj = {};
-            this._playerList = []; //用户数组
-            this._tableCardList = []; //桌面牌
-            this._landList = [];
-            this._myPlayer = null;
-            this._scene = null;
-            this._landscore = 0;
-            this._timecount = 1;
-            this._gamestate = 0;
-            this._lastSendCardPlayer = null;
+            var _this = _super.call(this) || this;
+            _this._recordObj = {};
+            _this._playerList = []; //用户数组
+            _this._tableCardList = []; //桌面牌
+            _this._landList = [];
+            _this._myPlayer = null;
+            _this._scene = null;
+            _this._landscore = 0;
+            _this._timecount = 1;
+            _this._gamestate = 0;
+            _this._lastSendCardPlayer = null;
+            return _this;
         }
-        var d = __define,c=GameSceneProxy;p=c.prototype;
-        p.Init = function (sb) {
+        GameSceneProxy.prototype.Init = function (sb) {
             this._scene = sb;
             NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_ROOMIN, this.onNetMsg, this);
             NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_OTHERPLAYERIN, this.onNetMsg, this);
@@ -38,7 +48,7 @@ var sceneproxy;
             NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_ADDFREEMONEY, this.onNetMsg, this);
             NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_CENTER_LOGIN_OK);
         };
-        p.Release = function () {
+        GameSceneProxy.prototype.Release = function () {
             this._recordObj = {};
             this._playerList = []; //用户数组
             this._tableCardList = []; //桌面牌
@@ -67,7 +77,7 @@ var sceneproxy;
             NetMgr.Instance.removeEventListener(enums.NetEvent.NETEVENT_LOBBYIN, this.onNetMsg, this);
             NetMgr.Instance.removeEventListener(enums.NetEvent.NETEVENT_ADDFREEMONEY, this.onNetMsg, this);
         };
-        p.onNetMsg = function (e) {
+        GameSceneProxy.prototype.onNetMsg = function (e) {
             console.info(e.data);
             switch (e.type) {
                 case enums.NetEvent.NETEVENT_ADDFREEMONEY:
@@ -237,7 +247,7 @@ var sceneproxy;
                     var player = this.getPlayerByTableId(valueobj.tableid);
                     this._scene.TurnCallLand(player, player == this._myPlayer, this._landscore, GameSceneProxy.Delay_CallLand);
                     break;
-                case enums.NetEvent.NETEVENT_OTHERCALLLAND:
+                case enums.NetEvent.NETEVENT_OTHERCALLLAND://包括自己
                     var valueobj = JSON.parse(e.data.value);
                     var player = this.getPlayerByTableId(valueobj.tableid);
                     if (valueobj.score > this._landscore) {
@@ -257,7 +267,7 @@ var sceneproxy;
                         SoundMgr.Instance.PlayEffect("woman_qiangdizhu3_mp3");
                     }
                     break;
-                case enums.NetEvent.NETEVENT_CALLLANDOVER:
+                case enums.NetEvent.NETEVENT_CALLLANDOVER://包括自己
                     this._gamestate = 3;
                     var valueobj = JSON.parse(e.data.value);
                     var player = this.getPlayerByTableId(valueobj.landtableid);
@@ -452,6 +462,7 @@ var sceneproxy;
                     var iii = 0;
                     for (iii = 0; iii < chatlist.length; iii++) {
                         if (valueobj.chatStr == chatlist[iii]) {
+                            //SoundMgr.Instance.PlayEffect("chat_"+iii+"_mp3");
                         }
                     }
                     break;
@@ -478,7 +489,7 @@ var sceneproxy;
                     break;
             }
         };
-        p.setResoulScore = function (p, islandwin) {
+        GameSceneProxy.prototype.setResoulScore = function (p, islandwin) {
             if (p == null) {
                 return 0;
             }
@@ -501,7 +512,7 @@ var sceneproxy;
                 }
             }
         };
-        p.getLocalTableId = function (table, maintalble) {
+        GameSceneProxy.prototype.getLocalTableId = function (table, maintalble) {
             var loc = -1;
             var dec = table - maintalble;
             if (dec == 1 || dec == -2) {
@@ -525,7 +536,7 @@ var sceneproxy;
         //        }
         //    }
         //}
-        p.getPlayerEnemy = function (p) {
+        GameSceneProxy.prototype.getPlayerEnemy = function (p) {
             var tableloc = 0;
             var pp = null;
             for (var i in this._playerList) {
@@ -539,7 +550,7 @@ var sceneproxy;
             }
             return pp;
         };
-        p.getLandPlayer = function () {
+        GameSceneProxy.prototype.getLandPlayer = function () {
             for (var i in this._playerList) {
                 if (this._playerList[i] && this._playerList[i].IsLandOwner) {
                     return this._playerList[i];
@@ -547,7 +558,7 @@ var sceneproxy;
             }
             return null;
         };
-        p.getPlayerByTableId = function (id) {
+        GameSceneProxy.prototype.getPlayerByTableId = function (id) {
             for (var i in this._playerList) {
                 if (this._playerList[i] && this._playerList[i].TableId == id) {
                     return this._playerList[i];
@@ -555,7 +566,7 @@ var sceneproxy;
             }
             return null;
         };
-        p.getPlayerByLocalTableId = function (id) {
+        GameSceneProxy.prototype.getPlayerByLocalTableId = function (id) {
             for (var i in this._playerList) {
                 if (this._playerList[i] && this._playerList[i].LocalTableId == id) {
                     return this._playerList[i];
@@ -563,10 +574,10 @@ var sceneproxy;
             }
             return null;
         };
-        p.GetMainPlayer = function () {
+        GameSceneProxy.prototype.GetMainPlayer = function () {
             return this._myPlayer;
         };
-        p.GetRecordObj = function () {
+        GameSceneProxy.prototype.GetRecordObj = function () {
             //存档
             if (this._playerList[0] && this._playerList[1] && this._playerList[2]) {
                 var recordobj = LocalMgr.Instance.GetData(LocalMgr.RecordObj);
@@ -601,7 +612,8 @@ var sceneproxy;
         GameSceneProxy.Delay_CallLand = 10000; //10秒叫地主
         GameSceneProxy.Delay_ShowCard = 25000; //25秒游戏发牌
         return GameSceneProxy;
-    })(sceneproxy.SceneProxyBase);
+    }(sceneproxy.SceneProxyBase));
     sceneproxy.GameSceneProxy = GameSceneProxy;
-    egret.registerClass(GameSceneProxy,"sceneproxy.GameSceneProxy");
+    __reflect(GameSceneProxy.prototype, "sceneproxy.GameSceneProxy");
 })(sceneproxy || (sceneproxy = {}));
+//# sourceMappingURL=GameSceneProxy.js.map

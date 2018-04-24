@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     /**
@@ -7,22 +17,24 @@ var windowui;
     var ActivityResoultInst = (function (_super) {
         __extends(ActivityResoultInst, _super);
         function ActivityResoultInst() {
-            _super.call(this);
-            this._infoSprite = null;
-            this._btn_continue = null;
-            this._whowintxt = null;
-            this.createView();
+            var _this = _super.call(this) || this;
+            _this._infoSprite = null;
+            _this._btn_continue = null;
+            _this._whowintxt = null;
+            _this.createView();
+            return _this;
         }
-        var d = __define,c=ActivityResoultInst;p=c.prototype;
-        d(ActivityResoultInst, "Instance"
-            ,function () {
+        Object.defineProperty(ActivityResoultInst, "Instance", {
+            get: function () {
                 if (ActivityResoultInst._instance == null) {
                     ActivityResoultInst._instance = new ActivityResoultInst();
                 }
                 return ActivityResoultInst._instance;
-            }
-        );
-        p.createView = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ActivityResoultInst.prototype.createView = function () {
             var bg = new egret.Bitmap(RES.getRes("ui_window_bg"));
             bg.scale9Grid = new egret.Rectangle(45, 135, 440, 20);
             this.addChild(bg);
@@ -125,7 +137,7 @@ var windowui;
             //this._btn_continue.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onTouchTap,this);
             this._bgshap.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchTap, this);
         };
-        p.InitInfo = function (p1, p2, p3, islandwin, actrank, actHScore, actmoney) {
+        ActivityResoultInst.prototype.InitInfo = function (p1, p2, p3, islandwin, actrank, actHScore, actmoney) {
             if (this._infoSprite == null) {
                 this._infoSprite = new egret.Sprite();
                 this.addChild(this._infoSprite);
@@ -291,7 +303,7 @@ var windowui;
             titletxt.textAlign = egret.HorizontalAlign.RIGHT;
             this._infoSprite.addChild(titletxt);
         };
-        p.onTouchTap = function (e) {
+        ActivityResoultInst.prototype.onTouchTap = function (e) {
             if (e.currentTarget == this._bgshap) {
                 SceneMgr.Instance.GetCurrentScene().ReStart();
                 this.Hide();
@@ -301,7 +313,7 @@ var windowui;
                 this.Hide();
             }
         };
-        p.Show = function () {
+        ActivityResoultInst.prototype.Show = function () {
             _super.prototype.Show.call(this);
             LayerMgr.Window.addChild(this);
             egret.setTimeout(function () {
@@ -311,7 +323,7 @@ var windowui;
                 }
             }, this, 10000);
         };
-        p.Hide = function () {
+        ActivityResoultInst.prototype.Hide = function () {
             _super.prototype.Hide.call(this);
             if (this.parent) {
                 this.parent.removeChild(this);
@@ -319,7 +331,8 @@ var windowui;
         };
         ActivityResoultInst._instance = null;
         return ActivityResoultInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.ActivityResoultInst = ActivityResoultInst;
-    egret.registerClass(ActivityResoultInst,"windowui.ActivityResoultInst");
+    __reflect(ActivityResoultInst.prototype, "windowui.ActivityResoultInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=ActivityResoultInst.js.map

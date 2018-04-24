@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * 发牌动画
  * Created by Administrator on 2015/12/19.
@@ -11,8 +14,7 @@ var scene;
             this._txt2 = null;
             this._txt3 = null;
         }
-        var d = __define,c=GameOverAniProxy;p=c.prototype;
-        p.Init = function (gs) {
+        GameOverAniProxy.prototype.Init = function (gs) {
             this._gameScene = gs;
             this._txt1 = new egret.TextField();
             this._txt2 = new egret.TextField();
@@ -34,7 +36,7 @@ var scene;
             this._txt3.strokeColor = 0x000000;
         };
         //发牌
-        p.Start = function (t1, t2, t3) {
+        GameOverAniProxy.prototype.Start = function (t1, t2, t3) {
             this._gameScene.removeChildren();
             egret.Tween.removeTweens(this._txt1);
             egret.Tween.removeTweens(this._txt2);
@@ -88,11 +90,12 @@ var scene;
                 }
             }, this);
         };
-        p.Release = function () {
+        GameOverAniProxy.prototype.Release = function () {
             this._gameScene.removeChildren();
         };
         return GameOverAniProxy;
-    })();
+    }());
     scene.GameOverAniProxy = GameOverAniProxy;
-    egret.registerClass(GameOverAniProxy,"scene.GameOverAniProxy",["IInit","IRelease"]);
+    __reflect(GameOverAniProxy.prototype, "scene.GameOverAniProxy", ["IInit", "IRelease"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=GameOverAniProxy.js.map

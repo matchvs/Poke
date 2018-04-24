@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 /**
  * 控制卡牌显示等规则
  * Created by Administrator on 2015/12/19.
@@ -19,8 +22,7 @@ var scene;
             this._startTime = 0;
             this._autoing = null;
         }
-        var d = __define,c=GameUIProxy;p=c.prototype;
-        p.Init = function (gs) {
+        GameUIProxy.prototype.Init = function (gs) {
             this._gameScene = gs;
             /**
              * avatar
@@ -94,13 +96,13 @@ var scene;
         };
         // 命名问题
         // 更新钱money
-        p.RefreshPlayerInfo = function () {
+        GameUIProxy.prototype.RefreshPlayerInfo = function () {
             this._txt_money.text = "" + data.GameData.money;
         };
-        p.getPlayerHeadByLoc = function (loc) {
+        GameUIProxy.prototype.getPlayerHeadByLoc = function (loc) {
             return this["_playerHead" + loc];
         };
-        p.UpdateAllCardNum = function () {
+        GameUIProxy.prototype.UpdateAllCardNum = function () {
             if (this["_playerHead" + 1]) {
                 this["_playerHead" + 1].ShowCard = true;
                 this["_playerHead" + 1].UpdateCardNum();
@@ -110,7 +112,7 @@ var scene;
                 this["_playerHead" + 2].UpdateCardNum();
             }
         };
-        p.GameOver = function () {
+        GameUIProxy.prototype.GameOver = function () {
             if (this["_playerHead" + 1]) {
                 this["_playerHead" + 1].Ready = false;
                 this["_playerHead" + 1].ShowCard = false;
@@ -125,7 +127,7 @@ var scene;
          * 进入房间.显示自己的信息和房间已有人的信息
          * @constructor
          */
-        p.RoomIn = function (playerlist) {
+        GameUIProxy.prototype.RoomIn = function (playerlist) {
             for (var p in playerlist) {
                 if (playerlist[p].LocalTableId == 1 || playerlist[p].LocalTableId == 2) {
                     this.SetPlayerHead(playerlist[p], true);
@@ -148,11 +150,11 @@ var scene;
          * 设置玩家进度条时间
          * @constructor
          */
-        p.SetPlayerTime = function (p, delaytime) {
+        GameUIProxy.prototype.SetPlayerTime = function (p, delaytime) {
             this._playerTime.SetPoint(p.LocalTableId, delaytime);
             this._playerTime.visible = true;
         };
-        p.RemovePlayerHead = function (p) {
+        GameUIProxy.prototype.RemovePlayerHead = function (p) {
             if (p == null) {
                 return;
             }
@@ -160,7 +162,7 @@ var scene;
                 this["_playerHead" + p.LocalTableId].Release();
             }
         };
-        p.TurnCallLand = function () {
+        GameUIProxy.prototype.TurnCallLand = function () {
             if (this["_playerHead" + 1]) {
                 this["_playerHead" + 1].ShowCard = true;
             }
@@ -168,7 +170,7 @@ var scene;
                 this["_playerHead" + 2].ShowCard = true;
             }
         };
-        p.SetPlayerHead = function (p, isin) {
+        GameUIProxy.prototype.SetPlayerHead = function (p, isin) {
             if (isin === void 0) { isin = false; }
             if (p == null) {
                 return;
@@ -205,7 +207,7 @@ var scene;
             }
         };
         //设置地主标
-        p.SetPlayerLandFlag = function (landid) {
+        GameUIProxy.prototype.SetPlayerLandFlag = function (landid) {
             if (this["_playerHead" + 1]) {
                 this["_playerHead" + 1].IsLandOwner = false;
                 this["_playerHead" + 1].LandFlagVisible(true, false);
@@ -220,13 +222,13 @@ var scene;
             }
         };
         //设置准备标
-        p.SetPlayerReady = function (tableid, isready) {
+        GameUIProxy.prototype.SetPlayerReady = function (tableid, isready) {
             if (this["_playerHead" + tableid]) {
                 this["_playerHead" + tableid].Ready = isready;
             }
         };
         //开始发牌
-        p.SendCard = function () {
+        GameUIProxy.prototype.SendCard = function () {
             if (this["_playerHead" + 1]) {
                 this["_playerHead" + 1].Ready = false;
                 this["_playerHead" + 1].ShowCard = false;
@@ -242,7 +244,7 @@ var scene;
          * @param str
          * @constructor
          */
-        p.SetTimes = function (str) {
+        GameUIProxy.prototype.SetTimes = function (str) {
             if (str != "") {
                 this._timesTxT.text = str + "倍";
             }
@@ -251,10 +253,10 @@ var scene;
             }
             this._timesTxT.x = Config.StageWidth - this._timesTxT.textWidth - 10;
         };
-        p.PushHouseRunning = function (str) {
+        GameUIProxy.prototype.PushHouseRunning = function (str) {
             this._houseRunning.Push(str);
         };
-        p.Update = function () {
+        GameUIProxy.prototype.Update = function () {
             var ntimer = egret.getTimer();
             if (this._playerTime) {
                 this._playerTime.Update();
@@ -268,7 +270,7 @@ var scene;
                 this._timeTxt.text = strtimer;
             }
         };
-        p.Release = function () {
+        GameUIProxy.prototype.Release = function () {
             this._playerTime.Release();
             if (this._playerHead1) {
                 this._playerHead1.Release();
@@ -282,7 +284,8 @@ var scene;
             this._playerHead2 = null;
         };
         return GameUIProxy;
-    })();
+    }());
     scene.GameUIProxy = GameUIProxy;
-    egret.registerClass(GameUIProxy,"scene.GameUIProxy",["IInit","IRelease","IUpdate"]);
+    __reflect(GameUIProxy.prototype, "scene.GameUIProxy", ["IInit", "IRelease", "IUpdate"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=GameUIProxy.js.map

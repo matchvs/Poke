@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var math;
 (function (math) {
     var Vector2D = (function () {
@@ -5,66 +8,73 @@ var math;
             this._x = x;
             this._y = y;
         }
-        var d = __define,c=Vector2D;p=c.prototype;
         //拷贝向量
-        p.clone = function () {
+        Vector2D.prototype.clone = function () {
             return new Vector2D(this._x, this._y);
         };
         //将当前向量变成0向量
-        p.zero = function () {
+        Vector2D.prototype.zero = function () {
             this._x = 0;
             this._y = 0;
             return this;
         };
         //判断是否是0向量
-        p.isZero = function () {
+        Vector2D.prototype.isZero = function () {
             return this._x == 0 && this._y == 0;
         };
-        d(p, "angle"
+        Object.defineProperty(Vector2D.prototype, "angle", {
             //获取弧度
-            ,function () {
+            get: function () {
                 return Math.atan2(this._y, this._x);
-            }
+            },
             /**
              *  设置角度
              * @param value {number}
              */
-            ,function (value) {
+            set: function (value) {
                 var len = length;
                 this._x = Math.cos(value) * len;
                 this._y = Math.sin(value) * len;
-            }
-        );
-        d(p, "rotation"
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector2D.prototype, "rotation", {
             /**
              *获取角度
              * @returns {number}
              */
-            ,function () {
+            get: function () {
                 var cr = Math.atan2(this._y, this._x);
                 return cr / Math.PI * 180;
-            }
-        );
-        d(p, "length"
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector2D.prototype, "length", {
             //获取当前向量大小
-            ,function () {
+            get: function () {
                 return Math.sqrt(this.lengthSQ);
-            }
+            },
             //设置向量的大小
-            ,function (value) {
+            set: function (value) {
                 var a = this.angle;
                 this._x = Math.cos(a) * value;
                 this._y = Math.sin(a) * value;
-            }
-        );
-        d(p, "lengthSQ"
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector2D.prototype, "lengthSQ", {
             //获取当前向量大小的平方
-            ,function () {
+            get: function () {
                 return this._x * this._x + this._y * this._y;
-            }
-        );
+            },
+            enumerable: true,
+            configurable: true
+        });
         //将当前向量转化成单位向量
-        p.normalize = function () {
+        Vector2D.prototype.normalize = function () {
             if (length == 0) {
                 this._x = 1;
                 return this;
@@ -75,26 +85,26 @@ var math;
             return this;
         };
         //截取当前向量
-        p.truncate = function (max) {
+        Vector2D.prototype.truncate = function (max) {
             length = Math.min(max, length);
             return this;
         };
         //反转向量
-        p.reverse = function () {
+        Vector2D.prototype.reverse = function () {
             this._x = -this._x;
             this._y = -this._y;
             return this;
         };
         //判断当前向量是否是单位向量
-        p.isNormalized = function () {
+        Vector2D.prototype.isNormalized = function () {
             return length == 1.0;
         };
         //向量积
-        p.dotProd = function (v2) {
+        Vector2D.prototype.dotProd = function (v2) {
             return this._x * v2.x + this._y * v2.y;
         };
         //判断两向量是否垂直
-        p.crossProd = function (v2) {
+        Vector2D.prototype.crossProd = function (v2) {
             return this._x * v2.y - this._y * v2.x == 0;
         };
         //返回两向量夹角的弦度值
@@ -106,43 +116,45 @@ var math;
             return Math.acos(v1.dotProd(v2));
         };
         //返回向量的符号值
-        p.sign = function (v2) {
+        Vector2D.prototype.sign = function (v2) {
             return this.perp.dotProd(v2) < 0 ? -1 : 1;
         };
-        d(p, "perp"
+        Object.defineProperty(Vector2D.prototype, "perp", {
             //返回坐标向量
-            ,function () {
+            get: function () {
                 return new Vector2D(-this.y, this.x);
-            }
-        );
+            },
+            enumerable: true,
+            configurable: true
+        });
         //返回当前向量与V2的距离
-        p.dist = function (v2) {
+        Vector2D.prototype.dist = function (v2) {
             return Math.sqrt(this.distSQ(v2));
         };
         //返回当前向量与V2的距离的平方
-        p.distSQ = function (v2) {
+        Vector2D.prototype.distSQ = function (v2) {
             var dx = v2.x - this.x;
             var dy = v2.y - this.y;
             return dx * dx + dy * dy;
         };
         //两向量相加
-        p.add = function (v2) {
+        Vector2D.prototype.add = function (v2) {
             return new Vector2D(this._x + v2.x, this._y + v2.y);
         };
         //两向量相减
-        p.subtract = function (v2) {
+        Vector2D.prototype.subtract = function (v2) {
             return new Vector2D(this._x - v2.x, this.y - v2.y);
         };
         //数与向量的乘积
-        p.multiply = function (value) {
+        Vector2D.prototype.multiply = function (value) {
             return new Vector2D(this._x * value, this._y * value);
         };
         //数与向量的商
-        p.divide = function (value) {
+        Vector2D.prototype.divide = function (value) {
             return new Vector2D(this._x / value, this._y / value);
         };
         //判断两向量是否相等
-        p.equals = function (v2) {
+        Vector2D.prototype.equals = function (v2) {
             return this._x == v2.x && this._y == v2.y;
         };
         Vector2D.gravityVector = function () {
@@ -151,25 +163,30 @@ var math;
             }
             return this._gravityVector;
         };
-        d(p, "x"
-            ,function () {
+        Object.defineProperty(Vector2D.prototype, "x", {
+            get: function () {
                 return this._x;
-            }
-            ,function (value) {
+            },
+            set: function (value) {
                 this._x = value;
-            }
-        );
-        d(p, "y"
-            ,function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Vector2D.prototype, "y", {
+            get: function () {
                 return this._y;
-            }
-            ,function (value) {
+            },
+            set: function (value) {
                 this._y = value;
-            }
-        );
+            },
+            enumerable: true,
+            configurable: true
+        });
         Vector2D._gravityVector = null;
         return Vector2D;
-    })();
+    }());
     math.Vector2D = Vector2D;
-    egret.registerClass(Vector2D,"math.Vector2D");
+    __reflect(Vector2D.prototype, "math.Vector2D");
 })(math || (math = {}));
+//# sourceMappingURL=Vector2D.js.map

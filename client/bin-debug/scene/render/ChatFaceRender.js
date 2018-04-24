@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var render;
 (function (render) {
     /**
@@ -8,29 +18,29 @@ var render;
     var ChatFaceRender = (function (_super) {
         __extends(ChatFaceRender, _super);
         function ChatFaceRender(str1, str2, str3) {
-            _super.call(this);
-            this._str1 = null;
-            this._str2 = null;
-            this._str3 = null;
-            this.touchChildren = true;
-            this.touchEnabled = true;
-            this.width = 465;
-            this.height = 68;
-            this._str1 = str1;
-            this._str2 = str2;
-            this._str3 = str3;
+            var _this = _super.call(this) || this;
+            _this._str1 = null;
+            _this._str2 = null;
+            _this._str3 = null;
+            _this.touchChildren = true;
+            _this.touchEnabled = true;
+            _this.width = 465;
+            _this.height = 68;
+            _this._str1 = str1;
+            _this._str2 = str2;
+            _this._str3 = str3;
             var mcDataFactory = new egret.MovieClipDataFactory(RES.getRes(str1 + "_json"), RES.getRes(str1 + "_png"));
             var mc1 = new egret.MovieClip(mcDataFactory.generateMovieClipData("chat"));
             mc1.name = "chat_facemc1";
-            this.addChild(mc1);
+            _this.addChild(mc1);
             var mcDataFactory = new egret.MovieClipDataFactory(RES.getRes(str2 + "_json"), RES.getRes(str2 + "_png"));
             var mc2 = new egret.MovieClip(mcDataFactory.generateMovieClipData("chat"));
             mc2.name = "chat_facemc2";
-            this.addChild(mc2);
+            _this.addChild(mc2);
             var mcDataFactory = new egret.MovieClipDataFactory(RES.getRes(str3 + "_json"), RES.getRes(str3 + "_png"));
             var mc3 = new egret.MovieClip(mcDataFactory.generateMovieClipData("chat"));
             mc3.name = "chat_facemc3";
-            this.addChild(mc3);
+            _this.addChild(mc3);
             mc1.x = 10;
             mc1.y = 0;
             mc2.x = 170;
@@ -40,17 +50,17 @@ var render;
             mc1.touchEnabled = true;
             mc2.touchEnabled = true;
             mc3.touchEnabled = true;
-            mc1.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
-            mc2.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
-            mc3.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+            mc1.addEventListener(egret.TouchEvent.TOUCH_TAP, _this.onTap, _this);
+            mc2.addEventListener(egret.TouchEvent.TOUCH_TAP, _this.onTap, _this);
+            mc3.addEventListener(egret.TouchEvent.TOUCH_TAP, _this.onTap, _this);
             var shap = new egret.Shape();
             shap.graphics.beginFill(0x000000, 0);
             shap.graphics.drawRect(0, 0, 465, 150);
             shap.graphics.endFill();
-            this.addChild(shap);
+            _this.addChild(shap);
+            return _this;
         }
-        var d = __define,c=ChatFaceRender;p=c.prototype;
-        p.onTap = function (e) {
+        ChatFaceRender.prototype.onTap = function (e) {
             var txt;
             if (e.currentTarget.name == "chat_facemc1") {
                 txt = this._str1;
@@ -68,7 +78,8 @@ var render;
             windowui.ChatInst.Instance.Hide();
         };
         return ChatFaceRender;
-    })(egret.Sprite);
+    }(egret.Sprite));
     render.ChatFaceRender = ChatFaceRender;
-    egret.registerClass(ChatFaceRender,"render.ChatFaceRender");
+    __reflect(ChatFaceRender.prototype, "render.ChatFaceRender");
 })(render || (render = {}));
+//# sourceMappingURL=ChatFaceRender.js.map

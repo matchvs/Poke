@@ -1,13 +1,22 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var net;
 (function (net) {
     //使用第三方库 socket.io的时候用这个.
     var SocketBase = (function (_super) {
         __extends(SocketBase, _super);
         function SocketBase() {
-            _super.call(this);
+            return _super.call(this) || this;
         }
-        var d = __define,c=SocketBase;p=c.prototype;
-        p.connet = function (url) {
+        SocketBase.prototype.connet = function (url) {
             //创建 WebSocket 对象
             this._socket = new egret.WebSocket();
             //设置数据格式为二进制，默认为字符串
@@ -23,12 +32,14 @@ var net;
             //连接服务器
             this._socket.connectByUrl("ws://" + url);
         };
-        d(p, "IsConnect"
-            ,function () {
+        Object.defineProperty(SocketBase.prototype, "IsConnect", {
+            get: function () {
                 return this._socket.connected;
-            }
-        );
-        p.sendDataByByte = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        SocketBase.prototype.sendDataByByte = function () {
             //创建 ByteArray 对象
             var byte = new egret.ByteArray();
             //写入字符串信息
@@ -41,20 +52,20 @@ var net;
             //发送数据
             this._socket.writeBytes(byte, 0, byte.bytesAvailable);
         };
-        p.sendDataByString = function (message) {
+        SocketBase.prototype.sendDataByString = function (message) {
             //发送数据
             this._socket.writeUTF(message);
         };
-        p.onSocketOpen = function () {
+        SocketBase.prototype.onSocketOpen = function () {
             this.dispatchEvent(new egret.Event(SocketBase.Event_Open));
         };
-        p.onSocketClose = function () {
+        SocketBase.prototype.onSocketClose = function () {
             this.dispatchEvent(new egret.Event(SocketBase.Event_Close));
         };
-        p.onSocketError = function () {
+        SocketBase.prototype.onSocketError = function () {
             this.dispatchEvent(new egret.Event(SocketBase.Event_Error));
         };
-        p.onReceiveMessage = function (e) {
+        SocketBase.prototype.onReceiveMessage = function (e) {
             if (this._socket.type == egret.WebSocket.TYPE_BINARY) {
                 //创建 ByteArray 对象
                 var byte = new egret.ByteArray();
@@ -77,7 +88,7 @@ var net;
                 NetMgr.Instance.OnMessage(str);
             }
         };
-        p.Close = function () {
+        SocketBase.prototype.Close = function () {
             if (this._socket == null) {
                 return;
             }
@@ -87,7 +98,8 @@ var net;
         SocketBase.Event_Close = "onSocketClose";
         SocketBase.Event_Error = "onSocketError";
         return SocketBase;
-    })(egret.EventDispatcher);
+    }(egret.EventDispatcher));
     net.SocketBase = SocketBase;
-    egret.registerClass(SocketBase,"net.SocketBase");
+    __reflect(SocketBase.prototype, "net.SocketBase");
 })(net || (net = {}));
+//# sourceMappingURL=SocketBase.js.map

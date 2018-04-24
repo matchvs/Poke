@@ -1,3 +1,6 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var controller;
 (function (controller) {
     var game;
@@ -5,8 +8,7 @@ var controller;
         var Compare = (function () {
             function Compare() {
             }
-            var d = __define,c=Compare;p=c.prototype;
-            p.IsBiger = function (cld1, cld2) {
+            Compare.prototype.IsBiger = function (cld1, cld2) {
                 if (cld2 == null) {
                     trace("Compare-IsBiger> 没有桌面牌");
                     return true;
@@ -42,7 +44,7 @@ var controller;
                 }
             };
             //比较炸弹
-            p.compareBomb = function (cld1, cld2) {
+            Compare.prototype.compareBomb = function (cld1, cld2) {
                 if (cld2.Type != game.Types.Types_Bomb) {
                     return true;
                 }
@@ -67,7 +69,7 @@ var controller;
                 }
             };
             //比较连对
-            p.compareDoubleN = function (cld1, cld2) {
+            Compare.prototype.compareDoubleN = function (cld1, cld2) {
                 var num1;
                 var num2;
                 var len1 = cld1.DoubleArr.length;
@@ -86,7 +88,7 @@ var controller;
                 }
             };
             //比较顺子
-            p.compareList = function (cld1, cld2) {
+            Compare.prototype.compareList = function (cld1, cld2) {
                 var num1;
                 var num2;
                 var len1 = cld1.SingleArr.length;
@@ -105,7 +107,7 @@ var controller;
                 }
             };
             //比较飞机
-            p.compareThreeN = function (cld1, cld2) {
+            Compare.prototype.compareThreeN = function (cld1, cld2) {
                 var num1;
                 var num2;
                 var len1 = cld1.TripleArr.length;
@@ -124,7 +126,7 @@ var controller;
                 }
             };
             //四张比较
-            p.compareFour = function (cld1, cld2) {
+            Compare.prototype.compareFour = function (cld1, cld2) {
                 var num1;
                 var num2;
                 num1 = cld1.QuadrupleArr[0];
@@ -137,7 +139,7 @@ var controller;
                 }
             };
             //三张比较
-            p.compareThree = function (cld1, cld2) {
+            Compare.prototype.compareThree = function (cld1, cld2) {
                 var num1;
                 var num2;
                 num1 = cld1.TripleArr[0];
@@ -150,7 +152,7 @@ var controller;
                 }
             };
             //对子比较
-            p.compareDouble = function (cld1, cld2) {
+            Compare.prototype.compareDouble = function (cld1, cld2) {
                 var num1;
                 var num2;
                 num1 = cld1.DoubleArr[0];
@@ -163,7 +165,7 @@ var controller;
                 }
             };
             //单张比较
-            p.compareSigle = function (cld1, cld2) {
+            Compare.prototype.compareSigle = function (cld1, cld2) {
                 var num1;
                 var num2;
                 num1 = cld1.SingleArr[0];
@@ -176,8 +178,9 @@ var controller;
                 }
             };
             return Compare;
-        })();
+        }());
         game.Compare = Compare;
-        egret.registerClass(Compare,"controller.game.Compare");
+        __reflect(Compare.prototype, "controller.game.Compare");
     })(game = controller.game || (controller.game = {}));
 })(controller || (controller = {}));
+//# sourceMappingURL=Compare.js.map

@@ -1,14 +1,24 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var scene;
 (function (scene) {
     var SceneBase = (function (_super) {
         __extends(SceneBase, _super);
         function SceneBase() {
-            _super.call(this);
-            this.height = Config.StageHeight;
-            this.width = Config.StageWidth;
+            var _this = _super.call(this) || this;
+            _this.height = Config.StageHeight;
+            _this.width = Config.StageWidth;
+            return _this;
         }
-        var d = __define,c=SceneBase;p=c.prototype;
-        p.Release = function () {
+        SceneBase.prototype.Release = function () {
             if (this.parent) {
                 this.parent.removeChild(this);
             }
@@ -19,16 +29,17 @@ var scene;
             LayerMgr.TopWindow.removeChildren();
             LayerMgr.SysTip.removeChildren();
         };
-        p.ResetMin = function () {
+        SceneBase.prototype.ResetMin = function () {
         };
-        p.Init = function () {
+        SceneBase.prototype.Init = function () {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i - 0] = arguments[_i];
+                args[_i] = arguments[_i];
             }
         };
         return SceneBase;
-    })(egret.Sprite);
+    }(egret.Sprite));
     scene.SceneBase = SceneBase;
-    egret.registerClass(SceneBase,"scene.SceneBase",["IRelease","IInit"]);
+    __reflect(SceneBase.prototype, "scene.SceneBase", ["IRelease", "IInit"]);
 })(scene || (scene = {}));
+//# sourceMappingURL=SceneBase.js.map

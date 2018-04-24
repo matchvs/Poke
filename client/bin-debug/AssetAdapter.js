@@ -26,10 +26,12 @@
 //  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////////////////////
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
 var AssetAdapter = (function () {
     function AssetAdapter() {
     }
-    var d = __define,c=AssetAdapter;p=c.prototype;
     /**
      * 解析素材
      * @method egret.gui.DefaultAssetAdapter#getAsset
@@ -40,7 +42,7 @@ var AssetAdapter = (function () {
      * @param oldContent any 旧的内容对象,传入值有可能为null。
      * 对于某些类型素材，例如MovieClip，可以重用传入的显示对象,只修改其数据再返回。
      */
-    p.getAsset = function (source, compFunc, thisObject, oldContent) {
+    AssetAdapter.prototype.getAsset = function (source, compFunc, thisObject, oldContent) {
         function onGetRes(data) {
             compFunc.call(thisObject, data, source);
         }
@@ -70,5 +72,6 @@ var AssetAdapter = (function () {
         }
     };
     return AssetAdapter;
-})();
-egret.registerClass(AssetAdapter,"AssetAdapter",["egret.gui.IAssetAdapter"]);
+}());
+__reflect(AssetAdapter.prototype, "AssetAdapter", ["egret.gui.IAssetAdapter"]);
+//# sourceMappingURL=AssetAdapter.js.map

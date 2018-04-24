@@ -1,22 +1,32 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var scene;
 (function (scene) {
     var LobbyScene = (function (_super) {
         __extends(LobbyScene, _super);
         function LobbyScene() {
-            _super.call(this);
-            this._txt_money = null;
-            this._txt_name = null;
-            this._head = null;
-            this._btn_lianwang = null;
-            this._btn_haoyou = null;
-            this._btn_danji = null;
-            this._btn_jingji = null;
-            this._setting = null;
-            this._chong = null;
-            this._dui = null;
+            var _this = _super.call(this) || this;
+            _this._txt_money = null;
+            _this._txt_name = null;
+            _this._head = null;
+            _this._btn_lianwang = null;
+            _this._btn_haoyou = null;
+            _this._btn_danji = null;
+            _this._btn_jingji = null;
+            _this._setting = null;
+            _this._chong = null;
+            _this._dui = null;
+            return _this;
         }
-        var d = __define,c=LobbyScene;p=c.prototype;
-        p.Init = function () {
+        LobbyScene.prototype.Init = function () {
             var bg = new egret.Bitmap(RES.getRes("bg_lobby_jpg"));
             this.addChild(bg);
             this._setting = new scene.SButton("btn_setting");
@@ -85,10 +95,10 @@ var scene;
             //            data.GameData.flag = data.GameData.GameFlag_offline;
             //            SceneMgr.Instance.ShowScene(GameScene);
         };
-        p.AddFreeMoney = function () {
+        LobbyScene.prototype.AddFreeMoney = function () {
             this._txt_money.text = "" + data.GameData.money;
         };
-        p.onTap = function (e) {
+        LobbyScene.prototype.onTap = function (e) {
             if (e.currentTarget == this._setting) {
                 windowui.SettingInst.Instance.Show();
             }
@@ -109,6 +119,8 @@ var scene;
             else if (e.currentTarget == this._btn_haoyou) {
                 data.GameData.IsRobot_Offline = false;
                 windowui.CreatRoomInst.Instance.Show();
+                //                data.GameData.flag=data.GameData.GameFlag_Group;
+                //                SceneMgr.Instance.ShowScene(GameScene);
             }
             else if (e.currentTarget == this._btn_danji) {
                 data.GameData.IsRobot_Offline = true;
@@ -123,7 +135,8 @@ var scene;
             }
         };
         return LobbyScene;
-    })(scene.SceneBase);
+    }(scene.SceneBase));
     scene.LobbyScene = LobbyScene;
-    egret.registerClass(LobbyScene,"scene.LobbyScene");
+    __reflect(LobbyScene.prototype, "scene.LobbyScene");
 })(scene || (scene = {}));
+//# sourceMappingURL=LobbyScene.js.map

@@ -1,3 +1,13 @@
+var __reflect = (this && this.__reflect) || function (p, c, t) {
+    p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
+};
+var __extends = this && this.__extends || function __extends(t, e) { 
+ function r() { 
+ this.constructor = t;
+}
+for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+r.prototype = e.prototype, t.prototype = new r();
+};
 var windowui;
 (function (windowui) {
     /**
@@ -7,23 +17,25 @@ var windowui;
     var ResoultInst = (function (_super) {
         __extends(ResoultInst, _super);
         function ResoultInst() {
-            _super.call(this);
-            this._titleBitmap = null;
-            this._infoSprite = null;
-            this._btn_continue = null;
-            this._whowintxt = null;
-            this.createView();
+            var _this = _super.call(this) || this;
+            _this._titleBitmap = null;
+            _this._infoSprite = null;
+            _this._btn_continue = null;
+            _this._whowintxt = null;
+            _this.createView();
+            return _this;
         }
-        var d = __define,c=ResoultInst;p=c.prototype;
-        d(ResoultInst, "Instance"
-            ,function () {
+        Object.defineProperty(ResoultInst, "Instance", {
+            get: function () {
                 if (ResoultInst._instance == null) {
                     ResoultInst._instance = new ResoultInst();
                 }
                 return ResoultInst._instance;
-            }
-        );
-        p.createView = function () {
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ResoultInst.prototype.createView = function () {
             var bg = new egret.Bitmap(RES.getRes("ui_tips_bg"));
             bg.scale9Grid = new egret.Rectangle(50, 20, 20, 15);
             this.addChild(bg);
@@ -82,7 +94,7 @@ var windowui;
             this._btn_continue.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchTap, this);
             this._bgshap.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchTap, this);
         };
-        p.InitInfo = function (p1, p2, p3, iswin) {
+        ResoultInst.prototype.InitInfo = function (p1, p2, p3, iswin) {
             if (this._infoSprite == null) {
                 this._infoSprite = new egret.Sprite();
                 this.addChild(this._infoSprite);
@@ -206,7 +218,7 @@ var windowui;
                 this._titleBitmap.texture = RES.getRes("title_lose");
             }
         };
-        p.onTouchTap = function (e) {
+        ResoultInst.prototype.onTouchTap = function (e) {
             if (e.currentTarget == this._bgshap) {
                 SceneMgr.Instance.GetCurrentScene().ReStart();
                 this.Hide();
@@ -216,7 +228,7 @@ var windowui;
                 this.Hide();
             }
         };
-        p.Show = function () {
+        ResoultInst.prototype.Show = function () {
             _super.prototype.Show.call(this);
             LayerMgr.Window.addChild(this);
             egret.setTimeout(function () {
@@ -226,7 +238,7 @@ var windowui;
                 }
             }, this, 10000);
         };
-        p.Hide = function () {
+        ResoultInst.prototype.Hide = function () {
             _super.prototype.Hide.call(this);
             if (this.parent) {
                 this.parent.removeChild(this);
@@ -234,7 +246,8 @@ var windowui;
         };
         ResoultInst._instance = null;
         return ResoultInst;
-    })(windowui.WindowsBase);
+    }(windowui.WindowsBase));
     windowui.ResoultInst = ResoultInst;
-    egret.registerClass(ResoultInst,"windowui.ResoultInst");
+    __reflect(ResoultInst.prototype, "windowui.ResoultInst");
 })(windowui || (windowui = {}));
+//# sourceMappingURL=ResoultInst.js.map

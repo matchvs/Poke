@@ -28,6 +28,10 @@
 //////////////////////////////////////////////////////////////////////////////////////
 var nest;
 (function (nest) {
+    /**
+     *
+     * @private
+     */
     var user;
     (function (user) {
     })(user = nest.user || (nest.user = {}));
@@ -123,6 +127,9 @@ var nest;
          * 目前为止出现能为 qq（显示 qq 按钮）、wx（显示微信按钮）、default（显示一个游戏内的默认按钮），可能只有1个）
          */
         function getLoginTypes() {
+            if ($loginInfo && $loginInfo.token) {
+                return [];
+            }
             if (isLogout()) {
                 if ($loginTypes && $loginTypes.length) {
                     for (var i = 0; i < $loginTypes.length; i++) {
@@ -195,20 +202,10 @@ var nest;
             });
         }
         function isLogout() {
-            if (nest.utils.$isRuntime) {
-                return egret.localStorage.getItem("egret_logout") == "1";
-            }
-            else {
-                return window.localStorage.getItem("egret_logout") == "1";
-            }
+            return nest.utils.localStorage.getItem("egret_logout") == "1";
         }
         function clearLogout() {
-            if (nest.utils.$isRuntime) {
-                egret.localStorage.setItem("egret_logout", null);
-            }
-            else {
-                window.localStorage.setItem("egret_logout", null);
-            }
+            return nest.utils.localStorage.setItem("egret_logout", null);
         }
         /**
          * 登出接口
@@ -233,12 +230,7 @@ var nest;
                 if (data.result == 0) {
                     $loginInfo = null;
                     //登出保存登出状态
-                    if (nest.utils.$isRuntime) {
-                        egret.localStorage.setItem("egret_logout", "1");
-                    }
-                    else {
-                        window.localStorage.setItem("egret_logout", "1");
-                    }
+                    nest.utils.localStorage.setItem("egret_logout", "1");
                 }
                 callback(data);
             };
@@ -336,7 +328,7 @@ var nest;
          */
         function $changeMethod(version) {
             //console.log("[Nest]use module : " + version);
-            var arr = ["user", "iap", "share", "social", "app"];
+            var arr = ["core", "user", "iap", "share", "social", "app"];
             for (var i = 0; i < arr.length; i++) {
                 var module = arr[i];
                 if (nest[version] && nest[version][module]) {
@@ -499,6 +491,44 @@ var nest;
         utils.setProxy = setProxy;
     })(utils = nest.utils || (nest.utils = {}));
 })(nest || (nest = {}));
+/**
+ * @private
+ */
+(function (nest) {
+    var utils;
+    (function (utils) {
+        var localStorage;
+        (function (localStorage) {
+            function setItem(key, value) {
+                if (utils.$isRuntime) {
+                    egret.localStorage.setItem(key, value);
+                }
+                else {
+                    try {
+                        window.localStorage.setItem(key, value);
+                    }
+                    catch (e) {
+                    }
+                }
+            }
+            localStorage.setItem = setItem;
+            function getItem(key) {
+                if (utils.$isRuntime) {
+                    return egret.localStorage.getItem(key);
+                }
+                else {
+                    try {
+                        return window.localStorage.getItem(key);
+                    }
+                    catch (e) {
+                        return undefined;
+                    }
+                }
+            }
+            localStorage.getItem = getItem;
+        })(localStorage = utils.localStorage || (utils.localStorage = {}));
+    })(utils = nest.utils || (nest.utils = {}));
+})(nest || (nest = {}));
 if (this["navigator"]) {
     nest.utils.$isRuntime = false;
 }
@@ -561,12 +591,32 @@ var nest;
                 callRuntime(data, callback);
             }
             core.callCustomMethod = callCustomMethod;
+            function addCallback(callback) {
+                var tag = "nest_callback";
+                egret.ExternalInterface.addCallback(tag, function (data) {
+                    var obj = JSON.parse(data);
+                    callback(obj);
+                });
+            }
+            core.addCallback = addCallback;
+            ;
         })(core = runtime.core || (runtime.core = {}));
         var user;
         (function (user) {
             function isSupport(info, callback) {
                 var data = { module: "user", action: "isSupport", param: info };
-                callRuntime(data, callback);
+                //登出逻辑特殊处理
+                //todo 等qq浏览器更新后删除
+                if (nest.utils.$isQQBrowser()) {
+                    var cb = function (data) {
+                        data.logout = 1;
+                        callback.call(null, data);
+                    };
+                    callRuntime(data, cb);
+                }
+                else {
+                    callRuntime(data, callback);
+                }
             }
             user.isSupport = isSupport;
             function checkLogin(loginInfo, callback) {
@@ -897,7 +947,6 @@ var nest;
 /*
  * @private
  */
-var nest;
 (function (nest) {
     var cm;
     (function (cm) {
@@ -995,7 +1044,9 @@ var nest;
             }
             user.login = login;
             function isSupport(info, callback) {
-                nest.runtime.user.isSupport(info, callback);
+                console.log("cm old nest isSupport start");
+                callback({ getInfo: 0, loginType: null, loginTypes: null, result: 0 });
+                // nest.runtime.user.isSupport(info, callback);
             }
             user.isSupport = isSupport;
             function logout(loginInfo, callback) {
@@ -1008,7 +1059,6 @@ var nest;
 /*
  * @private
  */
-var nest;
 (function (nest) {
     var cm;
     (function (cm) {
@@ -1070,7 +1120,6 @@ var nest;
 /**
  * @private
  */
-var nest;
 (function (nest) {
     var cm;
     (function (cm) {
@@ -1094,7 +1143,6 @@ var nest;
 /*
  * @private
  */
-var nest;
 (function (nest) {
     var cm;
     (function (cm) {
@@ -1116,7 +1164,6 @@ var nest;
 /*
  * @private
  */
-var nest;
 (function (nest) {
     var cm;
     (function (cm) {
@@ -1350,7 +1397,6 @@ var nest;
 /**
  * @private
  */
-var nest;
 (function (nest) {
     var qqhall;
     (function (qqhall) {
@@ -1391,7 +1437,6 @@ var nest;
 /**
  * @private
  */
-var nest;
 (function (nest) {
     var qqhall;
     (function (qqhall) {
@@ -1444,7 +1489,6 @@ var nest;
 /**
  * @private
  */
-var nest;
 (function (nest) {
     var qqhall;
     (function (qqhall) {
@@ -1484,7 +1528,6 @@ var nest;
 /**
  * @private
  */
-var nest;
 (function (nest) {
     var qqhall;
     (function (qqhall) {
@@ -1524,7 +1567,6 @@ var nest;
 /**
  * @private
  */
-var nest;
 (function (nest) {
     var qqhall;
     (function (qqhall) {
@@ -2310,7 +2352,6 @@ var nest;
 /**
  * @private
  */
-var nest;
 (function (nest) {
     var h5_2;
     (function (h5_2) {
@@ -2463,6 +2504,8 @@ var nest;
 //
 //////////////////////////////////////////////////////////////////////////////////////
 nest.core = nest.core || {};
+//给一个默认空实现
+nest.core.addCallback = function () { };
 nest.core.startup = function (info, callback) {
     try {
         new egret.HashObject();
@@ -2535,13 +2578,13 @@ nest.core.startup = function (info, callback) {
             }
             s.src = url;
             s.id = "egreth5sdk";
-            s.addEventListener('load', function () {
-                this.removeEventListener('load', arguments.callee, false);
+            s.addEventListener('load', function f1() {
+                this.removeEventListener('load', f1, false);
                 EgretH5Sdk.init({}, callback);
             }, false);
-            s.addEventListener('error', function () {
+            s.addEventListener('error', function f2() {
                 s.parentNode.removeChild(s);
-                this.removeEventListener('error', arguments.callee, false);
+                this.removeEventListener('error', f2, false);
                 callback({ "result": -2 });
             }, false);
             document.head.appendChild(s);
