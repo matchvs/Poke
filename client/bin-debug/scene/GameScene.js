@@ -30,6 +30,14 @@ var scene;
             _this._chatSprite = null;
             _this._effectList = null;
             _this._type = new controller.game.Types();
+            _this.joinRoomResponse = function (status, roomUserInfoList, roomInfo) {
+                if (status === 200) {
+                    egret.log("进入房间成功,房间ID：" + roomInfo.roomId);
+                }
+                else {
+                    egret.log("进入房间失败，错误码：" + status);
+                }
+            };
             _this._lastSendPing = 0;
             return _this;
         }
@@ -106,7 +114,12 @@ var scene;
             windowui.SysTipsInst.Instance.Show("正在进入房间");
             this.addEventListener(egret.Event.ENTER_FRAME, this.Update, this);
             SoundMgr.Instance.PlaySound("bg_lobby_mp3");
+            PokesData.engine.joinRandomRoom(3, "");
+            PokesData.response.joinRoomResponse = this.joinRoomResponse;
         };
+        /**
+         * 重新开始
+         */
         GameScene.prototype.ReStart = function () {
             this._uiProxy.RoomIn([]);
             this._btnProxy.RoomIn();

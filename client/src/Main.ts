@@ -31,13 +31,15 @@ class Main extends egret.DisplayObjectContainer {
         //设置加载进度界面
         windowui.LoadingInst.Instance.Show();
         windowui.LoadingInst.Instance.SetText("正在打开游戏");
-        //todo 先将应用初始化
+        //初始化
         LoadMgr.Instance.Init();
         let channel = "MatchVS";
         let platform = "alpha"
         this.status = PokesData.engine.init(PokesData.response,channel,platform,PokesData.gameID);
+        //回调绑定
         PokesData.response.registerUserResponse = this.registerUserResponse.bind(this);
         PokesData.response.initResponse = this.initResponse.bind(this);
+        PokesData.response.loginResponse = this.loginResponse.bind(this);
 
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_PRELOAD,this.preloadover,this);
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_LOBBY,this.createScene,this);
@@ -56,14 +58,15 @@ class Main extends egret.DisplayObjectContainer {
      */
     initResponse = function(status) {
         if(status === 200) {
+            windowui.LoadingInst.Instance.SetText("初始化成功");
             PokesData.engine.registerUser();
         } else{
             egret.log("初始化失败，错误码"+status);
         }
     }
 
-        /**
-     * 注册用户会掉函数
+    /**
+     * 注册用户回调函数
      */
     registerUserResponse = function (userInfo) {
         if (userInfo.status === 0) {
@@ -71,14 +74,40 @@ class Main extends egret.DisplayObjectContainer {
             //将ID存储到本地
             data.GameData.userid = userInfo.id;
             egret.localStorage.setItem("userId",String(userInfo.id));
+            data.GameData.playerGuid = 1;
             //token
             egret.localStorage.setItem("token",userInfo.token);
             data.GameData.token = userInfo.token;
             //姓名
             egret.localStorage.setItem("name",userInfo.name);
             data.GameData.nickname = userInfo.name;
+            this.login(userInfo.id,userInfo.token);
+            windowui.LoadingInst.Instance.SetText("注册用户成功");
         } else {
             egret.log("注册用户失败,错误码:"+userInfo.status)
+        }
+    }
+
+    /**
+     * 用户登录
+     */
+    private login(userid :number ,token:string) {
+        let gameVersion:number = 1.0;
+        let deviceID = "88888888";
+        let getwayID = 1;
+        PokesData.engine.login(userid,token,PokesData.gameID,gameVersion,PokesData.appKey,PokesData.secret,deviceID,getwayID);
+    }
+
+    /**
+     * 登录回调函数
+     */
+    loginResponse = function(onLogin) {
+        if(onLogin.status === 200) {
+            egret.log("登录成功");
+            windowui.LoadingInst.Instance.SetText("登录成功");
+            LoadMgr.Instance.Load("lobby");
+        } else {
+            egret.log("用户登录失败,错误码:"+onLogin.status)
         }
     }
 
@@ -122,136 +151,9 @@ class Main extends egret.DisplayObjectContainer {
     private preloadover(e: egret.Event): void {
         LoadMgr.Instance.removeEventListener(LoadMgr.LOADOVER_PRELOAD,this.preloadover,this);
         windowui.LoadingInst.Instance.setSkin();
-        
-        windowui.LoadingInst.Instance.SetText("正在获取身份信息");
-        if(!data.GameData.IsDebug) {
-            EgretSDKMgr.Instance.addEventListener(enums.NativeEvent.NATIVEEVENT_GETINITINFO,this.onGetNativeInfo,this);
-            EgretSDKMgr.Instance.Init();
-        } else {
-            //测试
-            NativeMgr.Instance.addEventListener(enums.NativeEvent.NATIVEEVENT_GETINITINFO,this.onGetNativeInfo,this);
-        
-            var txt1: egret.TextField = new egret.TextField();
-            txt1.text = "用户id:";
-            txt1.textColor = 0xffffff;
-            txt1.textAlign = egret.HorizontalAlign.RIGHT;
-            txt1.width = 140;
-            txt1.x = 0;
-            txt1.y = 50;
-            var input1: egret.TextField = new egret.TextField();
-            input1.type = egret.TextFieldType.INPUT;
-            input1.width = 300;
-            input1.x = 150;
-            input1.y = 50;
-            input1.background = true;
-            input1.textColor = 0xff0000;
-        
-            var debugfun = function() {
-                var tempobj: any = {
-                    type: "connect",
-                    value: {
-                        userid: "userid" + input1.text,
-                        nickName: input1.text,
-                        avatar: "http://uc.9ria.com/data/avatar/000/06/11/49_avatar_middle.jpg",
-                        integral: "0"
-                    }
-                };
-                txt1.parent.removeChild(txt1);
-                input1.parent.removeChild(input1);
-                var callback = JSON.stringify(tempobj);
-                NativeMgr.Instance.Native2JS(callback);
-                this.onConnect(null);
-        
-            }
-            input1.addEventListener(egret.TextEvent.FOCUS_OUT,debugfun,this);
-            this.addChild(txt1);
-            this.addChild(input1);
-            this.onGetNativeInfo(null);
-        }
-
-        Main.textlog = new egret.TextField();
-        Main.textlog.touchEnabled = false;
-
-
-
-        this.addChild(Main.textlog);
     }
-
-
-
-    private onGetNativeInfo(e: egret.Event): void {
 
     
-        // var playerinfo: any = e.data;
-        // if(!data.GameData.IsDebug) {
-        //     data.GameData.token = playerinfo.token
-        // }  else {
-        //     data.GameData.userid = playerinfo.userid;
-        //     data.GameData.nickname = playerinfo.nickName;
-        //     data.GameData.avatar = playerinfo.avatar;
-        // }
-    
-        windowui.LoadingInst.Instance.SetText("正在获取服务器地址");
-    
-        var url: string = data.GameData.SERVER_IP;
-        var loader: egret.URLLoader = new egret.URLLoader();
-        // 设置返回数据格式
-        loader.dataFormat = egret.URLLoaderDataFormat.TEXT;
-        var request: egret.URLRequest = new egret.URLRequest(url);
-        request.method = egret.URLRequestMethod.GET;
-        loader.addEventListener(egret.Event.COMPLETE,this.onGetIpOver,this);
-        loader.addEventListener(egret.IOErrorEvent.IO_ERROR,function(): void {
-            if(data.GameData.IsRobot_Offline) {
-                return;
-            }
-            NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_CONNECT,this.onConnect,this);
-            NetMgr.Instance.showDisTips();
-            loader.load(request);
-        },this);
-        loader.load(request);
-    }
-
-    private onGetIpOver(e: egret.Event): void {
-        var loader: egret.URLLoader = <egret.URLLoader>(e.target);
-        var ips: string = loader.data.toString();
-        if(ips == "-1") {
-            NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_CONNECT,this.onConnect,this);
-            NetMgr.Instance.showDisTips();
-            return;
-        }
-        data.GameData.SERVER_URL = ips;
-        trace("服务器地址获取成功" + ips);
-        windowui.LoadingInst.Instance.SetText("正在连接服务器");
-        NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_CONNECT,this.onConnect,this);
-        NetMgr.Instance.Connect();
-    }
-    
-    private onConnect(e: egret.Event): void {
-        NetMgr.Instance.removeEventListener(enums.NetEvent.NETEVENT_CONNECT,this.onConnect,this);
-
-        var value: any = {};
-        value.time = egret.getTimer();
-        value.sign = "sign";
-        if(!data.GameData.IsDebug) {
-            value.token = data.GameData.token;
-            NetMgr.Instance.SendMsg(enums.NetEnum.NET_CSC_LOGIN,value);
-        } else {
-            value.userid = data.GameData.userid;
-            value.nickname = data.GameData.nickname;
-            value.avatar = data.GameData.avatar;
-            NetMgr.Instance.SendMsg(enums.NetEnum.NET_CSC_LOGIN_DEBUG,value);
-        }
-    }
-    private onLogin(e: egret.Event): void {
-        var valueobj: any = JSON.parse(e.data.value);
-        data.GameData.playerGuid = 1;//valueobj.guid;
-        data.GameData.money = valueobj.money;
-        data.GameData.nickname = valueobj.name;
-        data.GameData.avatar = valueobj.pic;
-        NetMgr.Instance.removeEventListener(enums.NetEvent.NETEVENT_LOGINSUCESS,this.onLogin,this);
-        LoadMgr.Instance.Load("lobby");
-    }
-
     /**
      * 创建场景界面
      * Create scene interface
@@ -267,5 +169,3 @@ class Main extends egret.DisplayObjectContainer {
 
 
 }
-
-

@@ -118,9 +118,21 @@ module scene {
 
 
             SoundMgr.Instance.PlaySound("bg_lobby_mp3");
-
+            PokesData.engine.joinRandomRoom(3,"");
+            PokesData.response.joinRoomResponse = this.joinRoomResponse;
         }
 
+        joinRoomResponse = function(status,roomUserInfoList,roomInfo) {
+            if (status === 200) {
+                egret.log("进入房间成功,房间ID："+roomInfo.roomID);
+            } else {
+                egret.log("进入房间失败，错误码："+status);
+            }
+        }
+        
+        /**
+         * 重新开始
+         */
         public ReStart() {
             this._uiProxy.RoomIn([]);
             this._btnProxy.RoomIn();
