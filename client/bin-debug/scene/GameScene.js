@@ -32,7 +32,7 @@ var scene;
             _this._type = new controller.game.Types();
             _this.joinRoomResponse = function (status, roomUserInfoList, roomInfo) {
                 if (status === 200) {
-                    egret.log("进入房间成功,房间ID：" + roomInfo.roomId);
+                    egret.log("进入房间成功,房间ID：" + roomInfo.roomID);
                 }
                 else {
                     egret.log("进入房间失败，错误码：" + status);
@@ -131,11 +131,14 @@ var scene;
         /**
          * 进入游戏房间
          * @constructor
+         * 走了这里
          */
         GameScene.prototype.RoomIn = function (plist) {
             windowui.SysTipsInst.Instance.Hide();
             var playerlist = plist;
+            // 传递了用户的数据
             this._uiProxy.RoomIn(playerlist);
+            //控制了按钮的显示隐藏
             this._btnProxy.RoomIn();
             this._tableCardProxy.clearAll();
             this._mycardProxy.Release();
@@ -188,7 +191,7 @@ var scene;
             if (isme) {
                 this._btnProxy.HideAll();
             }
-            this._uiProxy.SetPlayerReady(locid, isready);
+            // this._uiProxy.SetPlayerReady(locid, isready);
             //this._uiProxy.SetPlayerLandFlag(0);
             this._chatMsgProxy.ShowTableCard(locid, "准备");
         };

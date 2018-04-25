@@ -14,4 +14,14 @@ class PokesData {
 	
 	public constructor() {
 	}
+	
+
+	public static ResponseBind(responseName:number,thisObject: any) {
+		switch (responseName) {
+			case 1:
+
+			break
+		}
+	
+	}
 }

@@ -83,8 +83,9 @@ var Main = (function (_super) {
         var platform = "alpha";
         this.status = PokesData.engine.init(PokesData.response, channel, platform, PokesData.gameID);
         //回调绑定
-        PokesData.response.registerUserResponse = this.registerUserResponse.bind(this);
+        // PokesData.ResponseBind("initResponse",this);
         PokesData.response.initResponse = this.initResponse.bind(this);
+        PokesData.response.registerUserResponse = this.registerUserResponse.bind(this);
         PokesData.response.loginResponse = this.loginResponse.bind(this);
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_PRELOAD, this.preloadover, this);
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_LOBBY, this.createScene, this);

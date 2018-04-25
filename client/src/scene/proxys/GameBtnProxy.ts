@@ -91,8 +91,12 @@ module scene {
             this._prompt.ClickScale = false;
             this._prompt.x = 0;
             this._prompt.y = 632;
-
+            
+            /**
+             * 初始化确认等按钮
+             */
             this.setBtnSprite();
+
             this._exiting.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
             this._autoing.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
             this._setting.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);

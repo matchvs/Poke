@@ -247,11 +247,11 @@ module scene {
         }
 
         //设置准备标
-        public SetPlayerReady(tableid: number, isready: boolean): void {
-            if (<PlayerHead>this["_playerHead" + tableid]) {
-                (<PlayerHead>this["_playerHead" + tableid]).Ready = isready;
-            }
-        }
+        // public SetPlayerReady(tableid: number, isready: boolean): void {
+        //     if (<PlayerHead>this["_playerHead" + tableid]) {
+        //         (<PlayerHead>this["_playerHead" + tableid]).Ready = isready;
+        //     }
+        // }
 
         //开始发牌
         public SendCard(): void {

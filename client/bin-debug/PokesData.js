@@ -7,11 +7,19 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
 var PokesData = (function () {
     function PokesData() {
     }
+    PokesData.ResponseBind = function (responseName, thisObject) {
+        switch (responseName) {
+            case 1:
+                break;
+        }
+    };
     PokesData.engine = new MatchvsEngine();
     PokesData.response = new MatchvsResponse();
     PokesData.gameID = 201220;
     PokesData.appKey = "00f6f33ee17d48e8b7d6731bb5a71ef7";
     PokesData.secret = "a8c6f99cb17745efaee615f052547dee";
+    //todo 备用方案
+    PokesData._playerList = [];
     return PokesData;
 }());
 __reflect(PokesData.prototype, "PokesData");

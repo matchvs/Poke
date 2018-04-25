@@ -120,6 +120,7 @@ module scene {
             SoundMgr.Instance.PlaySound("bg_lobby_mp3");
             PokesData.engine.joinRandomRoom(3,"");
             PokesData.response.joinRoomResponse = this.joinRoomResponse;
+        
         }
 
         joinRoomResponse = function(status,roomUserInfoList,roomInfo) {
@@ -130,6 +131,8 @@ module scene {
             }
         }
         
+
+    
         /**
          * 重新开始
          */
@@ -145,11 +148,14 @@ module scene {
         /**
          * 进入游戏房间
          * @constructor
+         * 走了这里
          */
         public RoomIn(plist: any): void {
             windowui.SysTipsInst.Instance.Hide();
             var playerlist = plist;
+            // 传递了用户的数据
             this._uiProxy.RoomIn(playerlist);
+            //控制了按钮的显示隐藏
             this._btnProxy.RoomIn();
             this._tableCardProxy.clearAll();
             this._mycardProxy.Release();
@@ -208,7 +214,7 @@ module scene {
             if (isme) {
                 this._btnProxy.HideAll();
             }
-            this._uiProxy.SetPlayerReady(locid, isready);
+            // this._uiProxy.SetPlayerReady(locid, isready);
             //this._uiProxy.SetPlayerLandFlag(0);
             this._chatMsgProxy.ShowTableCard(locid, "准备");
         }
