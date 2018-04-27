@@ -173,6 +173,7 @@ class NetMgr extends egret.EventDispatcher {
                 break;
             case enums.NetEnum.GAME_START_GAME:
                 RobotGameMgr.Instance.SendMsg(type,value);
+                PokesData.engine.joinOver("Who all don't go");
             default:
                 break;
         }

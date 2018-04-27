@@ -410,6 +410,8 @@ module scene {
                 NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_AUTO, { isauto: false });
             }
             if (e.currentTarget == this._exiting) {
+                var status = PokesData.engine.leaveRoom("china No 1");
+                egret.log("发送离开房间消息成功");
                 NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_REQ_EXIT, {});
             }
             else if (e.currentTarget == this._talking) {

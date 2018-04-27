@@ -49,7 +49,14 @@ var RobotGameMgr = (function () {
             //开始游戏
             case enums.NetEnum.GAME_START_GAME:
                 this._playerList = value;
-                if (this._playerList.length == 3) {
+                if (this._playerList.length === 3) {
+                    obj.type = enums.NetEnum.GAME_2_CLIENT_INIT_ROOM;
+                    obj.value = {};
+                    obj.value.playerlist = this._playerList;
+                    obj.value.gamestate = 0;
+                    obj.value = JSON.stringify(obj.value);
+                    var jstr = JSON.stringify(obj);
+                    NetMgr.Instance.OnMessage(jstr);
                     this.Start();
                 }
                 break;

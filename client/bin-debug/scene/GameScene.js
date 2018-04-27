@@ -34,6 +34,7 @@ var scene;
             _this.p1 = new data.Player();
             _this.p2 = new data.Player();
             _this.p3 = new data.Player();
+            _this.plist = [_this.p1, _this.p2, _this.p3];
             /**
              * 加入房间的回调
              */
@@ -41,15 +42,28 @@ var scene;
                 if (status === 200) {
                     egret.log("进入房间成功,房间ID：" + roomInfo.roomID);
                     this.ownerId = roomInfo.ownerId;
+                    data.GameData.playerGuid = 1;
                     var userInfoListLength = roomUserInfoList.length;
-                    this.roomInfoPlayer(data.GameData.userid);
+                    this.addRoomInfoPlayer(data.GameData.userid);
                     for (var i = 0; i < userInfoListLength; i++) {
-                        this.roomInfoPlayer(roomUserInfoList[i].userID);
+                        this.addRoomInfoPlayer(roomUserInfoList[i].userId);
                     }
                 }
             };
+            _this.leaveRoomResponse = function (leaveRoomInfo) {
+                if (leaveRoomInfo.status === 200) {
+                    egret.log(leaveRoomInfo.userId + '玩家，离开了房间：' + leaveRoomInfo.roomID);
+                }
+            };
+            /**
+             *
+             */
             _this.joinRoomNotify = function (roomUserInfo) {
-                this.roomInfoPlayer(roomUserInfo.userId);
+                this.addRoomInfoPlayer(roomUserInfo.userId);
+            };
+            _this.leaveRoomNotify = function (leaveRoomInfo) {
+                this.removeRoomInfoPlayer(leaveRoomInfo.userId);
+                egret.log(leaveRoomInfo.userId + '玩家，离开了房间：' + leaveRoomInfo.roomID + "说了" + leaveRoomInfo.cpProto);
             };
             _this._lastSendPing = 0;
             return _this;
@@ -129,48 +143,61 @@ var scene;
             SoundMgr.Instance.PlaySound("bg_lobby_mp3");
             PokesData.response.joinRoomResponse = this.joinRoomResponse.bind(this);
             PokesData.response.joinRoomNotify = this.joinRoomNotify.bind(this);
+            PokesData.response.leaveRoomNotify = this.leaveRoomNotify.bind(this);
+            PokesData.response.leaveRoomResponse = this.leaveRoomResponse.bind(this);
         };
         //初始化玩家属性，出牌顺序没有确定的产生规则
-        GameScene.prototype.roomInfoPlayer = function (userID) {
+        GameScene.prototype.addRoomInfoPlayer = function (userID) {
             //默认将自己作为P1选手，在桌上的位置在最下方
             egret.log(userID + "进入桌子，开始初始化");
-            if (this.p1.userid == '') {
-                this.p1.userid = data.GameData.userid;
-                //this.p1.integral = data.GameData.integral;//积分，暂时先不处理,准备在gameServer上处理
-                this.p1.TableId = 0; //桌子上的ID 
-                this.p1.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
-                this.p1.IsRobot = false; //是否是机器人。
-                this.p1.ShowCardNum = 17; //初始牌数目 17张
-                this.p1.playerGuid = 1; //没搞懂啥意思，先递增。
-                this._playerList.push(this.p1);
+            // var plist = [this.p1, this.p2, this.p3];
+            for (var i = 0; i < this.plist.length; i++) {
+                if (this.plist[i].userid == '') {
+                    this.plist[i].userid = userID;
+                    //this.p1.integral = data.GameData.integral;//积分，暂时先不处理,准备在gameServer上处理
+                    this.plist[i].TableId = i; //桌子上的ID 
+                    this.plist[i].IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
+                    this.plist[i].IsRobot = false; //是否是机器人。
+                    this.plist[i].ShowCardNum = 17; //初始牌数目 17张
+                    this.plist[i].playerGuid = i + 1; //没搞懂啥意思，先递增。
+                    this._playerList.push(this.plist[i]);
+                    //长度为3，房间人满，这个时候展示开始按钮，就可以开始游戏了
+                    if (this._playerList.length === 3 && data.GameData.userid === this.ownerId) {
+                        //不是单机socket就会报错了，还得研究这个大坑
+                        data.GameData.IsRobot_Offline = false;
+                        NetMgr.Instance.SendMsg(enums.NetEnum.GAME_START_GAME, this._playerList);
+                    }
+                    return;
+                }
             }
-            else if (this.p2.userid == '') {
-                this.p2.userid = userID;
-                // this.p2.integral = data.GameData.integral;//积分
-                this.p2.TableId = 1; //桌子上的ID 
-                this.p2.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
-                this.p2.IsRobot = false; //是否是机器人。
-                this.p2.ShowCardNum = 17; //初始牌数目 17张
-                this.p2.playerGuid = 2; //没搞懂啥意思，先递增。
-                this._playerList.push(this.p2);
-            }
-            else {
-                this.p3.userid = userID;
-                // this.p3.integral = data.GameData.integral;//积分
-                this.p3.TableId = 1; //桌子上的ID 
-                this.p3.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
-                this.p3.IsRobot = false; //是否是机器人。
-                this.p3.ShowCardNum = 17; //初始牌数目 17张
-                this.p3.playerGuid = 2; //没搞懂啥意思，先递增。
-                this._playerList.push(this.p3);
-            }
-            //长度为3，房间人满，这个时候展示开始按钮，就可以开始游戏了
-            if (this._playerList.length === 3 && data.GameData.userid === this.ownerId) {
-                //不是单机socket就会报错了，还得研究这个大坑
-                data.GameData.IsRobot_Offline = false;
-                NetMgr.Instance.SendMsg(enums.NetEnum.GAME_START_GAME, this._playerList);
-            }
+            // if (this.p1.userid == '') {
+            // }else if(this.p2.userid == '') {
+            //     this.p2.userid = userID;
+            //     // this.p2.integral = data.GameData.integral;//积分
+            //     this.p2.TableId = 1;//桌子上的ID 
+            //     this.p2.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
+            //     this.p2.IsRobot = false; //是否是机器人。
+            //     this.p2.ShowCardNum = 17;  //初始牌数目 17张
+            //     this.p2.playerGuid = 2; //没搞懂啥意思，先递增。
+            //     this._playerList.push(this.p2);
+            // } else {
+            //     this.p3.userid = userID;
+            //     // this.p3.integral = data.GameData.integral;//积分
+            //     this.p3.TableId = 2;//桌子上的ID 
+            //     this.p3.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
+            //     this.p3.IsRobot = false; //是否是机器人。
+            //     this.p3.ShowCardNum = 17;  //初始牌数目 17张
+            //     this.p3.playerGuid = 3; //没搞懂啥意思，先递增。
+            //     this._playerList.push(this.p3);
+            // }
             egret.log(this._playerList.length + "已经push进来了");
+        };
+        GameScene.prototype.removeRoomInfoPlayer = function (userID) {
+            for (var i = 0; i < this.plist.length; i++) {
+                if (userID === this.plist[i].userid) {
+                    this.plist[i].userid = "";
+                }
+            }
         };
         GameScene.prototype.playerInit = function (p) {
             for (var i = 0; i < 3; i++) {
@@ -408,9 +435,9 @@ var scene;
             this._uiProxy.PushHouseRunning(txt);
         };
         GameScene.prototype.Update = function (e) {
-            if (NetMgr.Instance.IsConnect == false) {
-                return;
-            }
+            // if (NetMgr.Instance.IsConnect == false) {
+            //     return;
+            // }
             var nowTime = egret.getTimer();
             this._uiProxy.Update();
             for (var i in this._effectList) {
