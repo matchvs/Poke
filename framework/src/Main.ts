@@ -1,0 +1,191 @@
+
+class Main extends Scene {
+
+
+    public constructor() {
+        super();
+        this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+    }
+
+    private onAddToStage(event: egret.Event) {
+
+        egret.lifecycle.addLifecycleListener((context) => {
+            // custom lifecycle plugin
+
+            context.onUpdate = () => {
+                this.logi("update");
+            }
+        });
+
+        egret.lifecycle.onPause = () => {
+            egret.ticker.pause();
+        };
+
+        egret.lifecycle.onResume = () => {
+            egret.ticker.resume();
+        };
+
+        this.runGame().catch(e => {
+            console.log(e);
+        })
+
+    }
+
+    private async runGame() {
+        await this.loadResource();
+        
+        this.createGameScene();
+        const result = await RES.getResAsync("description_json");
+        this.startAnimation(result);
+        await platform.login();
+        const userInfo = await platform.getUserInfo();
+        console.log(userInfo);
+        App.SCENT_WIDTH = this.stage.width;
+        App.SCENT_HEIGHT = this.stage.height;
+    }
+
+    private async loadResource() {
+        try {
+            const loadingView = new LoadingUI();
+            this.stage.addChild(loadingView);
+            await RES.loadConfig("resource/default.res.json", "resource/");
+            await RES.loadGroup("preload", 0, loadingView);
+            this.stage.removeChild(loadingView);
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }
+
+    private textfield: egret.TextField;
+    private log: egret.TextField;
+
+    printLog(msg: string) {
+        this.log.text = this.log.text + "\n" + msg;
+    };
+
+    /**
+     * 创建游戏场景
+     * Create a game scene
+     */
+    private createGameScene() {
+        this.log = new egret.TextField();
+        this.log.y = App.SCENT_HEIGHT;
+        this.addChild(this.log);
+
+
+        let sky = this.createBitmapByName("bg_png");
+        this.addChild(sky);
+        // sky.width = App.DESGIGN_WIDTH;
+        // sky.height = App.DESGIGN_HEIGHT;
+        let stageW = this.stage.stageWidth;
+        let stageH = this.stage.stageHeight;
+        // this.printLog("stageW"+stageW+"stageH"+stageH);
+
+        // sky.width = (sky.width*App.SCENT_WIDTH)/App.DESGIGN_WIDTH;
+        // sky.height =  (sky.height*App.SCENT_HEIGHT)/App.DESGIGN_HEIGHT;
+        // sky.anchorOffsetX = App.SCENT_WIDTH/2;
+        // sky.anchorOffsetY = App.SCENT_HEIGHT/2;
+        this.printLog("sky:" + sky.width + "," + sky.height);
+        this.printLog("sky:" + (sky.width * App.SCENT_WIDTH) / App.DESGIGN_WIDTH + "," + (sky.height * App.SCENT_HEIGHT) / App.DESGIGN_HEIGHT);
+
+
+        for (var i = 0; i < 4; i++) {
+            let tab = this.createBitmapByName("btn_png");
+            tab.x = i * (tab.width);
+            tab.y = App.DESGIGN_HEIGHT - tab.height;
+            this.addChild(tab);
+        }
+
+        let topMask = new egret.Shape();
+        topMask.graphics.beginFill(0x000000, 0.5);
+        topMask.graphics.drawRect(0, 0, stageW, 172);
+        topMask.graphics.endFill();
+        topMask.y = 33;
+        this.addChild(topMask);
+
+        let icon = this.createBitmapByName("egret_icon_png");
+        this.addChild(icon);
+        icon.x = 0;
+        icon.y = 0;
+
+        let line = new egret.Shape();
+        line.graphics.lineStyle(2, 0xffffff);
+        line.graphics.moveTo(0, 0);
+        line.graphics.lineTo(0, 117);
+        line.graphics.endFill();
+        line.x = 172;
+        line.y = 61;
+        this.addChild(line);
+
+
+        let colorLabel = new egret.TextField();
+        colorLabel.textColor = 0xffffff;
+        colorLabel.width = stageW - 172;
+        colorLabel.textAlign = "center";
+        colorLabel.text = "Share";
+        colorLabel.size = 24;
+        colorLabel.x = 172;
+        colorLabel.y = 80;
+        this.addChild(colorLabel);
+
+        let textfield = new egret.TextField();
+        this.addChild(textfield);
+        textfield.alpha = 0;
+        textfield.width = stageW - 172;
+        textfield.textAlign = egret.HorizontalAlign.CENTER;
+        textfield.size = 24;
+        textfield.textColor = 0xffffff;
+        textfield.x = 172;
+        textfield.y = 135;
+        this.textfield = textfield;
+
+        this.setChildIndex(this.log, 20);
+
+
+
+
+     
+    }
+
+    /**
+     * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
+     * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
+     */
+    private createBitmapByName(name: string) {
+        let result = new egret.Bitmap();
+        let texture: egret.Texture = RES.getRes(name);
+        result.texture = texture;
+        return result;
+    }
+
+    /**
+     * 描述文件加载成功，开始播放动画
+     * Description file loading is successful, start to play the animation
+     */
+    private startAnimation(result: string[]) {
+        let parser = new egret.HtmlTextParser();
+
+        let textflowArr = result.map(text => parser.parse(text));
+        let textfield = this.textfield;
+        let count = -1;
+        let change = () => {
+            count++;
+            if (count >= textflowArr.length) {
+                count = 0;
+            }
+            let textFlow = textflowArr[count];
+
+            // 切换描述内容
+            // Switch to described content
+            textfield.textFlow = textFlow;
+            let tw = egret.Tween.get(textfield);
+            tw.to({ "alpha": 1 }, 200);
+            tw.wait(2000);
+            tw.to({ "alpha": 0 }, 200);
+            tw.call(change, this);
+        };
+
+        change();
+    }
+}

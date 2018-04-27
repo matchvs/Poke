@@ -1,0 +1,40 @@
+{
+	"groups": [
+		{
+			"keys": "egret_icon_png,description_json,floor,bg_png,btn_png,btn2_png",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"url": "assets/egret_icon.png",
+			"type": "image",
+			"name": "egret_icon_png"
+		},
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description_json"
+		},
+		{
+			"url": "assets/floor.png",
+			"type": "image",
+			"name": "floor"
+		},
+		{
+			"url": "assets/bg.png",
+			"type": "image",
+			"name": "bg_png"
+		},
+		{
+			"url": "assets/btn.png",
+			"type": "image",
+			"name": "btn_png"
+		},
+		{
+			"name": "btn2_png",
+			"type": "image",
+			"url": "assets/btn.png"
+		}
+	]
+}

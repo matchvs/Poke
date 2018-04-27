@@ -281,3 +281,7 @@ Nest-master/demo2/resource/assets/simple/CheckBox/checkbox-select_normal.png
 Nest-master/demo2/resource/assets/simple/CheckBox/checkbox-select_disabled.png
 Nest-master/demo2/resource/assets/nest/wx.png
 Nest-master/test/runtime.html
+framework/.idea/
+framework/bin-debug/
+framework/libs/modules/
+framework/.wing/
