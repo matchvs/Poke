@@ -69,6 +69,17 @@ var enums;
         NetEnum[NetEnum["GATE_2_CLIENT_ACTIVITY_ONLINE"] = 186] = "GATE_2_CLIENT_ACTIVITY_ONLINE";
         // 【中心服】发送活动金币
         NetEnum[NetEnum["CENTER_2_CLIENT_ADD_FREE_MONEY"] = 187] = "CENTER_2_CLIENT_ADD_FREE_MONEY";
+        //Matchvs消息定义。
+        //创建房间
+        NetEnum[NetEnum["GAME_CREATE_ROOM"] = 200] = "GAME_CREATE_ROOM";
+        //加入房间
+        NetEnum[NetEnum["GAME_JOIN_ROOM"] = 201] = "GAME_JOIN_ROOM";
+        //房间有人加入
+        NetEnum[NetEnum["GAME_JOIN_ROOM_NOTIFY"] = 202] = "GAME_JOIN_ROOM_NOTIFY";
+        //房间人满
+        NetEnum[NetEnum["GAME_ROOM_PLAYER_FILL"] = 203] = "GAME_ROOM_PLAYER_FILL";
+        //开始游戏
+        NetEnum[NetEnum["GAME_START_GAME"] = 204] = "GAME_START_GAME";
     })(NetEnum = enums.NetEnum || (enums.NetEnum = {}));
 })(enums || (enums = {}));
 //# sourceMappingURL=NetEnum.js.map

@@ -40,11 +40,11 @@ module sceneproxy {
             NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_LOBBYIN, this.onNetMsg, this);
             NetMgr.Instance.addEventListener(enums.NetEvent.NETEVENT_ADDFREEMONEY, this.onNetMsg, this);
 
-            NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_CENTER_LOGIN_OK);
+            //NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_CENTER_LOGIN_OK);
         }
         public Release(): void {
             this._recordObj = {};
-            this._playerList = [];               //用户数组
+            // this._playerList = [];               //用户数组
             this._tableCardList = [];                //桌面牌
             this._landList = [];
             this._myPlayer = null;

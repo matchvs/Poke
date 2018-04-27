@@ -15,8 +15,8 @@ var data;
             this.ResoultScore = 0; //战斗结果;
             this.TableId = 0; //桌子上的id;   0,1,2
             this.LocalTableId = 0; //与MainPlayer的相对tableid ,用于界面显示..左上1,右上2,下方自己3
-            this.IsReady = false;
-            this.IsAuto = false;
+            this.IsReady = false; //是否准备
+            this.IsAuto = false; //是否是机器人
             this.ShowCardNum = 0; //用于显示的卡牌数量.
             this.CardArr = []; //手牌数组
             this.LandOwnerScore = 0; //叫地主的分数

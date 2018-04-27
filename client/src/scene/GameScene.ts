@@ -18,6 +18,11 @@ module scene {
 
         private _effectList: any = null;
         private _type: controller.game.Types = new controller.game.Types();
+        private _playerList: Array<data.Player> = [];               //用户数组
+        private p1: data.Player = new data.Player();
+        private p2: data.Player = new data.Player();
+        private p3: data.Player = new data.Player();
+        private ownerId :any;
 
         public constructor() {
             super();
@@ -28,7 +33,6 @@ module scene {
             this.addChild(bg);
             bg.touchEnabled = false;
             this._effectList = [];
-
             /**
              * _uiSprite
              */
@@ -118,16 +122,77 @@ module scene {
 
 
             SoundMgr.Instance.PlaySound("bg_lobby_mp3");
-            PokesData.engine.joinRandomRoom(3,"");
-            PokesData.response.joinRoomResponse = this.joinRoomResponse;
+            PokesData.response.joinRoomResponse = this.joinRoomResponse.bind(this);
+            PokesData.response.joinRoomNotify = this.joinRoomNotify.bind(this);
+        
         
         }
 
+        /**
+         * 加入房间的回调
+         */
         joinRoomResponse = function(status,roomUserInfoList,roomInfo) {
             if (status === 200) {
                 egret.log("进入房间成功,房间ID："+roomInfo.roomID);
+                this.ownerId = roomInfo.ownerId;
+                var userInfoListLength:number = roomUserInfoList.length;
+                 this.roomInfoPlayer(data.GameData.userid);
+                for (var i = 0; i < userInfoListLength; i ++) {
+                    this.roomInfoPlayer(roomUserInfoList[i].userID);
+                }
+            }
+        }
+
+
+        joinRoomNotify = function(roomUserInfo) {
+            this.roomInfoPlayer(roomUserInfo.userId);
+        }
+
+        //初始化玩家属性，出牌顺序没有确定的产生规则
+        private roomInfoPlayer(userID:any){
+            //默认将自己作为P1选手，在桌上的位置在最下方
+            egret.log(userID+"进入桌子，开始初始化");
+            if (this.p1.userid == '') {
+                this.p1.userid = data.GameData.userid;
+                //this.p1.integral = data.GameData.integral;//积分，暂时先不处理,准备在gameServer上处理
+                this.p1.TableId = 0;//桌子上的ID 
+                this.p1.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
+                this.p1.IsRobot = false; //是否是机器人。
+                this.p1.ShowCardNum = 17;  //初始牌数目 17张
+                this.p1.playerGuid = 1; //没搞懂啥意思，先递增。
+                this._playerList.push(this.p1);
+            }else if(this.p2.userid == '') {
+                this.p2.userid = userID;
+                // this.p2.integral = data.GameData.integral;//积分
+                this.p2.TableId = 1;//桌子上的ID 
+                this.p2.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
+                this.p2.IsRobot = false; //是否是机器人。
+                this.p2.ShowCardNum = 17;  //初始牌数目 17张
+                this.p2.playerGuid = 2; //没搞懂啥意思，先递增。
+                this._playerList.push(this.p2);
             } else {
-                egret.log("进入房间失败，错误码："+status);
+                this.p3.userid = userID;
+                // this.p3.integral = data.GameData.integral;//积分
+                this.p3.TableId = 1;//桌子上的ID 
+                this.p3.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
+                this.p3.IsRobot = false; //是否是机器人。
+                this.p3.ShowCardNum = 17;  //初始牌数目 17张
+                this.p3.playerGuid = 2; //没搞懂啥意思，先递增。
+                this._playerList.push(this.p3);
+            }
+            //长度为3，房间人满，这个时候展示开始按钮，就可以开始游戏了
+            if(this._playerList.length === 3 && data.GameData.userid === this.ownerId) {
+                //不是单机socket就会报错了，还得研究这个大坑
+                data.GameData.IsRobot_Offline = false;
+                NetMgr.Instance.SendMsg(enums.NetEnum.GAME_START_GAME,this._playerList);
+            }
+            egret.log(this._playerList.length+"已经push进来了");
+
+        }
+
+        private playerInit(p:data.Player) {
+            for(var i = 0; i < 3;i++) {
+                egret.log(i);
             }
         }
         
@@ -148,14 +213,11 @@ module scene {
         /**
          * 进入游戏房间
          * @constructor
-         * 走了这里
          */
         public RoomIn(plist: any): void {
             windowui.SysTipsInst.Instance.Hide();
             var playerlist = plist;
-            // 传递了用户的数据
             this._uiProxy.RoomIn(playerlist);
-            //控制了按钮的显示隐藏
             this._btnProxy.RoomIn();
             this._tableCardProxy.clearAll();
             this._mycardProxy.Release();
@@ -214,7 +276,7 @@ module scene {
             if (isme) {
                 this._btnProxy.HideAll();
             }
-            // this._uiProxy.SetPlayerReady(locid, isready);
+            this._uiProxy.SetPlayerReady(locid, isready);
             //this._uiProxy.SetPlayerLandFlag(0);
             this._chatMsgProxy.ShowTableCard(locid, "准备");
         }

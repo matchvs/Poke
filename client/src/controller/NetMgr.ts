@@ -160,7 +160,23 @@ class NetMgr extends egret.EventDispatcher {
         obj.type = type;
         obj.value = value;
         var str: string = JSON.stringify(obj);
-        this._socketBase.sendDataByString(str);
+        //this._socketBase.sendDataByString(str);
+        //Matchvs 服务 
+        switch (type) {
+            //创建房间
+            case enums.NetEnum.GAME_CREATE_ROOM:
+                RobotGameMgr.Instance.SendMsg(type, value)
+                break;
+            //加入房间
+            case enums.NetEnum.GAME_JOIN_ROOM:
+                RobotGameMgr.Instance.SendMsg(type, value)
+                break;
+            case enums.NetEnum.GAME_START_GAME:
+                RobotGameMgr.Instance.SendMsg(type,value);
+            default:
+                break;
+        }
+
     }
 
 
@@ -169,7 +185,12 @@ class NetMgr extends egret.EventDispatcher {
         var obj: any = JSON.parse(str);
         var eventtype: string = "";
         switch (obj.type) {
+            //Matchvs 专用逻辑模块
             case null:
+                return;
+
+            case enums.NetEnum.GAME_ROOM_PLAYER_FILL:
+
                 return;
             case enums.NetEnum.NET_C2S_PING:
                 eventtype = enums.NetEvent.NETEVENT_PING;
@@ -184,6 +205,7 @@ class NetMgr extends egret.EventDispatcher {
                     return;
                 }
                 break;
+                //发送进入房间的消息
             case enums.NetEnum.GAME_2_CLIENT_INIT_ROOM:
                 eventtype = enums.NetEvent.NETEVENT_ROOMIN;
                 break;

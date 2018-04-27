@@ -23,7 +23,7 @@ class Main extends egret.DisplayObjectContainer {
     private onAddToStage(event: egret.Event) {
         Config.StageWidth = this.stage.stageWidth;
         Config.StageHeight = this.stage.stageHeight;
-        this.stage.scaleMode = egret.StageScaleMode.EXACT_FIT;
+        this.stage.scaleMode = egret.StageScaleMode.SHOW_ALL;
         LayerMgr.Instance.Init(this);
         
         //判断系统类型
@@ -75,13 +75,20 @@ class Main extends egret.DisplayObjectContainer {
             //将ID存储到本地
             data.GameData.userid = userInfo.id;
             egret.localStorage.setItem("userId",String(userInfo.id));
-            data.GameData.playerGuid = 1;
+
             //token
             egret.localStorage.setItem("token",userInfo.token);
             data.GameData.token = userInfo.token;
-            //姓名
+   
+            if (userInfo.name === null || userInfo.name === "") {
+                //姓名
+                data.GameData.nickname = userInfo.id ;
+            } else {
+                //姓名
+                data.GameData.nickname = userInfo.name ;
+            }
             egret.localStorage.setItem("name",userInfo.name);
-            data.GameData.nickname = userInfo.name;
+
             this.login(userInfo.id,userInfo.token);
             windowui.LoadingInst.Instance.SetText("注册用户成功");
         } else {
@@ -107,6 +114,7 @@ class Main extends egret.DisplayObjectContainer {
             egret.log("登录成功");
             windowui.LoadingInst.Instance.SetText("登录成功");
             LoadMgr.Instance.Load("lobby");
+      
         } else {
             egret.log("用户登录失败,错误码:"+onLogin.status)
         }

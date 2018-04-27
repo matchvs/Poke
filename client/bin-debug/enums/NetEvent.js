@@ -32,6 +32,10 @@ var enums;
         NetEvent.NETEVENT_WAITACTIVITYEND = "NETEVENT_WAITACTIVITYEND"; //活动打完等待活动结束
         NetEvent.NETEVENT_LOBBYIN = "NETEVENT_LOBBYIN"; //进入大厅
         NetEvent.NETEVENT_ADDFREEMONEY = "NETEVENT_ADDFREEMONEY"; //送金币
+        //Matchvs
+        NetEvent.MATCHVS_CREATE_ROOM = "MATCHVS_CREATE_ROOM"; //创建房间
+        NetEvent.MATCHVS_OTHERPLAYERIN = "MATCHVS_OTHERPLAYERIN"; //其他玩家加入房间
+        NetEvent.MATCHVS_SENDCARD = "MATCHVS_SENDCARD"; //发牌
         return NetEvent;
     }());
     enums.NetEvent = NetEvent;

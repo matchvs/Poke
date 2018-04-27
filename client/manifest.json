@@ -52,7 +52,7 @@
 		"bin-debug/net/base/SocketBase.js",
 		"bin-debug/net/base/SocketIo.js",
 		"bin-debug/PokesData.js",
-		"bin-debug/utils/math/Vector2D.js",
+		"bin-debug/Config.js",
 		"bin-debug/ThemeAdapter.js",
 		"bin-debug/UserInfo.js",
 		"bin-debug/scene/effects/BombEffect.js",
@@ -92,6 +92,6 @@
 		"bin-debug/utils/MandPool.js",
 		"bin-debug/utils/Trace.js",
 		"bin-debug/utils/ViewTools.js",
-		"bin-debug/Config.js"
+		"bin-debug/utils/math/Vector2D.js"
 	]
 }

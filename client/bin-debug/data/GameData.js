@@ -15,7 +15,7 @@ var data;
         GameData.SERVER_IP = "http://dmhd123.f3322.net:8009/getGateServer"; //"http://127.0.0.1:8000/getGateServer" "http://dmhd123.f3322.net:8009/getGateServer";//"http://127.0.0.1:8000/getGateServer""http://dmhd123.f3322.net:8009/getGateServer";//"http://127.0.0.1:8000/getGateServer";
         GameData.SERVER_URL = "127.0.0.1:8001";
         //游戏类型
-        GameData.GameFlag_offline = 2; //单机
+        GameData.GameFlag_offline = 0; //单机
         GameData.GameFlag_Rapid = 1; //快速进入
         GameData.GameFlag_Activity = 2; //比赛比赛flag=rapid
         GameData.GameFlag_Group = 3; //群,

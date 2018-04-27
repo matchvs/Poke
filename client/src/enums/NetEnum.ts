@@ -20,6 +20,8 @@ module enums {
         // 【客户端】请求登陆房间
         CLIENT_2_CENTER_REQ_BATTLE = 52,
 
+        
+
         // -----------【游戏服】消息------------
         // 【客户端】聊天和表情
         CLIENT_2_GAME_SENDCHAT = 112,
@@ -71,7 +73,23 @@ module enums {
         // 【网关服】活动人数
         GATE_2_CLIENT_ACTIVITY_ONLINE = 186,
         // 【中心服】发送活动金币
-        CENTER_2_CLIENT_ADD_FREE_MONEY = 187
+        CENTER_2_CLIENT_ADD_FREE_MONEY = 187,
+
+
+        //Matchvs消息定义。
+
+
+
+        //创建房间
+        GAME_CREATE_ROOM = 200,
+        //加入房间
+        GAME_JOIN_ROOM = 201,
+        //房间有人加入
+        GAME_JOIN_ROOM_NOTIFY = 202,
+        //房间人满
+        GAME_ROOM_PLAYER_FILL = 203,
+        //开始游戏
+        GAME_START_GAME = 204,
     }
 }
 

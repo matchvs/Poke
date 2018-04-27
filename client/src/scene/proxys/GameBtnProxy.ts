@@ -317,6 +317,15 @@ module scene {
             this._ready.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
         }
 
+        // 开始按钮的显示和隐藏
+        public readyIsVisible(playeNum : number) {
+            if(playeNum = 3) {
+                this._readySprite.visible = true;
+            } else {
+                this._readySprite.visible = false;
+            }
+        }
+
         // 没有调用
         private onToouchBegin(e: egret.TouchEvent): void {
             this._touchStart = new egret.Point();

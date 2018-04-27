@@ -279,6 +279,15 @@ var scene;
             this._callNo.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
             this._ready.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
         };
+        // 开始按钮的显示和隐藏
+        GameBtnProxy.prototype.readyIsVisible = function (playeNum) {
+            if (playeNum = 3) {
+                this._readySprite.visible = true;
+            }
+            else {
+                this._readySprite.visible = false;
+            }
+        };
         // 没有调用
         GameBtnProxy.prototype.onToouchBegin = function (e) {
             this._touchStart = new egret.Point();

@@ -46,6 +46,18 @@ var RobotGameMgr = (function () {
         //test
         var obj = {};
         switch (type) {
+            //开始游戏
+            case enums.NetEnum.GAME_START_GAME:
+                this._playerList = value;
+                if (this._playerList.length == 3) {
+                    this.Start();
+                }
+                break;
+            //加入房间
+            case enums.NetEnum.GAME_JOIN_ROOM:
+                break;
+            case enums.NetEnum.GAME_ROOM_PLAYER_FILL:
+                break;
             case enums.NetEnum.CLIENT_2_GAME_REQ_EXIT:
                 obj.type = enums.NetEnum.CENTER_2_CLIENT_LOGIN_LOBBY;
                 obj.value = {};
@@ -105,7 +117,7 @@ var RobotGameMgr = (function () {
                 p3.money = 0;
                 p3.integral = 0;
                 p3.IsReady = true;
-                p3.TableId = 2;
+                p3.TableId = 2; //位置
                 p3.IsRobot = true;
                 p3.ShowCardNum = 17;
                 p3.playerGuid = 3;

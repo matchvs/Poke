@@ -123,8 +123,9 @@ var scene;
                 //                SceneMgr.Instance.ShowScene(GameScene);
             }
             else if (e.currentTarget == this._btn_danji) {
-                data.GameData.IsRobot_Offline = true;
-                data.GameData.flag = data.GameData.GameFlag_offline;
+                // 加入房间
+                PokesData.engine.joinRandomRoom(3, "");
+                // PokesData.response.joinRoomResponse = this.joinRoomResponse.bind(this);
                 SceneMgr.Instance.ShowScene(scene.GameScene);
             }
             else if (e.currentTarget == this._btn_jingji) {
@@ -133,6 +134,31 @@ var scene;
                 NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_CENTER_REQ_BATTLE, { flagId: data.GameData.GameFlag_Activity });
                 SceneMgr.Instance.ShowScene(scene.GameScene);
             }
+        };
+        //         /**
+        //  * 加入房间的回调
+        //  */
+        // joinRoomResponse = function(status,roomUserInfoList,roomInfo) {
+        //     if (status === 200) {
+        //         egret.log("进入房间成功,房间ID："+roomInfo.roomID);
+        //         //自己是房主就在桌子中做一号位置
+        //         if (roomInfo.ownerId+""=== data.GameData.userid) {
+        //             data.GameData.playerGuid = 1;
+        //         } else{
+        //             //房间中人数目+1 就是自己的座位
+        //             data.GameData.playerGuid = 1+roomUserInfoList.length;
+        //         }       
+        //         data.GameData.IsRobot_Offline = true;
+        //         data.GameData.flag = data.GameData.GameFlag_offline;
+        //         SceneMgr.Instance.ShowScene(GameScene);
+        //     } else {
+        //         egret.log("进入房间失败，错误码："+status);
+        //     }
+        // }
+        /**
+         * 判断是否是房主
+         */
+        LobbyScene.prototype.isRoomOwner = function (ownerID, userInfoList) {
         };
         return LobbyScene;
     }(scene.SceneBase));

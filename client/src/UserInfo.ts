@@ -1,8 +1,8 @@
 class UserInfo {
 
-    public userID:number;
-    public token:number;
-
+    public userId:number;
+    public userProfile:string;
+    public playerGuid:number;
     public constructor() {
     }
 }

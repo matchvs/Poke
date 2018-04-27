@@ -222,11 +222,11 @@ var scene;
             }
         };
         //设置准备标
-        // public SetPlayerReady(tableid: number, isready: boolean): void {
-        //     if (<PlayerHead>this["_playerHead" + tableid]) {
-        //         (<PlayerHead>this["_playerHead" + tableid]).Ready = isready;
-        //     }
-        // }
+        GameUIProxy.prototype.SetPlayerReady = function (tableid, isready) {
+            if (this["_playerHead" + tableid]) {
+                this["_playerHead" + tableid].Ready = isready;
+            }
+        };
         //开始发牌
         GameUIProxy.prototype.SendCard = function () {
             if (this["_playerHead" + 1]) {

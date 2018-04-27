@@ -10,7 +10,7 @@ module data {
         public static SERVER_URL:string = "127.0.0.1:8001";
 
         //游戏类型
-        public static GameFlag_offline:number = 2;                //单机
+        public static GameFlag_offline:number = 0;                //单机
         public static GameFlag_Rapid:number = 1;                  //快速进入
         public static GameFlag_Activity:number = 2;               //比赛比赛flag=rapid
         public static GameFlag_Group:number = 3;                  //群,

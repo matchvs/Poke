@@ -29,6 +29,14 @@ module enums
         public static NETEVENT_WAITACTIVITYEND="NETEVENT_WAITACTIVITYEND"; //活动打完等待活动结束
         public static NETEVENT_LOBBYIN="NETEVENT_LOBBYIN";                  //进入大厅
         public static NETEVENT_ADDFREEMONEY="NETEVENT_ADDFREEMONEY";        //送金币
+
+
+
+        //Matchvs
+
+        public static MATCHVS_CREATE_ROOM = "MATCHVS_CREATE_ROOM";  //创建房间
+        public static MATCHVS_OTHERPLAYERIN = "MATCHVS_OTHERPLAYERIN";//其他玩家加入房间
+        public static MATCHVS_SENDCARD = "MATCHVS_SENDCARD"; //发牌
     }
 }
 

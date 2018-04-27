@@ -11,9 +11,8 @@ module data {
 
         public TableId:number = 0;                   //桌子上的id;   0,1,2
         public LocalTableId:number=0;                 //与MainPlayer的相对tableid ,用于界面显示..左上1,右上2,下方自己3
-        public IsReady:boolean=false;
-        public IsAuto:boolean=false;
-
+        public IsReady:boolean=false;   //是否准备
+        public IsAuto:boolean=false;   //是否是机器人
         public ShowCardNum:number=0;                //用于显示的卡牌数量.
         public CardArr:Array<number> = [];//手牌数组
         public LandOwnerScore:number = 0;   //叫地主的分数
