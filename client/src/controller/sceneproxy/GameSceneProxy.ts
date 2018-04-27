@@ -215,16 +215,24 @@ module sceneproxy {
                     break;
                 case enums.NetEvent.NETEVENT_SENDCARD:
                     this._gamestate = 1;
-                    var valueobj: any = JSON.parse(e.data.value);
-                    this._myPlayer.CardArr = valueobj.cardlist;
-                    this._scene.SendCard(this._myPlayer);
+                    var valueobj: any = JSON.parse(e.data.value1);
+                    player = new data.Player();
+                    player.userid = data.GameData.userid;
+                    // this.p2.integral = data.GameData.integral;//积分
+                    player.TableId = 1;//桌子上的ID 
+                    player.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
+                    player.IsRobot = false; //是否是机器人。
+                    player.ShowCardNum = 17;  //初始牌数目 17张
+                    player.playerGuid = 2; //没搞懂啥意思，先递增。
+                    player.CardArr = valueobj.cardlist;
+                    this._scene.SendCard(player);
                     //清除地主标致
-                    for (var i in this._playerList) {
-                        var pp: data.Player = this._playerList[i];
-                        if (pp) {
-                            pp.IsLandOwner = false;
-                        }
-                    }
+                    // for (var i in this._playerList) {
+                    //     var pp: data.Player = this._playerList[i];
+                    //     if (pp) {
+                        player.IsLandOwner = false;
+                        // }
+                    // }
                     break;
                 case enums.NetEvent.NETEVENT_TURNCALLLAND:
                     this._gamestate = 2;

@@ -49,17 +49,16 @@ class RobotGameMgr {
         switch (type) {
             //开始游戏
             case enums.NetEnum.GAME_START_GAME:
-                this._playerList = value;
-                 if (this._playerList.length === 3) {
-                     obj.type = enums.NetEnum.GAME_2_CLIENT_INIT_ROOM;
-                     obj.value = {};
-                     obj.value.playerlist = this._playerList;
-                     obj.value.gamestate = 0;
-                     obj.value = JSON.stringify(obj.value);
-                     var jstr: string = JSON.stringify(obj);
-                     NetMgr.Instance.OnMessage(jstr);
-                     this.Start();
-                 }
+                // this._playerList = value;
+
+                //      obj.type = enums.NetEnum.GAME_2_CLIENT_INIT_ROOM;
+                //      obj.value = {};
+                //      obj.value.playerlist = this._playerList;
+                //      obj.value.gamestate = 0;
+                //      obj.value = JSON.stringify(obj.value);
+                //      var jstr: string = JSON.stringify(obj);
+                //      NetMgr.Instance.OnMessage(jstr);
+                     this.gameServerStart(value);
                  
                 break;
             //加入房间
@@ -244,6 +243,22 @@ class RobotGameMgr {
 
     }
 
+    public gameServerStart(value:any):void {
+       var cardObj = JSON.parse(value);
+       for(var i = 0;i < cardObj.userCards.length;i++) {
+           if (data.GameData.userid ===  cardObj.userCards[i].userID) {
+                var value1: any = {};
+                var obj: any = {};
+                obj.type = enums.NetEnum.GAME_2_CLIENT_SENDCARD;
+                value1.cardlist =  cardObj.userCards[i].card;
+                obj.value1 = JSON.stringify(value1);
+                egret.log(obj);
+                NetMgr.Instance.OnMessage(JSON.stringify(obj));
+                //等待客户端播放发牌动画.开始
+                this._timeoutList.push(egret.setTimeout(this.beginCallOwner, this, 4000));
+           }
+       } 
+    }
     public Start(): void {
         this._gameState = 1;
         this._pointMax = this._playerList.length;
@@ -268,6 +283,7 @@ class RobotGameMgr {
         value.cardlist = cardArr[0];
         obj.value = JSON.stringify(value);
         NetMgr.Instance.OnMessage(JSON.stringify(obj))
+        
 
         //等待客户端播放发牌动画.开始
         this._timeoutList.push(egret.setTimeout(this.beginCallOwner, this, 4000));

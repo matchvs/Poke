@@ -6,12 +6,14 @@ class PokesData {
 
 	public static engine:MatchvsEngine = new MatchvsEngine();
 	public static response:MatchvsResponse = new MatchvsResponse();
-	public static gameID:number = 201220;
-	public static appKey:string = "00f6f33ee17d48e8b7d6731bb5a71ef7";
-	public static secret:string = "a8c6f99cb17745efaee615f052547dee";
-	//todo 备用方案
-	public static _playerList: Array<data.Player> = [];
-	
+	public static gameID:number = 200787;
+	public static appKey:string = "de7c4a439d2948d880451c25c910b239";
+	public static secret:string = "5667067032b644c687c0a86ca9faa2d6";
+
+
+
+	public static GAMESERVER:boolean = false; //Gamesever模式
+
 	public constructor() {
 	}
 	

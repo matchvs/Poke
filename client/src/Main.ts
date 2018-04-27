@@ -34,7 +34,7 @@ class Main extends egret.DisplayObjectContainer {
         //初始化
         LoadMgr.Instance.Init();
         let channel = "MatchVS";
-        let platform = "alpha"
+        let platform = "release"
         this.status = PokesData.engine.init(PokesData.response,channel,platform,PokesData.gameID);
         //回调绑定
         // PokesData.ResponseBind("initResponse",this);

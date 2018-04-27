@@ -127,9 +127,22 @@ module scene {
             PokesData.response.joinRoomResponse = this.joinRoomResponse.bind(this);
             PokesData.response.joinRoomNotify = this.joinRoomNotify.bind(this);
             PokesData.response.joinOverResponse = this.joinOverResponse.bind(this);
+            PokesData.response.joinOverNotify = this.joinOverNotify.bind(this);
             PokesData.response.leaveRoomNotify = this.leaveRoomNotify.bind(this);
             PokesData.response.leaveRoomResponse = this.leaveRoomResponse.bind(this);
+            PokesData.response.gameServerNotify = this.gameServerNotify.bind(this);
+            //发送进入房间的信息
+
         }
+
+        /**
+         * 监听GameServer消息
+         */
+        gameServerNotify = function(eventInfo) {
+            egret.log(eventInfo.cpProto);
+            NetMgr.Instance.SendMsg(enums.NetEnum.GAME_START_GAME,eventInfo.cpProto);
+        }
+        
 
         /**
          * 加入房间的回调
@@ -137,13 +150,21 @@ module scene {
         joinRoomResponse = function(status,roomUserInfoList,roomInfo) {
             if (status === 200) {
                 egret.log("进入房间成功,房间ID："+roomInfo.roomID);
-                this.ownerId = roomInfo.ownerId;
-                data.GameData.playerGuid = 1;
-                var userInfoListLength:number = roomUserInfoList.length;
-                 this.addRoomInfoPlayer(data.GameData.userid);
-                for (var i = 0; i < userInfoListLength; i ++) {
-                    this.addRoomInfoPlayer(roomUserInfoList[i].userId);
+                PokesData.GAMESERVER = true;
+                if( PokesData.GAMESERVER) {
+                    NetMgr.Instance.SendMsg(enums.NetEnum.MATCHVS_GAME_SERVER_LOGIN_ROOM);
+                    this.RoomIn([]);
+                } else {
+                    this.ownerId = roomInfo.ownerId;
+                    data.GameData.playerGuid = 1;
+                    var userInfoListLength:number = roomUserInfoList.length;
+                    this.addRoomInfoPlayer(data.GameData.userid);
+                    for (var i = 0; i < userInfoListLength; i ++) {
+                        this.addRoomInfoPlayer(roomUserInfoList[i].userId);
+                    }
                 }
+     
+        
             }
         }
 
@@ -157,11 +178,21 @@ module scene {
         }
 
         /**
-         * 
+         * 将房间关闭的回调
          */
-        joinOverResponse = function() {
-            
+        joinOverResponse = function(JoinOverRsp) {
+            if(JoinOverRsp.status === 200) {
+                egret.log(JoinOverRsp.cpProto);
+            }
         }
+
+        /**
+         * 其他玩家关闭房间的通知
+         */
+        joinOverNotify = function(JoinOverNotifyInfo) {
+            egret.log(JoinOverNotifyInfo.srcUserID+"关闭了房间，说："+JoinOverNotifyInfo.cpProto);
+        }
+
 
         /**
          * 有其他玩家加入房间的推送
@@ -194,10 +225,14 @@ module scene {
                     this.plist[i].playerGuid = i+1; //没搞懂啥意思，先递增。
                     this._playerList.push(this.plist[i]);
                     //长度为3，房间人满，这个时候展示开始按钮，就可以开始游戏了
-                    if(this._playerList.length === 3 && data.GameData.userid === this.ownerId) {
+                    if(this._playerList.length === 3) {
                         //不是单机socket就会报错了，还得研究这个大坑
+                        this._playerList.sort(function(a:any,b:any) {
+                            return (a.userid - b.userid); 
+                        });
                         data.GameData.IsRobot_Offline = false;
                         NetMgr.Instance.SendMsg(enums.NetEnum.GAME_START_GAME,this._playerList);
+                
                     }
                     return;
                 }
@@ -271,7 +306,7 @@ module scene {
             this._tableCardProxy.clearAll();
             this._mycardProxy.Release();
             this._sendCardAniProxy.Release(0);
-
+            this.SetAuto(0,false);
         }
 
         public AddFreeMoney(): void {

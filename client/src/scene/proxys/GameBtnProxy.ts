@@ -87,7 +87,7 @@ module scene {
              * robot
              */
             this._prompt = new SButton("ui_robot");
-            this._gameScene.addChild(this._prompt);
+          //  this._gameScene.addChild(this._prompt);
             this._prompt.ClickScale = false;
             this._prompt.x = 0;
             this._prompt.y = 632;
@@ -317,14 +317,7 @@ module scene {
             this._ready.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
         }
 
-        // 开始按钮的显示和隐藏
-        public readyIsVisible(playeNum : number) {
-            if(playeNum = 3) {
-                this._readySprite.visible = true;
-            } else {
-                this._readySprite.visible = false;
-            }
-        }
+
 
         // 没有调用
         private onToouchBegin(e: egret.TouchEvent): void {
@@ -418,7 +411,13 @@ module scene {
                 windowui.ChatInst.Instance.Show();
             }
             else if (e.currentTarget == this._ready) {
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY, {});
+                //准备注释掉原来的逻辑
+                var event = {
+                    action:enums.NetEnum.CLIENT_2_GAME_READY
+                };
+                var data = JSON.stringify(event);
+                PokesData.engine.sendEventEx(2, data, 0,[]);
+                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY, {});
             }
             else if (e.currentTarget == this._sendCard) {
                 var cardArr: Array<number> = this._myCardProxy.GetWillShowList();

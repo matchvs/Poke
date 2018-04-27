@@ -90,6 +90,11 @@ module enums {
         GAME_ROOM_PLAYER_FILL = 203,
         //开始游戏
         GAME_START_GAME = 204,
+
+        //gameServer模式下，
+        MATCHVS_GAME_SERVER_LOGIN_ROOM =299,
+        //准备动作
+        MATCHVS_GAME_SERVER_READ = 300,
     }
 }
 
