@@ -1,0 +1,23 @@
+{
+	"name": "egret",
+	"version": "2.5.0",
+	"modules": [
+		{
+			"name": "nest",
+			"description": "nest",
+			"files": [
+				"Nest.ts",
+				"LogInOut.ts",
+				"utils/NestUtils.ts",
+				"cm/CMGAME_SDK_EGRET.js",
+			  	"runtime/NestForRuntime.ts",
+				"cm/NestForCM.ts",
+				"qqhall/NestForQQHall.ts",
+				"qqhall/NestForQQHallV2.ts",
+				"h5/NestForH5.ts",
+				"utils/NestEntry.ts"
+			],
+			"root": "src"
+		}
+	]
+}

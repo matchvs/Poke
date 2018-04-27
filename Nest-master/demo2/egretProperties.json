@@ -1,0 +1,29 @@
+{
+	"native": {
+		"path_ignore": []
+	},
+	"publish": {
+		"web": 0,
+		"native": 1,
+		"path": "../../demo_release/release/"
+	},
+	"modules": [
+		{
+			"name": "egret"
+		},
+		{
+			"name": "game"
+		},
+		{
+			"name": "gui"
+		},
+		{
+			"name": "res"
+		},
+		{
+			"name": "nest",
+			"path": "../libsrc"
+		}
+	],
+	"egret_version": "3.0.6"
+}

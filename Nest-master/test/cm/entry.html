@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>猎豹Nest测试</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <style>
+        body {
+
+        }
+
+        input, select, button {
+            font-size: 2em;
+            line-height: 2em;
+            display: block;
+            margin: 1em 0;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+
+    function openUrlWithGameSDK(url){
+        if(typeof __injectionJavaScriptObject___ !== 'undefined' && __injectionJavaScriptObject___.openUrlWithGameSDK && __injectionJavaScriptObject___.openUrlWithGameSDK){
+            return __injectionJavaScriptObject___.openUrlWithGameSDK(url);
+        }else{
+            var e = {
+                class_name: "com.ijinshan.browser.KInjectionJavaScriptObject",
+                params: {
+                    function_name: "openUrlWithGameSDK",
+                    url: url
+                },
+                sync: true
+            };
+            alert('prompt:'+JSON.stringify(e));
+        }
+        return false;
+    }
+
+    window.onload = function () {
+
+        var url = window.location.href;
+        var url2 = url.replace("entry.html", "cm.html");
+
+        openUrlWithGameSDK(url2);
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>猎豹Nest测试</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+</head>
+<body>
+<script type="text/javascript">
+    (function (f, o) {
+        'callShare more statScore getRank showAd getClientInfo'.replace(/\S+/g, function (a) {
+            o[a] = f
+        });
+        var a = o._sd = {};
+        o.updateData = function (b) {
+            for (var i in b) if (b.hasOwnProperty(i)) a[i] = b[i]
+        }
+    })(function () {
+    }, LBShare = {});
+    document.write('<script src="http://www.liebao.cn/game/js/g_share.js"><\/script>');
+
+    function startEgretRuntime() {
+        LBShare.getClientInfo(function (d) {
+            var a = "11";
+            var b = {
+                        id: getOption("id"),
+                        version: a,
+                        screenOrientation: getOption("orientation"),
+                        runtimeURL: getOption("url")
+                    },
+                    c = navigator.userAgent,
+                    e = {
+                        class_name: "com.ijinshan.browser.KInjectionJavaScriptObject",
+                        params: {
+                            function_name: "openEgret",
+                            url: b.runtimeURL,
+                            gameid: b.id,
+                            orientation: b.screenOrientation
+                        },
+                        sync: !0
+                    };
+            window.prompt && ((d.browser == "kuwan" && d.kuwanVersion * 1 > 301012) || /LieBaoFast/gi.test(c)) ? (window.__injectionJavaScriptObject___ && __injectionJavaScriptObject___.openEgret && __injectionJavaScriptObject___.openEgret(b.runtimeURL, b.id)) ? "" : "egret_ready" != prompt(JSON.stringify(e), "3.1415926535") ? egret_h5.startGame() : "" : egret_h5.startGame()
+        });
+    }
+
+    function getOption(key) {
+        if (window.hasOwnProperty("location")) {
+            var search = location.search;
+            if (search == "") {
+                return "";
+            }
+            search = search.slice(1);
+            var searchArr = search.split("&");
+            var length = searchArr.length;
+            for (var i = 0; i < length; i++) {
+                var str = searchArr[i];
+                var arr = str.split("=");
+                if (arr[0] == key) {
+                    return arr[1];
+                }
+            }
+        }
+        return "";
+    }
+
+    window.onload = startEgretRuntime;
+</script>
+</body>
+</html>

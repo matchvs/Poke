@@ -1,0 +1,19 @@
+{
+	"name": "nest",
+	"dependence": ["core"],
+	"source":"./src",
+	"file_list" : [
+		"utils/NestUtils.ts",
+		"utils/NestEntry.ts",
+		"cm/CMGAME_SDK_EGRET.js",
+		"../libs/CMGAME_SDK_EGRET.d.ts",
+		"Nest.ts",
+		"LogInOut.ts",
+		"runtime/NestForRuntime.ts",
+		"cm/NestForCM.ts",
+		"h5/NestForH5.ts",
+		"../libs/EgretH5Sdk.d.ts",
+		"qqhall/NestForQQHall.ts",
+		"qqhall/NestForQQHallV2.ts"
+	]
+}

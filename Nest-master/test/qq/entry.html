@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>QQ Nest测试</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <script src="http://jsapi.qq.com/get?api=x5gameplayer.*" type="text/javascript"></script>
+    <style>
+        body {
+
+        }
+
+        input, select, button {
+            font-size: 2em;
+            line-height: 2em;
+            display: block;
+            margin: 1em 0;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+
+    window.onload = function () {
+        start();
+    };
+
+    function start() {
+        window.onerror = function () {
+            alert(arguments[0])
+        };
+
+        var info = {
+            "engineName": "egret",
+            "localDebug": "false",
+            "orientation": getOption("orientation"),
+            "gameName": "helloworld",
+            "gameIconUrl": "http://snscwl.egret-labs.org/common/shareicon.png",
+            "gameUrl": "http://www.qq.com",
+            "runUrl":getOption("url"),
+            "ext": JSON.stringify({
+                "gameId": getOption("id"),
+                "zipUrl": getOption("url")
+            })
+        };
+        browser.x5gameplayer.run(info);
+    }
+
+    function getOption(key) {
+        if (window.hasOwnProperty("location")) {
+            var search = location.search;
+            if (search == "") {
+                return "";
+            }
+            search = search.slice(1);
+            var searchArr = search.split("&");
+            var length = searchArr.length;
+            for (var i = 0; i < length; i++) {
+                var str = searchArr[i];
+                var arr = str.split("=");
+                if (arr[0] == key) {
+                    return arr[1];
+                }
+            }
+        }
+        return "";
+    }
+</script>
+</body>
+</html>
