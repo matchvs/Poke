@@ -1,0 +1,12 @@
+{
+  "name": "gs",
+  "description": "game server demo written by node",
+  "version": "0.1.0",
+  "dependencies": {
+    "gameserver-nodejs": "^3.6.1",
+    "log4js": "^2.5.3"
+  },
+  "scripts": {
+    "start": "node main.js"
+  }
+}

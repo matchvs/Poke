@@ -1,0 +1,16 @@
+{
+    "addr": "0.0.0.0:30045",
+    "log": {
+        "appenders": {
+            "console": {
+                "type": "console"
+            }
+        },
+        "categories": {
+            "default": {
+                "appenders": [ "console" ], 
+                "level": "debug"
+            }
+        }
+    }
+}
