@@ -95,6 +95,12 @@ module enums {
         MATCHVS_GAME_SERVER_LOGIN_ROOM =299,
         //准备动作
         MATCHVS_GAME_SERVER_READ = 300,
+
+        //出牌
+        MATCHVS_GAME_SEND_CARD = 301,
+        //叫地主
+        MATCHVS_GAME_GRAB_LANDLORD = 302,
+        
     }
 }
 

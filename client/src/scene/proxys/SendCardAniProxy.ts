@@ -82,6 +82,7 @@ module scene {
                 this.setCard(this._player.CardArr);
                 this._timer1.removeEventListener(egret.TimerEvent.TIMER, this.onTimer, this);
                 this._timer1.stop();
+                egret.log(this._timer1);
                 this._timer1 = null;
 
                 this.showOwnerAni();

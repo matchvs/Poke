@@ -44,7 +44,7 @@ class Main extends egret.DisplayObjectContainer {
 
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_PRELOAD,this.preloadover,this);
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_LOBBY,this.createScene,this);
-        this.stage.addEventListener(egret.Event.RESIZE,this.resizefun,this);
+        // this.stage.addEventListener(egret.Event.RESIZE,this.resizefun,this);
         Main.instance = this;
 
         this.pushHistory();
@@ -147,11 +147,11 @@ class Main extends egret.DisplayObjectContainer {
         }
     }
 
-    private resizefun(e: egret.Event = null): void {
-        var currWidth = this.stage.stageWidth;
-        var currHeight = this.stage.stageHeight;
-        trace("Main-resizefun->",currWidth,currHeight);
-    }
+    // private resizefun(e: egret.Event = null): void {
+    //     var currWidth = this.stage.stageWidth;
+    //     var currHeight = this.stage.stageHeight;
+    //     trace("Main-resizefun->",currWidth,currHeight);
+    // }
 
 
     /**

@@ -183,6 +183,22 @@ class NetMgr extends egret.EventDispatcher {
                 //准备动作
             case enums.NetEnum.MATCHVS_GAME_SERVER_READ:
                 break;
+            case enums.NetEnum.MATCHVS_GAME_SEND_CARD:
+                break;
+                //下一个地主产生的玩家
+            case enums.NetEnum.MATCHVS_GAME_GRAB_LANDLORD:
+                RobotGameMgr.Instance.SendMsg(type, value);
+                break;
+                //地主产生
+            case enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER:
+                RobotGameMgr.Instance.SendMsg(type, value);
+                break;
+            case enums.NetEnum.CLIENT_2_GAME_SHOWCARD:
+                RobotGameMgr.Instance.SendMsg(type,value);
+                break;
+                //游戏结束
+            case enums.NetEnum.GAME_2_CLIENT_GAMEOVER:
+                RobotGameMgr.Instance.SendMsg(type,value);
              default:
                 break;
         }
@@ -191,10 +207,10 @@ class NetMgr extends egret.EventDispatcher {
 
 
     // 接受消息
-    public OnMessage(str: string): void {
-        var obj: any = JSON.parse(str);
+    public OnMessage(type: number, value: any = null): void {
+        // var obj: any = JSON.parse(str);
         var eventtype: string = "";
-        switch (obj.type) {
+        switch (type) {
             //Matchvs 专用逻辑模块
             case null:
                 return;
@@ -206,14 +222,14 @@ class NetMgr extends egret.EventDispatcher {
                 eventtype = enums.NetEvent.NETEVENT_PING;
                 return;
             case enums.NetEnum.NET_CSC_LOGIN:
-                eventtype = enums.NetEvent.NETEVENT_LOGINSUCESS;
-                data.GameData.playerGuid = obj.value;
-                data.GameData.money = obj.money;
-                if ((this._concecttime > 1 && SceneMgr.Instance.GetCurrentScene() != null))      //第二次登陆的话直接内部处理,
-                {
-                    this.SendMsg(enums.NetEnum.CLIENT_2_CENTER_LOGIN_OK);
-                    return;
-                }
+                // eventtype = enums.NetEvent.NETEVENT_LOGINSUCESS;
+                // data.GameData.playerGuid = obj.value;
+                // data.GameData.money = obj.money;
+                // if ((this._concecttime > 1 && SceneMgr.Instance.GetCurrentScene() != null))      //第二次登陆的话直接内部处理,
+                // {
+                //     this.SendMsg(enums.NetEnum.CLIENT_2_CENTER_LOGIN_OK);
+                //     return;
+                // }
                 break;
                 //发送进入房间的消息
             case enums.NetEnum.GAME_2_CLIENT_INIT_ROOM:
@@ -273,7 +289,7 @@ class NetMgr extends egret.EventDispatcher {
             default :
                 break;
         }
-        this.dispatchEvent(new egret.Event(eventtype, false, false, obj));
+        this.dispatchEvent(new egret.Event(eventtype, false, false, value));
     }
 
     public Exit(): void {

@@ -144,10 +144,11 @@ module scene {
          * @constructor
          */
         public RoomIn(playerlist: Array<data.Player>): void {
-
+           
             for (var p in playerlist) {
                 if (playerlist[p].LocalTableId == 1 || playerlist[p].LocalTableId == 2) {
                     this.SetPlayerHead(playerlist[p], true);
+                     egret.log(playerlist[p].ShowCardNum+"111111111111111");
                 }
             }
             if (<PlayerHead>this["_playerHead" + 1]) {
@@ -171,6 +172,7 @@ module scene {
         public SetPlayerTime(p: data.Player, delaytime: number): void {
             this._playerTime.SetPoint(p.LocalTableId, delaytime);
             this._playerTime.visible = true;
+               this.SetTimes("");
         }
 
         public RemovePlayerHead(p: data.Player): void {

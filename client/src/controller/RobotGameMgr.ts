@@ -18,11 +18,15 @@ class RobotGameMgr {
     private _playerPoint: number = 0;                           //用户指针,指向当前用户,,对应玩家tableid
     private _tablelistdata: controller.game.CardListData = null;                //当前桌面上的牌
     private _playerList: Array<data.Player> = [];               //用户数组
-    private _landOwner: data.Player = null;                        //地主
+    private _landOwner: data.Player = new data.Player;                        //地主
     private _landMaxScore: number = 0;                             //叫地主的最高分
     private _TimeCount: number = 1;                                    //翻倍次数
     private _lanownList: Array<number> = [];                         //起始的三张地主牌
     private static _instance: RobotGameMgr = null;
+    private _pokersList: Array<number> = [];
+    private _callOwner :any = 0;
+    private _myPlayer :data.Player = new data.Player;
+
 
     private _timeoutList: Array<number> = [];
 
@@ -50,7 +54,7 @@ class RobotGameMgr {
             //开始游戏
             case enums.NetEnum.GAME_START_GAME:
                 // this._playerList = value;
-
+                // var Obj = JSON.parse(value);
                 //      obj.type = enums.NetEnum.GAME_2_CLIENT_INIT_ROOM;
                 //      obj.value = {};
                 //      obj.value.playerlist = this._playerList;
@@ -58,8 +62,11 @@ class RobotGameMgr {
                 //      obj.value = JSON.stringify(obj.value);
                 //      var jstr: string = JSON.stringify(obj);
                 //      NetMgr.Instance.OnMessage(jstr);
-                     this.gameServerStart(value);
-                 
+                this._playerList = value.playList;
+                this._pokersList = value.cardlist;
+                this._lanownList = value.lanownList;
+                this._callOwner = value.callOwner;
+                this.gameServerStart(value);
                 break;
             //加入房间
             case enums.NetEnum.GAME_JOIN_ROOM:
@@ -69,21 +76,32 @@ class RobotGameMgr {
                 break;
             case enums.NetEnum.GAME_ROOM_PLAYER_FILL:
                 break;
-
+                //抢地主
+            case enums.NetEnum.MATCHVS_GAME_GRAB_LANDLORD:
+                this.GameServerGrabLandlord(value.nextUser,value.score);
+                break;
+            // 抢地主成功,通知地主和起始牌
+            case enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER:
+                if (value.landOwner === data.GameData.userid) {
+                    this.GameServerBeginPlay(true,value.score);
+                } else {
+                    this.GameServerBeginPlay(false,value.score);
+                }
+                break;
             case enums.NetEnum.CLIENT_2_GAME_REQ_EXIT:
-                obj.type = enums.NetEnum.CENTER_2_CLIENT_LOGIN_LOBBY;
-                obj.value = {};
-                var jstr: string = JSON.stringify(obj);
+                // obj.type = enums.NetEnum.CENTER_2_CLIENT_LOGIN_LOBBY;
+                // obj.value = {};
+                // var jstr: string = JSON.stringify(obj);
                 this.GameOver();
                 data.GameData.IsRobot_Offline = false;
-                NetMgr.Instance.OnMessage(jstr);
+                NetMgr.Instance.OnMessage(enums.NetEnum.CENTER_2_CLIENT_LOGIN_LOBBY,obj);
                 break;
             case enums.NetEnum.NET_CSC_LOGIN_DEBUG:
             case enums.NetEnum.NET_CSC_LOGIN:
                 obj.type = enums.NetEnum.NET_CSC_LOGIN;
                 obj.value = 998;
-                var jstr: string = JSON.stringify(obj);
-                NetMgr.Instance.OnMessage(jstr);
+                // var jstr: string = JSON.stringify(obj);
+                NetMgr.Instance.OnMessage(enums.NetEnum.NET_CSC_LOGIN,obj);
                 break;
             case enums.NetEnum.CLIENT_2_GAME_READY:
                 for (var i in this._playerList) {
@@ -100,7 +118,7 @@ class RobotGameMgr {
                 obj.type = enums.NetEnum.GAME_2_CLIENT_INIT_ROOM;
                 obj.value = {};
 
-                this._playerList = [];
+                // this._playerList = [];
                 //创建两个机器人
                 var p1: data.Player = new data.Player();
                 p1.userid = data.GameData.userid;
@@ -154,21 +172,22 @@ class RobotGameMgr {
                 var plist = [p1, p2, p3];
                 obj.value.playerlist = plist;
                 obj.value.gamestate = 0;
-                obj.value = JSON.stringify(obj.value);
+                // obj.value = JSON.stringify(obj.value);
 
-                var jstr: string = JSON.stringify(obj);
-                NetMgr.Instance.OnMessage(jstr);
+                // var jstr: string = JSON.stringify(obj);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_INIT_ROOM,obj);
                 break;
 
             case enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER:                       //叫地主,1,2,3分
                 obj.type = enums.NetEnum.GAME_2_CLIENT_CALLLANDOWNER;
                 var player: data.Player = this._playerList[this._playerPoint];
+                player.CardArr = this._pokersList;
                 var svalue = value;
-                var value: any = {};
-                value.score = svalue.score;
-                value.tableid = player.TableId;
-                obj.value = JSON.stringify(value);
-                var jstr = JSON.stringify(obj);
+                // var value: any = {};
+                obj.score = svalue.score;
+                obj.tableid = player.TableId;
+                // obj.value = JSON.stringify(value);
+                // var jstr = JSON.stringify(obj);
 
                 // ??? 两次stringify
                 // var valueString = JSON.stringify({
@@ -179,7 +198,7 @@ class RobotGameMgr {
                 //     })
                 // });
 
-                NetMgr.Instance.OnMessage(jstr);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_CALLLANDOWNER,obj);
 
                 var isover: boolean = this.CallLandOwners(svalue.score, this._playerPoint);
                 if (isover) {
@@ -213,15 +232,28 @@ class RobotGameMgr {
                 value.cardnum = player.CardNum;
                 value.timecount = this._TimeCount;
                 value.isnew = this._tablelistdata == null;                    //是否发新牌
-                obj.value = JSON.stringify(value);
-                var jstr = JSON.stringify(obj);
-                NetMgr.Instance.OnMessage(jstr);
+                // obj.value = JSON.stringify(value);
+                // var jstr = JSON.stringify(obj);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_SHOWPLAY,value);
                 this.BeginPlay(false);
                 break;
             case enums.NetEnum.CLIENT_2_GAME_SENDCHAT:
                 obj.type = enums.NetEnum.GAME_2_CLIENT_SENDCHAT;
                 obj.value = {};
                 obj.value.msg = value;
+                break;
+            case enums.NetEnum.GAME_2_CLIENT_GAMEOVER:
+                var obj: any = {};
+                obj.type = enums.NetEnum.GAME_2_CLIENT_GAMEOVER;
+                var player: data.Player = this._playerList[this._playerPoint];
+                // var value: any = {};
+                obj.wintableid = player.TableId;
+                obj.islandwin = player.IsLandOwner;
+                obj.timecount = this._TimeCount;
+                obj.tablelist_0 = this._playerList[0].CardArr;
+                obj.tablelist_1 = this._playerList[1].CardArr;
+                obj.tablelist_2 = this._playerList[2].CardArr;
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_GAMEOVER,obj);
                 break;
             default :
                 break;
@@ -244,21 +276,77 @@ class RobotGameMgr {
     }
 
     public gameServerStart(value:any):void {
-       var cardObj = JSON.parse(value);
-       for(var i = 0;i < cardObj.userCards.length;i++) {
-           if (data.GameData.userid ===  cardObj.userCards[i].userID) {
-                var value1: any = {};
-                var obj: any = {};
-                obj.type = enums.NetEnum.GAME_2_CLIENT_SENDCARD;
-                value1.cardlist =  cardObj.userCards[i].card;
-                obj.value1 = JSON.stringify(value1);
-                egret.log(obj);
-                NetMgr.Instance.OnMessage(JSON.stringify(obj));
-                //等待客户端播放发牌动画.开始
-                this._timeoutList.push(egret.setTimeout(this.beginCallOwner, this, 4000));
-           }
-       } 
+        this._gameState = 1;
+        this._card = new controller.game.SendCard();
+        this._type = new controller.game.Types();
+        this._compare = new controller.game.Compare();
+        this._prompt = new controller.game.Prompt();
+
+        // var Obj = JSON.parse(value);
+        var obj: any = {};
+        obj.type = enums.NetEnum.GAME_2_CLIENT_SENDCARD;
+        obj.cardlist = value.cardlist;
+        obj.playList = value.playList;
+        obj.callOwner = value.callOwner;
+        egret.log(obj);
+        NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_SENDCARD,obj);
+            //等待客户端播放发牌动画.开始
+        egret.log("开始发牌动画");
+        this._timeoutList.push(egret.setTimeout(this.GameServerBeginCallOwner, this, 5000));
     }
+
+
+    public GameServerBeginCallOwner(){
+        for(var i=0;i< this._playerList.length; i ++) {
+            if (this._playerList[i].userid === data.GameData.userid) {
+                egret.log("取出来自己的player0");
+                this._myPlayer = this._playerList[i];
+            }
+            if (this._callOwner === this._playerList[i].userid) {
+                var landownerPlayer: data.Player = this._playerList[i];
+            }
+            
+        }   
+        if (this._callOwner === data.GameData.userid) {
+            egret.log(this._callOwner+"第一个抢地主");
+            var obj: any = {};
+            obj.type = enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND;
+            obj.lanownList = this._lanownList;
+            obj.player = this._myPlayer;
+            obj.score = 0;
+            obj.landownerPlayer = landownerPlayer;
+            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,obj);
+            return;
+        }
+    
+    }
+
+    /**
+     * 抢地主  
+     */
+    public GameServerGrabLandlord (userID:any,score:any) {
+            for(var i=0;i< this._playerList.length; i ++) {
+                if (this._playerList[i].userid === data.GameData.userid) {
+                    egret.log("取出来自己的player1");
+                    var player: data.Player = this._playerList[i];
+                    this._playerPoint = player.TableId;
+                }
+                
+            }    
+           if (userID === data.GameData.userid) {
+                egret.log(userID+"抢地主");
+                var obj: any = {};
+                obj.type = enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND;
+                obj.lanownList = this._lanownList;
+                obj.player = player;
+                obj.score = score;
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,obj);
+                return;
+           }
+    }
+
+    
+
     public Start(): void {
         this._gameState = 1;
         this._pointMax = this._playerList.length;
@@ -279,14 +367,11 @@ class RobotGameMgr {
 
         var obj: any = {};
         var value: any = {};
-        obj.type = enums.NetEnum.GAME_2_CLIENT_SENDCARD;
-        value.cardlist = cardArr[0];
-        obj.value = JSON.stringify(value);
-        NetMgr.Instance.OnMessage(JSON.stringify(obj))
+
         
 
         //等待客户端播放发牌动画.开始
-        this._timeoutList.push(egret.setTimeout(this.beginCallOwner, this, 4000));
+        // this._timeoutList.push(egret.setTimeout(this.beginCallOwner, this, 4000));
     }
 
     //开始叫地主
@@ -294,30 +379,31 @@ class RobotGameMgr {
         var obj: any = {};
 
         var player: data.Player = this._playerList[this._playerPoint];
+        player.CardArr = this._pokersList;
         if (player == null) {
             return;
         }
-        if (player.IsRobot == false)         //如果自己则让自己叫分
-        {
+        //如果自己则让自己叫分
+        if (player.IsRobot == false) {
             obj.type = enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND;
-            var value: any = {};
-            value.tableid = this._playerPoint;
-            value.cardnum1 = this._playerList[0].CardNum;
-            value.cardnum2 = this._playerList[1].CardNum;
-            value.cardnum3 = this._playerList[2].CardNum;
-            obj.value = JSON.stringify(value);
-            var jstr: string = JSON.stringify(obj);
-            NetMgr.Instance.OnMessage(jstr);
-        } else                    //机器人的话机器人自动叫分
-        {
+            // var value: any = {};
+            obj.tableid = this._playerPoint;
+            obj.cardnum1 = this._playerList[0].CardNum;
+            obj.cardnum2 = this._playerList[1].CardNum;
+            obj.cardnum3 = this._playerList[2].CardNum;
+            // obj.value = JSON.stringify(value);
+            // var jstr: string = JSON.stringify(obj);
+            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,obj);
+        //机器人的话机器人自动叫分
+        } else {
             this._timeoutList.push(egret.setTimeout(function (): void {
                 obj.type = enums.NetEnum.GAME_2_CLIENT_CALLLANDOWNER;
                 var value: any = {};
-                value.tableid = this._playerPoint;
-                value.score = this._landMaxScore + Math.ceil(Math.random() * (3 - this._landMaxScore));
+                obj.tableid = this._playerPoint;
+                obj.score = this._landMaxScore + Math.ceil(Math.random() * (3 - this._landMaxScore));
                 var isover: boolean = this.CallLandOwners(value.score, this._playerPoint);
-                obj.value = JSON.stringify(value);
-                NetMgr.Instance.OnMessage(JSON.stringify(obj));
+                // obj.value = JSON.stringify(value);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_CALLLANDOWNER,obj);
                 if (isover) {
                     //obj.type= enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER;
                     //var value:any={};
@@ -330,8 +416,7 @@ class RobotGameMgr {
                     this._timeoutList.push(egret.setTimeout(function (): void {
                         this.BeginPlay(true);
                     }, this, 500));
-                }
-                else {
+                } else {
                     this.beginCallOwner();
                 }
             }, this, 1000 + Math.random() * 2000));
@@ -339,56 +424,66 @@ class RobotGameMgr {
 
     }
 
-    //叫完地主,开始游戏
-    private BeginPlay(isfirst: boolean): void {
+    private GameServerBeginPlay (isfirst: boolean,score:any) : void{
         var obj: any = {};
-        var player: data.Player = this._playerList[this._playerPoint];
-        if (player == null)//todo: test   检查一下为什么为空
-        {
+        for(var i=0;i< this._playerList.length; i ++) {
+            if (this._playerList[i].userid === data.GameData.userid) {
+                egret.log("取出来自己的player0");
+                var player: data.Player = this._playerList[i];
+            }
+            if (this._callOwner === this._playerList[i].userid) {
+                var landownerPlayer: data.Player = this._playerList[i];
+            }
+        }  
+        //todo: test   检查一下为什么为空
+        if (player == null){
             return;
         }
-        if (isfirst) {
+
+        //  if (isfirst) {
             // 抢地主成功,通知地主和起始牌
             obj.type = enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER;
-            var value: any = {};
-            value.landtableid = this._playerPoint;
-            value.cardlist = this._lanownList; // 是否发新牌
-            value.landscore = this._landMaxScore;
-            obj.value = JSON.stringify(value);
-            var jstr: string = JSON.stringify(obj);
-            NetMgr.Instance.OnMessage(jstr);
-        }
-
-        if (player.IsRobot == false)         //如果自己则让自己游戏
-        {
+            // var value: any = {};
+            obj.landtableid = this._playerPoint;
+            obj.cardlist = this._lanownList; // 是否发新牌
+            obj.landscore = score;
+            this._landOwner = landownerPlayer;
+            obj.landownerPlayer = landownerPlayer;
+            obj.player = player;
+            // obj.value = JSON.stringify(value);
+            // var jstr: string = JSON.stringify(obj);
+            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER,obj);
+        // }
+                //如果自己则让自己游戏
+        if (player.IsRobot == false)        {
             obj.type = enums.NetEnum.GAME_2_CLIENT_TURNPLAY;
-            var value: any = {};
-            value.tableid = this._playerPoint;
-            value.isnew = this._tablelistdata == null;            //是否发新牌
-            value.cardnum = player.CardNum;
-            value.cardnum1 = this._playerList[0].CardNum;
-            value.cardnum2 = this._playerList[1].CardNum;
-            value.cardnum3 = this._playerList[2].CardNum;
-            obj.value = JSON.stringify(value);
-            var jstr: string = JSON.stringify(obj);
-            NetMgr.Instance.OnMessage(jstr);
-        }
-        else                    //机器人的话机器人自动游戏
-        {
+            // var value: any = {};
+            obj.tableid = landownerPlayer.TableId;
+            obj.player = landownerPlayer;
+            obj.isnew = this._tablelistdata == null;            //是否发新牌
+            obj.cardnum = player.CardArr.length;
+            obj.cardnum1 = this._playerList[0].CardArr.length;
+            obj.cardnum2 = this._playerList[1].CardArr.length;
+            obj.cardnum3 = this._playerList[2].CardArr.length;
+            // obj.value = JSON.stringify(value);
+            // var jstr: string = JSON.stringify(obj);
+            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_TURNPLAY,obj);
+                  //机器人的话机器人自动游戏
+        } else {
             obj.type = enums.NetEnum.GAME_2_CLIENT_TURNPLAY;
-            var value: any = {};
-            value.tableid = this._playerPoint;
-            value.isnew = this._tablelistdata == null;            //是否发新牌
-            value.cardnum = player.CardNum;
-            value.cardnum1 = this._playerList[0].CardNum;
-            value.cardnum2 = this._playerList[1].CardNum;
-            value.cardnum3 = this._playerList[2].CardNum;
-            obj.value = JSON.stringify(value);
-            var jstr: string = JSON.stringify(obj);
-            NetMgr.Instance.OnMessage(jstr);
+            // var value: any = {};
+            obj.tableid = this._playerPoint;
+            obj.isnew = this._tablelistdata == null;            //是否发新牌
+            obj.cardnum = player.CardNum;
+            obj.cardnum1 = this._playerList[0].CardNum;
+            obj.cardnum2 = this._playerList[1].CardNum;
+            obj.cardnum3 = this._playerList[2].CardNum;
+            // obj.value = JSON.stringify(value);
+            // var jstr: string = JSON.stringify(obj);
+            NetMgr.Instance.OnMessage(obj);
             this._timeoutList.push(egret.setTimeout(function (): void {
                 obj.type = enums.NetEnum.GAME_2_CLIENT_SHOWPLAY;
-                var value: any = {};
+                // var value: any = {};
                 var cld: controller.game.CardListData = this.prompCard();
                 var arr: any = [];
                 var player: data.Player = this._playerList[this._playerPoint];
@@ -403,14 +498,92 @@ class RobotGameMgr {
                 {
                     return;
                 }
-                value.tableid = player.TableId;
-                value.cardlist = arr;
-                value.timecount = this._TimeCount;
-                value.cardnum = player.CardNum;
-                value.isnew = this._tablelistdata == null;            //是否发新牌
-                obj.value = JSON.stringify(value);
-                var jstr: string = JSON.stringify(obj);
-                NetMgr.Instance.OnMessage(jstr);
+                obj.tableid = player.TableId;
+                obj.cardlist = arr;
+                obj.timecount = this._TimeCount;
+                obj.cardnum = player.CardNum;
+                obj.isnew = this._tablelistdata == null;            //是否发新牌
+                // obj.value = JSON.stringify(value);
+                // var jstr: string = JSON.stringify(obj);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_TURNPLAY,obj);
+                this.BeginPlay(false);
+            }, this, 1000 + Math.random() * 2000));
+
+        }
+    }
+
+    //叫完地主,开始游戏
+    private BeginPlay(isfirst: boolean): void {
+        
+        var obj: any = {};
+        var player: data.Player = this._playerList[this._playerPoint];
+        player.CardArr = this._pokersList;
+        if (player == null)//todo: test   检查一下为什么为空
+        {
+            return;
+        }
+        if (isfirst) {
+            // 抢地主成功,通知地主和起始牌
+            obj.type = enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER;
+            // var value: any = {};
+            obj.landtableid = this._playerPoint;
+            obj.cardlist = this._lanownList; // 是否发新牌
+            obj.landscore = this._landMaxScore;
+            // obj.value = JSON.stringify(value);
+            // var jstr: string = JSON.stringify(obj);
+            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER,obj);
+        }
+        //如果自己则让自己游戏
+        if (player.IsRobot == false)        {
+            obj.type = enums.NetEnum.GAME_2_CLIENT_TURNPLAY;
+            // var value: any = {};
+            obj.tableid = this._playerPoint;
+            obj.isnew = this._tablelistdata == null;            //是否发新牌
+            obj.cardnum = player.CardNum;
+            obj.cardnum1 = this._playerList[0].CardNum;
+            obj.cardnum2 = this._playerList[1].CardNum;
+            obj.cardnum3 = this._playerList[2].CardNum;
+            // obj.value = JSON.stringify(value);
+            // var jstr: string = JSON.stringify(obj);
+            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_TURNPLAY,obj);
+                  //机器人的话机器人自动游戏
+        } else {
+            obj.type = enums.NetEnum.GAME_2_CLIENT_TURNPLAY;
+            // var value: any = {};
+            obj.tableid = this._playerPoint;
+            obj.isnew = this._tablelistdata == null;            //是否发新牌
+            obj.cardnum = player.CardNum;
+            obj.cardnum1 = this._playerList[0].CardNum;
+            obj.cardnum2 = this._playerList[1].CardNum;
+            obj.cardnum3 = this._playerList[2].CardNum;
+            // obj.value = JSON.stringify(value);
+            // var jstr: string = JSON.stringify(obj);
+            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_TURNPLAY,obj);
+            this._timeoutList.push(egret.setTimeout(function (): void {
+                obj.type = enums.NetEnum.GAME_2_CLIENT_SHOWPLAY;
+                // var value: any = {};
+                var cld: controller.game.CardListData = this.prompCard();
+                var arr: any = [];
+                var player: data.Player = this._playerList[this._playerPoint];
+                if (cld && cld.Type != controller.game.Types.Types_Error) {
+                    this.ShowCard(cld.List, this._playerPoint);
+                    arr = cld.List;
+                }
+                else {
+                    this.Pass(this._playerPoint);
+                }
+                if (this._gameState == 0)//出牌失败
+                {
+                    return;
+                }
+                obj.tableid = player.TableId;
+                obj.cardlist = arr;
+                obj.timecount = this._TimeCount;
+                obj.cardnum = player.CardNum;
+                obj.isnew = this._tablelistdata == null;            //是否发新牌
+                // obj.value = JSON.stringify(value);
+                // var jstr: string = JSON.stringify(obj);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_SHOWPLAY,obj);
                 this.BeginPlay(false);
             }, this, 1000 + Math.random() * 2000));
 
@@ -449,7 +622,10 @@ class RobotGameMgr {
         if (cld.Type == controller.game.Types.Types_Bomb) {
             this._TimeCount++;
         }
-        var player: data.Player = this._playerList[this._playerPoint];
+        
+        var player = this._playerList[this._playerPoint];
+        egret.log("出牌"+slist);
+        egret.log(player);
         player.removeCards(slist);
         this._lastPlayer = player;
         if (player.CardNum <= 0) {
@@ -466,16 +642,19 @@ class RobotGameMgr {
             player.CardArr = slist;               //显示最后玩家牌
             var obj: any = {};
             obj.type = enums.NetEnum.GAME_2_CLIENT_GAMEOVER;
-            var value: any = {};
-            value.wintableid = player.TableId;
-            value.islandwin = player.IsLandOwner;
-            value.timecount = this._TimeCount;
-            value.tablelist_0 = this._playerList[0].CardArr;
-            value.tablelist_1 = this._playerList[1].CardArr;
-            value.tablelist_2 = this._playerList[2].CardArr;
-            obj.value = JSON.stringify(value);
-            var jstr: string = JSON.stringify(obj);
-            NetMgr.Instance.OnMessage(jstr);
+            // var value: any = {};
+            obj.wintableid = player.TableId;
+            obj.islandwin = player.IsLandOwner;
+            obj.timecount = this._TimeCount;
+            obj.tablelist_0 = this._playerList[0].CardArr;
+            obj.tablelist_1 = this._playerList[1].CardArr;
+            obj.tablelist_2 = this._playerList[2].CardArr;
+            // obj.value = JSON.stringify(value);
+            // var jstr: string = JSON.stringify(obj);
+
+            var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
+            egret.log("发送了游戏结束消息"+data1.result);
+            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_GAMEOVER,obj);
 
 
             this.GameOver();

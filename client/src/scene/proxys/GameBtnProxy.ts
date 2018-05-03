@@ -180,6 +180,7 @@ module scene {
             this._state = GameBtnProxy.STATE_Qiangdizhu;
             this._readySprite.visible = false;
             this._callSprite.visible = true;
+            egret.log("展示抢地主的图标")
             this._playSprite.visible = false;
             this._call1.touchEnabled = true;
             this._call2.touchEnabled = true;
@@ -419,12 +420,18 @@ module scene {
                 PokesData.engine.sendEventEx(2, data, 0,[]);
                 // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY, {});
             }
+            // 出牌
             else if (e.currentTarget == this._sendCard) {
                 var cardArr: Array<number> = this._myCardProxy.GetWillShowList();
                 if (cardArr == null) {
                     trace("牌类型出错");
                     return;
                 }
+                var obj: any = {};
+                obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
+                obj.value = { cardlist: cardArr };
+                var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
+                egret.log("出牌的消息发送是"+data1.result);
                 NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: cardArr });
             }
             else if (e.currentTarget == this._sendPromt) {
@@ -441,23 +448,57 @@ module scene {
             else if (e.currentTarget == this._sendReset) {
                 this._myCardProxy.Reset();
             }
+            //不出牌
             else if (e.currentTarget == this._sendNo) {
+                // var event1 = {                    
+                //     action: enums.NetEnum.GAME_2_CLIENT_TURNPLAY,
+                //     socore:0  };
+                // var data = JSON.stringify(event1);
+                // PokesData.engine.sendEventEx(2, data, 0,[]);
+                var obj: any = {};
+                obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
+                obj.value = { cardlist: [] };
+                var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
+                egret.log("出牌的消息发送是"+data1.result);
                 NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
             }
             else if (e.currentTarget == this._call3) {
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 3 });
+                var event1 = {                    
+                    action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+                    score:3 };
+                var data = JSON.stringify(event1);
+                PokesData.engine.sendEventEx(2, data, 0,[]);
+                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 3 });
                 this.HideAll();
             }
             else if (e.currentTarget == this._call2) {
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 2 });
+                var event1 = {                    
+                    action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+                    score:2 };
+                var data = JSON.stringify(event1);
+                PokesData.engine.sendEventEx(2, data, 0,[]);
+                // PokesData.engine.sendEvent("score: 2");
+                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 2 });
                 this.HideAll();
             }
             else if (e.currentTarget == this._call1) {
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 1 });
+                var event1 = {                    
+                    action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+                    score:1 };
+                var data = JSON.stringify(event1);
+                PokesData.engine.sendEventEx(2, data, 0,[]);
+                // PokesData.engine.sendEvent("score: 1");
+                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 1 });
                 this.HideAll();
             }
             else if (e.currentTarget == this._callNo) {
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 0 });
+                var event1 = {                    
+                    action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+                    score:0};
+                var data = JSON.stringify(event1);
+                PokesData.engine.sendEventEx(2, data, 0,[]);
+                // PokesData.engine.sendFrameEvent("score: 0");
+                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 0 });
                 this.HideAll();
             }
         }

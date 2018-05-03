@@ -83,7 +83,7 @@ module net {
             else if (this._socket.type == egret.WebSocket.TYPE_STRING) {
                 var str:string = this._socket.readUTF();
                 trace("SocketBase::onReceiveMessage->" + str);
-                NetMgr.Instance.OnMessage(str);
+                // NetMgr.Instance.OnMessage(str);
             }
         }
 

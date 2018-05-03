@@ -136,20 +136,24 @@ module sceneproxy {
                         case 0:
                             this._myPlayer.CardArr = [];
                             this._myPlayer.IsReady = false;
-                            this._scene.RoomIn(this._playerList);
+                            this._scene.RoomIn();
+                            this._scene.startGame(this._playerList);
                             break;
                         case 1:
-                            this._scene.RoomIn(this._playerList);
+                            this._scene.RoomIn();
+                            this._scene.startGame(this._playerList);
                             this._scene.ReNet(this._landList, this.getLandPlayer(), this._myPlayer, this._landscore + "x" + 1, this._playerList);
                             this._scene.TurnCallLand(pointplayer, pointplayer == this._myPlayer, this._landscore, 30000);
                             break;
                         case 2:
-                            this._scene.RoomIn(this._playerList);
+                            this._scene.RoomIn();
+                            this._scene.startGame(this._playerList);
                             this._scene.ReNet(this._landList, this.getLandPlayer(), this._myPlayer, this._landscore + "x" + 1, this._playerList);
                             this._scene.TurnCallLand(pointplayer, pointplayer == this._myPlayer, this._landscore, 30000);
                             break;
                         case 3:
-                            this._scene.RoomIn(this._playerList);
+                            this._scene.RoomIn();
+                            this._scene.startGame(this._playerList);
                             this._scene.ReNet(this._landList, this.getLandPlayer(), this._myPlayer, this._landscore + "x" + 1, this._playerList);
                             var lastplayer: data.Player = this.getPlayerByTableId(lastsend);
                             this._scene.TurnPlay(pointplayer, pointplayer == this._myPlayer, false, this._tableCardList, 30000, false, lastplayer);
@@ -203,7 +207,7 @@ module sceneproxy {
                     this._scene.SetReady(player.LocalTableId, true, player == this._myPlayer);
                     break;
                 case enums.NetEvent.NETEVENT_AUTO:
-                    var valueobj: any = JSON.parse(e.data.value);
+                    var valueobj: any = e.data;
                     var player: data.Player = this.getPlayerByTableId(valueobj.tableid);
                     var isme: boolean = (player == this._myPlayer);
                     player.IsAuto = valueobj.isauto;
@@ -215,39 +219,58 @@ module sceneproxy {
                     break;
                 case enums.NetEvent.NETEVENT_SENDCARD:
                     this._gamestate = 1;
-                    var valueobj: any = JSON.parse(e.data.value1);
+                    var value = e.data;
+                    this._tableCardList = value.cardlist;
+                    this._playerList = value.playList;
                     player = new data.Player();
-                    player.userid = data.GameData.userid;
+                    for(var q=0; q < this._playerList.length; q++) {
+                        if (data.GameData.userid === this._playerList[q].userid) {
+                            player = this._playerList[q];
+                            player.CardArr =  this._tableCardList;
+                            this._scene.SendCard(player);
+                            player.IsLandOwner = false;
+                        }
+                    }
+                    // player.userid = data.GameData.userid;
                     // this.p2.integral = data.GameData.integral;//积分
-                    player.TableId = 1;//桌子上的ID 
-                    player.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
-                    player.IsRobot = false; //是否是机器人。
-                    player.ShowCardNum = 17;  //初始牌数目 17张
-                    player.playerGuid = 2; //没搞懂啥意思，先递增。
-                    player.CardArr = valueobj.cardlist;
-                    this._scene.SendCard(player);
+                    // player.TableId = 1;//桌子上的ID 
+                    // player.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
+                    // player.IsRobot = false; //是否是机器人。
+                    // player.ShowCardNum = 17;  //初始牌数目 17张
+                    // player.playerGuid = 2; //没搞懂啥意思，先递增。
+                    // player.CardArr = cardlist;
+                    // this._scene.SendCard(player);
                     //清除地主标致
                     // for (var i in this._playerList) {
                     //     var pp: data.Player = this._playerList[i];
                     //     if (pp) {
-                        player.IsLandOwner = false;
+                        // player.IsLandOwner = false;
                         // }
                     // }
                     break;
                 case enums.NetEvent.NETEVENT_TURNCALLLAND:
                     this._gamestate = 2;
-                    var valueobj: any = JSON.parse(e.data.value);
-                    var cardnum1: number = valueobj.cardnum1;
-                    var cardnum2: number = valueobj.cardnum2;
-                    var cardnum3: number = valueobj.cardnum3;
-                    var p1: data.Player = this.getPlayerByTableId(0);
-                    var p2: data.Player = this.getPlayerByTableId(1);
-                    var p3: data.Player = this.getPlayerByTableId(2);
-                    if (p1) { p1.ShowCardNum = cardnum1; }
-                    if (p2) { p2.ShowCardNum = cardnum2; }
-                    if (p3) { p3.ShowCardNum = cardnum3; }
-                    var player: data.Player = this.getPlayerByTableId(valueobj.tableid);
-                    this._scene.TurnCallLand(player, player == this._myPlayer, this._landscore, GameSceneProxy.Delay_CallLand);
+                    if (PokesData.GAMESERVER) {
+                        var valueobj: any = e.data;
+                        var nowSocry = valueobj.score;
+                        this._myPlayer = valueobj.player;
+                        var landownerPlayer = valueobj.landownerPlayer;
+                        egret.log( this._myPlayer.userid+"开始抢地主")
+                        this._scene.TurnCallLand(this._myPlayer, true, nowSocry, GameSceneProxy.Delay_CallLand);
+                    } else {
+                        var cardnum1: number = valueobj.cardnum1;
+                        var cardnum2: number = valueobj.cardnum2;
+                        var cardnum3: number = valueobj.cardnum3;
+                        var p1: data.Player = this.getPlayerByTableId(0);
+                        var p2: data.Player = this.getPlayerByTableId(1);
+                        var p3: data.Player = this.getPlayerByTableId(2);
+                        if (p1) { p1.ShowCardNum = cardnum1; }
+                        if (p2) { p2.ShowCardNum = cardnum2; }
+                        if (p3) { p3.ShowCardNum = cardnum3; }
+                        var player: data.Player = this.getPlayerByTableId(valueobj.tableid);
+                        this._scene.TurnCallLand(player, player == this._myPlayer, this._landscore, GameSceneProxy.Delay_CallLand);
+                    }
+
                     break;
 
                     
@@ -271,13 +294,15 @@ module sceneproxy {
                         SoundMgr.Instance.PlayEffect("woman_qiangdizhu3_mp3");
                     }
                     break;
+                    //抢地主
                 case enums.NetEvent.NETEVENT_CALLLANDOVER:         //包括自己
                     this._gamestate = 3;
-                    var valueobj: any = JSON.parse(e.data.value);
-                    var player: data.Player = this.getPlayerByTableId(valueobj.landtableid);
+                    var valueobj= e.data;
+                    this._myPlayer = valueobj.player;
                     this._landList = valueobj.cardlist;
                     this._landscore = valueobj.landscore;
                     var timestr: string = this._landscore + "x" + 1;
+                    var landownerPlayer = valueobj.landownerPlayer;
                     //清除地主标致
                     for (var i in this._playerList) {
                         var pp: data.Player = this._playerList[i];
@@ -285,16 +310,16 @@ module sceneproxy {
                             pp.IsLandOwner = false;
                         }
                     }
-                    player.IsLandOwner = true;
-                    if (player == this._myPlayer) {
+                    landownerPlayer.IsLandOwner = true;
+                    if (landownerPlayer == this._myPlayer) {
                         this._myPlayer.AddCards(valueobj.cardlist);
                     }
-                    player.ShowCardNum = 20;
-                    this._scene.CallLandOver(player, valueobj.cardlist, this._myPlayer, timestr);
+                    landownerPlayer.ShowCardNum = 20;
+                    this._scene.CallLandOver(landownerPlayer, valueobj.cardlist, this._myPlayer, timestr);
                     break;
                 case enums.NetEvent.NETEVENT_TURNPALY:
-                    var valueobj: any = JSON.parse(e.data.value);
-                    var player: data.Player = this.getPlayerByTableId(valueobj.tableid);
+                    var valueobj: any = e.data;
+                    var player: data.Player =this.getPlayerByTableId(valueobj.tableid);
                     var isnew: boolean = valueobj.isnew;
                     var cardnum1: number = valueobj.cardnum1;
                     var cardnum2: number = valueobj.cardnum2;
@@ -309,7 +334,7 @@ module sceneproxy {
                     if (isnew) {
                         this._tableCardList = [];
                         this._lastSendCardPlayer = null;
-                        if (player == this._myPlayer) {
+                        if (player.userid == this._myPlayer.userid) {
                             canshowAll = true;
                             if (p1 != player && p1.ShowCardNum > 1) {
                                 canshowAll = false;
@@ -322,12 +347,12 @@ module sceneproxy {
                             }
                         }
                     }
-                    this._scene.TurnPlay(player, player == this._myPlayer, isnew, this._tableCardList,
+                    this._scene.TurnPlay(player, player.userid == this._myPlayer.userid, isnew, this._tableCardList,
                         GameSceneProxy.Delay_ShowCard, false);
 
                     break;
                 case enums.NetEvent.NETEVENT_SHOWPALY:
-                    var valueobj: any = JSON.parse(e.data.value);
+                    var valueobj: any = e.data;
                     var player: data.Player = this.getPlayerByTableId(valueobj.tableid);
                     var clist: Array<number> = valueobj.cardlist;
                     var yasiloc: number = 1;//是大谁的牌
@@ -361,7 +386,7 @@ module sceneproxy {
                     break;
                 case enums.NetEvent.NETEVENT_GAMEOVER:
                     this._gamestate = 0;
-                    var valueobj: any = JSON.parse(e.data.value);
+                    var valueobj: any = e.data;
                     var winplayer: data.Player = this.getPlayerByTableId(valueobj.wintableid);         //自己的player
                     var islandwin: boolean = valueobj.islandwin;
                     var isactover: boolean = valueobj.isactover;
