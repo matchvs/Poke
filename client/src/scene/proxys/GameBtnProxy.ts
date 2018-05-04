@@ -404,7 +404,7 @@ module scene {
                 NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_AUTO, { isauto: false });
             }
             if (e.currentTarget == this._exiting) {
-                var status = PokesData.engine.leaveRoom("china No 1");
+                // var status = PokesData.engine.leaveRoom("china No 1");
                 egret.log("发送离开房间消息成功");
                 NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_REQ_EXIT, {});
             }
@@ -433,6 +433,7 @@ module scene {
                 var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
                 egret.log("出牌的消息发送是"+data1.result);
                 NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: cardArr });
+                // this.HideAll();
             }
             else if (e.currentTarget == this._sendPromt) {
                 //NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY,{});

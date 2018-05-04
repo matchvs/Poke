@@ -252,11 +252,20 @@ module sceneproxy {
                     this._gamestate = 2;
                     if (PokesData.GAMESERVER) {
                         var valueobj: any = e.data;
-                        var nowSocry = valueobj.score;
+                        var cardnum1: number = valueobj.cardnum1;
+                        var cardnum2: number = valueobj.cardnum2;
+                        var cardnum3: number = valueobj.cardnum3;
+                        var p1: data.Player = this.getPlayerByTableId(0);
+                        var p2: data.Player = this.getPlayerByTableId(1);
+                        var p3: data.Player = this.getPlayerByTableId(2);
+                        if (p1) { p1.ShowCardNum = cardnum1; }
+                        if (p2) { p2.ShowCardNum = cardnum2; }
+                        if (p3) { p3.ShowCardNum = cardnum3; }
+                        var player: data.Player = this.getPlayerByTableId(valueobj.tableid);
                         this._myPlayer = valueobj.player;
-                        var landownerPlayer = valueobj.landownerPlayer;
-                        egret.log( this._myPlayer.userid+"开始抢地主")
-                        this._scene.TurnCallLand(this._myPlayer, true, nowSocry, GameSceneProxy.Delay_CallLand);
+                        this._landscore = valueobj.score;
+                        egret.log( player.userid+"开始抢地主")
+                        this._scene.TurnCallLand(player, player == this._myPlayer, this._landscore, GameSceneProxy.Delay_CallLand);
                     } else {
                         var cardnum1: number = valueobj.cardnum1;
                         var cardnum2: number = valueobj.cardnum2;
@@ -298,11 +307,13 @@ module sceneproxy {
                 case enums.NetEvent.NETEVENT_CALLLANDOVER:         //包括自己
                     this._gamestate = 3;
                     var valueobj= e.data;
-                    this._myPlayer = valueobj.player;
+                    //地主的player
+                    var player:data.Player=this.getPlayerByTableId(valueobj.landtableid);
+                    // this._myPlayer = valueobj.player;
                     this._landList = valueobj.cardlist;
                     this._landscore = valueobj.landscore;
                     var timestr: string = this._landscore + "x" + 1;
-                    var landownerPlayer = valueobj.landownerPlayer;
+                    // var landownerPlayer = valueobj.landownerPlayer;
                     //清除地主标致
                     for (var i in this._playerList) {
                         var pp: data.Player = this._playerList[i];
@@ -310,12 +321,13 @@ module sceneproxy {
                             pp.IsLandOwner = false;
                         }
                     }
-                    landownerPlayer.IsLandOwner = true;
-                    if (landownerPlayer == this._myPlayer) {
+                    player.IsLandOwner = true;
+                    egret.log("地主的ID是"+player.userid);
+                    if (player == this._myPlayer) {
                         this._myPlayer.AddCards(valueobj.cardlist);
                     }
-                    landownerPlayer.ShowCardNum = 20;
-                    this._scene.CallLandOver(landownerPlayer, valueobj.cardlist, this._myPlayer, timestr);
+                    player.ShowCardNum = 20;
+                    this._scene.CallLandOver(player, valueobj.cardlist, this._myPlayer, timestr);
                     break;
                 case enums.NetEvent.NETEVENT_TURNPALY:
                     var valueobj: any = e.data;
@@ -334,7 +346,7 @@ module sceneproxy {
                     if (isnew) {
                         this._tableCardList = [];
                         this._lastSendCardPlayer = null;
-                        if (player.userid == this._myPlayer.userid) {
+                        if (player == this._myPlayer) {
                             canshowAll = true;
                             if (p1 != player && p1.ShowCardNum > 1) {
                                 canshowAll = false;
@@ -347,7 +359,7 @@ module sceneproxy {
                             }
                         }
                     }
-                    this._scene.TurnPlay(player, player.userid == this._myPlayer.userid, isnew, this._tableCardList,
+                    this._scene.TurnPlay(player, player == this._myPlayer, isnew, this._tableCardList,
                         GameSceneProxy.Delay_ShowCard, false);
 
                     break;
@@ -376,7 +388,6 @@ module sceneproxy {
                         this._lastSendCardPlayer = player;
                     }
                     this._scene.ShowPlay(player, clist, player == this._myPlayer, timestr, yasiloc);
-
                     if (clist != null && clist.length > 0) {
                         SoundMgr.Instance.PlayEffect("card_down_mp3");
                     }

@@ -302,7 +302,6 @@ module scene {
 
                     }
                     this.plist[i].CardArr = CardArr;
-                        egret.log("2222"+(new Date()).valueOf());
                     this._playerList.push(this.plist[i]);
                     //长度为3，房间人满，这个时候展示开始按钮，就可以开始游戏了
                     if(this._playerList.length === 3) {
@@ -310,9 +309,7 @@ module scene {
                         // NetMgr.Instance.SendMsg(enums.NetEnum.GAME_START_GAME,this._playerList);
                        this.startGame(this._playerList);  
                     }
-                    for(var a = 0; a < this._playerList.length;a++) {
-                        egret.log(this._playerList[a]+"222222");
-                    }
+
                     return;
                 }
     
@@ -530,7 +527,7 @@ module scene {
 
         //其他玩家发牌,包括主玩家
         public ShowPlay(player: data.Player, clist: Array<number>, isme: boolean, timestr: string, yasiloc: number): void {
-
+            egret.log("ShowPlay"+player.userid);
             this._uiProxy.UpdateAllCardNum();
             if (isme) {
                 this._mycardProxy.SendOver();
@@ -569,6 +566,7 @@ module scene {
 
         public GameOver(iswin: boolean, p1: data.Player, p2: data.Player, p3: data.Player,
             islandwin: boolean, timestr: string, isactover: boolean, actrank: number, actHScore: number, actmoney: number, winplayer: data.Player): void {
+            // PokesData.engine.leaveRoom("");
             PokesData.engine.joinRandomRoom(3,""); 
             this._uiProxy.SetTimes(timestr);
             this._btnProxy.HideAll();

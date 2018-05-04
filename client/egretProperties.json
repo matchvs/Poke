@@ -15,37 +15,37 @@
     "exmlPublishPolicy": "commonjs"
   },
   "modules": [
-		{
-			"name": "egret",
-			"path": "${EGRET_APP_DATA}/4.0.0"
-		},
-		{
-			"name": "game",
-			"path": "${EGRET_APP_DATA}/4.0.0"
-		},
-		{
-			"name": "res",
-			"path": "${EGRET_APP_DATA}/4.0.0"
-		},
-		{
-			"name": "gui",
-			"path": "${EGRET_APP_DATA}/4.0.0"
-		},
-		{
-			"name": "socket",
-			"path": "${EGRET_APP_DATA}/4.0.0"
-		},
-		{
-			"name": "tween",
-			"path": "${EGRET_APP_DATA}/4.0.0"
-		},
-		{
-			"name": "nest",
-			"path": "../Nest-master/libsrc"
-		},
-		{
-			"name": "matchvs",
-			"path": "../matchvs"
-		}
+    {
+      "name": "egret",
+      "path": "${EGRET_APP_DATA}/4.0.0"
+    },
+    {
+      "name": "game",
+      "path": "${EGRET_APP_DATA}/4.0.0"
+    },
+    {
+      "name": "res",
+      "path": "${EGRET_APP_DATA}/4.0.0"
+    },
+    {
+      "name": "gui",
+      "path": "${EGRET_APP_DATA}/4.0.0"
+    },
+    {
+      "name": "socket",
+      "path": "${EGRET_APP_DATA}/4.0.0"
+    },
+    {
+      "name": "tween",
+      "path": "${EGRET_APP_DATA}/4.0.0"
+    },
+    {
+      "name": "nest",
+      "path": "../Nest-master/libsrc"
+    },
+    {
+      "name": "matchvs",
+      "path": "../matchvs"
+    }
   ]
 }
