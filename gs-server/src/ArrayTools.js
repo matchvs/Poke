@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 /*
  *
  * @author
@@ -21,6 +23,16 @@ class ArrayTools {
             return a - b
         });
     };
+
+    /**
+     * md5加密
+     * @param {string} content 
+     */
+    static md5Encode(content){
+        let md5 = crypto.createHash("md5");
+        md5.update(content);
+        return md5.digest('hex');
+    }
 }
 
 module.exports = ArrayTools;

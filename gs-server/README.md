@@ -2,6 +2,8 @@
 
 
 
+gameServer 代码发布需要修改 GameData Conf 接口中 DATA_STORAGE_ENV 值，0  alpha 环境，1release环境。
+
 ## 发牌
 
 请求数据: action=113
@@ -69,6 +71,53 @@ action=180
   "landCards": [
   ],
   "score": 2
+}
+```
+
+
+
+##  上报分数
+
+请求数据：action = 181
+
+```javascript
+var event = {
+    action:181,
+    rankValue:1
+};
+```
+
+返回数据：action = 182
+
+```javascript
+//返回status = 0 成功 1 失败
+{ action: 182,
+  userID: 85565,
+  status: 0,
+  rank: 1,//当前排名
+  totleScore: 2760708 //总分数 
+}
+```
+
+
+
+## 重置房间信息
+
+请求数据：action:140
+
+```javascript
+var event = {
+    action:140
+};
+```
+
+返回信息：action = 141
+
+```javascript
+{ 
+    action: 141, 
+    userID: 85565, 
+    status: 0 
 }
 ```
 

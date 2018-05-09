@@ -46,7 +46,7 @@ class App {
      * @memberof App
      */
     onCreateRoom(request) {
-        log.debug('onCreateRoom:', request);
+        log.debug('onCreateRoom:');
         this.roomCtl.add(request.gameID, request.roomID, this.pushHander);
         log.info("room count:"+this.roomCtl.showRoomNum());
     }
@@ -59,7 +59,7 @@ class App {
      * @memberof App
      */
     onDeleteRoom(request) {
-        log.debug('onDeleteRoom:', request);
+        log.debug('onDeleteRoom:');
         this.roomCtl.delete(request.roomID);
     }
     
@@ -77,7 +77,7 @@ class App {
      * @memberof App
      */
     onJoinRoom(request) {
-        log.debug('onJoinRoom:', request);
+        //log.debug('onJoinRoom:', request);
         this.roomCtl.palyerEnter(request.roomID, request.userID);
     }
     
@@ -90,7 +90,7 @@ class App {
      * @memberof App
      */
     onJoinOver(request) {
-        log.debug('onJoinOver:', request);
+        log.debug('onJoinOver:');
     }
     
     /**
@@ -155,7 +155,7 @@ class App {
      * @memberof App
      */
     onReceiveEvent(request) {
-        log.debug('onReceiveEvent:', request);
+        //log.debug('onReceiveEvent:', request);
         let content = new textEncoding.TextDecoder("utf-8").decode(request.cpProto);
         log.info("content:"+content);
         this.roomCtl.messageEvent(request.roomID, request.userID, content);
@@ -182,7 +182,7 @@ class App {
      * @memberof App
      */
     onRoomDetail(request) {
-        log.debug('onRoomDetail:', request);
+        log.debug('onRoomDetail:');
     }
 
     examplePush(request) {
