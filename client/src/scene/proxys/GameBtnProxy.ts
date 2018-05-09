@@ -30,6 +30,8 @@ module scene {
         private _sendPromt: SButton = null;
         private _sendCard: SButton = null;
 
+        private  _share_wx :SButton = null;
+
         private _currentDownSprite: egret.Sprite = null;   //当前拖动容器
         private _callSprite: egret.Sprite = null;      //叫分按钮容器;
         private _playSprite: egret.Sprite = null;      //玩游戏按钮
@@ -91,6 +93,10 @@ module scene {
             this._prompt.ClickScale = false;
             this._prompt.x = 0;
             this._prompt.y = 632;
+
+      
+
+
             
             /**
              * 初始化确认等按钮
@@ -255,6 +261,16 @@ module scene {
             this._ready.SetTxt(40, 0xffffff);
             this._ready.x = 4;//0;//4;
             this._ready.y = 20;//0;//20;
+            
+            //竞技模式提供约战按钮
+            if(PokesData.gameMode == 2) {
+                this._share_wx = new SButton("btn_zhunbei",null,"");
+                this._readySprite.addChild(this._share_wx);
+                this._share_wx.SetTxt(40,0xffffff);
+                this._share_wx.x =  4;
+                this._share_wx.y = 100;
+            }
+
 
             /**
              * 叫地主时的按钮分布
@@ -308,14 +324,20 @@ module scene {
             this._sendCard.y = 0;
 
             this._sendReset.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
-            this._sendCard.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
-            this._sendPromt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
-            this._sendNo.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
+            // this._sendCard.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
+            // this._sendPromt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
+            // this._sendNo.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
             this._call3.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
             this._call2.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
             this._call1.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
             this._callNo.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
             this._ready.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this, false);
+            this._sendCard.addEventListener(egret.TouchEvent.TOUCH_END,this.sendCard,this,false);
+            this._sendNo.addEventListener(egret.TouchEvent.TOUCH_END,this.sendNo,this,false);
+            this._sendPromt.addEventListener(egret.TouchEvent.TOUCH_END, this.sendPromt, this, false);
+            if(PokesData.gameMode == 2) {
+                this._share_wx.addEventListener(egret.TouchEvent.TOUCH_END,this.onTap,this,false);
+            } 
         }
 
 
@@ -394,119 +416,258 @@ module scene {
         }
 
         private onTap(e: egret.TouchEvent): void {
-            if (e.currentTarget == this._setting) {
-                windowui.SettingInst.Instance.Show();
+            egret.log(e.currentTarget+"点击事件触发");
+            switch(e.currentTarget) {
+                case this._setting:
+                    windowui.SettingInst.Instance.Show();
+                break;
+                case this._autoing:
+                    if(this._prompt.visible == false) {
+                        NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_AUTO, { isauto: true });
+                    }
+                break;
+                case this._prompt:
+                    NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_AUTO, { isauto: false });
+                break;
+                case this._exiting:
+                    var status = PokesData.engine.leaveRoom("china No 1");
+                    // egret.log("发送离开房间消息成功");
+                    NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_REQ_EXIT, {});
+                break;
+                case this._talking:
+                    windowui.ChatInst.Instance.Show();
+                break;
+                case this._ready:
+                    //准备注释掉原来的逻辑
+                    var event = {
+                        action:enums.NetEnum.CLIENT_2_GAME_READY
+                    };
+                    var data = JSON.stringify(event);
+                    var result = PokesData.engine.sendEventEx(2, data, 0,[]);
+                    egret.log("发送准备消息的返回值"+result.result);
+                    // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY, {});
+                break;
+                case  this._sendReset:
+                   this._myCardProxy.Reset();
+                break;
+                case this._call3:
+                    this.callBoss(3);
+                break;
+                case this._call2:
+                    this.callBoss(2);
+                break;
+                case this._call1:
+                    this.callBoss(1);
+                break;
+                case this._callNo:
+                    this.callBoss(0);
+                break;
+                case this._share_wx:
+                    NetMgr.Instance.SendMsg(enums.NetEnum.GAME_SHARE_WX, {});
+                break;
             }
-            if (e.currentTarget == this._autoing && this._prompt.visible == false) {
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_AUTO, { isauto: true });
-            }
-            if (e.currentTarget == this._prompt) {
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_AUTO, { isauto: false });
-            }
-            if (e.currentTarget == this._exiting) {
-                // var status = PokesData.engine.leaveRoom("china No 1");
-                egret.log("发送离开房间消息成功");
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_REQ_EXIT, {});
-            }
-            else if (e.currentTarget == this._talking) {
-                windowui.ChatInst.Instance.Show();
-            }
-            else if (e.currentTarget == this._ready) {
-                //准备注释掉原来的逻辑
-                var event = {
-                    action:enums.NetEnum.CLIENT_2_GAME_READY
-                };
-                var data = JSON.stringify(event);
-                PokesData.engine.sendEventEx(2, data, 0,[]);
-                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY, {});
-            }
-            // 出牌
-            else if (e.currentTarget == this._sendCard) {
-                var cardArr: Array<number> = this._myCardProxy.GetWillShowList();
-                if (cardArr == null) {
-                    trace("牌类型出错");
-                    return;
-                }
-                var obj: any = {};
-                obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
-                obj.value = { cardlist: cardArr };
-                var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
-                egret.log("出牌的消息发送是"+data1.result);
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: cardArr });
-                // this.HideAll();
-            }
-            else if (e.currentTarget == this._sendPromt) {
-                //NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY,{});
-                var hasbigger: boolean = this._myCardProxy.getHasBigger();
-                if (!hasbigger) {
-                    NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
-                }
-                else {
-                    var hascar: boolean = this._myCardProxy.Prompt(false, true);
-                    this._myCardProxy.SetBtnVisible();
-                }
-            }
-            else if (e.currentTarget == this._sendReset) {
-                this._myCardProxy.Reset();
-            }
-            //不出牌
-            else if (e.currentTarget == this._sendNo) {
-                // var event1 = {                    
-                //     action: enums.NetEnum.GAME_2_CLIENT_TURNPLAY,
-                //     socore:0  };
-                // var data = JSON.stringify(event1);
-                // PokesData.engine.sendEventEx(2, data, 0,[]);
-                var obj: any = {};
-                obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
-                obj.value = { cardlist: [] };
-                var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
-                egret.log("出牌的消息发送是"+data1.result);
-                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
-            }
-            else if (e.currentTarget == this._call3) {
-                var event1 = {                    
-                    action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
-                    score:3 };
-                var data = JSON.stringify(event1);
-                PokesData.engine.sendEventEx(2, data, 0,[]);
-                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 3 });
-                this.HideAll();
-            }
-            else if (e.currentTarget == this._call2) {
-                var event1 = {                    
-                    action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
-                    score:2 };
-                var data = JSON.stringify(event1);
-                PokesData.engine.sendEventEx(2, data, 0,[]);
-                // PokesData.engine.sendEvent("score: 2");
-                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 2 });
-                this.HideAll();
-            }
-            else if (e.currentTarget == this._call1) {
-                var event1 = {                    
-                    action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
-                    score:1 };
-                var data = JSON.stringify(event1);
-                PokesData.engine.sendEventEx(2, data, 0,[]);
-                // PokesData.engine.sendEvent("score: 1");
-                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 1 });
-                this.HideAll();
-            }
-            else if (e.currentTarget == this._callNo) {
-                var event1 = {                    
-                    action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
-                    score:0};
-                var data = JSON.stringify(event1);
-                PokesData.engine.sendEventEx(2, data, 0,[]);
-                // PokesData.engine.sendFrameEvent("score: 0");
-                // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 0 });
-                this.HideAll();
-            }
+            // if (e.currentTarget == this._setting) {
+            //     windowui.SettingInst.Instance.Show();
+            // }
+            // if (e.currentTarget == this._autoing && this._prompt.visible == false) {
+            //     // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_AUTO, { isauto: true });
+            // }
+            // if (e.currentTarget == this._prompt) {
+            //     NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_AUTO, { isauto: false });
+            // }
+            // if (e.currentTarget == this._exiting) {
+            //     var status = PokesData.engine.leaveRoom("china No 1");
+            //     // egret.log("发送离开房间消息成功");
+            //     NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_REQ_EXIT, {});
+            // }
+            // else if (e.currentTarget == this._talking) {
+            //     windowui.ChatInst.Instance.Show();
+            // }
+            // else if (e.currentTarget == this._ready) {
+            //     //准备注释掉原来的逻辑
+            //     var event = {
+            //         action:enums.NetEnum.CLIENT_2_GAME_READY
+            //     };
+            //     var data = JSON.stringify(event);
+            //     var result = PokesData.engine.sendEventEx(2, data, 0,[]);
+            //     egret.log("发送准备消息的返回值"+result.result);
+            //     // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY, {});
+            // }
+            // // 出牌
+            // else if (e.currentTarget == this._sendCard) {
+            //     // var cardArr: Array<number> = this._myCardProxy.GetWillShowList();
+            //     // if (cardArr == null) {
+            //     //     trace("牌类型出错");
+            //     //     return;
+            //     // }
+            //     // egret.log("触发出牌");
+            //     // var obj: any = {};
+            //     // obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
+            //     // obj.value = { cardlist: cardArr };
+            //     // var result = PokesData.engine.sendEvent(JSON.stringify(obj));
+            //     // egret.log("发送出牌消息的返回值"+result.result);
+
+            //     // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: cardArr });
+            //     // this.HideAll();
+            // }
+            // //提示
+            // else if (e.currentTarget == this._sendPromt) {
+            //     //NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY,{});
+            //     // var hasbigger: boolean = this._myCardProxy.getHasBigger();
+            //     // if (!hasbigger) {
+            //     //     egret.log("触发提示并且不出牌");
+            //     //     var obj: any = {};
+            //     //     obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
+            //     //     obj.value = { cardlist: [] };
+            //     //     var data1 = PokesData.engine.sendEvent(JSON.stringify(obj));
+            //     //     egret.log("发送提示不出牌的消息的返回值"+data1.result);
+            //     //     NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
+            //     // }
+            //     // else {
+            //     //     var hascar: boolean = this._myCardProxy.Prompt(false, true);
+            //     //     this._myCardProxy.SetBtnVisible();
+            //     // }
+            // }
+            // else if (e.currentTarget == this._sendReset) {
+            //     this._myCardProxy.Reset();
+            // }
+            // //不出牌
+            // else if (e.currentTarget == this._sendNo) {
+            //     // var event1 = {                    
+            //     //     action: enums.NetEnum.GAME_2_CLIENT_TURNPLAY,
+            //     //     socore:0  };
+            //     // var data = JSON.stringify(event1);
+            //     // PokesData.engine.sendEventEx(2, data, 0,[]);
+            //     // egret.log("触发不出牌");
+            //     // var obj: any = {};
+            //     // obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
+            //     // obj.value = { cardlist: [] };
+            //     // var data1 = PokesData.engine.sendEvent(JSON.stringify(obj));
+            //     // egret.log("发送不出牌的消息的返回值"+data1.result);
+            //     // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
+            // }
+            // else if (e.currentTarget == this._call3) {
+            //     egret.log("抢三分的动作触发");
+            //     var event1 = {                    
+            //         action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+            //         score:3 };
+            //     var data = JSON.stringify(event1);
+            //     var data1 = PokesData.engine.sendEventEx(2, data, 0,[]);
+            //     egret.log("发送抢三分的动作的返回值"+data1.result);
+            //     // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 3 });
+            //     this.HideAll();
+            // }
+            // else if (e.currentTarget == this._call2) {
+            //     egret.log("抢两分的动作触发");
+            //     var event1 = {                    
+            //         action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+            //         score:2 };
+            //     var data = JSON.stringify(event1);
+            //     var data1 = PokesData.engine.sendEventEx(2, data, 0,[]);
+            //     egret.log("发送抢两分的动作的返回值"+data1.result);
+            //     // PokesData.engine.sendEvent("score: 2");
+            //     // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 2 });
+            //     this.HideAll();
+            // }
+            // else if (e.currentTarget == this._call1) {
+            //     egret.log("抢一分的动作触发");
+            //     var event1 = {                    
+            //         action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+            //         score:1 };
+            //     var data = JSON.stringify(event1);
+            //     var data1 = PokesData.engine.sendEventEx(2, data, 0,[]);
+            //     egret.log("发送抢一分的动作的返回值"+data1.result);
+            //     // PokesData.engine.sendEvent("score: 1");
+            //     // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 1 });
+            //     this.HideAll();
+            // }
+            // else if (e.currentTarget == this._callNo) {
+            //     egret.log("不抢的动作触发");
+            //     var event1 = {                    
+            //         action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+            //         score:0};
+            //     var data = JSON.stringify(event1);
+            //      var data1 = PokesData.engine.sendEventEx(2, data, 0,[]);
+            //     egret.log("发送不抢的动作的返回值"+data1.result);
+            //     // PokesData.engine.sendFrameEvent("score: 0");
+            //     // NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 0 });
+            //     this.HideAll();
+            // }
         }
+
+        /**
+         * 抢地主
+         */
+        public callBoss(score:number) {
+            egret.log("抢的分数是"+score);
+            var event1 = {                    
+                action: enums.NetEnum.GAME_2_CLIENT_TURNCALLLAND,
+                score:score};
+            var data = JSON.stringify(event1);
+                var data1 = PokesData.engine.sendEventEx(2, data, 0,[]);
+            egret.log("发送抢地主的动作的返回值"+data1.result);
+            this.HideAll();
+        }
+
 
         public Release(): void {
             this._gameScene.removeChildren();
             this._gameScene = null;
         }
+
+        /**
+         * 出牌
+         */
+        private sendCard(e: egret.TouchEvent):void {
+            var cardArr: Array<number> = this._myCardProxy.GetWillShowList();
+            if (cardArr == null) {
+                trace("牌类型出错");
+                return;
+            }
+            egret.log("触发出牌");
+            var obj: any = {};
+            obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
+            obj.value = { cardlist: cardArr };
+            var result = PokesData.engine.sendEvent(JSON.stringify(obj));
+            egret.log("发送出牌消息的返回值"+result.result);
+
+            NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: cardArr });
+        }
+
+        /**
+         * 不出牌
+         */
+        private sendNo(e: egret.TouchEvent):void {
+            egret.log("触发不出牌");
+            var obj: any = {};
+            obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
+            obj.value = { cardlist: [] };
+            var data1 = PokesData.engine.sendEvent(JSON.stringify(obj));
+            egret.log("发送不出牌的消息的返回值"+data1.result);
+            NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
+        }
+
+        /**
+         * 提示
+         */
+        private sendPromt (e: egret.TouchEvent) :void {
+            var hasbigger: boolean = this._myCardProxy.getHasBigger();
+            if (!hasbigger) {
+                egret.log("触发提示并且不出牌");
+                var obj: any = {};
+                obj.type = enums.NetEnum.CLIENT_2_GAME_SHOWCARD;
+                obj.value = { cardlist: [] };
+                var data1 = PokesData.engine.sendEvent(JSON.stringify(obj));
+                egret.log("发送提示不出牌的消息的返回值"+data1.result);
+                NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
+            }
+            else {
+                var hascar: boolean = this._myCardProxy.Prompt(false, true);
+                this._myCardProxy.SetBtnVisible();
+            }
+        }
     }
+
+
+
 }

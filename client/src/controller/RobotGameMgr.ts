@@ -27,6 +27,7 @@ class RobotGameMgr {
     private _callOwner :any = 0;
     private _myPlayer :data.Player = new data.Player;
     private _handPlayUserTableID = 0;
+    private _roomID :any= "";
 
 
     private _timeoutList: Array<number> = [];
@@ -235,11 +236,11 @@ class RobotGameMgr {
                 // var jstr = JSON.stringify(obj);
                 NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_SHOWPLAY,value);
                 if(this._handPlayUserTableID == 2) {
-                    egret.log(this._handPlayUserTableID+"号位出牌");
+                    // egret.log(this._handPlayUserTableID+"号位出牌");
                     this._handPlayUserTableID =0
                     this.GameServerBeginPlay(this._handPlayUserTableID,0,false);
                 } else {
-                    egret.log(this._handPlayUserTableID+"号位出牌");
+                    // egret.log(this._handPlayUserTableID+"号位出牌");
                     this._handPlayUserTableID++;
                     this.GameServerBeginPlay(this._handPlayUserTableID,0,false);
                 }
@@ -250,6 +251,7 @@ class RobotGameMgr {
                 obj.value.msg = value;
                 break;
             case enums.NetEnum.GAME_2_CLIENT_GAMEOVER:
+                egret.log("我是接收到结算消息才去结算的");
                 var obj: any = {};
                 obj.type = enums.NetEnum.GAME_2_CLIENT_GAMEOVER;
                 var player: data.Player = this._playerList[this._playerPoint];
@@ -261,6 +263,14 @@ class RobotGameMgr {
                 obj.tablelist_1 = this._playerList[1].CardArr;
                 obj.tablelist_2 = this._playerList[2].CardArr;
                 NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_GAMEOVER,obj);
+                break;
+            case enums.NetEnum.GAME_SHARE_WX:
+                egret.log("微信分享");
+                together("roomID",this._roomID);
+                break;
+            case enums.NetEnum.MATCHVS_GAME_SERVER_LOGIN_ROOM:
+                this._roomID = value;
+                egret.log("ddddddddddddddddd"+value);
                 break;
             default :
                 break;
@@ -295,10 +305,10 @@ class RobotGameMgr {
         obj.cardlist = value.cardlist;
         obj.playList = value.playList;
         obj.callOwner = value.callOwner;
-        egret.log(obj);
+        // egret.log(obj);
         NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_SENDCARD,obj);
             //等待客户端播放发牌动画.开始
-        egret.log("开始发牌动画");
+        // egret.log("开始发牌动画");
         this._timeoutList.push(egret.setTimeout(this.GameServerBeginCallOwner, this, 5000));
     }
 
@@ -444,7 +454,7 @@ class RobotGameMgr {
         var obj: any = {};
             for(var i=0;i< this._playerList.length; i ++) {
                 if (this._playerList[i].userid === data.GameData.userid) {
-                    egret.log("取出来自己的player0");
+                    // egret.log("取出来自己的player0");
                     var player: data.Player = this._playerList[i];
                 }
                 if (landOwner === this._playerList[i].userid) {
@@ -649,7 +659,7 @@ class RobotGameMgr {
         
         var player = this._playerList[this._playerPoint];
         egret.log("出牌"+slist);
-        egret.log(player);
+        // egret.log(player);
         player.removeCards(slist);
         this._lastPlayer = player;
         if (player.CardNum <= 0) {
@@ -667,22 +677,29 @@ class RobotGameMgr {
             var obj: any = {};
             obj.type = enums.NetEnum.GAME_2_CLIENT_GAMEOVER;
             // var value: any = {};
-            obj.wintableid = player.TableId;
-            obj.islandwin = player.IsLandOwner;
+            obj.wintableid = id;
+            if(id == this._handPlayUserTableID) {
+                 obj.islandwin = true;
+                //地主获胜
+            } else{
+                //普通玩家获胜
+                 obj.islandwin = false;
+            }
+            // id == this._handPlayUserTableID
+            //是否是地主获胜
+            // = player.IsLandOwner;  
             obj.timecount = this._TimeCount;
             obj.tablelist_0 = this._playerList[0].CardArr;
             obj.tablelist_1 = this._playerList[1].CardArr;
             obj.tablelist_2 = this._playerList[2].CardArr;
             // obj.value = JSON.stringify(value);
             // var jstr: string = JSON.stringify(obj);
-
-            var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
-            egret.log("发送了游戏结束消息"+data1.result);
-            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_GAMEOVER,obj);
-
-
+            if(this._playerPoint == this._handPlayUserTableID) {
+                var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
+                egret.log("发送了游戏结束消息"+data1.result);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_GAMEOVER,obj);
+            }
             this.GameOver();
-
             return;
         }
         trace("RobotGameMgr-ShowCard> 出牌成功");
@@ -717,6 +734,7 @@ class RobotGameMgr {
         this._landMaxScore = 0;                             //叫地主的最高分
         this._TimeCount = 1;
         this._lanownList = [];                         //起始的三张地主牌
+        this._handPlayUserTableID = 0;
         while (this._timeoutList.length > 0) {
             egret.clearTimeout(this._timeoutList.pop());
         }

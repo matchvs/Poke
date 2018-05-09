@@ -79,7 +79,8 @@ module enums {
         //Matchvs消息定义。
 
 
-
+        //分享消息
+        GAME_SHARE_WX = 199,
         //创建房间
         GAME_CREATE_ROOM = 200,
         //加入房间

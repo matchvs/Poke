@@ -39,13 +39,14 @@
       "name": "tween",
       "path": "${EGRET_APP_DATA}/4.0.0"
     },
-    {
-      "name": "nest",
-      "path": "../Nest-master/libsrc"
-    },
+
     {
       "name": "matchvs",
-      "path": "../matchvs"
+      "path": "../matchvs_wx"
+    },
+    {
+      "name":"wxshare",
+      "path":"../wxshare"
     }
   ]
 }

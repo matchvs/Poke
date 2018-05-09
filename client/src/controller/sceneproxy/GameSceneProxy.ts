@@ -264,7 +264,7 @@ module sceneproxy {
                         var player: data.Player = this.getPlayerByTableId(valueobj.tableid);
                         this._myPlayer = valueobj.player;
                         this._landscore = valueobj.score;
-                        egret.log( player.userid+"开始抢地主")
+                        // egret.log( player.userid+"开始抢地主")
                         this._scene.TurnCallLand(player, player == this._myPlayer, this._landscore, GameSceneProxy.Delay_CallLand);
                     } else {
                         var cardnum1: number = valueobj.cardnum1;
@@ -330,6 +330,7 @@ module sceneproxy {
                     this._scene.CallLandOver(player, valueobj.cardlist, this._myPlayer, timestr);
                     break;
                 case enums.NetEvent.NETEVENT_TURNPALY:
+                    egret.log("出牌事件已经走到这里了");
                     var valueobj: any = e.data;
                     var player: data.Player =this.getPlayerByTableId(valueobj.tableid);
                     var isnew: boolean = valueobj.isnew;
@@ -399,8 +400,8 @@ module sceneproxy {
                     this._gamestate = 0;
                     var valueobj: any = e.data;
                     var winplayer: data.Player = this.getPlayerByTableId(valueobj.wintableid);         //自己的player
-                    var islandwin: boolean = valueobj.islandwin;
-                    var isactover: boolean = valueobj.isactover;
+                    var islandwin: boolean = valueobj.islandwin;  //地主获胜
+                    var isactover: boolean = valueobj.isactover;  //是不是机器人
                     var actrank = valueobj.rank;
                     var actHScore = valueobj.maxMoney;
                     var actmoney = valueobj.actmoney;
@@ -444,7 +445,9 @@ module sceneproxy {
                     if (actmoney <= 0 && data.GameData.flag == data.GameData.GameFlag_Activity) {
                         data.GameData.IsActivityKick = true;
                     }
-
+                    egret.log("我是不是地主"+this._myPlayer.IsLandOwner);
+                    egret.log("赢的人是"+winplayer.userid);
+                    egret.log("我自己的胜负是"+iswin);
                     this._scene.GameOver(iswin, tp1, tp2, tp3,
                         islandwin, timestr, isactover, actrank, actHScore, actmoney, winplayer);
 

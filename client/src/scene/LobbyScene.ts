@@ -123,9 +123,14 @@ module scene {
             }
             else if (e.currentTarget == this._btn_haoyou) {
                 data.GameData.IsRobot_Offline = false;
-                windowui.CreatRoomInst.Instance.Show();
-//                data.GameData.flag=data.GameData.GameFlag_Group;
-//                SceneMgr.Instance.ShowScene(GameScene);
+                var createRoomInfo :MsCreateRoomInfo = new MsCreateRoomInfo("大家一起来斗地主",3,1,1,1,"");
+                //游戏模式为约战模式
+                PokesData.gameMode = 2; 
+                PokesData.engine.createRoom(createRoomInfo,"");
+                //先注释掉原本的逻辑，这个地方要做约战功能
+                // windowui.CreatRoomInst.Instance.Show();
+            //    data.GameData.flag=data.GameData.GameFlag_Group;
+               SceneMgr.Instance.ShowScene(GameScene);
             }
             else if (e.currentTarget == this._btn_danji) {
                 // 加入房间

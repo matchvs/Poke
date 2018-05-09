@@ -174,20 +174,20 @@ module windowui {
 //透传参数
                     ext: "xx",
                 }
-                nest.iap.pay(info, function (data) {
-                    if(data.result == 0) {
-                        //支付成功
-                        trace("charge sucess")
-                    }
-                    else if(data.result == -1) {
-                        //支付取消
-                        trace("charge cancel")
-                    }
-                    else {
-                        //支付失败
-                        trace("charge error")
-                    }
-                })
+                // nest.iap.pay(info, function (data) {
+                //     if(data.result == 0) {
+                //         //支付成功
+                //         trace("charge sucess")
+                //     }
+                //     else if(data.result == -1) {
+                //         //支付取消
+                //         trace("charge cancel")
+                //     }
+                //     else {
+                //         //支付失败
+                //         trace("charge error")
+                //     }
+                // })
             }
         }
 

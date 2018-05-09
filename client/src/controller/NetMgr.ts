@@ -199,6 +199,14 @@ class NetMgr extends egret.EventDispatcher {
                 //游戏结束
             case enums.NetEnum.GAME_2_CLIENT_GAMEOVER:
                 RobotGameMgr.Instance.SendMsg(type,value);
+                break;
+            case enums.NetEnum.CLIENT_2_GAME_REQ_EXIT:
+                RobotGameMgr.Instance.SendMsg(type,value);
+                break;
+
+            case enums.NetEnum.GAME_SHARE_WX:
+                RobotGameMgr.Instance.SendMsg(type,value);
+                break;
              default:
                 break;
         }

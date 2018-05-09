@@ -132,6 +132,7 @@ module scene {
             PokesData.response.leaveRoomResponse = this.leaveRoomResponse.bind(this);
             PokesData.response.gameServerNotify = this.gameServerNotify.bind(this);
             PokesData.response.sendEventNotify = this.sendEventNotify.bind(this);
+            PokesData.response.createRoomResponse = this.createRoomResponse.bind(this);
             //发送进入房间的信息
 
         }
@@ -143,7 +144,7 @@ module scene {
             var Obj = JSON.parse(eventInfo.cpProto);
             switch(Obj.action) {
                 case enums.NetEnum.GAME_2_CLIENT_SENDCARD:
-                    egret.log("郁闷，郁闷"+eventInfo.cpProto);
+                    // egret.log("郁闷，郁闷"+eventInfo.cpProto);
                     // var cardObj = Obj.cpProto;
                         var obj: any = {};
               
@@ -152,7 +153,7 @@ module scene {
                             obj.cardlist = Obj.userCards[i].card;
                         } 
                         this.addRoomInfoPlayer(Obj.userCards[i].userID,Obj.userCards[i].card );
-                        egret.log("11111"+(new Date()).valueOf());
+                        // egret.log("11111"+(new Date()).valueOf());
                     } 
                     obj.playList = this._playerList;
                     obj.lanownList = Obj.lanownList;
@@ -161,7 +162,7 @@ module scene {
                 break;
                 // 下一个叫地主的玩家
                 case enums.NetEnum.GAME_2_CLIENT_CALLLANDOWNER:
-                    egret.log("下一个抢地主玩家的信息"+eventInfo.cpProto);
+                    // egret.log("下一个抢地主玩家的信息"+eventInfo.cpProto);
                     if(data.GameData.userid === Obj.nextUser) {
                             var player: data.Player = this._playerList[i];
                             var obj: any = {};
@@ -176,7 +177,7 @@ module scene {
                 break;
                 //地主产生
                 case enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER:
-                    egret.log("产生了地主"+eventInfo.cpProto);
+                    // egret.log("产生了地主"+eventInfo.cpProto);
                     var obj: any = {};
                     obj.type = enums.NetEnum.GAME_2_CLIENT_CALLLANDOVER;
                     obj.landOwner = Obj.landOwner;
@@ -197,7 +198,7 @@ module scene {
                 egret.log("进入房间成功,房间ID："+roomInfo.roomID);
                 PokesData.GAMESERVER = true;
                 if( PokesData.GAMESERVER) {
-                    NetMgr.Instance.SendMsg(enums.NetEnum.MATCHVS_GAME_SERVER_LOGIN_ROOM);
+                    NetMgr.Instance.SendMsg(enums.NetEnum.MATCHVS_GAME_SERVER_LOGIN_ROOM,roomInfo.roomID);
                     this.RoomIn();
                 } else {
                     this.ownerId = roomInfo.ownerId;
@@ -211,6 +212,26 @@ module scene {
      
         
             }
+        }
+
+        createRoomResponse = function(createRoomRsp) {
+             if (createRoomRsp.status === 200) {
+                egret.log("创建房间成功,房间ID："+createRoomRsp.roomID);
+                PokesData.GAMESERVER = true
+                if( PokesData.GAMESERVER) {
+                    NetMgr.Instance.SendMsg(enums.NetEnum.MATCHVS_GAME_SERVER_LOGIN_ROOM,createRoomRsp.roomID);
+                    this.RoomIn();
+                } else {
+                    this.ownerId = createRoomRsp.createRoomRsp;
+                    data.GameData.playerGuid = 1;
+                    // var userInfoListLength:number = roomUserInfoList.length;
+                    // this.addRoomInfoPlayer(data.GameData.userid);
+                    // for (var i = 0; i < userInfoListLength; i ++) {
+                        // this.addRoomInfoPlayer(roomUserInfoList[i].userId);
+                    // }
+                }
+     
+             }
         }
 
         /**
@@ -235,11 +256,11 @@ module scene {
          * 接受消息
          */
         sendEventNotify = function (eventInfo) {
-            egret.log(eventInfo.srcUserId+"发送了消息");
             var obj :any= JSON.parse(eventInfo.cpProto);
             switch(obj.type) {
                 //别人出的牌
                 case enums.NetEnum.CLIENT_2_GAME_SHOWCARD:
+                    egret.log(eventInfo.srcUserId+"发送了出牌消息");
                      NetMgr.Instance.SendMsg(obj.type,obj.value);
                 break;
                 // 游戏结束
@@ -277,7 +298,7 @@ module scene {
         //初始化玩家属性，出牌顺序没有确定的产生规则
         private addRoomInfoPlayer(userID:any, CardArr:Array<number>){
             //默认将自己作为P1选手，在桌上的位置在最下方
-            egret.log(userID+"进入桌子，开始初始化");
+            // egret.log(userID+"进入桌子，开始初始化");
             
             for (var i = 0; i < this.plist.length;i++) {
                 if(this.plist[i].userid == '') {
@@ -314,31 +335,6 @@ module scene {
                 }
     
             }
-
-            // if (this.p1.userid == '') {
-
-            // }else if(this.p2.userid == '') {
-            //     this.p2.userid = userID;
-            //     // this.p2.integral = data.GameData.integral;//积分
-            //     this.p2.TableId = 1;//桌子上的ID 
-            //     this.p2.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
-            //     this.p2.IsRobot = false; //是否是机器人。
-            //     this.p2.ShowCardNum = 17;  //初始牌数目 17张
-            //     this.p2.playerGuid = 2; //没搞懂啥意思，先递增。
-            //     this._playerList.push(this.p2);
-            // } else {
-            //     this.p3.userid = userID;
-            //     // this.p3.integral = data.GameData.integral;//积分
-            //     this.p3.TableId = 2;//桌子上的ID 
-            //     this.p3.IsReady = true; // 默认准备，gameServer链接后  预计发一个 准备的消息
-            //     this.p3.IsRobot = false; //是否是机器人。
-            //     this.p3.ShowCardNum = 17;  //初始牌数目 17张
-            //     this.p3.playerGuid = 3; //没搞懂啥意思，先递增。
-            //     this._playerList.push(this.p3);
-            // }
-
-  
-            egret.log(this._playerList.length+"已经push进来了");
 
         }
 
@@ -458,7 +454,7 @@ module scene {
                 //全部隐藏起来等待服务器下发叫地主通知
                 if (this._btnProxy.State != GameBtnProxy.STATE_Qiangdizhu && this._btnProxy.State != GameBtnProxy.STATE_Playing) {
                     this._btnProxy.HideAll();
-                    egret.log("  // 其他隐藏,除自己的");
+                    // egret.log("  // 其他隐藏,除自己的");
                 }
             }, this);
         }
@@ -493,6 +489,7 @@ module scene {
         }
         //轮到该玩家发牌
         public TurnPlay(player: data.Player, isme: boolean, isnew: boolean, tablelist: Array<number>, delaytime: number, canshowAll: boolean, lastplayer: data.Player = null): void {
+            egret.log();
             if (isnew) {
                 this._sendCardAniProxy.Release(0);
                 this._tableCardProxy.clearAll();
@@ -527,7 +524,7 @@ module scene {
 
         //其他玩家发牌,包括主玩家
         public ShowPlay(player: data.Player, clist: Array<number>, isme: boolean, timestr: string, yasiloc: number): void {
-            egret.log("ShowPlay"+player.userid);
+            // egret.log("ShowPlay"+player.userid);
             this._uiProxy.UpdateAllCardNum();
             if (isme) {
                 this._mycardProxy.SendOver();
@@ -567,7 +564,7 @@ module scene {
         public GameOver(iswin: boolean, p1: data.Player, p2: data.Player, p3: data.Player,
             islandwin: boolean, timestr: string, isactover: boolean, actrank: number, actHScore: number, actmoney: number, winplayer: data.Player): void {
             // PokesData.engine.leaveRoom("");
-            PokesData.engine.joinRandomRoom(3,""); 
+            // PokesData.engine.joinRandomRoom(3,""); 
             this._uiProxy.SetTimes(timestr);
             this._btnProxy.HideAll();
             this._uiProxy.GameOver();
