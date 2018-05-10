@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.AnimationSkin" width="720" height="1280" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" >
+	<w:Declarations>
+		<tween:TweenGroup id="bgAnim">
+			<tween:TweenItem target="{bg}">
+				<tween:To duration="500" ease="sineIn">
+					<tween:props>
+						<e:Object alpha="{0}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="500" ease="sineOut">
+					<tween:props>
+						<e:Object alpha="{1}"/>
+					</tween:props>
+				</tween:To>
+			</tween:TweenItem>
+		</tween:TweenGroup>
+		<tween:TweenGroup id="btnAnim">
+			<tween:TweenItem target="{hero}">
+				<tween:To duration="250">
+					<tween:props>
+						<e:Object y="{1023}" alpha="{0.5}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="250">
+					<tween:props>
+						<e:Object alpha="{1}" y="{1160.79}"/>
+					</tween:props>
+				</tween:To>
+			</tween:TweenItem>
+			<tween:TweenItem target="{about}">
+				<tween:To duration="500">
+				<tween:props>
+					<e:Object y="{1023}" alpha="{0.5}"/>
+				</tween:props>
+				</tween:To>
+				<tween:To duration="500">
+				<tween:props>
+					<e:Object alpha="{1}" y="{1160.79}"/>
+				</tween:props>
+				</tween:To>
+			</tween:TweenItem>
+			<tween:TweenItem target="{player}">
+				<tween:To duration="750">
+				<tween:props>
+					<e:Object y="{1023}" alpha="{0.5}"/>
+				</tween:props>
+				</tween:To>
+				<tween:To duration="500">
+				<tween:props>
+					<e:Object alpha="{1}" y="{1160.79}"/>
+				</tween:props>
+				</tween:To>
+			</tween:TweenItem>
+			<tween:TweenItem target="{thing}">
+				<tween:To duration="800">
+				<tween:props>
+					<e:Object y="{1023}" alpha="{0.5}"/>
+				</tween:props>
+				</tween:To>
+				<tween:To duration="700">
+				<tween:props>
+					<e:Object alpha="{1}" y="{1160.79}"/>
+				</tween:props>
+				</tween:To>
+			</tween:TweenItem>
+		</tween:TweenGroup>
+	</w:Declarations>
+	<w:Config id="1630b19fbde" ></w:Config>
+	<e:Image id="bg" left="0" right="0" top="0" bottom="0" source="resource/assets/homeBg.jpg"/>
+	<e:Image width="683.64" height="124.56" x="20.94" y="1151.42" anchorOffsetX="0" anchorOffsetY="0" source="resource/profile/mbtn_Bg.png" fillMode="repeat"/>
+	<e:Image width="155" height="107.88" x="201" y="1160.79" anchorOffsetX="0" anchorOffsetY="0" source="resource/profile/mbtn_BgFc.png"/>
+	<e:Image id="hero" width="156" height="113.94" x="33.25" y="1157.76" anchorOffsetX="0" anchorOffsetY="0" source="resource/profile/mbtnHero.png"/>
+	<e:Image id="thing" width="156" height="113.94" x="541" y="1154.46" anchorOffsetX="0" anchorOffsetY="0" source="resource/profile/mbtnAbout.png"/>
+	<e:Image id="player" width="156" height="113.94" x="370" y="1150.76" anchorOffsetX="0" anchorOffsetY="0" source="resource/profile/mbtnPlayer.png"/>
+	<e:Image id="about" width="156" height="113.94" x="203.03" y="1157.76" anchorOffsetX="0" anchorOffsetY="0" source="resource/profile/mbtnGoods.png"/>
+	<e:Image id="play" width="306" height="208" x="207" y="788" anchorOffsetX="0" anchorOffsetY="0" source="resource/assets/Button/play.jpg"/>
+</e:Skin>

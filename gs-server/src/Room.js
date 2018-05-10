@@ -6,14 +6,21 @@ const GameData = require("./GameData");
 
 const log  = log4js.getLogger();
 
+const ROOMSTATE ={
+    NONE:0x00000000,
+    GAME_READ:0x00000001,
+    CALL_LANDOVER: 0x00000002,
+    GAME_START: 0x00000004,
+    GAME_REPORT:0x00000008,
+}
+
 class Room{
     constructor(gameID, roomID,pushHander){
         this.gameID = gameID;
         this.roomID = roomID;
         this.players = new Map();
         this.pushHander = pushHander;//引擎业务处理对象
-        this.isStart = false;
-        this.gameState = 0;
+        this.roomState = ROOMSTATE.NONE;
         this.landOwner = null;
         this.landCards = [];
         this.callOwnerLocat = new Player();
@@ -22,6 +29,7 @@ class Room{
     //添加玩家
     addPlayer(userID){
         let p = new Player(userID);
+        p.userID = userID;
         this.players.set(userID,p);
         log.debug("players count :"+this.players.size);
     }
@@ -52,7 +60,16 @@ class Room{
             case GameData.MSG_EVENT.SEND_CARD:
                 break;
             case GameData.MSG_EVENT.TURN_CALL_LAND://叫地主
-                event.score && this.turnCallLand(userID, event.score);
+                this.turnCallLand(userID, event.score);
+                break;
+            case GameData.MSG_EVENT.REPROT_SCORE://上报分数
+                this.reportPlayerScore(userID, event.rankValue);
+                break;
+            case GameData.MSG_EVENT.RESET_ROOM://重置房间
+                this.reSetRoom(userID);
+                break;
+            case GameData.MSG_EVENT.CLEAR_SCROE://清空分数
+                this.clearPlayersScore(userID, event.userList);
                 break;
             default:
                 log.info("Invaild Event");
@@ -61,7 +78,10 @@ class Room{
         }
     }
 
-    //用户准备
+    /**
+     * 玩家准备事件
+     * @param {number} userID 
+     */
     eventReady(userID){
         log.debug("eventReady:"+userID);
         let player = this.players.get(userID);
@@ -72,9 +92,11 @@ class Room{
         }
     }
 
-    //检测是否可以开始
+    /**
+     * 检测是否可以开始游戏，如果所有玩家都准备了就可以开始游戏，发放牌
+     */
     checkGameStart(){
-        if(!this.isStart && this.players.size >= GameData.Conf.MAX_PLAYER_NUM){
+        if(!(this.roomState & ROOMSTATE.GAME_START) && this.players.size >= GameData.Conf.MAX_PLAYER_NUM){
             let allReady = true;
             for (let [k, p] of this.players) {
                 if (!p.isReady) {
@@ -90,12 +112,14 @@ class Room{
                 });
                 // 通知房间内玩家开始游戏,并发牌
                 this.noticeSendCards();
-                this.isStart = true;
+                this.roomState |= ROOMSTATE.GAME_START;
             }
         }
     }
 
-    //发牌
+    /**
+     * 开始游戏，并且发放牌
+     */
     noticeSendCards(){
         let userCard = [];
         let sc = new SendCards();
@@ -111,23 +135,28 @@ class Room{
             });
         }
         this.landCards = cardList[3];
+        //生成随机位置，指定第一次叫地主的人
         let callnum = Math.floor(Math.random()*3);
+        callnum = 0;
         this.callOwnerLocat = callnum;
-        log.debug("callnum:"+callnum);
-        let event = {
-            action: GameData.MSG_EVENT.SEND_CARD,
+        log.debug("callOwner:"+userCard[callnum].userID);
+        this.sendEvent({
+            action: GameData.RSP_EVENT.SEND_CARD,
             userCards: userCard,            //玩家牌列表
             lanownList:cardList[3],         //底牌
             callOwner: userCard[callnum].userID,       //第一次叫地主的人
-        }
-        log.debug("callOwner:"+userCard[callnum].userID);
-        this.sendEvent(event);
+        });
     }
 
-    //轮流叫地主
+    /**
+     * 轮流叫地主
+     * @param {number} userID 
+     * @param {number} score 
+     */
     turnCallLand(userID, score){
         //没有结束叫地主
-        if(this.gameState !== 2 && this.isStart){
+        if((this.roomState & ROOMSTATE.CALL_LANDOVER) !== ROOMSTATE.CALL_LANDOVER 
+            && (this.roomState & ROOMSTATE.GAME_START)){
             let player = this.players.get(userID);
             if(player){
                 player.landOwnerScore = score;
@@ -137,54 +166,77 @@ class Room{
                 if(this.landOwner === null){this.landOwner = player;}
                 //如果叫的地主为地主分就马上停止叫地主
                 if(score >= GameData.Conf.MAX_LAND_SCORE){
-                    this.gameState = 2;
+                    this.roomState |= ROOMSTATE.CALL_LANDOVER;
+                    player.isCallLandOwner = true;
                     this.landOwner = player;
                 }else{
                     if(this.landOwner.landOwnerScore < score){
                         this.landOwner = player;
                     }
                 }
-                this.callLandOver(userID,score);
+                this.checkLandOver(userID,score);
             }else{
                 log.info("user not in room");
             }
         }
     }
 
-    callLandOver(userID,score){
-        let callOver = true;
+    /**
+     * 结束叫地主，发送消息到玩家
+     * @param {number} userID 
+     * @param {number} score 
+     */
+    checkLandOver(userID,score){
+        let callOver = true;    //标识是否完成叫地主
+        let dropCnt = 0;        //放弃地主人数
         for(let [k, p] of this.players){
-            log.debug("callLandOver player:"+p)
             if(!p.isCallLandOwner){
                 callOver = false;
+                break;
+            }
+            if(p.landOwnerScore == 0){
+                dropCnt++;
             }
         }
-        if(this.gameState === 2){
+        log.debug("dropCnt:",dropCnt);
+
+        //所有人都不要地主,重开局 重新发牌
+        if(dropCnt >= 3){
+            for(let [k, p] of this.players){
+                p.reInitInfo();
+            }
+            this.noticeSendCards();
+            return;
+        }
+
+        if((this.roomState & ROOMSTATE.CALL_LANDOVER) == ROOMSTATE.CALL_LANDOVER){
             callOver = true;
         }
-        
+
         //如果都叫了地主就是发送地主信息
         if(callOver){
-            let event = {
-                action: GameData.MSG_EVENT.CALL_LAND_OVER,
+            this.sendEvent({
+                action: GameData.RSP_EVENT.LAND_CALL_OVER,
                 landOwner:this.landOwner.userID,
                 landCards:this.landCards,
                 score : this.landOwner.landOwnerScore,
-            }
-            this.sendEvent(event);
+            });
         }else{
             //如果没有确定地主 就让下一个人叫
             let next = this.getNextCall(userID);
-            let event = {
-                action: GameData.MSG_EVENT.NEXT_CALL_LAND,//广播下一个人抢
+            this.sendEvent({
+                action: GameData.RSP_EVENT.NEXT_CALL_LAND,//广播下一个人抢
                 userID: userID,
                 score : score,
                 nextUser:next,
-            }
-            this.sendEvent(event);
+            });
         }
     }
-    //获取下一个叫地主的人
+
+    /**
+     * 获取下一个叫地主的人
+     * @param {*} userID 
+     */
     getNextCall(userID){
         let nextCall = this.callOwnerLocat+1;
         if(nextCall >= GameData.Conf.MAX_PLAYER_NUM){
@@ -207,6 +259,7 @@ class Room{
      * @memberof Room
      */
     sendEvent(event) {
+        log.debug("event:",event);
         let content = new textEncoding.TextEncoder("utf-8").encode(JSON.stringify(event));
         this.pushHander.pushEvent({
             gameID: this.gameID, 
@@ -214,6 +267,68 @@ class Room{
             pushType: 3,
             content: content,
         });
+    }
+
+    /**
+     * 上报分数
+     * @param {number} userID 
+     * @param {number} _score 
+     */
+    reportPlayerScore(userID, _score){
+        //房间上报数据状态
+        this.roomState |= ROOMSTATE.GAME_REPORT;
+        let player = this.players.get(userID);
+        let event = {
+            action: GameData.RSP_EVENT.REPROT_RESULT,
+            userID:userID,
+            status:1,
+            rank:0,
+            totleScore:0,
+        };
+        let self  = this;
+        if(player){
+            log.debug("userID:"+userID+" score:"+_score);
+            player.planGameScore(_score, function(res){
+                if(res !== null){
+                    event.rank = res.rank;
+                    event.totleScore = res.totleScore;
+                    event.status = 0;
+                    self.sendEvent(event);
+                }
+            });
+        }else{
+            log.error("This userID is invaild");
+            self.sendEvent(event);
+        }
+    }
+
+    clearPlayersScore(userID, userList){
+        let player = this.players.get(userID);
+        if(player){
+            player.clearScoreData(userList);
+        }
+    }
+
+    reSetRoom(userID){
+        if((this.roomState & ROOMSTATE.GAME_REPORT)){
+            this.roomState = ROOMSTATE.NONE;
+            this.landOwner = null;
+            this.landCards = [];
+            this.callOwnerLocat = new Player();
+            let tempPlayers = this.players;
+            this.players = new Map();
+            for(let k of tempPlayers.keys()){
+                let p = new Player();
+                p.userID = k ;
+                this.players.set(k,p);
+            }
+            this.sendEvent({
+                action:GameData.RSP_EVENT.RESET_OK,
+                userID:userID,
+                status:0,
+            });
+        }
+        
     }
 }
 

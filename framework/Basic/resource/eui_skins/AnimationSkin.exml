@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.AnimationSkin" width="400" height="300" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*">
+	<w:Declarations>
+		<tween:TweenGroup id="tweenGroup">
+			<tween:TweenItem target="{image}">
+				<tween:To duration="450">
+					<tween:props>
+						<e:Object alpha="{0.1}"/>
+					</tween:props>
+				</tween:To>
+				<tween:To duration="550">
+					<tween:props>
+						<e:Object alpha="{1}"/>
+					</tween:props>
+				</tween:To>
+			</tween:TweenItem>
+		</tween:TweenGroup>
+	</w:Declarations>
+	<e:Image id="image" width="169" height="51" x="77" y="99.5" source="resource/profile/btnEquip.png" anchorOffsetX="0" anchorOffsetY="0" fillMode="clip"/>
+</e:Skin>
