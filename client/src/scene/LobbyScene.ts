@@ -97,22 +97,6 @@ module scene {
 //            data.GameData.IsRobot_Offline = true;
 //            data.GameData.flag = data.GameData.GameFlag_offline;
 //            SceneMgr.Instance.ShowScene(GameScene);
-            console.log("我进入大厅了");
-            try {
-                var LaunchOption = getLaunchOptionsSync();
-                console.log(JSON.stringify(LaunchOption.query)+"3333333333333333333");
-                var roomID  = LaunchOption.query.roomID;
-                console.log(LaunchOption.query+"3333333333333333333");
-                console.log(LaunchOption.query.roomID+"是多少");
-                if(roomID != null && roomID != "" && roomID !=0) {
-                    this.joinRoom(roomID);
-                }
-            } catch(err) {
-                egret.log(err)
-            }
-
-
-
         }
 
         public AddFreeMoney(): void {
@@ -162,16 +146,6 @@ module scene {
             }
 
             
-        }
-
-        /**
-         * 加入指定房间
-         */
-        public joinRoom(roomID:any) {
-            data.GameData.IsRobot_Offline = false;
-            PokesData.engine.joinRoom(roomID,"我应邀前来");
-            egret.log("我要来和你一起玩游戏了"+roomID);
-            SceneMgr.Instance.ShowScene(GameScene);
         }
 
 

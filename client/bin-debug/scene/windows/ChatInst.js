@@ -18,6 +18,8 @@ var windowui;
         __extends(ChatInst, _super);
         function ChatInst() {
             var _this = _super.call(this) || this;
+            _this._tabSprite_1 = null;
+            _this._tabSprite_2 = null;
             _this._tab = 0;
             _this._faceList = [
                 "ani_chat_1",

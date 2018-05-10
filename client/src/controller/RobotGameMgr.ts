@@ -26,8 +26,7 @@ class RobotGameMgr {
     private _pokersList: Array<number> = [];
     private _callOwner :any = 0;
     private _myPlayer :data.Player = new data.Player;
-    private _handPlayUserTableID = 0;   //现在出牌的人的牌桌ID
-    private _boosTableID = 0;
+    private _handPlayUserTableID = 0;
     private _roomID :any= "";
 
 
@@ -176,7 +175,7 @@ class RobotGameMgr {
                 // obj.value = JSON.stringify(obj.value);
 
                 // var jstr: string = JSON.stringify(obj);
-                // NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_INIT_ROOM,obj);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_INIT_ROOM,obj);
                 break;
 
             case enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER:                       //叫地主,1,2,3分
@@ -266,8 +265,8 @@ class RobotGameMgr {
                 NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_GAMEOVER,obj);
                 break;
             case enums.NetEnum.GAME_SHARE_WX:
-                var par = "roomID ="+this._roomID;
-                together("yuezhan",par);
+                egret.log("微信分享");
+                together("roomID",this._roomID);
                 break;
             case enums.NetEnum.MATCHVS_GAME_SERVER_LOGIN_ROOM:
                 this._roomID = value;
@@ -461,7 +460,6 @@ class RobotGameMgr {
                 if (landOwner === this._playerList[i].userid) {
                     var landownerPlayer: data.Player = this._playerList[i];
                     this._handPlayUserTableID = landownerPlayer.TableId;
-                    this._boosTableID = landownerPlayer.TableId;
                 }  
 
         }
@@ -680,9 +678,7 @@ class RobotGameMgr {
             obj.type = enums.NetEnum.GAME_2_CLIENT_GAMEOVER;
             // var value: any = {};
             obj.wintableid = id;
-            egret.log("obj.wintableid:"+  obj.wintableid);
-            egret.log("this._boosTableID:"+  this._boosTableID);
-            if(id == this._boosTableID) {
+            if(id == this._handPlayUserTableID) {
                  obj.islandwin = true;
                 //地主获胜
             } else{
@@ -698,11 +694,11 @@ class RobotGameMgr {
             obj.tablelist_2 = this._playerList[2].CardArr;
             // obj.value = JSON.stringify(value);
             // var jstr: string = JSON.stringify(obj);
-            // if(this._playerPoint == this._handPlayUserTableID) {
-                // var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
-                // egret.log("发送了游戏结束消息"+data1.result);
-            NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_GAMEOVER,obj);
-            // }
+            if(this._playerPoint == this._handPlayUserTableID) {
+                var data1:any = PokesData.engine.sendEvent(JSON.stringify(obj));
+                egret.log("发送了游戏结束消息"+data1.result);
+                NetMgr.Instance.OnMessage(enums.NetEnum.GAME_2_CLIENT_GAMEOVER,obj);
+            }
             this.GameOver();
             return;
         }

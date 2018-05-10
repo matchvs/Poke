@@ -119,7 +119,7 @@ declare namespace egret {
          * @platform Web,Native
          * @language zh_CN
          */
-        readonly name: string;
+        name: string;
         /**
          * Frame serial number of the label
          * @version Egret 2.4
@@ -132,7 +132,7 @@ declare namespace egret {
          * @platform Web,Native
          * @language zh_CN
          */
-        readonly frame: number;
+        frame: number;
         /**
          * Frame serial number, the end of the label
          * @version Egret 2.4
@@ -145,7 +145,7 @@ declare namespace egret {
          * @platform Web,Native
          * @language zh_CN
          */
-        readonly end: number;
+        end: number;
         /**
          * Duplicate the current frame label object
          * @version Egret 2.4
@@ -385,7 +385,7 @@ declare namespace egret {
          * @version Egret 2.4
          * @platform Web,Native
          */
-        readonly spriteSheet: SpriteSheet;
+        spriteSheet: SpriteSheet;
         /**
          * @private
          *
@@ -977,12 +977,12 @@ declare namespace egret {
          * @private
          * @inheritDoc
          */
-        $setWidth(value: number): void;
+        $setWidth(value: number): boolean;
         /**
          * @private
          * @inheritDoc
          */
-        $setHeight(value: number): void;
+        $setHeight(value: number): boolean;
         /**
          * @private
          *
@@ -1360,6 +1360,38 @@ declare namespace egret {
 }
 declare namespace egret {
     /**
+     * @private
+     * @version Egret 2.4
+     * @platform Web,Native
+     */
+    interface NetContext extends HashObject {
+        /**
+         *
+         * @param loader
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        proceed(loader: URLLoader): void;
+    }
+    /**
+     * @private
+     * @version Egret 2.4
+     * @platform Web,Native
+     */
+    let NetContext: {
+        new (): NetContext;
+        getNetContext(): NetContext;
+    };
+    /**
+     * @private
+     *
+     * @param request
+     * @returns
+     */
+    function $getUrl(request: URLRequest): string;
+}
+declare namespace egret {
+    /**
      * UThe URLLoader class downloads data from a URL as text, binary data, or URL-encoded variables.  It is useful for downloading text files, XML, or other information to be used in a dynamic, data-driven application.
      * A URLLoader object downloads all of the data from a URL before making it available to code in the applications. It sends out notifications about the progress of the download,
      * which you can monitor through bytesLoaded and bytesTotal properties, as well as through dispatched events.
@@ -1467,19 +1499,6 @@ declare namespace egret {
          * @language zh_CN
          */
         load(request: URLRequest): void;
-        private getResponseType(dataFormat);
-        /**
-         * @private
-         *
-         * @param loader
-         */
-        private loadSound(loader);
-        /**
-         * @private
-         *
-         * @param loader
-         */
-        private loadTexture(loader);
         /**
          * @private
          */
@@ -1502,7 +1521,7 @@ declare namespace egret {
      * 影片剪辑，可以通过影片剪辑播放序列帧动画。MovieClip 类从以下类继承而来：DisplayObject 和 EventDispatcher。不同于 DisplayObject 对象，MovieClip 对象拥有一个时间轴。
      * @extends egret.DisplayObject
      * @event egret.Event.COMPLETE 动画播放完成。
-     * @event egret.Event.LOOP_COMPLETE 动画循环播放完成。循环最后一次只派发 COMPLETE 事件，不派发 LOOP_COMPLETE 事件。
+     * @event egret.Event.LOOP_COMPLETE 动画循环播放完成。
      * @see http://edn.egret.com/cn/docs/page/596 MovieClip序列帧动画
      * @version Egret 2.4
      * @platform Web,Native
@@ -1510,7 +1529,7 @@ declare namespace egret {
      * @language zh_CN
      */
     class MovieClip extends DisplayObject {
-        $texture: Texture;
+        $bitmapData: Texture;
         private offsetPoint;
         $movieClipData: MovieClipData;
         /**
@@ -1585,7 +1604,6 @@ declare namespace egret {
          * @platform Web,Native
          */
         constructor(movieClipData?: MovieClipData);
-        protected createNativeDisplayObject(): void;
         /**
          * @private
          */
@@ -1621,7 +1639,7 @@ declare namespace egret {
         /**
          * @private
          */
-        $updateRenderNode(): void;
+        $render(): void;
         /**
          * @private
          */
@@ -1749,25 +1767,25 @@ declare namespace egret {
          * @version Egret 2.4
          * @platform Web,Native
          */
-        readonly totalFrames: number;
+        totalFrames: number;
         /**
          * MovieClip 实例当前播放的帧的序号
          * @version Egret 2.4
          * @platform Web,Native
          */
-        readonly currentFrame: number;
+        currentFrame: number;
         /**
          * MovieClip 实例当前播放的帧的标签。如果当前帧没有标签，则 currentFrameLabel返回null。
          * @version Egret 2.4
          * @platform Web,Native
          */
-        readonly currentFrameLabel: string;
+        currentFrameLabel: string;
         /**
          * 当前播放的帧对应的标签，如果当前帧没有标签，则currentLabel返回包含标签的先前帧的标签。如果当前帧和先前帧都不包含标签，currentLabel返回null。
          * @version Egret 2.4
          * @platform Web,Native
          */
-        readonly currentLabel: string;
+        currentLabel: string;
         /**
          * MovieClip 实例的帧频
          * @version Egret 2.4
@@ -1779,7 +1797,7 @@ declare namespace egret {
          * @version Egret 2.4
          * @platform Web,Native
          */
-        readonly isPlaying: boolean;
+        isPlaying: boolean;
         /**
          * @version Egret 2.4
          * @platform Web,Native
@@ -2229,6 +2247,12 @@ declare namespace egret {
          * @platform Web,Native
          */
         /**
+         * 网络Context
+         * @member egret.MainContext#netContext
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        /**
          * 设备divice
          * @member egret.MainContext#deviceContext
          * @version Egret 2.4
@@ -2240,7 +2264,7 @@ declare namespace egret {
          * @version Egret 2.4
          * @platform Web,Native
          */
-        readonly stage: Stage;
+        stage: Stage;
         /**
          * @version Egret 2.4
          * @platform Web,Native
@@ -2257,11 +2281,31 @@ declare namespace egret {
          */
         static DEVICE_MOBILE: string;
         /**
+         * @private
+         */
+        static _runtimeType: string;
+        /**
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        static runtimeType: string;
+        /**
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        static RUNTIME_HTML5: string;
+        /**
+         * @version Egret 2.4
+         * @platform Web,Native
+         */
+        static RUNTIME_NATIVE: string;
+        /**
          * 游戏启动，开启主循环，参考Flash的滑动跑道模型
          * @method egret.MainContext#run
          * @version Egret 2.4
          * @platform Web,Native
          */
+        run(): void;
         /**
          * @private
          */
@@ -2272,9 +2316,17 @@ declare namespace egret {
          * @version Egret 2.4
          * @platform Web,Native
          */
-        static readonly instance: egret.MainContext;
+        static instance: egret.MainContext;
     }
 }
+/**
+ * @private
+ */
+declare let testDeviceType1: () => boolean;
+/**
+ * @private
+ */
+declare let testRuntimeType1: () => boolean;
 declare namespace egret {
     /**
      * Tool class for object cache repeat use, which can be used to construct an object pool. Objects are automatically recycled after a certain duration.
@@ -2348,7 +2400,7 @@ declare namespace egret {
          * @platform Web,Native
          * @language zh_CN
          */
-        readonly length: number;
+        length: number;
         /**
          * Cache an object for repeat use
          * @param object {any} The object to be cached

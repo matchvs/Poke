@@ -196,7 +196,6 @@ module scene {
         joinRoomResponse = function(status,roomUserInfoList,roomInfo) {
             if (status === 200) {
                 egret.log("进入房间成功,房间ID："+roomInfo.roomID);
-                // Toast.init(this);
                 PokesData.GAMESERVER = true;
                 if( PokesData.GAMESERVER) {
                     NetMgr.Instance.SendMsg(enums.NetEnum.MATCHVS_GAME_SERVER_LOGIN_ROOM,roomInfo.roomID);

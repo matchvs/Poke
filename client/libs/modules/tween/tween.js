@@ -1,12 +1,10 @@
 var __reflect = (this && this.__reflect) || function (p, c, t) {
     p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
 };
-var __extends = this && this.__extends || function __extends(t, e) { 
- function r() { 
- this.constructor = t;
-}
-for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
-r.prototype = e.prototype, t.prototype = new r();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -410,242 +408,242 @@ var egret;
                 return amplitude * Math.pow(2, -10 * (t -= 1)) * Math.sin((t - s) * pi2 / period) * 0.5 + 1;
             };
         };
-        /**
-         * quad in.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quad in。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quadIn = Ease.getPowIn(2);
-        /**
-         * quad out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quad out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quadOut = Ease.getPowOut(2);
-        /**
-         * quad in out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quad in out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quadInOut = Ease.getPowInOut(2);
-        /**
-         * cubic in.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * cubic in。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.cubicIn = Ease.getPowIn(3);
-        /**
-         * cubic out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * cubic out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.cubicOut = Ease.getPowOut(3);
-        /**
-         * cubic in out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * cubic in out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.cubicInOut = Ease.getPowInOut(3);
-        /**
-         * quart in.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quart in。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quartIn = Ease.getPowIn(4);
-        /**
-         * quart out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quart out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quartOut = Ease.getPowOut(4);
-        /**
-         * quart in out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quart in out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quartInOut = Ease.getPowInOut(4);
-        /**
-         * quint in.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quint in。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quintIn = Ease.getPowIn(5);
-        /**
-         * quint out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quint out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quintOut = Ease.getPowOut(5);
-        /**
-         * quint in out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * quint in out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.quintInOut = Ease.getPowInOut(5);
-        /**
-         * back in.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * back in。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.backIn = Ease.getBackIn(1.7);
-        /**
-         * back out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * back out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.backOut = Ease.getBackOut(1.7);
-        /**
-         * back in out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * back in out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.backInOut = Ease.getBackInOut(1.7);
-        /**
-         * elastic in.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * elastic in。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.elasticIn = Ease.getElasticIn(1, 0.3);
-        /**
-         * elastic out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * elastic out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.elasticOut = Ease.getElasticOut(1, 0.3);
-        /**
-         * elastic in out.See example.
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language en_US
-         */
-        /**
-         * elastic in out。请查看示例
-         * @version Egret 2.4
-         * @platform Web,Native
-         * @language zh_CN
-         */
-        Ease.elasticInOut = Ease.getElasticInOut(1, 0.3 * 1.5);
         return Ease;
     }());
+    /**
+     * quad in.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quad in。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quadIn = Ease.getPowIn(2);
+    /**
+     * quad out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quad out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quadOut = Ease.getPowOut(2);
+    /**
+     * quad in out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quad in out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quadInOut = Ease.getPowInOut(2);
+    /**
+     * cubic in.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * cubic in。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.cubicIn = Ease.getPowIn(3);
+    /**
+     * cubic out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * cubic out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.cubicOut = Ease.getPowOut(3);
+    /**
+     * cubic in out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * cubic in out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.cubicInOut = Ease.getPowInOut(3);
+    /**
+     * quart in.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quart in。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quartIn = Ease.getPowIn(4);
+    /**
+     * quart out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quart out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quartOut = Ease.getPowOut(4);
+    /**
+     * quart in out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quart in out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quartInOut = Ease.getPowInOut(4);
+    /**
+     * quint in.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quint in。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quintIn = Ease.getPowIn(5);
+    /**
+     * quint out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quint out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quintOut = Ease.getPowOut(5);
+    /**
+     * quint in out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * quint in out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.quintInOut = Ease.getPowInOut(5);
+    /**
+     * back in.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * back in。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.backIn = Ease.getBackIn(1.7);
+    /**
+     * back out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * back out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.backOut = Ease.getBackOut(1.7);
+    /**
+     * back in out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * back in out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.backInOut = Ease.getBackInOut(1.7);
+    /**
+     * elastic in.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * elastic in。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.elasticIn = Ease.getElasticIn(1, 0.3);
+    /**
+     * elastic out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * elastic out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.elasticOut = Ease.getElasticOut(1, 0.3);
+    /**
+     * elastic in out.See example.
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language en_US
+     */
+    /**
+     * elastic in out。请查看示例
+     * @version Egret 2.4
+     * @platform Web,Native
+     * @language zh_CN
+     */
+    Ease.elasticInOut = Ease.getElasticInOut(1, 0.3 * 1.5);
     egret.Ease = Ease;
     __reflect(Ease.prototype, "egret.Ease");
 })(egret || (egret = {}));
@@ -903,7 +901,7 @@ var egret;
                 tweens.push(tween);
                 if (!Tween._inited) {
                     Tween._lastTime = egret.getTimer();
-                    egret.ticker.$startTick(Tween.tick, null);
+                    egret.sys.$ticker.$startTick(Tween.tick, null);
                     Tween._inited = true;
                 }
             }
@@ -937,7 +935,7 @@ var egret;
             for (var i = 0, l = tweens.length; i < l; i++) {
                 var tween_2 = tweens[i];
                 tween_2.paused = true;
-                tween_2._target.tween_count = 0;
+                tween_2._target.tweenjs_count = 0;
             }
             tweens.length = 0;
         };
@@ -990,13 +988,7 @@ var egret;
             var end = false;
             if (t >= this.duration) {
                 if (this.loop) {
-                    var newTime = t % this.duration;
-                    if (t > 0 && newTime === 0) {
-                        t = this.duration;
-                    }
-                    else {
-                        t = newTime;
-                    }
+                    t = t % this.duration;
                 }
                 else {
                     t = this.duration;
@@ -1148,9 +1140,6 @@ var egret;
          * @language zh_CN
          */
         Tween.prototype.setPaused = function (value) {
-            if (this.paused == value) {
-                return this;
-            }
             this.paused = value;
             Tween._register(this, !value);
             return this;
@@ -1418,43 +1407,43 @@ var egret;
             }
             this.setPosition(this._prevPosition + delta);
         };
-        /**
-         * 不做特殊处理
-         * @constant {number} egret.Tween.NONE
-         * @private
-         */
-        Tween.NONE = 0;
-        /**
-         * 循环
-         * @constant {number} egret.Tween.LOOP
-         * @private
-         */
-        Tween.LOOP = 1;
-        /**
-         * 倒序
-         * @constant {number} egret.Tween.REVERSE
-         * @private
-         */
-        Tween.REVERSE = 2;
-        /**
-         * @private
-         */
-        Tween._tweens = [];
-        /**
-         * @private
-         */
-        Tween.IGNORE = {};
-        /**
-         * @private
-         */
-        Tween._plugins = {};
-        /**
-         * @private
-         */
-        Tween._inited = false;
-        Tween._lastTime = 0;
         return Tween;
     }(egret.EventDispatcher));
+    /**
+     * 不做特殊处理
+     * @constant {number} egret.Tween.NONE
+     * @private
+     */
+    Tween.NONE = 0;
+    /**
+     * 循环
+     * @constant {number} egret.Tween.LOOP
+     * @private
+     */
+    Tween.LOOP = 1;
+    /**
+     * 倒序
+     * @constant {number} egret.Tween.REVERSE
+     * @private
+     */
+    Tween.REVERSE = 2;
+    /**
+     * @private
+     */
+    Tween._tweens = [];
+    /**
+     * @private
+     */
+    Tween.IGNORE = {};
+    /**
+     * @private
+     */
+    Tween._plugins = {};
+    /**
+     * @private
+     */
+    Tween._inited = false;
+    Tween._lastTime = 0;
     egret.Tween = Tween;
     __reflect(Tween.prototype, "egret.Tween");
 })(egret || (egret = {}));
@@ -1505,7 +1494,7 @@ var egret;
         var BasePath = (function (_super) {
             __extends(BasePath, _super);
             function BasePath() {
-                var _this = _super !== null && _super.apply(this, arguments) || this;
+                var _this = _super.apply(this, arguments) || this;
                 /**
                  * the name of this action.
                  * @version Egret 3.1.8
@@ -1540,7 +1529,7 @@ var egret;
         var To = (function (_super) {
             __extends(To, _super);
             function To() {
-                var _this = _super !== null && _super.apply(this, arguments) || this;
+                var _this = _super.apply(this, arguments) || this;
                 /**
                  * Property set of an object
                  * @version Egret 3.1.8
@@ -1601,7 +1590,7 @@ var egret;
         var Wait = (function (_super) {
             __extends(Wait, _super);
             function Wait() {
-                var _this = _super !== null && _super.apply(this, arguments) || this;
+                var _this = _super.apply(this, arguments) || this;
                 /**
                  * Duration
                  * @version Egret 3.1.8
@@ -1649,7 +1638,7 @@ var egret;
         var Set = (function (_super) {
             __extends(Set, _super);
             function Set() {
-                var _this = _super !== null && _super.apply(this, arguments) || this;
+                var _this = _super.apply(this, arguments) || this;
                 /**
                  * Property set of an object
                  * @version Egret 3.1.8
@@ -1684,7 +1673,7 @@ var egret;
         var Tick = (function (_super) {
             __extends(Tick, _super);
             function Tick() {
-                var _this = _super !== null && _super.apply(this, arguments) || this;
+                var _this = _super.apply(this, arguments) || this;
                 /**
                  * Delta time
                  * @version Egret 3.1.8
@@ -1767,9 +1756,7 @@ var egret;
         var TweenItem = (function (_super) {
             __extends(TweenItem, _super);
             function TweenItem() {
-                var _this = _super.call(this) || this;
-                _this.isStop = false;
-                return _this;
+                return _super.call(this) || this;
             }
             Object.defineProperty(TweenItem.prototype, "props", {
                 /**
@@ -1839,30 +1826,26 @@ var egret;
             });
             /**
              * Play the Tween
-             * @position The starting position, the default is from the last position to play
+             * @time The starting position, the default is from the last position to play
              * @version Egret 3.1.8
              * @platform Web,Native
              * @language en_US
              */
             /**
              * 播放Tween
-             * @position 播放的起始位置, 默认为从上次位置继续播放
+             * @time 播放的起始位置, 默认为从上次位置继续播放
              * @version Egret 3.1.8
              * @platform Web,Native
              * @language zh_CN
              */
-            TweenItem.prototype.play = function (position) {
+            TweenItem.prototype.play = function (time) {
                 if (!this.tween) {
-                    this.createTween(position);
+                    this.createTween();
                 }
                 else {
                     this.tween.setPaused(false);
-                    if (this.isStop && position == undefined) {
-                        position = 0;
-                        this.isStop = false;
-                    }
-                    if (position !== undefined && position !== null) {
-                        this.tween.setPosition(position);
+                    if (time !== undefined && time !== null) {
+                        this.tween.setPosition(time);
                     }
                 }
             };
@@ -1897,15 +1880,12 @@ var egret;
              */
             TweenItem.prototype.stop = function () {
                 this.pause();
-                this.isStop = true;
+                this.tween = null;
             };
-            TweenItem.prototype.createTween = function (position) {
+            TweenItem.prototype.createTween = function () {
                 this.tween = egret.Tween.get(this._target, this._props);
                 if (this._paths) {
                     this.applyPaths();
-                }
-                if (position !== undefined && position !== null) {
-                    this.tween.setPosition(position);
                 }
             };
             TweenItem.prototype.applyPaths = function () {
@@ -2006,14 +1986,14 @@ var egret;
             };
             /**
              * Play the all TweenItems
-             * @time The starting position, the default is from the last position to play。If use 0, the group will play from the start position.
+             * @time The starting position, the default is from the last position to play
              * @version Egret 3.1.8
              * @platform Web,Native
              * @language en_US
              */
             /**
              * 播放所有的TweenItem
-             * @time 播放的起始位置, 默认为从上次位置继续播放。如果为0，则从起始位置开始播放。
+             * @time 播放的起始位置, 默认为从上次位置继续播放
              * @version Egret 3.1.8
              * @platform Web,Native
              * @language zh_CN

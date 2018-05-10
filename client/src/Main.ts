@@ -46,6 +46,7 @@ class Main extends egret.DisplayObjectContainer {
         LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_LOBBY,this.createScene,this);
         // this.stage.addEventListener(egret.Event.RESIZE,this.resizefun,this);
         Main.instance = this;
+
         this.pushHistory();
         window.addEventListener("popstate",function(e) {
             alert("离开将开启自动托管");//根据自己的需求实现自己的功能 
@@ -127,7 +128,7 @@ class Main extends egret.DisplayObjectContainer {
             title: "title",
             url: "#"
         };
-        // window.history.pushState(state,"title","#");
+        window.history.pushState(state,"title","#");
     }
     
     private setos(): void {
@@ -167,7 +168,7 @@ class Main extends egret.DisplayObjectContainer {
      * Create scene interface
      */
     private createScene(e: egret.Event): void {
-        // LocalMgr.Instance.LoadData();
+        LocalMgr.Instance.LoadData();
         LoadMgr.Instance.removeEventListener(LoadMgr.LOADOVER_LOBBY,this.createScene,this);
         windowui.LoadingInst.Instance.Hide();
         SceneMgr.Instance.ShowScene(scene.LobbyScene);
