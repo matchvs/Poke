@@ -16,33 +16,25 @@
   },
   "modules": [
     {
-      "name": "egret",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "egret"
     },
     {
-      "name": "game",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "game"
     },
     {
-      "name": "res",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "res"
     },
     {
       "name": "gui",
       "path": "${EGRET_APP_DATA}/4.0.0"
     },
     {
-      "name": "socket",
-      "path": "${EGRET_APP_DATA}/4.0.0"
-    },
-    {
-      "name": "tween",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "tween"
     },
 
     {
       "name": "matchvs",
-      "path": "../matchvs_wx"
+      "path": "../matchvs"
     },
     {
       "name":"wxshare",

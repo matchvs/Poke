@@ -5,7 +5,7 @@
  *
  */
 class NetMgr extends egret.EventDispatcher {
-    private _socketBase: net.SocketBase = null;
+    // private _socketBase: net.SocketBase = null;
     private static _instance: NetMgr = null;
     private _concecttime: number = 0;
     private static RENETTIME: number = 100;        //断线重连次数,超过此不重连
@@ -14,10 +14,10 @@ class NetMgr extends egret.EventDispatcher {
 
     public constructor() {
         super();
-        this._socketBase = new net.SocketBase();
-        this._socketBase.addEventListener(net.SocketBase.Event_Open, this.onSocketOpen, this);
-        this._socketBase.addEventListener(net.SocketBase.Event_Close, this.onSocketClose, this);
-        this._socketBase.addEventListener(net.SocketBase.Event_Error, this.onSocketError, this);
+        // this._socketBase = new net.SocketBase();
+        // this._socketBase.addEventListener(net.SocketBase.Event_Open, this.onSocketOpen, this);
+        // this._socketBase.addEventListener(net.SocketBase.Event_Close, this.onSocketClose, this);
+        // this._socketBase.addEventListener(net.SocketBase.Event_Error, this.onSocketError, this);
 
         this._timer.addEventListener(egret.TimerEvent.TIMER, this.onTimer, this);
     }
@@ -30,7 +30,7 @@ class NetMgr extends egret.EventDispatcher {
         if (data.GameData.IsRobot_Offline) {
             return true;
         }
-        return this._socketBase.IsConnect;
+        // return this._socketBase.IsConnect;
     }
 
     public onSocketOpen(): void {
@@ -132,7 +132,7 @@ class NetMgr extends egret.EventDispatcher {
         if (data.GameData.IsRobot_Offline) {
             return;
         }
-        this._socketBase.connet(data.GameData.SERVER_URL);
+        // this._socketBase.connet(data.GameData.SERVER_URL);
     }
 
     /**
@@ -301,7 +301,7 @@ class NetMgr extends egret.EventDispatcher {
     }
 
     public Exit(): void {
-        this._socketBase.Close();
+        // this._socketBase.Close();
     }
 
 }

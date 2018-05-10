@@ -4,8 +4,8 @@ module windowui {
      * Created by Administrator on 2015/12/23.
      */
     export class ChatInst extends WindowsBase {
-        private _tabSprite_1:egret.ScrollView = null;
-        private _tabSprite_2:egret.ScrollView = null;
+        private _tabSprite_1:egret.ScrollView ;
+        private _tabSprite_2:egret.ScrollView ;
         private _tabBtn_1:scene.SButton;
         private _tabBtn_2:scene.SButton;
         private _tab:number = 0;

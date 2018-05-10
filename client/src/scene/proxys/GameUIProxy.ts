@@ -226,7 +226,7 @@ module scene {
                         fx = tx + 300;
                     }
                     ph.x = fx;
-                    egret.Tween.get(ph).to({ x: tx }, 600);
+                    // egret.Tween.get(ph).to({ x: tx }, 600);
                 }
             }
         }

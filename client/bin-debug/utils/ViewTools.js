@@ -87,8 +87,8 @@ var ViewTools = (function () {
             var mx = maskDisplayObject.x;
             var my = maskDisplayObject.y;
             texture.drawToTexture(container, new egret.Rectangle(mx, my, maskDisplayObject.width, maskDisplayObject.height));
-            texture._offsetX = -sx + mx;
-            texture._offsetY = -sy + my;
+            texture.$offsetX = -sx + mx;
+            texture.$offsetY = -sy + my;
             if (sourceParent)
                 sourceParent.addChild(sourceDisplayObject);
             maskDisplayObject.blendMode = egret.BlendMode.NORMAL;

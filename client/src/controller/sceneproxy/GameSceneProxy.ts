@@ -440,11 +440,12 @@ module sceneproxy {
                     var tp1: data.Player = this.getPlayerByLocalTableId(1);
                     var tp2: data.Player = this.getPlayerByLocalTableId(2);
                     var tp3: data.Player = this.getPlayerByLocalTableId(3);
-                    var iswin: boolean = this._myPlayer.IsLandOwner == islandwin;
-
+                    var iswin: boolean =null;  
+                    islandwin?(iswin = this._myPlayer.IsLandOwner):(iswin = !this._myPlayer.IsLandOwner);
                     if (actmoney <= 0 && data.GameData.flag == data.GameData.GameFlag_Activity) {
                         data.GameData.IsActivityKick = true;
                     }
+                    egret.log("地主是否获胜"+islandwin);
                     egret.log("我是不是地主"+this._myPlayer.IsLandOwner);
                     egret.log("赢的人是"+winplayer.userid);
                     egret.log("我自己的胜负是"+iswin);
