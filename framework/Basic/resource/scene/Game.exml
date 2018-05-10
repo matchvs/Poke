@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.AnimationSkin" width="720" height="1280" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*">
+	<w:Config id="1631fb6b00e" ></w:Config>
+	<e:Image width="720" height="1280" x="0" y="0" source="resource/assets/bg/bg_gameplay.png"/>
+	<e:Button id="btn_pause" label="Pause" x="536.36" y="39.06" anchorOffsetX="0" width="145.45" anchorOffsetY="0" height="86.36" skinName="skins.ButtonSkin"/>
+	<e:Button id="back" label="Back" x="28.18" y="39.06" anchorOffsetX="0" width="145.45" anchorOffsetY="0" height="86.36" skinName="skins.ButtonSkin"/>
+</e:Skin>
