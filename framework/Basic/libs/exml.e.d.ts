@@ -56,3 +56,5 @@ declare module skins{
 	class VSliderSkin extends eui.Skin{
 	}
 }
+declare class BattleStage extends eui.Skin{
+}

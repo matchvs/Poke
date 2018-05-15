@@ -35,6 +35,10 @@
     },
     {
       "name": "promise"
+    },
+    {
+      "name":"matchvs",
+      "path":"../../matchvs"
     }
   ]
 }
