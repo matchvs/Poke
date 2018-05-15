@@ -36,7 +36,8 @@
 		"resource/eui_skins/VSliderSkin.exml",
 		"resource/scene/BattleStage.exml",
 		"resource/scene/Game.exml",
-		"resource/scene/Login.exml"
+		"resource/scene/Login.exml",
+		"resource/scene/rank_list.exml"
 	],
 	"path": "resource/default.thm.json"
 }

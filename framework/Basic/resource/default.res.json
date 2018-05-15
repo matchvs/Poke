@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,btnEquip_png,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg,footer_text_png,logo_png,btn_login_png,bg_game_jpg,ui_game_json,ui_loading_json,timefont_fnt,timefont_png",
+			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,btnEquip_png,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg,footer_text_png,logo_png,btn_login_png,bg_game_jpg,ui_game_json,ui_loading_json,timefont_fnt,timefont_png,bg_game2_jpg,timefont2_fnt,timefont2_png,ui_game2_json,ui_loading2_json",
 			"name": "preload"
 		}
 	],
@@ -422,6 +422,33 @@
 			"name": "timefont_png",
 			"type": "image",
 			"url": "assets/font/timefont.png"
+		},
+		{
+			"name": "bg_game2_jpg",
+			"type": "image",
+			"url": "assets/bg/bg_game.jpg"
+		},
+		{
+			"name": "timefont2_fnt",
+			"type": "font",
+			"url": "assets/font/timefont.fnt"
+		},
+		{
+			"name": "timefont2_png",
+			"type": "image",
+			"url": "assets/font/timefont.png"
+		},
+		{
+			"name": "ui_game2_json",
+			"type": "sheet",
+			"url": "assets/ui/ui_game.json",
+			"subkeys": "ui_cardnum2_9,ui_cardnum2_10,ui_cardnum2_11,ui_cardnum2_12,ui_cardnum2_13,ui_cardnum2_14,ui_cardnum2_20,ui_cardnum9_98,ui_cardnum9_98_dec,ui_cardnum9_99,ui_cardnum9_99_dec,ui_cardselect,ui_cardtype_1,ui_cardtype_2,ui_cardtype_3,ui_cardtype_4,ui_chat_btn,ui_chat_left,ui_chat_right,ui_clock,ui_coin,ui_flag_card,ui_flag_farmer,ui_flag_landowner,ui_head_bg,ui_houserun,ui_info_bg,ui_ready_hand,ui_robot,ui_set_yinxiao,ui_set_yinyue,btn_blue,btn_buchu,btn_buchu_no,btn_bujiao,btn_chong,btn_chongxuan,btn_chongxuan_no,btn_chupai,btn_chupai_no,btn_close,btn_danji,btn_dui,btn_erfen,btn_erfen_no,btn_fasong,btn_gray,btn_haoyou,btn_jingji,btn_jingji_wait,btn_lianwang,btn_roomauto,btn_roomout,btn_sanfen,btn_sanfen_no,btn_setting,btn_tishi,btn_tishi_no,btn_yellow,btn_yifen,btn_yifen_no,btn_zhunbei,panel_chat,radio_prompt_down,radio_prompt_up,title_charge,title_lose,title_win,title2,title3,ui_actend,ui_card,ui_cardback,ui_cardnum1_3,ui_cardnum1_4,ui_cardnum1_5,ui_cardnum1_6,ui_cardnum1_7,ui_cardnum1_8,ui_cardnum1_9,ui_cardnum1_10,ui_cardnum1_11,ui_cardnum1_12,ui_cardnum1_13,ui_cardnum1_14,ui_cardnum1_20,ui_cardnum2_3,ui_cardnum2_4,ui_cardnum2_5,ui_cardnum2_6,ui_cardnum2_7,ui_cardnum2_8"
+		},
+		{
+			"name": "ui_loading2_json",
+			"type": "sheet",
+			"url": "assets/ui/ui_loading.json",
+			"subkeys": "btn_queding_no,btn_quxiao,title1,ui_loading_top,ui_panel_bg,ui_panel_txt,ui_role1,ui_tips_bg,btn_queding"
 		}
 	]
 }
