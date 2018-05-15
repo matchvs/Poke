@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,homeBg_jpg,btnEquip_png,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg",
+			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,btnEquip_png,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg,footer_text_png,logo_png,btn_login_png",
 			"name": "preload"
 		}
 	],
@@ -135,11 +135,6 @@
 			"url": "config/description.json",
 			"type": "json",
 			"name": "description_json"
-		},
-		{
-			"url": "assets/homeBg.jpg",
-			"type": "image",
-			"name": "homeBg_jpg"
 		},
 		{
 			"url": "profile/btnEquip.png",
@@ -377,14 +372,29 @@
 			"name": "bg_gameplay_png"
 		},
 		{
-			"name": "bg_gameplay2_png",
+			"url": "assets/bg/bg_gameplay.png",
 			"type": "image",
-			"url": "assets/bg/bg_gameplay.png"
+			"name": "bg_gameplay2_png"
 		},
 		{
-			"name": "play_jpg",
+			"url": "assets/Button/play.jpg",
 			"type": "image",
-			"url": "assets/Button/play.jpg"
+			"name": "play_jpg"
+		},
+		{
+			"url": "assets/login/footer_text.png",
+			"type": "image",
+			"name": "footer_text_png"
+		},
+		{
+			"url": "assets/login/logo.png",
+			"type": "image",
+			"name": "logo_png"
+		},
+		{
+			"url": "assets/login/btn_login.png",
+			"type": "image",
+			"name": "btn_login_png"
 		}
 	]
 }

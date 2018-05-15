@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="skins.AnimationSkin" width="720" height="1280" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*">
+<e:Skin class="skins.AnimationSkin" width="720" height="1280" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" xmlns:ns1="*">
 	<w:Config id="1631fb6b00e" ></w:Config>
 	<e:Image width="720" height="1280" x="0" y="0" source="resource/assets/bg/bg_gameplay.png"/>
 	<e:Button id="btn_pause" label="Pause" x="536.36" y="39.06" anchorOffsetX="0" width="145.45" anchorOffsetY="0" height="86.36" skinName="skins.ButtonSkin"/>
-	<e:Button id="back" label="Back" x="28.18" y="39.06" anchorOffsetX="0" width="145.45" anchorOffsetY="0" height="86.36" skinName="skins.ButtonSkin"/>
+	<e:Button id="back" label="Back" x="28.18"
+	 y="39.06" anchorOffsetX="0" width="145.45" 
+	 anchorOffsetY="0" height="86.36"  >
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="play_jpg" source.down="button_up_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+
+
+	</e:Button>
+	<e:ToggleButton label="切换图片" x="42" y="256" width="200" height="300">
+		<e:skinName>
+			<e:Skin states="up,down,disabled,focus">
+			<e:Image width="100%" height="100%" source="play_jpg" source.down="button_up_png" />
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:ToggleButton>
+
 </e:Skin>
