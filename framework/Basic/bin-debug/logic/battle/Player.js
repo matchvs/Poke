@@ -17,6 +17,8 @@ var battle;
             _this._cardList = []; //牌列表
             _this.isLandLord = false; //是否是地主
             _this.seatNo = 0; //座位号
+            _this.LocalTableId = 0; //上下家标识 1 上家， 2下家 3 为自己
+            _this.IsReady = false;
             _this._cardNumber = 0; //牌数量
             return _this;
         }

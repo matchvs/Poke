@@ -58,3 +58,5 @@ declare module skins{
 }
 declare class BattleStage extends eui.Skin{
 }
+declare class TopHead extends eui.Skin{
+}
