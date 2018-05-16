@@ -1,4 +1,0 @@
-class MvsEventRsp {
-	public constructor() {
-	}
-}

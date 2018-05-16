@@ -1,4 +1,0 @@
-class BattleStage {
-	public constructor() {
-	}
-}

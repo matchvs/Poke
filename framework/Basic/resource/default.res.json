@@ -1,11 +1,7 @@
 {
 	"groups": [
 		{
-<<<<<<< HEAD
-			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,homeBg_jpg,btnEquip_png,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg,bg_game_jpg,ui_game_json,ui_loading_json,timefont_fnt,timefont_png",
-=======
-			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg,footer_text_png,logo_png,btn_login_png,bg_game_jpg,timefont_fnt,timefont_png,bg_header_png,bg_match_popup_png,btn_cancel_png,btn_create_room_png,btn_fast_match_png,btn_invite_friends_png,ui_game_json,ui_loading_json",
->>>>>>> b70fa42395945dc5d9a4b8d79aba16c78d65d4bc
+			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,btnEquip_png,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg,footer_text_png,logo_png,btn_login_png,bg_game_jpg,ui_game_json,ui_loading_json,timefont_fnt,timefont_png,bg_header_png,bg_match_popup_png,btn_cancel_png,btn_create_room_png,btn_fast_match_png,btn_invite_friends_png",
 			"name": "preload"
 		}
 	],
@@ -139,6 +135,11 @@
 			"url": "config/description.json",
 			"type": "json",
 			"name": "description_json"
+		},
+		{
+			"url": "profile/btnEquip.png",
+			"type": "image",
+			"name": "btnEquip_png"
 		},
 		{
 			"url": "profile/btnReturn.png",
@@ -396,73 +397,9 @@
 			"name": "btn_login_png"
 		},
 		{
-			"url": "assets/bg/bg_game.jpg",
-			"type": "image",
-			"name": "bg_game_jpg"
-		},
-		{
-			"url": "assets/font/timefont.fnt",
-			"type": "font",
-			"name": "timefont_fnt"
-		},
-		{
-			"url": "assets/font/timefont.png",
-			"type": "image",
-			"name": "timefont_png"
-		},
-		{
-			"url": "assets/lobby/bg_header.png",
-			"type": "image",
-<<<<<<< HEAD
-			"url": "assets/Button/play.jpg"
-		},
-		{
 			"name": "bg_game_jpg",
 			"type": "image",
 			"url": "assets/bg/bg_game.jpg"
-=======
-			"name": "bg_header_png"
-		},
-		{
-			"url": "assets/lobby/bg_match_popup.png",
-			"type": "image",
-			"name": "bg_match_popup_png"
-		},
-		{
-			"url": "assets/lobby/btn_cancel.png",
-			"type": "image",
-			"name": "btn_cancel_png"
-		},
-		{
-			"url": "assets/lobby/btn_create_room.png",
-			"type": "image",
-			"name": "btn_create_room_png"
-		},
-		{
-			"url": "assets/lobby/btn_fast_match.png",
-			"type": "image",
-			"name": "btn_fast_match_png"
-		},
-		{
-			"url": "assets/lobby/btn_invite_friends.png",
-			"type": "image",
-			"name": "btn_invite_friends_png"
-		},
-		{
-			"url": "assets/bg/bg_game.jpg",
-			"type": "image",
-			"name": "bg_game2_jpg"
-		},
-		{
-			"url": "assets/font/timefont.fnt",
-			"type": "font",
-			"name": "timefont2_fnt"
-		},
-		{
-			"url": "assets/font/timefont.png",
-			"type": "image",
-			"name": "timefont2_png"
->>>>>>> b70fa42395945dc5d9a4b8d79aba16c78d65d4bc
 		},
 		{
 			"name": "ui_game_json",
@@ -475,7 +412,6 @@
 			"type": "sheet",
 			"url": "assets/ui/ui_loading.json",
 			"subkeys": "btn_queding_no,btn_quxiao,title1,ui_loading_top,ui_panel_bg,ui_panel_txt,ui_role1,ui_tips_bg,btn_queding"
-<<<<<<< HEAD
 		},
 		{
 			"name": "timefont_fnt",
@@ -486,8 +422,36 @@
 			"name": "timefont_png",
 			"type": "image",
 			"url": "assets/font/timefont.png"
-=======
->>>>>>> b70fa42395945dc5d9a4b8d79aba16c78d65d4bc
+		},
+		{
+			"name": "bg_header_png",
+			"type": "image",
+			"url": "assets/lobby/bg_header.png"
+		},
+		{
+			"name": "bg_match_popup_png",
+			"type": "image",
+			"url": "assets/lobby/bg_match_popup.png"
+		},
+		{
+			"name": "btn_cancel_png",
+			"type": "image",
+			"url": "assets/lobby/btn_cancel.png"
+		},
+		{
+			"name": "btn_create_room_png",
+			"type": "image",
+			"url": "assets/lobby/btn_create_room.png"
+		},
+		{
+			"name": "btn_fast_match_png",
+			"type": "image",
+			"url": "assets/lobby/btn_fast_match.png"
+		},
+		{
+			"name": "btn_invite_friends_png",
+			"type": "image",
+			"url": "assets/lobby/btn_invite_friends.png"
 		}
 	]
 }

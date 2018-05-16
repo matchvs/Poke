@@ -80,9 +80,6 @@ module battle {
 			this.explameAddPlayer();
 			this._playerHeader_left = new battle.PlayerHead();
 			this._playerHeader_right = new battle.PlayerHead();
-			// this._playerHeader_left.Release();
-			// this._playerHeader_left.Init(this._playerList[2]);
-			// this._stage._battleSprite.addChild(this._playerHeader_left);
 			this.SetPlayerHead(this._playerList[1],true);
 			this.SetPlayerHead(this._playerList[2],true);
 		}

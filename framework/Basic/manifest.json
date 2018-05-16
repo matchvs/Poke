@@ -11,36 +11,13 @@
 		"libs/modules/matchvs/matchvs.js"
 	],
 	"game": [
-<<<<<<< HEAD
-		"bin-debug/public/GUser.js",
-		"bin-debug/game/PlayCardTypes.js",
-=======
 		"bin-debug/logic/GUser.js",
 		"bin-debug/logic/battle/PlayerInfo.js",
->>>>>>> b70fa42395945dc5d9a4b8d79aba16c78d65d4bc
 		"bin-debug/Main.js",
+		"bin-debug/Main1.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
 		"bin-debug/ThemeAdapter.js",
-<<<<<<< HEAD
-		"bin-debug/battle/BattleStageControl.js",
-		"bin-debug/battle/BattleStageUI.js",
-		"bin-debug/battle/CardControl.js",
-		"bin-debug/battle/CardUI.js",
-		"bin-debug/battle/MandPool.js",
-		"bin-debug/battle/Player.js",
-		"bin-debug/game/CardListData.js",
-		"bin-debug/game/Compare.js",
-		"bin-debug/LoadingUI.js",
-		"bin-debug/game/Prompt.js",
-		"bin-debug/game/Prompt2.js",
-		"bin-debug/game/SendCard.js",
-		"bin-debug/logic/BlockAutoCrash.js",
-		"bin-debug/logic/UserInput.js",
-		"bin-debug/AssetAdapter.js",
-		"bin-debug/public/MvsEventRep.js",
-		"bin-debug/public/MvsEventReq.js",
-=======
 		"bin-debug/logic/GlobalData.js",
 		"bin-debug/AssetAdapter.js",
 		"bin-debug/logic/battle/BattleStageControl.js",
@@ -64,7 +41,6 @@
 		"bin-debug/matchvs/PokeMatchvsEngine.js",
 		"bin-debug/matchvs/PokeMatchvsRep.js",
 		"bin-debug/scene/BattleStageUI.js",
->>>>>>> b70fa42395945dc5d9a4b8d79aba16c78d65d4bc
 		"bin-debug/scene/Game.js",
 		"bin-debug/scene/Login.js",
 		"bin-debug/scene/TopHeader.js",

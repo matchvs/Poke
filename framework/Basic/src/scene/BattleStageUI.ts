@@ -11,10 +11,9 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		super();
 		
 	}
-
-
 	protected partAdded(partName: string, instance: any): void {
 		super.partAdded(partName, instance);
+		console.log("partAdded",partName,instance);
 		if(partName == "topHeader"){
 			this._topHeader = instance;
 		}
