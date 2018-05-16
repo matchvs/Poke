@@ -416,3 +416,6 @@ client/bin-release/web/180504193328/js/egret.web.min_d7e74cac.js
 client/bin-release/web/180504193328/js/egret.min_f3d393b0.js
 client/bin-release/web/180504193328/index.html
 client/bin-release/*
+client/bin-debug/*
+framework/Basic/.wing/*
+framework/Basic/bin-debug/*

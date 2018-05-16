@@ -1,0 +1,4 @@
+class MvsEventReq {
+	public constructor() {
+	}
+}
