@@ -1,4 +1,4 @@
-matchvs_wx/matchvs.min.js
+﻿matchvs_wx/matchvs.min.js
 matchvs_wx/matchvs.js
 matchvs_wx/matchvs.d.ts
 matchvs/matchvs.min.js
@@ -416,3 +416,7 @@ client/bin-release/web/180504193328/js/egret.web.min_d7e74cac.js
 client/bin-release/web/180504193328/js/egret.min_f3d393b0.js
 client/bin-release/web/180504193328/index.html
 client/bin-release/*
+framework/Basic/libs/*
+framework/Basic/bin_debug/*
+framework/Basic/.wing/*
+

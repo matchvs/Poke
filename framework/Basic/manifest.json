@@ -12,7 +12,7 @@
 	],
 	"game": [
 		"bin-debug/logic/GUser.js",
-		"bin-debug/utils/Toast.js",
+		"bin-debug/logic/battle/PlayerInfo.js",
 		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
@@ -28,7 +28,7 @@
 		"bin-debug/logic/battle/Player.js",
 		"bin-debug/logic/battle/PlayerHead.js",
 		"bin-debug/logic/battle/PlayerHeadFrame.js",
-		"bin-debug/logic/battle/PlayerInfo.js",
+		"bin-debug/LoadingUI.js",
 		"bin-debug/logic/battle/PlayerTime.js",
 		"bin-debug/logic/game/CardListData.js",
 		"bin-debug/logic/game/Compare.js",
@@ -45,6 +45,6 @@
 		"bin-debug/scene/TopHeader.js",
 		"bin-debug/struct/Block.js",
 		"bin-debug/utils/ArrayTools.js",
-		"bin-debug/LoadingUI.js"
+		"bin-debug/utils/Toast.js"
 	]
 }
