@@ -14,7 +14,9 @@
 		"eui.VSlider": "resource/eui_skins/VSliderSkin.exml",
 		"eui.ItemRenderer": "resource/eui_skins/ItemRendererSkin.exml",
 		"Login": "resource/scene/Login.exml",
-		"Game": "resource/scene/Game.exml"
+		"Game": "resource/scene/Game.exml",
+		"BattleStageUI": "resource/scene/BattleStage.exml",
+		"TopHeader": "resource/scene/TopHeader.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
@@ -33,8 +35,10 @@
 		"resource/eui_skins/ToggleSwitchSkin.exml",
 		"resource/eui_skins/VScrollBarSkin.exml",
 		"resource/eui_skins/VSliderSkin.exml",
+		"resource/scene/BattleStage.exml",
 		"resource/scene/Game.exml",
-		"resource/scene/Login.exml"
+		"resource/scene/Login.exml",
+		"resource/scene/TopHeader.exml"
 	],
 	"path": "resource/default.thm.json"
 }

@@ -7,15 +7,22 @@
 		"libs/modules/tween/tween.js",
 		"libs/modules/game/game.js",
 		"libs/modules/dragonBones/dragonBones.js",
-		"libs/modules/promise/promise.js"
+		"libs/modules/promise/promise.js",
+		"libs/modules/matchvs/matchvs.js"
 	],
 	"game": [
+<<<<<<< HEAD
 		"bin-debug/public/GUser.js",
 		"bin-debug/game/PlayCardTypes.js",
+=======
+		"bin-debug/logic/GUser.js",
+		"bin-debug/logic/battle/PlayerInfo.js",
+>>>>>>> b70fa42395945dc5d9a4b8d79aba16c78d65d4bc
 		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
 		"bin-debug/ThemeAdapter.js",
+<<<<<<< HEAD
 		"bin-debug/battle/BattleStageControl.js",
 		"bin-debug/battle/BattleStageUI.js",
 		"bin-debug/battle/CardControl.js",
@@ -33,8 +40,34 @@
 		"bin-debug/AssetAdapter.js",
 		"bin-debug/public/MvsEventRep.js",
 		"bin-debug/public/MvsEventReq.js",
+=======
+		"bin-debug/logic/GlobalData.js",
+		"bin-debug/AssetAdapter.js",
+		"bin-debug/logic/battle/BattleStageControl.js",
+		"bin-debug/logic/battle/CardControl.js",
+		"bin-debug/logic/battle/CardUI.js",
+		"bin-debug/logic/battle/CircleLoading.js",
+		"bin-debug/logic/battle/HouseRunning.js",
+		"bin-debug/logic/battle/MandPool.js",
+		"bin-debug/logic/battle/Player.js",
+		"bin-debug/logic/battle/PlayerHead.js",
+		"bin-debug/logic/battle/PlayerHeadFrame.js",
+		"bin-debug/LoadingUI.js",
+		"bin-debug/logic/battle/PlayerTime.js",
+		"bin-debug/logic/game/CardListData.js",
+		"bin-debug/logic/game/Compare.js",
+		"bin-debug/logic/game/PlayCardTypes.js",
+		"bin-debug/logic/game/Prompt.js",
+		"bin-debug/logic/game/Prompt2.js",
+		"bin-debug/logic/game/SendCard.js",
+		"bin-debug/matchvs/MatchvsData.js",
+		"bin-debug/matchvs/PokeMatchvsEngine.js",
+		"bin-debug/matchvs/PokeMatchvsRep.js",
+		"bin-debug/scene/BattleStageUI.js",
+>>>>>>> b70fa42395945dc5d9a4b8d79aba16c78d65d4bc
 		"bin-debug/scene/Game.js",
 		"bin-debug/scene/Login.js",
+		"bin-debug/scene/TopHeader.js",
 		"bin-debug/struct/Block.js",
 		"bin-debug/utils/ArrayTools.js",
 		"bin-debug/utils/Toast.js"

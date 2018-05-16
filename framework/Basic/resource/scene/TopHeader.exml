@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="TopHead" width="636" height="69" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image width="636" height="69" x="0" y="0" source="bg_header_png" locked="true"/>
+	<e:Image id="headImg" width="56" height="56" x="8" y="6" locked="true"/>
+	<e:Label id="nickName" text="张三" x="83" y="10" width="200" height="20" size="20" locked="true"/>
+	<e:Label id="pointValue" text="0" x="110" y="40" width="180" height="17" size="20" locked="true"/>
+</e:Skin>
