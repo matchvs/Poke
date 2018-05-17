@@ -17,8 +17,8 @@ module battle {
         private _autoing: BattleBtnUI = null;
         private _exiting: BattleBtnUI = null;
 
-        private _talking: BattleBtnUI = null;
-        private _prompt: BattleBtnUI = null;
+        //private _talking: BattleBtnUI = null;
+        //private _prompt: BattleBtnUI = null;
         //private _prompTips:egret.Bitmap=null;
         private _ready: BattleBtnUI = null;
         private _callNo: BattleBtnUI = null;
@@ -78,26 +78,26 @@ module battle {
             /**
              * btn_chat
              */
-            this._talking = new BattleBtnUI("ui_chat_btn");
-            this._gameScene.addChild(this._talking);
-            this._talking.x = 10;
-            this._talking.y = 1055;
+            // this._talking = new BattleBtnUI("ui_chat_btn");
+            // this._gameScene.addChild(this._talking);
+            // this._talking.x = 10;
+            // this._talking.y = 1055;
 
             /**
              * robot
              */
-            this._prompt = new BattleBtnUI("ui_robot");
-            this._gameScene.addChild(this._prompt);
-            this._prompt.ClickScale = false;
-            this._prompt.x = 0;
-            this._prompt.y = 632;
+            // this._prompt = new BattleBtnUI("ui_robot");
+            // this._gameScene.addChild(this._prompt);
+            // this._prompt.ClickScale = false;
+            // this._prompt.x = 0;
+            // this._prompt.y = 632;
 
             this.setBtnSprite();
             this._exiting.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
-            this._autoing.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+            //this._autoing.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
             this._setting.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
-            this._talking.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
-            this._prompt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+            //this._talking.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
+            //this._prompt.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTap, this);
 
             // 注册返回按键事件
             document.addEventListener("plusready", function () {
@@ -113,13 +113,13 @@ module battle {
             });
         }
         //设置托管
-        public SetPlayerAuto(tableid: number, isauto: boolean): void {
-            if (tableid != 3) {
-                return;
-            }
-            this._prompt.visible = isauto;
-            this._prompt.touchEnabled = isauto;
-        }
+        // public SetPlayerAuto(tableid: number, isauto: boolean): void {
+        //     if (tableid != 3) {
+        //         return;
+        //     }
+        //     this._prompt.visible = isauto;
+        //     this._prompt.touchEnabled = isauto;
+        // }
 
         // 设置一些按钮样式
         //打牌
@@ -427,19 +427,19 @@ module battle {
                 //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
             }
             else if (e.currentTarget == this._call3) {
-                //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 3 });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:3 });
                 this.HideAll();
             }
             else if (e.currentTarget == this._call2) {
-                //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 2 });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:2 });
                 this.HideAll();
             }
             else if (e.currentTarget == this._call1) {
-                //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 1 });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:1 });
                 this.HideAll();
             }
             else if (e.currentTarget == this._callNo) {
-                //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_CALLLANDOWNER, { score: 0 });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:0 });
                 this.HideAll();
             }
         }

@@ -49,7 +49,7 @@ module battle {
             this._prompt = new gameLogic.Prompt();
             this._prompt2=new gameLogic.Prompt2();
             this._compare=new gameLogic.Compare();
-
+            
             this._player = player;
             this._cardVlist = [];
             this._cardLayer = new egret.Sprite();
@@ -65,7 +65,7 @@ module battle {
 
             this.setCard();
         }
-        public SetBtnProxy(btnproxy:BattleBtnControl):void
+        public SetButtonCtl(btnproxy:BattleBtnControl):void
         {
             this._btnProxy=btnproxy;
         }

@@ -26,7 +26,7 @@ module network {
 						}
 					],
 					lanownList:[309,407,410],
-					callOwner:96648,
+					callOwner:85642,
 				}
 			};
 			//console.log("Package",event);

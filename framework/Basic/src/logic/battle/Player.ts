@@ -1,11 +1,12 @@
 module battle {
 
 	export class Player extends GUser{
-		public cardList:Array<number> = [];		//牌列表
+		public cardList:Array<number> = [];			//牌列表
 		public isLandLord:boolean = false;			//是否是地主
 		public seatNo = 0;							//座位号
 		public LocalTableId = 0;					//上下家标识 1 上家， 2下家 3-为自己
 		public IsReady = false;
+		public landlordScore = 0;
 
 		private _cardNumber:Number = 0;				//牌数量
 
@@ -13,7 +14,7 @@ module battle {
 			super();
 		}
 
-		set AddcardList(cards:Array<number>){
+		public AddcardList(cards:Array<number>):void{
 			if(cards==null)
             {
                 return;
