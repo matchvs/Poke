@@ -39,6 +39,11 @@
     {
       "name":"matchvs",
       "path":"../../matchvs"
+    },
+    {
+      "name":"wxshare",
+      "path":"../../wxshare"
     }
+
   ]
 }

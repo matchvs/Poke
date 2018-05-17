@@ -31,6 +31,7 @@ class Main extends eui.UILayer {
 
     public root:egret.DisplayObjectContainer;
     private topMask = new egret.Shape();
+    private userID:string;
     // public rep:PokeMatchvsRep = null;
 
     protected createChildren(): void {
@@ -79,8 +80,30 @@ class Main extends eui.UILayer {
         await platform.login();
         const userInfo = await platform.getUserInfo();
         console.log(userInfo);
+        this.getWxUserInfo();
+
+    }
+
+    /**
+     * 获取微信
+     */
+    private getWxUserInfo() {
+        try{
+            getWxUserInfo(function callback (userinfo){
+                egret.log(userinfo);
+            });
+            // egret.log("2",getWxUserInfo(data).nickName)
+        //    var data = JSON.parse( getWxUserInfo(data));
+        //    egret.log(data.nickName+"nickName");
+            // egret.log(data.avatarUrl+"avatarUrl");
+            //todo 微信的数据还需要组装
+            PokeMatchvsEngine.getInstance().hashSet( this.userID,"");
+        } catch(e) {
+            egret.log("错误",e.message);
+        }
         
     }
+    
 
     private async loadResource() {
         try {
@@ -126,6 +149,7 @@ class Main extends eui.UILayer {
             break;
             //注册
             case MatchvsMessage.MATCHVS_REGISTERUSER:
+                this.userID = e.data.id;
                 PokeMatchvsEngine.getInstance().login(e.data.id,e.data.token);
             break;
             case MatchvsMessage.MATCHVS_LOGIN:

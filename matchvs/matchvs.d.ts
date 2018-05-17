@@ -1,9 +1,9 @@
 /************************************************************************************************************
  *
  * Describe :   Matchvs skd .d.ts define files for typescrip
- * Version  :   Develop 1.4.000
+ * Version  :   Develop 1.6.000
  *
- * CHANGE   :   2018.03.30
+ * CHANGE   :   2018.05.1
  *
  *
  ************************************************************************************************************/
@@ -21,6 +21,14 @@ declare function LocalStore_Clear();
  * @constructor
  */
 declare function LocalStore_Save(key:string,value:string);
+/**
+ * openLog 打开日志
+ * closeLog 关闭日志
+ */
+declare class MatchvsLog{
+    static openLog();
+    static closeLog();
+}
 /**
  * 创建房间请求参数类型
  */
@@ -324,6 +332,12 @@ declare class MatchvsNetWorkCallBack{
     onErr(errCode:number,errMsg:string);
 }
 
+declare class MsGatewaySpeedResponse{
+    public status:number;
+    public seq:number;
+    constructor(status:number, seq:number)
+}
+
 /**
  *
  */
@@ -372,10 +386,39 @@ declare class MsNetworkStateNotify{
     constructor(roomID:string, userID:number, state:number, owner:number);
 }
 
+/**
+ * 设置房间属性回调返回类型
+ */
+declare class MsSetRoomPropertyRspInfo{
+    public status:number;
+    public roomID:string;
+    public userID:number;
+    public roomProperty:string;
+    constructor(status:number, roomID:string, userID:number, roomProperty:string)
+}
 
 /**
- *
+ * 设置房间属性异步回调返回类型
  */
+declare class MsRoomPropertyNotifyInfo{
+    public roomID:string;
+    public userID:number;
+    public roomProperty:string;
+    constructor(roomID:string, userID:number, roomProperty:string)
+}
+
+declare class MsReopenRoomResponse {
+    public status  : number;
+    public cpProto : string;
+	constructor(status:number, cpProto:string)
+}
+declare class MsReopenRoomNotify{
+    public roomID  : string;
+    public userID  : number;
+    public cpProto : string;
+	constructor(roomID:string,userID:number, cpProto:string)
+}
+
 declare class MatchvsResponse {
     constructor();//构造函数
 
@@ -568,9 +611,9 @@ declare class MatchvsResponse {
 
     /**
      *
-     * @param {gatewaySpeedResponse} rsp
+     * @param {MsGatewaySpeedResponse} rsp
      */
-    gatewaySpeedResponse(rsp:gatewaySpeedResponse);
+    gatewaySpeedResponse(rsp:MsGatewaySpeedResponse);
 
     /**
      * 房间检测异步回调
@@ -583,7 +626,40 @@ declare class MatchvsResponse {
      * @param {number} status
      */
     disConnectResponse(status:number);
+
+    /**
+     * 设置房间属性回调
+     * @param {MsSetRoomPropertyRspInfo} rsp
+     */
+    setRoomPropertyResponse(rsp:MsSetRoomPropertyRspInfo);
+
+    /**
+     * 设置房间属性异步回调
+     * @param {MsRoomPropertyNotifyInfo} notify
+     */
+    setRoomPropertyNotify(notify:MsRoomPropertyNotifyInfo);
+
+    /**
+     * 断线重连接口回调，接口参数与joinRoomResponse是一样的
+     * @param {number} status
+     * @param {Array<MsRoomUserInfo>} roomUserInfoList
+     * @param {MsRoomInfo} roomInfo
+     */
+    reconnectResponse(status:number, roomUserInfoList:Array<MsRoomUserInfo>, roomInfo:MsRoomInfo);
+	
+	 /**
+     * 允许房间加人的通知
+     * @param {MsReopenRoomNotify} data
+     */
+	joinOpenNotify(data:MsReopenRoomNotify);
+	
+	 /**
+     * 设置允许房间加人的结果
+     * @param {MsReopenRoomResponse} data
+     */
+	joinOpenResponse(data:MsReopenRoomResponse);
 }
+
 
 
 /**
@@ -668,6 +744,14 @@ declare class MatchvsEngine {
     getRoomDetail(roomID:string):number
 
     /**
+     * 设置房间属性
+     * @param {string} roomID
+     * @param {string} roomProperty
+     * @returns {number}
+     */
+    setRoomProperty(roomID:string, roomProperty:string):number
+
+    /**
      * 随机加入房间
      * @param {number} maxPlayer 最大人数
      * @param {string} userProfile 附带数据，默认指定 ""
@@ -690,6 +774,12 @@ declare class MatchvsEngine {
      * @returns {number}
      */
     joinRoom(roomID:string,userProfile:string):number
+
+    /**
+     * 断线重连
+     * @returns {number}
+     */
+    reconnect():number;
 
     /**
      * 禁止加入房间
@@ -755,14 +845,14 @@ declare class MatchvsEngine {
      * @param {string} data             要发送的数据
      * @param {number} desttype         0-客户端+not CPS  1-not客户端+ CPS   2-客户端 + CPS
      * @param {Array<number>} userids   玩家ID集合 [1,2,3,4,5]
-     * @returns {any}
+     * @returns {{sequence: number, result: number}}
      */
     sendEventEx(msgType:number, data:string, desttype:number, userids:Array<number>):any
 
     /**
      * 发送消息
      * @param {string} data 要发送的数据
-     * @returns {any}
+     * @returns {{sequence: number, result: number}}
      */
     sendEvent(data:string):any
 
@@ -772,5 +862,29 @@ declare class MatchvsEngine {
      * @returns {number}
      */
     logout(cpProto:string):number
+	
+	/**
+     * 设置允许房间加人
+     * @param {number} cpProto
+     * @returns {number}
+     */
+    joinOpen(cpProto:string):number
+	
+	/**
+	* 存储数据
+	* @param {number} gameID
+	* @param {number} userID
+	* @param {string} key
+	* @param {any} value
+	*/
+	hashSet (gameID, userID, key, value) :void
+	
+	/**
+	* 存储数据
+	* @param {number} gameID
+	* @param {number} userID
+	* @param {string} key
+	*/
+	hashGet (gameID, userID, key) :void
 }
 

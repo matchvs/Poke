@@ -1,7 +1,8 @@
 class PokeMatchvsRep extends egret.EventDispatcher{
 
     private static _instance ;
-    private _myUser:GUser;
+    public _myUser:GUser = new GUser;
+     
 
 	private constructor() {
         super();
@@ -10,6 +11,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         MatchvsData.MatchvsRep.registerUserResponse = this.registerUserRsp.bind(this);
         MatchvsData.MatchvsRep.loginResponse = this.loginRsp.bind(this);
         MatchvsData.MatchvsRep.joinRoomResponse = this.joinRsp.bind(this);
+        MatchvsData.MatchvsRep.joinRoomNotify = this.joinRoomNotify.bind(this);
 	}
 
     public static get getInstance():PokeMatchvsRep {  
@@ -32,9 +34,19 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         }
     }
 
+    /**
+     * 注册
+     */
 	registerUserRsp = function(userInfo) {
         if (userInfo.status == 0) {
             egret.log("注册成功"+userInfo.status);
+            if (userInfo.name != "") 
+                this._myUser.nickName = userInfo.name;
+            else
+                this._myUser.nickName = userInfo.id;
+            this._myUser.avator = MatchvsData.defaultIcon[Math.round(10*Math.random())];
+            this._myUser.token = userInfo.token;
+            this._myUser.pointValue = MatchvsData.defaultScore;
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_REGISTERUSER,false,false,userInfo));
         } else {
             egret.log("注册失败，错误码："+userInfo.status);
@@ -42,6 +54,9 @@ class PokeMatchvsRep extends egret.EventDispatcher{
 		
 	}
 
+    /**
+     * 登录
+     */
     loginRsp = function(loginRsp) {
         if(loginRsp.status == 200) {
             egret.log("登录成功"+loginRsp.status);
@@ -51,22 +66,35 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         }
     }
 
+    /**
+     * 进入房间的回调
+     */
     joinRsp = function(status,roomUserInfonList,roomInfo) {
         if(status == 200) {
             egret.log("进入房间成功"+status);
             var userPlayer = [];
-            var user:GUser;
+            userPlayer.push(this._myUser);
             for(var i in roomUserInfonList) {
+                var user:GUser = new GUser;
                 user.nickName = roomUserInfonList[i].userId;
                 user.avator = roomUserInfonList[i].userProfile;
-                user.pointValue = 10000;
+                user.pointValue = MatchvsData.defaultScore;
+                userPlayer.push(user);
             }
-            userPlayer.push(user);
             egret.log("userPlayer的长度"+userPlayer.length);
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_JOINROOM_RSP,false,false,userPlayer));
         } else {
             egret.log("进入房间失败，错误码："+status);
         }
+    }
+
+    joinRoomNotify = function(roomUserInfon) {
+        egret.log(roomUserInfon.userId+"进入了房间");
+        var user:GUser = new GUser;
+        user.nickName = roomUserInfon.userId;
+        user.avator = roomUserInfon.userProfile;
+        user.pointValue = MatchvsData.defaultScore;
+        this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,false,false,user));
     }
 
 	

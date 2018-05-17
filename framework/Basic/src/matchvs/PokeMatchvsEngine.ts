@@ -56,5 +56,12 @@ class PokeMatchvsEngine  {
 		return result;
 	}
 
+	/**
+	 * 存储数据
+	 */
+	public hashSet(userID:string,value:any) {
+		MatchvsData.MatchvsReq.hashSet(MatchvsData.gameID,userID,MatchvsData.appKey,value);
+	}
+
 
 }
