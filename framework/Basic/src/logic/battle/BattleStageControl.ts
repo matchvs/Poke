@@ -8,7 +8,9 @@ module battle {
 		private _landlordList = [];
 		private _playerHeader_left:PlayerHead = null;		//上家
 		private _playerHeader_right:PlayerHead = null;		//下家
-    
+		
+		private _timeoutList:Array<number> = [];
+
 		public constructor(stage:BattleStageUI) {
 			super();
 			this._stage = stage;
@@ -57,7 +59,11 @@ module battle {
 			//network.BattleMsg.getInstance() 是事件发送者，准备游戏发送回调
 			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_READY,this.GameReadyEventCall, this);
 
-			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_READY,this.GameReadyEventCall, this);
+			//叫地主结束
+			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.CALL_LANDLORD_OVER,this.CallLandLordOver, this);
+
+			//下一个叫地主
+			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.CALL_LANDLORD_NEXT,this.CallLandLordNext, this);
 		}
 
 		
@@ -108,9 +114,35 @@ module battle {
 			if("lanownList" in data){
 				this._landlordList = data.lanownList;
 			}
-
+			console.info("beginCallLandLord:");
+			this._timeoutList.push(egret.setTimeout(this.beginCallLandLord, this, 4000));
 			this.SendCard();
-			
+		}
+
+		private beginCallLandLord(){
+			console.info("beginCallLandLord:");
+			this._stage.ShowCallLand(this._myOwner,true,2,100);
+
+		}
+
+		public GameOver(){
+			//取消定时
+			while (this._timeoutList.length > 0) {
+            egret.clearTimeout(this._timeoutList.pop());
+        	}
+		}
+
+		/**
+		 * CallLandOver 结束叫地主
+		 */
+		private CallLandLordOver(event:egret.Event){
+
+		}
+
+		/**
+		 * 下一个叫地主的人
+		 */
+		private CallLandLordNext(event:egret.Event){
 		}
 
 		/**
