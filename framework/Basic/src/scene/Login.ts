@@ -11,11 +11,11 @@ class Login extends eui.Component implements eui.UIComponent {
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			// Toast.show("click:" + partName);
 			if (partName == "btn_login") {
-				Toast.show("ceshi");
+				// Toast.show("ceshi");
 				SceneManager.showScene(new Game());
 			} else if (partName == "rank_list") {
 				// SceneManager.showScene(new RankList());
-				var rankList = new RankList();
+				// var rankList = new RankList();
 			}
 
 		}, this);

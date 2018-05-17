@@ -28,10 +28,6 @@ class PokeMatchvsEngine  {
 		return result;
 	}
 
-
-
-
-
 	/**
 	 * 注册
 	 */
@@ -48,6 +44,15 @@ class PokeMatchvsEngine  {
 		var result = MatchvsData.MatchvsReq.login(pUserID,pToken,MatchvsData.gameID,MatchvsData.gameVision,
 		MatchvsData.appKey,MatchvsData.secret,MatchvsData.DeviceID,MatchvsData.gatewayID);
 		egret.log("登录result："+result);
+		return result;
+	}
+
+	/**
+	 * 快速匹配
+	 */
+	public joinRandomRoom() {
+		var result = MatchvsData.MatchvsReq.joinRandomRoom(MatchvsData.maxPlayer,"");
+		egret.log("快速匹配result :"+result);
 		return result;
 	}
 
