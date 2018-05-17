@@ -1,4 +1,4 @@
-module controller.game {
+module gameLogic {
     //提示类,智能提示
     export class Prompt {
         private _types:PlayCardTypes = new PlayCardTypes();
@@ -25,21 +25,21 @@ module controller.game {
                 var cld:CardListData=this.getMinListByType(mylist, tableList.Type, tableList);
                 if(cld!=null&&mylist.List.length-cld.List.length>2&&lastIsTeam)      //自己发完牌还剩2张以上,不大队友牌
                 {
-                    if(cld.Type==controller.game.PlayCardTypes.Types_Signal)
+                    if(cld.Type==gameLogic.PlayCardTypes.Types_Signal)
                     {
                         if(cld.SingleArr[0]>14)     //单牌不大于A
                         {
                             return null;
                         }
                     }
-                    else if(cld.Type==controller.game.PlayCardTypes.Types_Double)
+                    else if(cld.Type==gameLogic.PlayCardTypes.Types_Double)
                     {
                         if(cld.DoubleArr[0]>14)     //对子不大于A
                         {
                             return null;
                         }
                     }
-                    else if(cld.Type==controller.game.PlayCardTypes.Types_Bomb)//不用炸弹
+                    else if(cld.Type==gameLogic.PlayCardTypes.Types_Bomb)//不用炸弹
                     {
                         return null;
                     }

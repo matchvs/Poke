@@ -17,4 +17,24 @@ module network {
 		REPROT_SCORE_S = 128,			//上报分数
 		REPROT_SCORE_R = 129,			//上报分数响应
 	}
+
+
+	export class BattleMsgEvent {
+		constructor(){
+		}
+		//准备游戏
+		public static GAME_READY = "GameReady";
+
+		//叫地主结束
+		public static CALL_LANDLORD_OVER = "CallLandLordOver";
+
+		//下一个叫地主
+		public static CALL_LANDLORD = "CallLandLordNext";
+
+		//出牌
+		public static PLAYER_CARDS = "PlayerCards";
+
+		//上报分数事件
+		public static REPORT_DATA = "ReportData";
+	}
 }

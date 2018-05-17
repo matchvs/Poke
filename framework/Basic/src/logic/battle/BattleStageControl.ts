@@ -9,13 +9,22 @@ module battle {
 		private _playerHeader_left:PlayerHead = null;		//上家
 		private _playerHeader_right:PlayerHead = null;		//下家
     
-
-
 		public constructor(stage:BattleStageUI) {
 			super();
 			this._stage = stage;
+		}
+
+		public init(){
 			//添加监听消息
 			this.BattleEventListen();
+			//给一个假的发牌消息
+			//this.explameAddPlayer();
+			this._playerHeader_left = new battle.PlayerHead();//上家
+			this._playerHeader_right = new battle.PlayerHead();//下家
+		}
+
+		public startGame(){
+			this.sendReadMsg();//发送准备消息
 		}
 
 		//设置底牌
@@ -28,6 +37,7 @@ module battle {
 		 * @param {GUser} user
 		 */
 		public addPlayer(user:GUser){
+			console.log("addPlayers",user);
 			if(user){
 				let player = new Player();
 				player.avator = user.avator;
@@ -42,51 +52,15 @@ module battle {
 			}
 		}
 
-		/**
-		 * 给用户添加假数据
-		 */
-		public explameAddPlayer(){
-			let player1 = new battle.Player();
-			player1.avator = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526393669326&di=835161a2290b3b6ae1740bd39eb52f3e&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201609%2F16%2F20160916214658_UcHjJ.jpeg";
-			player1.nickName = "微微";
-			player1.pointValue = 10002;
-			player1.userID = 85642;
-			
-			
-
-			let player2 = new battle.Player();
-			player2.avator = "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=913343495,873855432&fm=27&gp=0.jpg";
-			player2.nickName = "小妞";
-			player2.pointValue = 534;
-			player2.userID = 75646;
-
-			let player3 = new battle.Player();
-			player3.avator = "https://img2.woyaogexing.com/2018/05/15/2bf1c62d1b036564!400x400_big.jpg";
-			player3.nickName = "子琪";
-			player3.pointValue = 6534;
-			player3.userID = 96648;
-
-			//GlobalData.myUser = player1;
-			
-			this.addPlayer(player1);
-			this.addPlayer(player2);
-			this.addPlayer(player3);
-			
-		}
-
 		//添加事件监听
 		private BattleEventListen(){
-			//network.BattleMsg.getInstance() 是事件发送者
+			//network.BattleMsg.getInstance() 是事件发送者，准备游戏发送回调
+			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_READY,this.GameReadyEventCall, this);
+
 			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_READY,this.GameReadyEventCall, this);
 		}
 
-		public init(){
-			//给一个假的发牌消息
-			this.explameAddPlayer();
-			this._playerHeader_left = new battle.PlayerHead();//上家
-			this._playerHeader_right = new battle.PlayerHead();//下家
-			this.sendReadMsg();//发送准备消息
-		}
+		
 
 		/**
 		 * 准备游戏后, 收到发牌消息调用这个函数，给各个用户填写牌信息
@@ -103,6 +77,7 @@ module battle {
 				list = data.userCards;
 				let TableId  = 1;
 				let myUser = this._myOwner;
+				//获取牌列表
 				this._playerList.forEach((element)=>{
 					for(let i = 0; i < list.length; i++){
 						if(list[i].userID == element.userID){
@@ -118,25 +93,37 @@ module battle {
 					}else{
 						element.LocalTableId = TableId++;
 					}
+					//显示用户头像
 					this.SetPlayerHead(element,true);
 				});
 			}
+
+
+			//用户列表安装 seatNo排序
+			this._playerList.sort(function(a,b){
+				return a.seatNo < b.seatNo ? 1:-1;
+			});
+
 
 			if("lanownList" in data){
 				this._landlordList = data.lanownList;
 			}
 
-			// 发牌
+			this.SendCard();
 			
+		}
+
+		/**
+		 * 启用发牌动画
+		 */
+		private SendCard(){
+			// 发牌
 			this._stage.SendCard(this._myOwner);
 			this._playerHeader_left.ShowCard = true;
 			this._playerHeader_left.Ready = false;
 			this._playerHeader_right.ShowCard = true;
 			this._playerHeader_right.Ready = false;
-
 		}
-
-
 
 		/**
 		 * 发送准备消息

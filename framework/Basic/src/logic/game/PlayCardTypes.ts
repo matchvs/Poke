@@ -1,4 +1,4 @@
-﻿module controller.game {
+﻿module gameLogic {
 
     export class PlayCardTypes {
         public static Types_Error:number = 0;           //类型出错

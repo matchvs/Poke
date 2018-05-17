@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin class="BattleStage" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*">
 	<w:Config id="163627e2052"/>
-	<e:Image width="640" height="1136" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" fillMode="scale" source="bg_jpg"/>
+	<e:Image width="640" height="1136" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" fillMode="scale" source="bg_game_jpg"/>
 	<ns1:TopHeader id="topHeader" width="636" height="69" x="2" y="2" locked="true"/>
 </e:Skin>

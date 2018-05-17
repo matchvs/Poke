@@ -1,4 +1,4 @@
-module controller.game {
+module gameLogic {
     export class Compare {
         public constructor() {
 
