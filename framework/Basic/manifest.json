@@ -13,15 +13,13 @@
 	"game": [
 		"bin-debug/logic/GUser.js",
 		"bin-debug/logic/network/Resolver/IResolver.js",
-		"bin-debug/logic/battle/SendCardAnimal.js",
+		"bin-debug/logic/game/CardListData.js",
 		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
 		"bin-debug/ThemeAdapter.js",
 		"bin-debug/logic/GlobalData.js",
 		"bin-debug/AssetAdapter.js",
-		"bin-debug/logic/battle/BattleBtnControl.js",
-		"bin-debug/logic/battle/BattleBtnUI.js",
 		"bin-debug/logic/battle/BattleStageControl.js",
 		"bin-debug/logic/battle/CardControl.js",
 		"bin-debug/logic/battle/CardUI.js",
@@ -34,8 +32,8 @@
 		"bin-debug/logic/battle/PlayerHeadFrame.js",
 		"bin-debug/logic/battle/PlayerInfo.js",
 		"bin-debug/logic/battle/PlayerTime.js",
-		"bin-debug/Config.js",
-		"bin-debug/logic/game/CardListData.js",
+		"bin-debug/logic/battle/SendCardAnimal.js",
+		"bin-debug/utils/Toast.js",
 		"bin-debug/logic/game/Compare.js",
 		"bin-debug/logic/game/PlayCardTypes.js",
 		"bin-debug/logic/game/Prompt.js",
@@ -48,6 +46,7 @@
 		"bin-debug/logic/network/Resolver/GameReadyResolver.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/matchvs/MatchvsData.js",
+		"bin-debug/matchvs/MatchvsMessage.js",
 		"bin-debug/matchvs/PokeMatchvsEngine.js",
 		"bin-debug/matchvs/PokeMatchvsRep.js",
 		"bin-debug/scene/BattleStageUI.js",
@@ -56,6 +55,6 @@
 		"bin-debug/scene/TopHeader.js",
 		"bin-debug/struct/Block.js",
 		"bin-debug/utils/ArrayTools.js",
-		"bin-debug/utils/Toast.js"
+		"bin-debug/Config.js"
 	]
 }

@@ -73,7 +73,7 @@ class Main extends eui.UILayer {
         SceneManager.init(this);
         await this.loadResource()
         this.createGameScene();
-        
+        Toast.initRes(this, "resource/loading/toast-bg.png");
         // const result = await RES.getResAsync("description_json")
         // this.startAnimation(result);
         await platform.login();
@@ -88,7 +88,10 @@ class Main extends eui.UILayer {
             this.stage.addChild(loadingView);
             // const matchvsEngine = PokeMatchvsEngine.getInstance();
             // const rep = PokeMatchvsRep.getInstance();
-            PokeMatchvsRep.getInstance.addEventListener("init",this.on,this);
+            PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
+            PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
+            PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
+            //初始化
             PokeMatchvsEngine.getInstance().init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
             
             // matchvsEngine.registerUser();
@@ -99,6 +102,7 @@ class Main extends eui.UILayer {
         }
         catch (e) {
             console.error(e);
+            
         }
     }
 
@@ -114,8 +118,20 @@ class Main extends eui.UILayer {
         })
     }
 
-    public on(e:egret.Event):void {
+    public onEvent(e:egret.Event):void {
         egret.log(e);
+        switch(e.type) {
+            case MatchvsMessage.MATCHVS_INIT:
+                PokeMatchvsEngine.getInstance().registerUser();
+            break;
+            //注册
+            case MatchvsMessage.MATCHVS_REGISTERUSER:
+                PokeMatchvsEngine.getInstance().login(e.data.id,e.data.token);
+            break;
+            case MatchvsMessage.MATCHVS_LOGIN:
+                Toast.show("登录成功");
+            break;
+        }
     }
 
     // private textfield: egret.TextField;
@@ -193,11 +209,10 @@ class Main extends eui.UILayer {
 
         // }, this);
 
-        var login = new BattleStageUI();
+        var login = new Login();
         
         this.addChild(login);
-        login.init();
-        login.StartBattle(GUser.explameAddPlayer());
+        // login.init();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

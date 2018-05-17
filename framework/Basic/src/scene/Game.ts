@@ -1,4 +1,7 @@
 class Game extends eui.Component implements eui.UIComponent {
+
+
+
 	public constructor() {
 		super();
 	}
@@ -7,13 +10,10 @@ class Game extends eui.Component implements eui.UIComponent {
 		super.partAdded(partName, instance);
 		
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
-			Toast.show("click:" + partName);
-			if (partName == "back") {
-				// SceneManager.back();
-				instance.value = RES.getRes("button_up_png");
-				// instance.touchEnabled =false;
-				// instance.source = "button_up_png";
-				Toast.show("ceshi");
+			//快速匹配
+			if (partName == "fastMatch") {
+				PokeMatchvsEngine.getInstance().joinRandomRoom();
+				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 			} else if (partName == "bg") {
 				SceneManager.showScene(new Game());
 			}
@@ -21,6 +21,16 @@ class Game extends eui.Component implements eui.UIComponent {
 		}, this);
 	}
 
+
+	 public onEvent(e:egret.Event):void {
+		 switch (e.type) {
+			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
+			 if( e.data.length  == 2) {
+				
+			 }
+			 break;
+		 }
+	 }
 
 	protected childrenCreated(): void {
 		super.childrenCreated();
