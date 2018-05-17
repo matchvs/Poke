@@ -12,7 +12,8 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	private _sendCardAnimal:battle.SendCardAnimal = null; //发牌动画控制类型
 	public _sendCardSprote:egret.Sprite = null; 		  //发牌时的容器
 
-	// private _battleButtonCtl:
+	private _battleButtonCtl:battle.BattleBtnControl = null;
+	private _battleButtonSprote:egret.Sprite = null;
 	
 	public constructor() {
 		super();
@@ -75,6 +76,12 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		this._playerHeadSprite = new egret.Sprite();
 		this.addChild(this._playerHeadSprite);
 
+		this._battleButtonCtl = new battle.BattleBtnControl;
+		this._battleButtonSprote = new egret.Sprite();
+		this.addChild(this._battleButtonSprote);
+		this._battleButtonCtl.Init(this._battleButtonSprote);
+
+
 		// 控制对战舞台类
 		this._battleControl = new battle.BattleStageControl(this);
 		
@@ -107,6 +114,18 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			//     this._btnProxy.HideAll();
 			// }
         }, this);
+	}
+
+	/**
+	 * 显示叫地主
+	 */
+	public ShowCallLand(player:battle.Player, isme: boolean, nowscore: number, delaytime: number){
+		if (isme) {
+			this._battleButtonCtl.CallLandOwner(nowscore);
+		}
+		else {
+			this._battleButtonCtl.HideAll();
+		}
 	}
 
 

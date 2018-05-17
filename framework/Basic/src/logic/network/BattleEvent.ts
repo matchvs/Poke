@@ -29,7 +29,7 @@ module network {
 		public static CALL_LANDLORD_OVER = "CallLandLordOver";
 
 		//下一个叫地主
-		public static CALL_LANDLORD = "CallLandLordNext";
+		public static CALL_LANDLORD_NEXT = "CallLandLordNext";
 
 		//出牌
 		public static PLAYER_CARDS = "PlayerCards";
