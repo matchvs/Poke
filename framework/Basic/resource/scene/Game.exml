@@ -1,27 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="skins.AnimationSkin" width="720" height="1280" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" xmlns:ns1="*">
+<e:Skin class="skins.AnimationSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" xmlns:ns1="*">
 	<w:Config id="1631fb6b00e" ></w:Config>
-	<e:Image width="720" height="1280" x="0" y="0" source="resource/assets/bg/bg_gameplay.png"/>
-	<e:Button id="btn_pause" label="Pause" x="536.36" y="39.06" anchorOffsetX="0" width="145.45" anchorOffsetY="0" height="86.36" skinName="skins.ButtonSkin"/>
-	<e:Button id="back" label="Back" x="28.18"
-	 y="39.06" anchorOffsetX="0" width="145.45" 
-	 anchorOffsetY="0" height="86.36"  >
+	<e:Image height="1136" x="0" y="0" source="resource/assets/bg.jpg" width="640"/>
+	<e:Image width="636" height="69" x="2" y="2" source="resource/assets/lobby/bg_header.png"/>
+	<e:Image id="head" width="56" height="56" x="8" y="8"/>
+	<e:Label id="nickName" text="昵称000" x="83" y="10" width="66" height="20" fontFamily="STYuanti-SC-Bold" textAlign="left" size="20" textColor="0xffdfa6"/>
+	<e:Label id="integral" text="10000" x="112" y="44" size="20" fontFamily="STYuanti-SC-Bold" textColor="0xffdfa6" width="63" height="17"/>
+	<e:Image width="238" height="354" x="207" y="200" source="resource/assets/login/logo.png"/>
+	<e:Button id="fastMatch" label="" x="148" y="670" width="344" height="99">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="play_jpg" source.down="button_up_png"/>
+			<e:Image width="100%" height="100%" source="resource/assets/lobby/btn_fast_match.png"/>
 			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
 			</e:Skin>
 		</e:skinName>
-
-
 	</e:Button>
-	<e:ToggleButton label="切换图片" x="42" y="256" width="200" height="300">
+	<e:Button id="createRoom" label="" x="148" y="790" width="344" height="99">
 		<e:skinName>
-			<e:Skin states="up,down,disabled,focus">
-			<e:Image width="100%" height="100%" source="play_jpg" source.down="button_up_png" />
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="resource/assets/lobby/btn_create_room.png"/>
 			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
 			</e:Skin>
 		</e:skinName>
-	</e:ToggleButton>
+	</e:Button>
+	<e:Button id="inviteFriends" label="" x="148" y="911" width="344" height="98">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="resource/assets/lobby/btn_invite_friends.png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image width="270" height="23" x="185" y="1049" source="resource/assets/login/footer_text.png"/>
+
+
+
 
 </e:Skin>

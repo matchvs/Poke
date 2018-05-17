@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="skins.AnimationSkin" width="720" height="1280" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" >
+<e:Skin class="skins.AnimationSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" >
 	<w:Declarations>
 		<tween:TweenGroup id="bgAnim">
 			<tween:TweenItem target="{bg}">
@@ -67,9 +67,9 @@
 		</tween:TweenGroup>
 	</w:Declarations>
 	<w:Config id="1630b19fbde" ></w:Config>
-	<e:Image id="bg" left="0" right="0" top="0" bottom="0" source="resource/assets/bg.jpg"/>
-	<e:Image id="logo" width="238" height="354" x="241" y="200" source="resource/assets/login/logo.png"/>
-	<e:Button id="btn_login" label="" x="188" y="930.09" width="344" height="99">
+	<e:Image id="bg" left="0" right="0" top="0" bottom="0" source="resource/assets/bg.jpg" width="640" height="1136"/>
+	<e:Image id="logo" width="238" height="354" x="207" y="200" source="resource/assets/login/logo.png"/>
+	<e:Button id="btn_login" label="" x="148" y="849" width="344" height="99">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="resource/assets/login/btn_login.png"/>
@@ -77,8 +77,8 @@
 			</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Label text="排行榜" x="315" y="1075.97"/>
-	<e:Image width="270" height="23" x="225" y="1218.7" source="resource/assets/login/footer_text.png"/>
+	<e:Label id="rank_list" text="排行榜" x="279" y="989" fontFamily="FZY4JW--GB1-0" size="28" textColor="0xaa6e5c" textAlign="center" width="90" height="27"/>
+	<e:Image width="270" height="23" x="185" y="1049" source="resource/assets/login/footer_text.png"/>
 
 
 

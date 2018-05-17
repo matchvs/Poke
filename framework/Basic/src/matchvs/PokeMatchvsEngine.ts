@@ -1,28 +1,42 @@
 class PokeMatchvsEngine  {
 	
-	private engine:MatchvsEngine;
-	private response:MatchvsResponse;
+	// private engine:MatchvsEngine;
+	// private response:PokeMatchvsRep;
+	private static _instance ;
 
-	public constructor() {
-		this.engine = new MatchvsEngine;
-		this.response = new MatchvsResponse;
+	private constructor() {
+		// this.engine = new MatchvsEngine();
+		// var response = new PokeMatchvsRep();
+		// var rs = new MatchvsResponse();
+		// rs.initResponse = this.initResponse.bind(this);
 	}
+
+
+	public static getInstance():PokeMatchvsEngine {  
+         if (this._instance == null) {    
+            this._instance = new PokeMatchvsEngine();  
+         }    
+        return this._instance;  
+    }  
 	
 	/**
 	 * 初始化
 	 */
 	public init(pChannel: string, pPlatform: string, gameID: number) :number{
-		var result = this.engine.init(new MatchvsResponse,pChannel,pPlatform,gameID);
+		var result = MatchvsData.MatchvsReq.init( MatchvsData.MatchvsRep,pChannel,pPlatform,gameID);
 		egret.log("初始化result："+result);
 		return result;
 	}
+
+
+
 
 
 	/**
 	 * 注册
 	 */
 	public registerUser() :number{
-		var result = this.engine.registerUser();
+		var result = MatchvsData.MatchvsReq.registerUser();
 		egret.log("注册result："+result);
 		return result;
 	}
@@ -31,7 +45,7 @@ class PokeMatchvsEngine  {
 	 * 登录
 	 */
 	public login(pUserID: number, pToken: string,) :number {
-		var result = this.engine.login(pUserID,pToken,MatchvsData.gameID,MatchvsData.gameVision,
+		var result = MatchvsData.MatchvsReq.login(pUserID,pToken,MatchvsData.gameID,MatchvsData.gameVision,
 		MatchvsData.appKey,MatchvsData.secret,MatchvsData.DeviceID,MatchvsData.gatewayID);
 		egret.log("登录result："+result);
 		return result;

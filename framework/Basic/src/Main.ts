@@ -31,6 +31,7 @@ class Main extends eui.UILayer {
 
     public root:egret.DisplayObjectContainer;
     private topMask = new egret.Shape();
+    // public rep:PokeMatchvsRep = null;
 
     protected createChildren(): void {
         super.createChildren();
@@ -72,20 +73,25 @@ class Main extends eui.UILayer {
         SceneManager.init(this);
         await this.loadResource()
         this.createGameScene();
+        
         // const result = await RES.getResAsync("description_json")
         // this.startAnimation(result);
         await platform.login();
         const userInfo = await platform.getUserInfo();
         console.log(userInfo);
+        
     }
 
     private async loadResource() {
         try {
             const loadingView = new LoadingUI();
             this.stage.addChild(loadingView);
-            const matchvsEngine = new PokeMatchvsEngine;
-            matchvsEngine.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
-            matchvsEngine.registerUser();
+            // const matchvsEngine = PokeMatchvsEngine.getInstance();
+            // const rep = PokeMatchvsRep.getInstance();
+            PokeMatchvsRep.getInstance.addEventListener("init",this.on,this);
+            PokeMatchvsEngine.getInstance().init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
+            
+            // matchvsEngine.registerUser();
             await RES.loadConfig("resource/default.res.json", "resource/");
             await this.loadTheme();
             await RES.loadGroup("preload", 0, loadingView);
@@ -106,6 +112,10 @@ class Main extends eui.UILayer {
             }, this);
 
         })
+    }
+
+    public on(e:egret.Event):void {
+        egret.log(e);
     }
 
     // private textfield: egret.TextField;
