@@ -33,7 +33,7 @@
 		"bin-debug/logic/battle/PlayerInfo.js",
 		"bin-debug/logic/battle/PlayerTime.js",
 		"bin-debug/logic/battle/SendCardAnimal.js",
-		"bin-debug/utils/Toast.js",
+		"bin-debug/Config.js",
 		"bin-debug/logic/game/Compare.js",
 		"bin-debug/logic/game/PlayCardTypes.js",
 		"bin-debug/logic/game/Prompt.js",
@@ -54,6 +54,6 @@
 		"bin-debug/scene/TopHeader.js",
 		"bin-debug/struct/Block.js",
 		"bin-debug/utils/ArrayTools.js",
-		"bin-debug/Config.js"
+		"bin-debug/utils/Toast.js"
 	]
 }
