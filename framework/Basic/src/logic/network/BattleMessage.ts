@@ -1,7 +1,7 @@
 module network {
 	
 	/**
-	 * 接收网络对战消息处理
+	 * 发送或接收网络对战消息处理
 	 */
 	export class BattleMsg extends egret.EventDispatcher {
 

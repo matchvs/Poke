@@ -1,4 +1,4 @@
-﻿module controller.game {
+﻿module gameLogic {
     //发牌逻辑
     export class SendCard {
         //扑克牌数字 3,4,5,6,7,8,9,10,11,12,13,14=1,20=2,98=小王,99=大王

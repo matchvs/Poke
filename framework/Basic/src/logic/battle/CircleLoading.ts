@@ -35,14 +35,9 @@ module battle {
 
         public DrawSector(mc:egret.Shape, x:number = 200, y:number = 200, r:number = 100, angle:number = -90, startFrom:number = -90):void {
             mc.graphics.clear();
-            //var colorArr:Array<number>=[color1,color2];
-            //var alphaArr:Array<number>=[255,255];
-            //var ratioArr:Array<number>=[0,255];
-            //var matrix:egret.Matrix=new egret.Matrix()
-            //matrix.createGradientBox (50,50,Math.PI / 2,0,0) //在这里设置填充的宽高
-            //mc.graphics.beginGradientFill(egret.GradientType.LINEAR,colorArr,alphaArr,ratioArr,matrix);   //remove this line to unfill the sector
+            
             mc.graphics.beginFill(0x000000);
-            //mc.graphics.lineStyle(0,0xff0000);
+            mc.graphics.lineStyle(0,0xff0000);
             mc.graphics.moveTo(x, y);
             angle = (Math.abs(angle) > 360) ? 360 : angle;
             var n:number = Math.ceil(Math.abs(angle) / 45);

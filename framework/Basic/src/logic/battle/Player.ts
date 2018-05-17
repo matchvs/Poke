@@ -4,10 +4,9 @@ module battle {
 		public cardList:Array<number> = [];		//牌列表
 		public isLandLord:boolean = false;			//是否是地主
 		public seatNo = 0;							//座位号
-		public LocalTableId = 0;					//上下家标识 1 上家， 2下家 3 为自己
+		public LocalTableId = 0;					//上下家标识 1 上家， 2下家 3-为自己
 		public IsReady = false;
 
-		
 		private _cardNumber:Number = 0;				//牌数量
 
 		public constructor() {
@@ -24,17 +23,6 @@ module battle {
                 this.cardList.push(cards[i]);
             }
 		}
-
-
-		// get AddcardList():Array<number>{
-		// 	let arr = [];
-		// 	for(var i in this.AddcardList)
-        //     {
-        //         arr.push(this.AddcardList[i]);
-        //     }
-		// 	return arr;
-		// }
-
 
 		/**
 		 * 获取牌数量

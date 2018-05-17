@@ -5,17 +5,22 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	
 	private _battleControl: battle.BattleStageControl = null; //对战控制
 
-	private _sendCardAnimal:battle.SendCardAnimal = null;
+	public _playerHeadSprite:egret.Sprite = null; //对手头像和卡牌放置地方
 
-	public _playerHeadSprite:egret.Sprite = null; //对手头像放置地方
+	public _myCardSprote:egret.Sprite = null;	//我的卡牌放置容器
 
-	public _myCardSprote:egret.Sprite = null;
-	public _sendCardSprote:egret.Sprite = null;
+	private _sendCardAnimal:battle.SendCardAnimal = null; //发牌动画控制类型
+	public _sendCardSprote:egret.Sprite = null; 		  //发牌时的容器
+
+	// private _battleButtonCtl:
 	
 	public constructor() {
 		super();
 		
 	}
+	/**
+	 * 获取exml 中的控件
+	 */
 	protected partAdded(partName: string, instance: any): void {
 		super.partAdded(partName, instance);
 		console.log("partAdded",partName,instance);
@@ -72,12 +77,23 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 
 		// 控制对战舞台类
 		this._battleControl = new battle.BattleStageControl(this);
+		
+	}
+
+	/**
+	 * 开始对战，要先添加用户
+	 */
+	public StartBattle(users:Array<GUser>){
+		this.addPlayers(users);
 		this._battleControl.init();
+		this._battleControl.startGame();
 	}
 
 	//添加用户
-	public addPlayer(user:GUser){
-		this._battleControl.addPlayer(user);
+	private addPlayers(users:Array<GUser>){
+		for(let i = 0; i < users.length; i++){
+			this._battleControl.addPlayer(users[i]);
+		}
 	}
 
 	/**
@@ -85,13 +101,12 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	 */
 	public SendCard(player:battle.Player):void{
 		this._sendCardAnimal.StartAnimal(player, function (): void {
-
-                // 其他隐藏,除自己的
-                //全部隐藏起来等待服务器下发叫地主通知
-                // if (this._btnProxy.State != GameBtnProxy.STATE_Qiangdizhu && this._btnProxy.State != GameBtnProxy.STATE_Playing) {
-                //     this._btnProxy.HideAll();
-                // }
-            }, this);
+			// 其他隐藏,除自己的
+			//全部隐藏起来等待服务器下发叫地主通知
+			// if (this._btnProxy.State != GameBtnProxy.STATE_Qiangdizhu && this._btnProxy.State != GameBtnProxy.STATE_Playing) {
+			//     this._btnProxy.HideAll();
+			// }
+        }, this);
 	}
 
 

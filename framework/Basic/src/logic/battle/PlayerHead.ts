@@ -1,5 +1,5 @@
 /**
- * Created by Administrator on 2015/12/25.
+ * 显示对手头像
  */
 module battle {
     export class PlayerHead extends egret.Sprite {
@@ -29,7 +29,6 @@ module battle {
                 console.log("请先执行release");
                 return;
             }
-            //this.touchChildren=false;
             this.touchEnabled = false;
             this._loc = pd.LocalTableId;
             this._playerData=pd;

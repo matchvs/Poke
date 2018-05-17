@@ -1,5 +1,5 @@
 /**
- * Created by Administrator on 2015/12/29.
+ * 点击玩家头像显示玩家头像信息
  */
 module battle {
     export class PlayerInfo extends egret.Sprite {
@@ -16,11 +16,6 @@ module battle {
         }
 
         public Init(pld:Player):void {
-            // if(data.GameData.flag==data.GameData.GameFlag_Activity)
-            // {
-            //     this._jifen="积分: ";
-            //     this._jinbi="比赛积分: ";
-            // }
             var bg:egret.Bitmap = new egret.Bitmap(RES.getRes("ui_info_bg"));
             bg.scale9Grid = new egret.Rectangle(35, 75, 130, 60);
             this.addChild(bg);
@@ -54,20 +49,9 @@ module battle {
             cointxt.x = 25;
             cointxt.y = 100;
             cointxt.width = 170;
-            // cointxt.text = this._jinbi + pld.money;
             this._cointxt=cointxt;
+            this.addChild(scoretxt);
 
-            // if(data.GameData.flag==data.GameData.GameFlag_Activity)
-            // {
-            //     cointxt.y = 70;
-            //     bg.height=120;
-            //     this.addChild(cointxt);
-            // }
-            // else
-            // {
-                this.addChild(scoretxt);
-                // this.addChild(cointxt);
-            // }
         }
     }
 

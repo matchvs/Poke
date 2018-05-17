@@ -16,8 +16,7 @@
         "Login": "resource/scene/Login.exml",
         "Game": "resource/scene/Game.exml",
         "BattleStageUI": "resource/scene/BattleStage.exml",
-        "RankList": "resource/scene/rank_list.exml",
-        "RankListItem": "resource/scene/RankListItem.exml"
+        "TopHeader": "resource/scene/TopHeader.exml"
     },
     "autoGenerateExmlsList": true,
     "exmls": [
@@ -39,8 +38,7 @@
         "resource/scene/BattleStage.exml",
         "resource/scene/Game.exml",
         "resource/scene/Login.exml",
-        "resource/scene/RankListItem.exml",
-        "resource/scene/rank_list.exml"
+        "resource/scene/TopHeader.exml"
     ],
     "path": "resource/default.thm.json"
 }

@@ -1,4 +1,4 @@
-module controller.game {
+module gameLogic{
     //提示类,不考虑牌型,无脑提示有没有大牌
     export class Prompt2 {
         private _types:PlayCardTypes = new PlayCardTypes();

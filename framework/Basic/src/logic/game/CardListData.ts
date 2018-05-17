@@ -1,4 +1,4 @@
-module controller.game {
+module gameLogic {
     export class CardListData {
         public FromId:number = -1;                //标记发牌玩家
 
