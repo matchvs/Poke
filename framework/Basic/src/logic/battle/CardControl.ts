@@ -4,7 +4,7 @@ module battle {
 	 * 卡牌控制类，控制卡牌显示位置，和出牌动画
 	 */
 
-	export class CardControl {
+	export class TableCardControl {
 
 		public static CardScale: number = 0.5;
         private _gameScene: egret.Sprite = null;
@@ -103,7 +103,7 @@ module battle {
             for (i = 0; i < len; i++) {
                 var card: CardUI = MandPool.getInsByParm(CardUI, clist[i]);
                 this._tableSprite_1.addChild(card);
-                card.scaleX = card.scaleY = CardControl.CardScale;
+                card.scaleX = card.scaleY = TableCardControl.CardScale;
                 card.x = (i % 7) * 35;
                 card.y = Math.floor(i / 7) * 30;
             }
@@ -134,7 +134,7 @@ module battle {
             for (i = 0; i < len; i++) {
                 var card: CardUI = MandPool.getInsByParm(CardUI, clist[i]);
                 this._tableSprite_2.addChild(card);
-                card.scaleX = card.scaleY = CardControl.CardScale;
+                card.scaleX = card.scaleY = TableCardControl.CardScale;
                 card.x = (i % 7) * 35;
                 card.y = Math.floor(i / 7) * 30;
             }
@@ -169,12 +169,12 @@ module battle {
                 cnum = len;
             }
 
-            var sx1: number = (640 - (gap1 * cnum + CardUI.CARDWIDTH * CardControl.CardScale)) / 2;
+            var sx1: number = (640 - (gap1 * cnum + CardUI.CARDWIDTH * TableCardControl.CardScale)) / 2;
 
             for (i = 0; i < len; i++) {
                 var card: CardUI = MandPool.getInsByParm(CardUI, clist[i]);
                 this._tableSprite_3.addChild(card);
-                card.scaleX = card.scaleY = CardControl.CardScale;
+                card.scaleX = card.scaleY = TableCardControl.CardScale;
                 card.x = sx1 + i % 10 * gap1;
                 card.y = Math.floor(i / 10) * 30;
             }

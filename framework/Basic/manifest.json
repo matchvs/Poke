@@ -45,6 +45,7 @@
 		"bin-debug/logic/network/BattleEvent.js",
 		"bin-debug/logic/network/BattleMessage.js",
 		"bin-debug/logic/network/BattleMsgEvent.js",
+		"bin-debug/logic/network/Resolver/CallLandLordResolver.js",
 		"bin-debug/logic/network/Resolver/DefaultResolver.js",
 		"bin-debug/logic/network/Resolver/GameReadyResolver.js",
 		"bin-debug/LoadingUI.js",

@@ -17,7 +17,8 @@
 		"Game": "resource/scene/Game.exml",
 		"BattleStageUI": "resource/scene/BattleStage.exml",
 		"RankList": "resource/scene/rank_list.exml",
-		"RankListItem": "resource/scene/RankListItem.exml"
+		"RankListItem": "resource/scene/RankListItem.exml",
+		"TopHeader": "resource/scene/TopHeader.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [

@@ -28,6 +28,7 @@ module network {
 
 		private AddEventMap(){
 			this.battleEventMap[NetMsgEvent.GAME_READY_R] = BattleMsgEvent.GAME_READY;
+			this.battleEventMap[NetMsgEvent.CALL_LAND_RO] = BattleMsgEvent.CALL_LANDLORD_OVER;
 		}
 
 		/**
@@ -80,6 +81,7 @@ module network {
 			let pk:IResolver = new DefaultResolver();
 			switch(ev){
 				case NetMsgEvent.CALL_LAND_S:
+				pk = new CallLandLordResolver();
 				break;
 				case NetMsgEvent.GAME_READY_S:
 				pk = new GameReadyResolver();
