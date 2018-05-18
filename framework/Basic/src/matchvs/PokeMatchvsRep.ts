@@ -6,7 +6,6 @@ class PokeMatchvsRep extends egret.EventDispatcher{
 
 	private constructor() {
         super();
-        egret.log(this);
         MatchvsData.MatchvsRep.initResponse = this.initRsp.bind(this);
         MatchvsData.MatchvsRep.registerUserResponse = this.registerUserRsp.bind(this);
         MatchvsData.MatchvsRep.loginResponse = this.loginRsp.bind(this);

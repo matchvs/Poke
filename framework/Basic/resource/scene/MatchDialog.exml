@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="MatchDialogSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="163712b8e7a" ></w:Config>
+
+	<e:Rect height="1136" x="0" y="0" width="640" fillAlpha="0.6" strokeAlpha="0.6" fillColor="0x000000" strokeColor="0x000000"/>
+	
+	<e:Image height="420" x="110" y="358" source="resource/assets/lobby/bg_match_popup.png"/>
+	<e:Label text="匹配中..." x="243" y="403" textColor="0x333333" fontFamily="FZY4JW--GB1-0" size="38" textAlign="center" width="154" height="40" bold="true"/>
+	<e:Image id="cancel_match" width="230" height="78" x="205" y="661" source="resource/assets/lobby/btn_cancel.png"/>
+	<e:Group width="78" height="45" y="536" x="270">
+		<e:Image id="time_units" width="26" height="45" y="0" scaleX="1" scaleY="1" source="" x="52"/>
+		<e:Image id="time_tens" width="26" height="45" y="0" scaleX="1" scaleY="1" x="26" source=""/>
+		<e:Image id="time_hundreds" width="26" height="45" y="0" scaleX="1" scaleY="1" source="" x="0"/>
+	</e:Group>
+</e:Skin>

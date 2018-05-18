@@ -4,8 +4,8 @@
 	<e:Image height="1136" x="0" y="0" source="resource/assets/bg.jpg" width="640"/>
 	<e:Image width="636" height="69" x="2" y="2" source="resource/assets/lobby/bg_header.png"/>
 	<e:Image id="head" width="56" height="56" x="8" y="8"/>
-	<e:Label id="nickName" text="昵称000" x="83" y="10" width="66" height="20" fontFamily="STYuanti-SC-Bold" textAlign="left" size="20" textColor="0xffdfa6"/>
-	<e:Label id="integral" text="10000" x="112" y="44" size="20" fontFamily="STYuanti-SC-Bold" textColor="0xffdfa6" width="63" height="17"/>
+	<e:Label id="nickName" text="" x="83" y="10" width="66" height="20" fontFamily="STYuanti-SC-Bold" textAlign="left" size="20" textColor="0xffdfa6"/>
+	<e:Label id="integral" text="" x="112" y="40" size="20" fontFamily="STYuanti-SC-Bold" textColor="0xffdfa6" width="63" height="17"/>
 	<e:Image width="238" height="354" x="207" y="200" source="resource/assets/login/logo.png"/>
 	<e:Button id="fastMatch" label="" x="148" y="670" width="344" height="99">
 		<e:skinName>

@@ -98,12 +98,6 @@ class Main extends eui.UILayer {
                 data.value = 0;
                 PokeMatchvsEngine.getInstance().hashSet(this.userID,data);
             });
-            // egret.log("2",getWxUserInfo(data).nickName)
-        //    var data = JSON.parse( getWxUserInfo(data));
-        //    egret.log(data.nickName+"nickName");
-            // egret.log(data.avatarUrl+"avatarUrl");
-            //todo 微信的数据还需要组装
- 
         } catch(e) {
             egret.log("错误",e.message);
         }

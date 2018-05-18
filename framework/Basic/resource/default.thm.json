@@ -18,7 +18,8 @@
 		"BattleStageUI": "resource/scene/BattleStage.exml",
 		"RankList": "resource/scene/rank_list.exml",
 		"RankListItem": "resource/scene/RankListItem.exml",
-		"TopHeader": "resource/scene/TopHeader.exml"
+		"TopHeader": "resource/scene/TopHeader.exml",
+		"MatchDialog": "resource/scene/MatchDialog.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
@@ -40,6 +41,7 @@
 		"resource/scene/BattleStage.exml",
 		"resource/scene/Game.exml",
 		"resource/scene/Login.exml",
+		"resource/scene/MatchDialog.exml",
 		"resource/scene/RankListItem.exml",
 		"resource/scene/TopHeader.exml"
 	],

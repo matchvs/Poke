@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,btnEquip_png,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg,footer_text_png,logo_png,btn_login_png,bg_game_jpg,ui_game_json,ui_loading_json,timefont_fnt,timefont_png,bg_header_png,bg_match_popup_png,btn_cancel_png,btn_create_room_png,btn_fast_match_png,btn_invite_friends_png",
+			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,bg_jpg,egret_icon_png,description_json,btnEquip_png,btnReturn_png,btnStrengthen_png,mbtnAbout_png,mbtnGoods_png,mbtnHero_png,mbtnPlayer_png,mbtn_Bg_png,mbtn_BgFc_png,profileContent_png,profileTitle_png,skillBg_png,skillIcon01_png,skillIcon02_png,skillIcon03_png,skillIcon04_png,skillIcon05_png,skillIcon06_png,skillIcon07_png,skillItemFrame_png,bgListPage_jpg,btnOK_png,checked_png,checkNo_png,goods01_png,goods02_png,goods03_png,goods04_png,goods05_png,goods06_png,goods07_png,goodsTitle_png,heros01_png,heros02_png,heros03_png,heros04_png,heros05_png,heros06_png,heros07_png,herosTitle_png,hScrollBar01_png,hScrollBar02_png,listItemBkgd_png,loading_jpg,loading2_png,toast-bg_png,bg_gameplay_png,bg_gameplay2_png,play_jpg,footer_text_png,logo_png,btn_login_png,bg_game_jpg,ui_game_json,ui_loading_json,timefont_png,bg_header_png,bg_match_popup_png,btn_cancel_png,btn_create_room_png,btn_fast_match_png,btn_invite_friends_png,timefont_json",
 			"name": "preload"
 		}
 	],
@@ -414,11 +414,6 @@
 			"subkeys": "btn_queding_no,btn_quxiao,title1,ui_loading_top,ui_panel_bg,ui_panel_txt,ui_role1,ui_tips_bg,btn_queding"
 		},
 		{
-			"name": "timefont_fnt",
-			"type": "font",
-			"url": "assets/font/timefont.fnt"
-		},
-		{
 			"name": "timefont_png",
 			"type": "image",
 			"url": "assets/font/timefont.png"
@@ -452,6 +447,12 @@
 			"name": "btn_invite_friends_png",
 			"type": "image",
 			"url": "assets/lobby/btn_invite_friends.png"
+		},
+		{
+			"name": "timefont_json",
+			"type": "sheet",
+			"url": "assets/font/timefont.json",
+			"subkeys": "0,1,2,3,4,5,6,7,8,9,-,：,+,x,倍,开,人,始"
 		}
 	]
 }

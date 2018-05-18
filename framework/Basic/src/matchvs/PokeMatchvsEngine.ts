@@ -57,6 +57,13 @@ class PokeMatchvsEngine  {
 	}
 
 	/**
+	 * 离开房间
+	 */
+	public leaveRoom(cpProto:string) {
+		var result = MatchvsData.MatchvsReq.leaveRoom(cpProto);
+	}
+
+	/**
 	 * 存储数据
 	 */
 	public hashSet(userID:string,value:any) {
