@@ -85,19 +85,25 @@ class Main extends eui.UILayer {
     }
 
     /**
-     * 获取微信
+     * 获取微信头像，存储起来
      */
     private getWxUserInfo() {
         try{
             getWxUserInfo(function callback (userinfo){
                 egret.log(userinfo);
+                var data ;
+                data.nickname =  userinfo.nickName;
+                data.rank = MatchvsData.defaultScore;
+                data.avator = userinfo.avatarUrl;
+                data.value = 0;
+                PokeMatchvsEngine.getInstance().hashSet(this.userID,data);
             });
             // egret.log("2",getWxUserInfo(data).nickName)
         //    var data = JSON.parse( getWxUserInfo(data));
         //    egret.log(data.nickName+"nickName");
             // egret.log(data.avatarUrl+"avatarUrl");
             //todo 微信的数据还需要组装
-            PokeMatchvsEngine.getInstance().hashSet( this.userID,"");
+ 
         } catch(e) {
             egret.log("错误",e.message);
         }
