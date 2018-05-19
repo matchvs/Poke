@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RoomSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*" >
+	<w:Config id="16372cff110" ></w:Config>
+	<e:Image width="640" height="1136" x="0" y="0" source="resource/assets/bg.jpg"/>
+	<ns1:TopHeader id="topHeader" width="636" height="69" x="2" y="2" enabled="true"/>
+	<e:Label id="roomID_tabel" text="" x="70" y="158.58" textColor="0xffdfa6" fontFamily="FZY4JW--GB1-0" textAlign="center" width="500" height="29"/>
+	<e:Label id="countdown" text="" x="195" y="212" width="250" height="29" textAlign="center" textColor="0xffdfa6" fontFamily="FZY4JW--GB1-0"/>
+	<e:Rect width="560" height="141" x="40" y="296" fillColor="0x160103" fillAlpha="0.5" ellipseWidth="10" ellipseHeight="10"/>
+	<e:Image id="my_icon" width="80" height="80" x="64" y="327"/>
+	<e:Label id="my_name" text="" x="174" y="354" width="86" height="26" fontFamily="STYuanti-SC-Bold" textColor="0xffdfa6" size="26" textAlign="left"/>
+	<e:Rect width="560" height="141" x="40" y="452" fillColor="0x160103" fillAlpha="0.5" ellipseWidth="10" ellipseHeight="10"/>
+	<e:Rect width="560" height="141" x="40" y="608" fillColor="0x160103" fillAlpha="0.5" ellipseWidth="10" ellipseHeight="10"/>
+	<e:Image id="icon_one" width="80" height="80" x="64" y="482"/>
+	<e:Label id="name_one" text="" x="174" y="509" width="86" height="26" fontFamily="STYuanti-SC-Bold" textColor="0xFFDFA6" size="26" textAlign="left"/>
+	<e:Rect id="action" width="121" height="55" x="455" y="495" fillColor="0x000000" fillAlpha="0.45" strokeColor="0xaa6e5c" ellipseWidth="10" ellipseHeight="10" strokeWeight="2"/>
+	<e:Image id="icon_two" width="80" height="80" x="64" y="638"/>
+	<e:Label id="name_two" text="" x="174" y="664" width="87" height="26" fontFamily="STYuanti-SC-Bold" textColor="0xFFDFA6" size="26" textAlign="left"/>
+	<e:Rect id="action1" width="121" height="55" x="455" y="651" fillColor="0x000000" fillAlpha="0.45" strokeColor="0xAA6E5C" ellipseWidth="10" ellipseHeight="10" strokeWeight="2"/>
+	<e:Image id="btn_leave_room" width="344" height="98" x="148" y="911" source="resource/assets/room/btn_leave_room.png"/>
+	<e:Image width="270" height="23" x="185" y="1094" source="resource/assets/login/footer_text.png"/>
+</e:Skin>

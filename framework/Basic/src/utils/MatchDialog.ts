@@ -1,8 +1,6 @@
 class MatchDialog extends eui.Component implements  eui.UIComponent {
 
-	private numFont = ["0","1","2","resource/assets/font/3.png",
-	"resource/assets/font/4.png","resource/assets/font/5.png","resource/assets/font/6.png",
-	"resource/assets/font/7.png","resource/assets/font/8.png","resource/assets/font/9.png"];
+
 	private defaultFont:number = 0; 
 	private fontImgUnits:eui.Image = null;
 	private fontImgtens:eui.Image = null;
@@ -15,7 +13,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		this.timer = new egret.Timer(1000,0);
 		//注册事件侦听器
         this.timer.addEventListener(egret.TimerEvent.TIMER,this.timerFunc,this);
-		this.timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE,this.timerComFunc,this);
 		this.timer.start();
 	}
 	
@@ -36,7 +33,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			if(partName == "cancel_match") {
 				PokeMatchvsEngine.getInstance().leaveRoom("不想等待匹配了");
-				this.timer.stop();
+				this.stopTimer();
 				SceneManager.back();
 			}
 
@@ -48,7 +45,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		switch(this.defaultFont.toString().length) {
 			case 1:
 				var a=this.defaultFont%10;
-				// this.fontImg.source =  "this.numFont[a]";  
 				this.fontImgUnits.source = (a).toString();  
 			break
 			case 2:
@@ -59,22 +55,31 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 				
 			break
 			case 3:
-				var a=this.defaultFont%10;  
-				var b = (this.defaultFont%100)/10;
-				var c= this.defaultFont/100;
+				var a = this.defaultFont%10;  
+				var b = Math.floor((this.defaultFont%100)/10);
+				var c = Math.floor((this.defaultFont/100));
 				this.fontImgUnits.source = (a).toString();
 				this.fontImgtens.source = (b).toString();  
 				this.fontImghundreds.source = (c).toString();
 			break
 		}
-		// this.fontImg.source =  "0";  
 		egret.log("时间"+this.defaultFont);
 		this.defaultFont++;
     }
 
-	private timerComFunc() {
-		 console.log("计时结束");
+	/**
+	 * 将定时器停止
+	 */
+	public stopTimer() {
+		this.timer.stop();
 	}
+
+
+	 protected partRemoved(partName: string, instance: any){
+		 super.partRemoved(partName,instance);
+		 egret.log();
+	 }
+
 
 	protected childrenCreated():void {
 		super.childrenCreated();

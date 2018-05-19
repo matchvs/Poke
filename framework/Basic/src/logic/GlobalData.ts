@@ -3,5 +3,5 @@ class GlobalData {
 
 	}
 
-	public static myUser:GUser = null;
+	public static myUser:GUser = new GUser;
 }

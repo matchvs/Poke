@@ -19,7 +19,8 @@
 		"RankList": "resource/scene/rank_list.exml",
 		"RankListItem": "resource/scene/RankListItem.exml",
 		"TopHeader": "resource/scene/TopHeader.exml",
-		"MatchDialog": "resource/scene/MatchDialog.exml"
+		"MatchDialog": "resource/scene/MatchDialog.exml",
+		"Room": "resource/scene/Room.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
@@ -43,6 +44,7 @@
 		"resource/scene/Login.exml",
 		"resource/scene/MatchDialog.exml",
 		"resource/scene/RankListItem.exml",
+		"resource/scene/Room.exml",
 		"resource/scene/TopHeader.exml"
 	],
 	"path": "resource/default.thm.json"

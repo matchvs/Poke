@@ -42,11 +42,11 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	 * 添加几个假的用户
 	 */
 	public explameAddPlayer(){
-		GlobalData.myUser = new GUser();
-		GlobalData.myUser.avator = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526393669326&di=835161a2290b3b6ae1740bd39eb52f3e&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201609%2F16%2F20160916214658_UcHjJ.jpeg";
-		GlobalData.myUser.nickName = "vv";
-		GlobalData.myUser.userID = 85642;
-		GlobalData.myUser.pointValue = 12535;
+		// GlobalData.myUser = new GUser();
+		// GlobalData.myUser.avator = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526393669326&di=835161a2290b3b6ae1740bd39eb52f3e&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201609%2F16%2F20160916214658_UcHjJ.jpeg";
+		// GlobalData.myUser.nickName = "vv";
+		// GlobalData.myUser.userID = 85642;
+		// GlobalData.myUser.pointValue = 12535;
 	}
 
 	/**

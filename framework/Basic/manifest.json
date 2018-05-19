@@ -14,7 +14,7 @@
 	"game": [
 		"bin-debug/logic/GUser.js",
 		"bin-debug/logic/network/Resolver/IResolver.js",
-		"bin-debug/logic/game/CardListData.js",
+		"bin-debug/logic/game/Compare.js",
 		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
@@ -36,8 +36,8 @@
 		"bin-debug/logic/battle/PlayerInfo.js",
 		"bin-debug/logic/battle/PlayerTime.js",
 		"bin-debug/logic/battle/SendCardAnimal.js",
+		"bin-debug/logic/game/CardListData.js",
 		"bin-debug/Config.js",
-		"bin-debug/logic/game/Compare.js",
 		"bin-debug/logic/game/PlayCardTypes.js",
 		"bin-debug/logic/game/Prompt.js",
 		"bin-debug/logic/game/Prompt2.js",
@@ -56,10 +56,12 @@
 		"bin-debug/scene/BattleStageUI.js",
 		"bin-debug/scene/Game.js",
 		"bin-debug/scene/Login.js",
+		"bin-debug/scene/Room.js",
 		"bin-debug/scene/TopHeader.js",
 		"bin-debug/struct/Block.js",
 		"bin-debug/utils/ArrayTools.js",
 		"bin-debug/utils/MatchDialog.js",
-		"bin-debug/utils/Toast.js"
+		"bin-debug/utils/Toast.js",
+		"bin-debug/utils/WxUtils.js"
 	]
 }

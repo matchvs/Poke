@@ -16,9 +16,11 @@ class TopHeader extends eui.Component implements eui.UIComponent{
 	protected partAdded(partName: string, instance: any): void {
 		super.partAdded(partName, instance);
 		this.allChildren[partName] = instance;
+		egret.log("获取控件")
 	}
 
 	public init(){
+		egret.log("使用控件");
 		this._headerImg = this.allChildren["headImg"];
 		this._nickName =  this.allChildren["nickName"];
 		this._pointValue =  this.allChildren["pointValue"];

@@ -1,7 +1,11 @@
 class Game extends eui.Component implements eui.UIComponent {
 
 	private userPlayer = [];
-	
+	private roomName = "我是世界第一，你是谁？";
+	private roomPropety = "谁都可以来挑战我";
+	private matchDialog:MatchDialog = null;
+
+
 	public constructor() {
 		super();
 	}
@@ -10,26 +14,27 @@ class Game extends eui.Component implements eui.UIComponent {
 		super.partAdded(partName, instance);
 		//昵称
 		if(partName == "nickName") {
-			instance.text = PokeMatchvsRep.getInstance._myUser.nickName;
+			instance.text = GlobalData.myUser.nickName;
 		}
 		//积分
 		if(partName == "integral") {
-			instance.text = PokeMatchvsRep.getInstance._myUser.pointValue;
+			instance.text = GlobalData.myUser.pointValue;
 		}
 		//头像
 		if(partName == "head") {
-			instance.source = PokeMatchvsRep.getInstance._myUser.avator;
+			instance.source = GlobalData.myUser.avator;
 		}
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			//快速匹配
 			if (partName == "fastMatch") {
-				PokeMatchvsEngine.getInstance().joinRandomRoom();
+				// PokeMatchvsEngine.getInstance().joinRandomRoom();
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
-				let matchDialog = new MatchDialog();
-				SceneManager.showScene(matchDialog);
-			} else if (partName == "bg") {
-				SceneManager.showScene(new Game());
+				this.matchDialog = new MatchDialog();
+				SceneManager.showScene(this.matchDialog);
+			} else if (partName == "createRoom") {
+				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer);
+				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			}
 
 		}, this);
@@ -37,21 +42,38 @@ class Game extends eui.Component implements eui.UIComponent {
 
 	
 	/**
-	 * 接收时间
+	 * 接收Event信息
 	 */
 	 public onEvent(e:egret.Event):void {
 		 switch (e.type) {
 			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
-				if( e.data.length  == MatchvsData.maxPlayer) {
-					this.userPlayer = e.data;
+			 	this.userPlayer.push(GlobalData.myUser);
+				for(var i = 0; i < e.data.length; i++) {
+					var user:GUser = new GUser;
+					user.nickName = e.data[i].userId;
+					user.avator = e.data[i].userProfile;
+					user.pointValue = MatchvsData.defaultScore;
+					this.userPlayer.push(user);
+				}
+				egret.log("userPlayer的长度"+this.userPlayer.length);
+				if(this.userPlayer.length  == MatchvsData.maxPlayer) {
 					this.startBattle();
 				}
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
-				this.userPlayer.push(e.data);
-				if( e.data.length  == MatchvsData.maxPlayer) {
+				var user:GUser = new GUser;
+				user.nickName = e.data.userId;
+				user.avator = e.data.userProfile;
+				user.pointValue = MatchvsData.defaultScore;
+				this.userPlayer.push(user);
+				egret.log("NOTIFYuserPlayer的长度"+this.userPlayer.length);
+				if( this.userPlayer.length  == MatchvsData.maxPlayer) {
 					this.startBattle();	
 				}
+			 break;
+			 case MatchvsMessage.MATCHVS_CREATE_ROOM:
+			 	egret.log("接收到创建房间成功的消息");
+				this.startRoomScene(e.data.roomID);
 			 break;
 		 }
 	 }
@@ -63,16 +85,30 @@ class Game extends eui.Component implements eui.UIComponent {
 	  */
 	private startBattle(){
 		var login = new BattleStageUI();
-		this.addChild(login);
+		this.matchDialog.stopTimer();
+		SceneManager.showScene(login);
 		login.init();
 		login.StartBattle(this.userPlayer);
 	}
 
+	/**
+	 * 跳转到房间页面
+	 */
+	private startRoomScene(roomID:string) {
+		let room = new Room();
+		room.init(roomID);
+		SceneManager.showScene(room);
+	}
 
+	/**
+	 * 踢人
+	 */
+	private kickPlayer(userID:number) {
+		PokeMatchvsEngine.getInstance().kickPlayer(userID);
+	}
 
 	protected childrenCreated(): void {
 		super.childrenCreated();
-		parseInt
 	}
 
 }

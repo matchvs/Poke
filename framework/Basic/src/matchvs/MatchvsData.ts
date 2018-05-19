@@ -28,6 +28,8 @@ class MatchvsData {
 								"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526553605118&di=a69dcf9d481b834119bee994dabe261c&imgtype=0&src=http%3A%2F%2Fwww.qqzhi.com%2Fuploadpic%2F2015-01-29%2F231109552.jpg"];
 	
 	public static defaultScore = 10000;
+	public static defaultRoomInfo:MsCreateRoomInfo = new MsCreateRoomInfo("",3,1,1,1,"");
+
 
 	public constructor() {
 	}
