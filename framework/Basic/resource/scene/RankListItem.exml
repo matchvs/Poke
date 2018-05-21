@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<e:Skin width="400" height="300" xmlns:e="http://ns.egret.com/eui">
+<e:Skin class="rankListItem" width="480" height="110" xmlns:e="http://ns.egret.com/eui" >
+	<e:Image id="ranking" width="26" height="45" x="19" y="23" source="{data.ranking}"/>
+	<e:Image id="head" width="80" height="80" x="78" y="0" />
+	<e:Label id="nickName" x="183" y="11" size="26" text="{data.nickName}" fontFamily="STYuanti-SC-Bold" textColor="0x222222"/>
+	<e:Image width="28" height="30" x="181" y="49" source="resource/assets/rankList/icon_integral.png"/>
+	<e:Label id="score"  x="217" y="54" text="{data.score}" width="82" height="23" textAlign="left" fontFamily="STYuanti-SC-Bold" textColor="0x222222"/>
+	<e:Rect width="480" height="1" y="109" fillAlpha="0.5"/>
 </e:Skin>

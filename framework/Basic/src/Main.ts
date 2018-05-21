@@ -70,17 +70,16 @@ class Main extends eui.UILayer {
         // a.src("btnEquip_png");
         // a.backgrout("btnEquip_png");
         // this.addChild(a);
-        
+        await this.getWxUserInfo();
         SceneManager.init(this);
         await this.loadResource()
         this.createGameScene();
         Toast.initRes(this, "resource/loading/toast-bg.png");
         // const result = await RES.getResAsync("description_json")
         // this.startAnimation(result);
-        await platform.login();
-        const userInfo = await platform.getUserInfo();
-        console.log(userInfo);
-        this.getWxUserInfo();
+        // await platform.login();
+        // const userInfo = await platform.getUserInfo();
+        // console.log(userInfo);
 
     }
 
@@ -90,13 +89,12 @@ class Main extends eui.UILayer {
     private getWxUserInfo() {
         try{
             getWxUserInfo(function callback (userinfo){
-                egret.log(userinfo);
+                egret.log("main",userinfo);
                 var data ;
-                data.nickname =  userinfo.nickName;
-                data.rank = MatchvsData.defaultScore;
-                data.avator = userinfo.avatarUrl;
-                data.value = 0;
-                PokeMatchvsEngine.getInstance().hashSet(this.userID,data);
+                GlobalData.myUser.nickName =  userinfo.nickName;
+                GlobalData.myUser.avator = userinfo.avatarUrl;
+                //todo 
+                PokeMatchvsEngine.getInstance().hashGet("integral");
             });
         } catch(e) {
             egret.log("错误",e.message);
@@ -109,8 +107,6 @@ class Main extends eui.UILayer {
         try {
             const loadingView = new LoadingUI();
             this.stage.addChild(loadingView);
-            // const matchvsEngine = PokeMatchvsEngine.getInstance();
-            // const rep = PokeMatchvsRep.getInstance();
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
@@ -145,98 +141,58 @@ class Main extends eui.UILayer {
         egret.log(e);
         switch(e.type) {
             case MatchvsMessage.MATCHVS_INIT:
-                PokeMatchvsEngine.getInstance().registerUser();
+                //todo  在这里要获取一下本地的数据，如果本地有存储的用户信息就跳过注册，直接去登录
+                // var userInfo:any = egret.localStorage.getItem("userInfo");
+                // if(userInfo) {
+                    
+                // } else {
+                    PokeMatchvsEngine.getInstance().registerUser();
+                // }
             break;
             //注册
             case MatchvsMessage.MATCHVS_REGISTERUSER:
-                this.userID = e.data.id;
+                // this.userID = e.data.id;
+                this.userInfoStore(e.data);
                 PokeMatchvsEngine.getInstance().login(e.data.id,e.data.token);
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
                 Toast.show("登录成功");
+                this.wxInvite();
             break;
         }
     }
 
-    // private textfield: egret.TextField;
-    // /**
-    //  * 创建场景界面
-    //  * Create scene interface
-    //  */
+
+    protected userInfoStore(userInfo:any): void {
+            /**
+             * 微信头像与昵称的获取在注册之前，如果已经存在，就使用微信的，如果为"",就使用ID代替昵称，头像为随机；
+             * 还需要存在本地
+             */
+            if (GlobalData.myUser.nickName == "")  {
+                GlobalData.myUser.nickName = userInfo.id;
+            }
+            if (GlobalData.myUser.avator == "") {
+           	    GlobalData.myUser.avator = MatchvsData.defaultIcon[Math.round(10*Math.random())];
+            }
+            GlobalData.myUser.userID = userInfo.id;
+           	GlobalData.myUser.token = userInfo.token;
+            GlobalData.myUser.pointValue = MatchvsData.defaultScore;
+
+
+            //将自己的数据存到本地
+            // var key:string = "userInfo";
+            // var value:any = {};
+            // value.nickName = GlobalData.myUser.nickName;
+            // value.avator = GlobalData.myUser.avator;
+            // value.userID = GlobalData.myUser.userID;
+            // value.token = GlobalData.myUser.token;
+            // value.pointValue = GlobalData.myUser.pointValue;
+            // egret.localStorage.setItem(key,JSON.stringify(value));
+    }
+
     protected createGameScene(): void {
-    //     let sky = this.createBitmapByName("bg_jpg");
-    //     this.addChild(sky);
-    //     let stageW = this.stage.stageWidth;
-    //     let stageH = this.stage.stageHeight;
-    //     sky.width = stageW;
-    //     sky.height = stageH;
-
-    //     let topMask = new egret.Shape();
-    //     topMask.graphics.beginFill(0x000000, 0.5);
-    //     topMask.graphics.drawRect(0, 0, stageW, 172);
-    //     topMask.graphics.endFill();
-    //     topMask.y = 33;
-    //     this.addChild(topMask);
-
-    //     let icon: egret.Bitmap = this.createBitmapByName("egret_icon_png");
-    //     this.addChild(icon);
-    //     icon.x = 26;
-    //     icon.y = 33;
-
-    //     let line = new egret.Shape();
-    //     line.graphics.lineStyle(2, 0xffffff);
-    //     line.graphics.moveTo(0, 0);
-    //     line.graphics.lineTo(0, 117);
-    //     line.graphics.endFill();
-    //     line.x = 172;
-    //     line.y = 61;
-    //     this.addChild(line);
-
-
-    //     let colorLabel = new egret.TextField();
-    //     colorLabel.textColor = 0xffffff;
-    //     colorLabel.width = stageW - 172;
-    //     colorLabel.textAlign = "center";
-    //     colorLabel.text = "Hello Egret";
-    //     colorLabel.size = 24;
-    //     colorLabel.x = 172;
-    //     colorLabel.y = 80;
-    //     this.addChild(colorLabel);
-
-    //     let textfield = new egret.TextField();
-    //     this.addChild(textfield);
-    //     textfield.alpha = 0;
-    //     textfield.width = stageW - 172;
-    //     textfield.textAlign = egret.HorizontalAlign.CENTER;
-    //     textfield.size = 24;
-    //     textfield.textColor = 0xffffff;
-    //     textfield.x = 172;
-    //     textfield.y = 135;
-    //     this.textfield = textfield;
-
-    //     let button = new eui.Button();
-    //     button.label = "Click!";
-    //     button.horizontalCenter = 0;
-    //     button.verticalCenter = 0;
-    //     this.addChild(button);
-    //     button.addEventListener(egret.TouchEvent.TOUCH_TAP, function(e){
-
-
-        // let a :MatchvsImageView = new MatchvsImageView();
-        // a.width = 200;
-        // a.height = 200;
-        // a.x = 200;
-        // a.y = 50;
-        // a.src("resource/addets/bg.png");
-        // a.backgrout("resource/loading/toast-bg.png");
-        // this.addChild(a);
-
-        // }, this);
-
         var login = new Login();
-        
         this.addChild(login);
-        // login.init();
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -248,6 +204,38 @@ class Main extends eui.UILayer {
         result.texture = texture;
         return result;
     }
+
+        /**
+     * 微信邀请
+     */
+    public wxInvite () {
+        try {
+            var LaunchOption = getLaunchOptionsSync();
+            console.log(JSON.stringify(LaunchOption.query)+"11");
+            var roomID  = LaunchOption.query.roomID;
+            console.log(LaunchOption.query+"22");
+            console.log(LaunchOption.query.roomID+"是多少");
+            if(roomID != null && roomID != "" && roomID !=0) {
+                //昵称，头像，积分的顺序，用 /n 分割
+                PokeMatchvsEngine.getInstance().joinRoom(roomID,MatchvsData.defaultUserProfile);
+                this.removeEvent();
+                SceneManager.showScene(new Room());
+            }
+        } catch(err) {
+            egret.log(err,err.message);
+        }
+    }
+
+
+    /**
+     * 在这里移除所有的监听
+     */
+    public removeEvent() {
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
+    }
+
     /**
      * 描述文件加载成功，开始播放动画
      * Description file loading is successful, start to play the animation
@@ -277,6 +265,8 @@ class Main extends eui.UILayer {
 
     //     change();
     // }
+
+
 
     /**
      * 点击按钮

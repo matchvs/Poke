@@ -18,4 +18,6 @@
 	<e:Rect id="action1" width="121" height="55" x="455" y="651" fillColor="0x000000" fillAlpha="0.45" strokeColor="0xAA6E5C" ellipseWidth="10" ellipseHeight="10" strokeWeight="2"/>
 	<e:Image id="btn_leave_room" width="344" height="98" x="148" y="911" source="resource/assets/room/btn_leave_room.png"/>
 	<e:Image width="270" height="23" x="185" y="1094" source="resource/assets/login/footer_text.png"/>
+	<e:Label id="action_text" text="邀请" x="491" y="509" width="51" height="25" fontFamily="STYuanti-SC-Bold" textColor="0xebae4c" size="24" textAlign="center" verticalAlign="middle"/>
+	<e:Label id="action_text_one" text="邀请" x="491" y="664" size="24" fontFamily="STYuanti-SC-Bold" width="51" height="26" textAlign="center" textColor="0xebae4c"/>
 </e:Skin>

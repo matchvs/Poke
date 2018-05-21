@@ -12,8 +12,12 @@ class Room extends eui.Component implements  eui.UIComponent {
 	private name_two:eui.Label = null;
 	private action:eui.Rect = null;
 	private action1:eui.Rect = null;
+	private actionText:eui.Label = null;
+	private actionText1:eui.Label = null;
 	private nameViewList = [];
 	private iconViewList = [];
+	private actionViewList = [];
+	private actionTextViewList = [];
 
 
 	public constructor() {
@@ -68,10 +72,22 @@ class Room extends eui.Component implements  eui.UIComponent {
 			case "action1":
 				this.action1 = instance;
 			break;
+			case "action_text":
+				this.actionText = instance;
+			break;
+			case "action_text_one":
+				this.actionText1 = instance;
+			break;
 		}
+
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			if(partName == "btn_leave_room") {
 				PokeMatchvsEngine.getInstance().leaveRoom("我走了");
+			}
+
+			//踢人或者邀请
+			if(partName == "action") {
+				// PokeMatchvsEngine.getInstance().
 			}
 		}, this);
 	}
@@ -129,6 +145,12 @@ class Room extends eui.Component implements  eui.UIComponent {
 				}
 				SceneManager.back();
 			break;
+			case MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY:
+				this.removeView(e.data.userID);
+			break;
+			case MatchvsMessage.MATCHVS_KICK_PLAYER:
+				this.removeView(e.data.userID);
+			break;
 		}
 	}	
 
@@ -138,13 +160,17 @@ class Room extends eui.Component implements  eui.UIComponent {
 	private initView(userPlayer:any) {
 		this.nameViewList = [this.name_one,this.name_two];
 		this.iconViewList = [this.icon_one,this.icon_two];
-		for(var i in userPlayer) {
+		this.actionViewList = [this.action,this.action1];
+		this.actionTextViewList = [this.actionText,this.actionText1];
+		for(var i =0; i< this.userPlayer.length;i++) {
 			if(userPlayer.nickName === GlobalData.myUser.nickName)
 				return;
-	
-			if(this.nameViewList[i].text != "") {
-				this.nameViewList[i].text = userPlayer.nickName;
-				this.iconViewList[i].source = userPlayer.avator;
+			if(this.nameViewList[i-1].text != "") {
+				this.nameViewList[i-1].text = userPlayer.nickName;
+				this.iconViewList[i-1].source = userPlayer.avator;
+				this.actionViewList[i-1].strokeColor = "11169372"
+				this.actionTextViewList[i-1].text = "踢人";
+				this.actionTextViewList[i-1].textColor = "11169372";
 			}
 		}
 	}
@@ -158,8 +184,31 @@ class Room extends eui.Component implements  eui.UIComponent {
 			if(userID === this.nameViewList[i].text) {
 				this.nameViewList[i].text = "";
 				this.iconViewList[i].text = "";
+				this.actionViewList[i].strokeColor = "15445580"
+				this.actionTextViewList[i].text = "邀请";
+				this.actionTextViewList[i].textColor = "11169372";
 				return;
 			}
+		}
+	}
+
+	/**
+	 * 用户操作，踢人或者邀请
+	 */
+	public userAction(instance:any) {
+		if(instance.text != "" ) {
+			//踢人
+			PokeMatchvsEngine.getInstance().kickPlayer(instance.text); 
+			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
+			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
+		} else {
+			try {
+				var par = "roomID ="+instance.text;
+				together("约战",par);
+			} catch (e){
+				egret.log(e,e.message);
+			}
+
 		}
 	}
 

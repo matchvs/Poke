@@ -27,13 +27,13 @@ class Game extends eui.Component implements eui.UIComponent {
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			//快速匹配
 			if (partName == "fastMatch") {
-				// PokeMatchvsEngine.getInstance().joinRandomRoom();
+				PokeMatchvsEngine.getInstance().joinRandomRoom(MatchvsData.defaultUserProfile);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 				this.matchDialog = new MatchDialog();
 				SceneManager.showScene(this.matchDialog);
 			} else if (partName == "createRoom") {
-				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer);
+				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.defaultUserProfile);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			}
 
@@ -50,9 +50,10 @@ class Game extends eui.Component implements eui.UIComponent {
 			 	this.userPlayer.push(GlobalData.myUser);
 				for(var i = 0; i < e.data.length; i++) {
 					var user:GUser = new GUser;
-					user.nickName = e.data[i].userId;
-					user.avator = e.data[i].userProfile;
-					user.pointValue = MatchvsData.defaultScore;
+					var arr = e.data[i].userProfile.split("/n");
+					user.nickName =arr[0];
+					user.avator = arr[1];
+					user.pointValue = arr[2];
 					this.userPlayer.push(user);
 				}
 				egret.log("userPlayer的长度"+this.userPlayer.length);
@@ -62,9 +63,10 @@ class Game extends eui.Component implements eui.UIComponent {
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
-				user.nickName = e.data.userId;
-				user.avator = e.data.userProfile;
-				user.pointValue = MatchvsData.defaultScore;
+				var arr = e.data[i].userProfile.split("/n");
+				user.nickName =arr[0];
+				user.avator = arr[1];
+				user.pointValue = arr[2];
 				this.userPlayer.push(user);
 				egret.log("NOTIFYuserPlayer的长度"+this.userPlayer.length);
 				if( this.userPlayer.length  == MatchvsData.maxPlayer) {

@@ -65,9 +65,9 @@ class PokeMatchvsEngine  {
 	 * 创建房间
 	 * @param roomPropety 传递自己的微信昵称与微信头像地址
 	 */
-	public creatRoom(roomName:string,roomPropety:string,maxPlayer:number) {
+	public creatRoom(roomName:string,roomPropety:string,maxPlayer:number,userProfile:string) {
 		var defaultRoomInfo:MsCreateRoomInfo = new MsCreateRoomInfo(roomName,3,maxPlayer,1,1,roomPropety);
-		var result = MatchvsData.MatchvsReq.createRoom(defaultRoomInfo,"");
+		var result = MatchvsData.MatchvsReq.createRoom(defaultRoomInfo,userProfile);
 		egret.log("创建房间result:"+result);
 		return result;
 	}
@@ -94,8 +94,15 @@ class PokeMatchvsEngine  {
 	/**
 	 * 存储数据
 	 */
-	public hashSet(userID:string,value:any) {
-		MatchvsData.MatchvsReq.hashSet(MatchvsData.gameID,userID,MatchvsData.appKey,value);
+	public hashSet(key:any,value:any) {
+		MatchvsData.MatchvsReq.hashSet(MatchvsData.gameID,GlobalData.myUser.userID,key,value);
+	}
+
+	/**
+	 * 获取数据
+	 */
+	public hashGet(key:any) {
+		MatchvsData.MatchvsReq.hashGet(MatchvsData.gameID,GlobalData.myUser.userID,key);
 	}
 
 

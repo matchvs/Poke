@@ -29,6 +29,7 @@ class MatchvsData {
 	
 	public static defaultScore = 10000;
 	public static defaultRoomInfo:MsCreateRoomInfo = new MsCreateRoomInfo("",3,1,1,1,"");
+	public static defaultUserProfile:string = GlobalData.myUser.nickName+"/n"+GlobalData.myUser.avator+"/n"+GlobalData.myUser.pointValue;
 
 
 	public constructor() {

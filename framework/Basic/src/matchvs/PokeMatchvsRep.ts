@@ -42,14 +42,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
 	registerUserRsp = function(userInfo) {
         if (userInfo.status == 0) {
             egret.log("注册成功"+userInfo.status);
-            if (userInfo.name != "") 
-                GlobalData.myUser.nickName = userInfo.name;
-            else
-                GlobalData.myUser.nickName = userInfo.id;
-            GlobalData.myUser.userID = userInfo.id;
-           	GlobalData.myUser.avator = MatchvsData.defaultIcon[Math.round(10*Math.random())];
-           	GlobalData.myUser.token = userInfo.token;
-            GlobalData.myUser.pointValue = MatchvsData.defaultScore;
+
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_REGISTERUSER,false,false,userInfo));
         } else {
             egret.log("注册失败，错误码："+userInfo.status);
@@ -125,7 +118,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
     kickPlayerRsp = function(kickPlayerRsp) {
         if (kickPlayerRsp.status == 200) {
             egret.log("玩家"+kickPlayerRsp.userID+"踢出房间成功");
-            this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_KICK_pLAYER,false,false,kickPlayerRsp));
+            this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_KICK_PLAYER,false,false,kickPlayerRsp));
         } else {
            egret.log("玩家"+kickPlayerRsp.userID+"踢出房间失败 status"+kickPlayerRsp.status); 
         }

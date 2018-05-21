@@ -14,8 +14,9 @@ class Login extends eui.Component implements eui.UIComponent {
 				// Toast.show("ceshi");
 				SceneManager.showScene(new Game());
 			} else if (partName == "rank_list") {
-				// SceneManager.showScene(new RankList());
-				// var rankList = new RankList();
+				var rankList = new RankLists();
+				
+				SceneManager.showScene(rankList);
 			}
 
 		}, this);
