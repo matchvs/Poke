@@ -16,6 +16,9 @@ module network {
 
 		REPROT_SCORE_S = 128,			//上报分数
 		REPROT_SCORE_R = 129,			//上报分数响应
+
+		PLAY_CARDS_S = 130,
+		PLAY_CARDS_R = 131,
 	}
 
 

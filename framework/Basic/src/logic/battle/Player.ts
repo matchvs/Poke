@@ -41,6 +41,27 @@ module battle {
 		}
 
 		/**
+		 * 移除牌
+		 */
+		public removeCards(arr:Array<number>):void {
+            if(arr==null)
+            {
+                return;
+            }
+            var i:number = 0;
+            var j:number = 0;
+            var len:number = arr.length;
+            for (i = 0; i < len; i++) {
+                for (j = this.cardList.length - 1; j >= 0; j--) {
+                    if (this.cardList[j] == arr[i]) {
+                        this.cardList.splice(j, 1);
+                        break;
+                    }
+                }
+            }
+        }
+
+		/**
 		 * 出牌
 		 */
 		public playCards(arr:Array<number>){

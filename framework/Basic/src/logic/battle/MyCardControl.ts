@@ -225,8 +225,7 @@ module battle {
         }
 
         //获取点选的牌
-        public GetWillShowList(notype:boolean=false):Array<number>
-        {
+        public GetWillShowList(notype:boolean=false):Array<number>{
             var i:number = 0;
             var len:number = this._cardVlist.length;
             var card:CardUI;

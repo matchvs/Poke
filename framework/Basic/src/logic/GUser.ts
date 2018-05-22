@@ -79,7 +79,7 @@ class GUser {
 		player3.pointValue = 6534;
 		player3.userID = 96648;
 
-		//GlobalData.myUser = player1;
+		GlobalData.myUser = player1;
 		let userlist = [];
 		userlist.push(player1);
 		userlist.push(player2);

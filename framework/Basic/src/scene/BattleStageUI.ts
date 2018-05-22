@@ -154,30 +154,106 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		else {
 			this._battleButtonCtl.HideAll();
 		}
-		this._battleControl.SetPlayerTime(player, delaytime);
+		//this._battleControl.SetPlayerTime(player, delaytime);
         this._battleControl.UpdateAllCardNum();
 	}
 
 	/**
-	 * 结束叫地主
-	 * @param {} landplayer
-	 * @param {} landlist
-	 * @param {} mainplayer
-	 * @param {} landscore
+	 * 结束叫地主，显示按钮和牌
+	 * @param {battle.Player} landplayer
+	 * @param {Array<number>} landlist
+	 * @param {battle.Player} mainplayer
+	 * @param {string} landscore
 	 * 
 	 */
 	public OverCallLand(landplayer: battle.Player, landlist: Array<number>, mainplayer: battle.Player, landscore: string){
 		//显示底牌
 		this._tablecardControl.ShowLandCard(landlist);
+		//显示地主标志
 		this._battleControl.SetPlayerLandFlag(landplayer.LocalTableId);
+		//如果我自己是地主就显示我自己的地主标志
 		this._myCardControl.SetPlayerLandFlag(mainplayer.LocalTableId);
+		//出牌动画重置
 		this._sendCardAnimal.Release(landplayer.LocalTableId);
+		//设置我的牌区域
 		this._myCardControl.SetMainPlayer(mainplayer);
+		//对战控制
 		this._battleButtonCtl.SetCardProxy(this._myCardControl);
+		//设置出牌按钮控制
 		this._myCardControl.SetButtonCtl(this._battleButtonCtl);
 		
 		// TODO
 		//设置倍数 todo
 	}
 
+	//轮流出牌
+	public TurnPlayCard(player:battle.Player, isme: boolean, isnew: boolean, tablelist: Array<number>, delaytime: number, canshowAll: boolean, lastplayer:battle.Player =null){
+	
+		if (isnew) {
+			this._sendCardAnimal.Release(0);
+			this._tablecardControl.clearAll();
+			this._myCardControl.SetTableList([]);
+			if (lastplayer) {
+				this._tablecardControl.ShowTableCard(lastplayer.LocalTableId, null);
+			}
+        }
+
+		if (isme) {
+			this._myCardControl.SetTableList(tablelist);
+			if (lastplayer) {
+				this._tablecardControl.ShowTableCard(lastplayer.LocalTableId, tablelist);
+			}
+			this._myCardControl.CanShowAll = canshowAll;
+			var hascar: boolean = true;
+			this._battleButtonCtl.Playing(isnew);
+			this._myCardControl.SetBtnVisible();
+			if (player.cardNumber == 1 && player.cardNumber < tablelist.length)//自己单牌,别人打多张,没有牌直接过
+			{
+				//NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
+				this._battleButtonCtl.HideAll();
+				return;
+			}
+		}
+		else {
+			this._battleButtonCtl.HideAll();
+		}
+		//this._battleControl.SetPlayerTime(player, delaytime);
+		this._battleControl.UpdateAllCardNum();
+	}
+
+	/**
+	 *  有玩家出牌后，更新桌面牌
+	 */ 
+	public ShowPlay(player: battle.Player, clist: Array<number>, isme: boolean, timestr: string){
+		this._battleControl.UpdateAllCardNum();
+		if (isme) {
+            //如果出牌人是我，更新我的牌数量
+            this._myCardControl.SendOver();
+        }
+		if (clist != null && clist.length > 0) {
+			this._tablecardControl.ShowTableCard(player.LocalTableId, clist);
+			this._myCardControl.SetTableList(clist);
+		}else {
+			this._tablecardControl.ShowTableCard(player.LocalTableId, clist);
+			//this._chatMsgProxy.ShowTableCard(player.LocalTableId, "不要");
+		}
+		//this._uiProxy.SetTimes(timestr);
+		// var cld:gameLogic.CardListData = this._type.GetType(clist);
+		// if (cld.Type == gameLogic.PlayCardTypes.Types_Bomb) {
+
+        //         var eff: effect.BombEffect = MandPool.getIns(effect.BombEffect);
+        //         eff.Init();
+        //         this._effectSprite.addChild(eff);
+        //         this._effectList.push(eff)
+        //     }
+        //     else if (cld.Type == gameLogic.PlayCardTypes.Types_ThreeN_Double ||
+        //         cld.Type == gameLogic.PlayCardTypes.Types_ThreeN_Signal ||
+        //         cld.Type == gameLogic.PlayCardTypes.Types_ThreeN) {
+
+        //         var eff2: effect.PlaneEffect = MandPool.getIns(effect.PlaneEffect);
+        //         eff2.Init();
+        //         this._effectSprite.addChild(eff2);
+        //         this._effectList.push(eff2)
+        //     }
+	}
 }

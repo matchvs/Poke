@@ -29,6 +29,7 @@ module network {
 		private AddEventMap(){
 			this.battleEventMap[NetMsgEvent.GAME_READY_R] = BattleMsgEvent.GAME_READY;
 			this.battleEventMap[NetMsgEvent.CALL_LAND_RO] = BattleMsgEvent.CALL_LANDLORD_OVER;
+			this.battleEventMap[NetMsgEvent.PLAY_CARDS_R] = BattleMsgEvent.PLAYER_CARDS;
 		}
 
 		/**
@@ -45,7 +46,7 @@ module network {
 			}
 			let obj = this.ResolverMsg(Number(event.action), event.data);
 			// console.info("event.action",msg);
-			 console.info("ReceiveMessage:",this.battleEventMap[event.action],obj);
+			console.info("ReceiveMessage:",this.battleEventMap[event.action],obj);
 			this.dispatchEvent(new egret.Event(this.battleEventMap[event.action], false, false, obj));
 			//触发监听事件
 			return 0;
@@ -90,6 +91,9 @@ module network {
 				break;
 				case NetMsgEvent.REPROT_SCORE_S:
 				break;
+				case NetMsgEvent.PLAY_CARDS_S:
+				pk = new PlayCardsResolver();
+				break;
 				default:
 				break;
 			}
@@ -104,11 +108,27 @@ module network {
 		//发送给gameServer
 		public sendToGameServer(action:NetMsgEvent,data:any){
 			this.ReceiveMessage(this.sendMessage(action, data));
+			
+			// MatchvsData.MatchvsRep.gameServerNotify = function(eventInfo:MsSendEventNotify){
+			// 	console.info("gameServerNotify");
+			// 	this.ReceiveMessage(eventInfo.cpProto);
+			// }.bind(this);
+			//MatchvsData.MatchvsReq.sendEventEx(0,this.sendMessage(action, data),1,[]);
 		}
 
 		//发送给玩家
 		public sendToPlayers(action:NetMsgEvent,data:any){
-			this.sendMessage(action, data);
+			this.ReceiveMessage(this.sendMessage(action, data));
+			
+			// MatchvsData.MatchvsRep.sendEventNotify = function(eventInfo:MsSendEventNotify){
+			// 	console.info("sendEventNotify");
+			// 	this.ReceiveMessage(eventInfo.cpProto);
+			// }.bind(this);
+			// MatchvsData.MatchvsRep.sendEventResponse = function(rsp:MsSendEventRsp){
+			// 	console.info("sendEventNotify");
+			// 	this.ReceiveMessage(rsp);
+			// }.bind(this);
+			//MatchvsData.MatchvsReq.sendEvent(this.sendMessage(action, data));
 		} 
 
 	}

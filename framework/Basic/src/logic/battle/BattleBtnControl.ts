@@ -407,7 +407,7 @@ module battle {
                     console.info("牌类型出错");
                     return;
                 }
-                //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: cardArr });
+                network.BattleMsg.getInstance().sendToPlayers(network.NetMsgEvent.PLAY_CARDS_S, { cardlist: cardArr });
             }
             else if (e.currentTarget == this._sendPromt) {
                 //NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY,{});
@@ -427,20 +427,23 @@ module battle {
                 //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
             }
             else if (e.currentTarget == this._call3) {
+                this.HideAll();
                 network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:3 });
+                console.log("叫地主 _call3");
+            }else if (e.currentTarget == this._call2) {
                 this.HideAll();
-            }
-            else if (e.currentTarget == this._call2) {
                 network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:2 });
-                this.HideAll();
+                console.log("叫地主_call2");
             }
             else if (e.currentTarget == this._call1) {
-                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:1 });
                 this.HideAll();
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:1 });
+                console.log("叫地主 _call1");
             }
             else if (e.currentTarget == this._callNo) {
-                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:0 });
                 this.HideAll();
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:0 });
+                console.log("叫地主 _callNo");
             }
         }
 
