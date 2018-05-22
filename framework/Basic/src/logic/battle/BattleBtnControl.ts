@@ -203,7 +203,7 @@ module battle {
             this._callSprite.visible = false;
             this._playSprite.visible = false;
 
-            //this._readySprite.visible = true;
+            this._readySprite.visible = false;
             // if (SceneMgr.Instance.GetCurrentProxy() instanceof sceneproxy.GameSceneProxy) {
             //      //隐藏ready 按钮
             //     var dp: data.Player = (<sceneproxy.GameSceneProxy>(SceneMgr.Instance.GetCurrentProxy())).GetMainPlayer();
@@ -407,7 +407,7 @@ module battle {
                     console.info("牌类型出错");
                     return;
                 }
-                network.BattleMsg.getInstance().sendToPlayers(network.NetMsgEvent.PLAY_CARDS_S, { cardlist: cardArr });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.PLAY_CARDS_S, { cardlist: cardArr });
             }
             else if (e.currentTarget == this._sendPromt) {
                 //NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY,{});
@@ -428,16 +428,16 @@ module battle {
             }
             else if (e.currentTarget == this._call3) {
                 this.HideAll();
-                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:3 });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { score:3 });
                 console.log("叫地主 _call3");
             }else if (e.currentTarget == this._call2) {
                 this.HideAll();
-                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:2 });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { score:2 });
                 console.log("叫地主_call2");
             }
             else if (e.currentTarget == this._call1) {
                 this.HideAll();
-                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:1 });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { score:1 });
                 console.log("叫地主 _call1");
             }
             else if (e.currentTarget == this._callNo) {

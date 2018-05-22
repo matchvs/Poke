@@ -90,10 +90,12 @@ module battle {
 		private setCardList(list:Array<any>){
 			let TableId  = 1;
 			let myUser = this._myOwner;
+			let seatNo = 0;
 			//获取牌列表
 			this._playerList.forEach((element)=>{
 				
 				for(let i = 0; i < list.length; i++){
+					console.info("list[i].userID == element.userID",list[i].userID,element.userID);
 					if(list[i].userID == element.userID){
 						console.info("setCardList",list[i].card);
 						element.AddcardList(list[i].card);
@@ -101,7 +103,7 @@ module battle {
 						element.IsReady = true;
 					}
 				}
-				//element.seatNo = seatNo;
+				element.seatNo = seatNo++;
 				console.info("element.seatNo"+element.seatNo);
 				//分配上下家
 				if(element.userID == myUser.userID){
@@ -214,6 +216,17 @@ module battle {
 		 * 下一个叫地主的人
 		 */
 		private CallLandLordNext(event:egret.Event){
+			let ismeCall = false;
+			if(event.data.nextUser == this._myOwner.userID){
+				ismeCall = true;
+			}
+			this._playerList.forEach((value)=>{
+				if(value.userID == this._callLandLordUID){
+					console.info("beginCallLandLord",value);
+					//显示叫地主
+					this._stage.ShowCallLand(value, ismeCall,event.data.score,BattleStageControl.Delay_CallLand);
+				}
+			});	
 		}
 
 		/**
@@ -305,6 +318,7 @@ module battle {
 			}
 			console.log("_playerHeader_",this["_playerHeader_" + localid]);
             (<PlayerHead>this["_playerHeader_" + localid]).Release();
+			console.info("SetPlayerHead"+p.cardNumber);
             (<PlayerHead>this["_playerHeader_" + localid]).Init(p);
             this._stage._playerHeadSprite.addChildAt((<PlayerHead>this["_playerHeader_" + localid]), 0);
             (<PlayerHead>this["_playerHeader_" + localid]).Ready = p.IsReady;
