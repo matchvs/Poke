@@ -107,13 +107,13 @@ module network {
 
 		//发送给gameServer
 		public sendToGameServer(action:NetMsgEvent,data:any){
-			this.ReceiveMessage(this.sendMessage(action, data));
+			//this.ReceiveMessage(this.sendMessage(action, data));
 			
-			// MatchvsData.MatchvsRep.gameServerNotify = function(eventInfo:MsSendEventNotify){
-			// 	console.info("gameServerNotify");
-			// 	this.ReceiveMessage(eventInfo.cpProto);
-			// }.bind(this);
-			//MatchvsData.MatchvsReq.sendEventEx(0,this.sendMessage(action, data),1,[]);
+			MatchvsData.MatchvsRep.gameServerNotify = function(eventInfo:MsSendEventNotify){
+				console.info("gameServerNotify");
+				this.ReceiveMessage(eventInfo.cpProto);
+			}.bind(this);
+			MatchvsData.MatchvsReq.sendEventEx(0,this.sendMessage(action, data),1,[]);
 		}
 
 		//发送给玩家

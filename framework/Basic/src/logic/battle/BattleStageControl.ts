@@ -11,6 +11,7 @@ module battle {
 		private _callLandLordUID:number = 0;					//叫地主的人的ID
 		private _landLordCardList = [];							//底牌列表
 		private _tableCardList = [];							//桌面大牌
+		private _playerPoint:number = 0;						//用户指针,指向当前用户,,对应玩家seatNo
 		private _timesScore:string = "";
 
 		private _stage:BattleStageUI = null;
@@ -78,7 +79,7 @@ module battle {
 			//下一个叫地主
 			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.CALL_LANDLORD_NEXT,this.CallLandLordNext, this);
 
-			//
+			//收到出牌消息
 			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.PLAYER_CARDS,this.PlayCards, this);
 		}
 
@@ -256,12 +257,12 @@ module battle {
 			this._stage.ShowPlay(player, event.data.cardlist, true, "");
 
 			//获取下一个出牌的人
-			let seatNo = player.seatNo;
+			this._playerPoint = player.seatNo;
 
-			if((++seatNo) >= 3){
-				seatNo = 0;
+			if((++this._playerPoint) >= 3){
+				this._playerPoint = 0;
 			}
-			player = this.getPlayerForSeatNo(seatNo);
+			player = this.getPlayerForSeatNo(this._playerPoint);
 			
 			//轮流出牌
 			this._stage.TurnPlayCard(player, (player.userID == this._myOwner.userID), false, this._tableCardList,BattleStageControl.Delay_ShowCard,false);

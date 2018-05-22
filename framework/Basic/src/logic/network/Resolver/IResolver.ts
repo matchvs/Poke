@@ -11,11 +11,11 @@ module network {
 		 */
 		public toPackage(cmd:number, msg:any):string{
 			let dt = this.Package(msg);
-			// return JSON.stringify({
-			// 	action:cmd,
-			// 	data:dt
-			// });
-			return JSON.stringify(dt);
+			return JSON.stringify({
+				action:cmd,
+				data:dt
+			});
+			//return JSON.stringify(dt);
 		}
 
 		/**
