@@ -58,6 +58,7 @@ class Game extends eui.Component implements eui.UIComponent {
 					user.nickName =arr[0];
 					user.avator = arr[1];
 					user.pointValue = arr[2];
+					user.userID = e.data[i].userId;
 					this.userPlayer.push(user);
 				}
 				egret.log("userPlayer的长度"+this.userPlayer.length);
@@ -71,6 +72,7 @@ class Game extends eui.Component implements eui.UIComponent {
 				user.nickName =arr[0];
 				user.avator = arr[1];
 				user.pointValue = arr[2];
+				user.userID = e.data.userId;
 				this.userPlayer.push(user);
 				egret.log("NOTIFYuserPlayer的长度"+this.userPlayer.length);
 				if( this.userPlayer.length  == MatchvsData.maxPlayer) {
