@@ -123,6 +123,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 
 	//添加用户
 	private addPlayers(users:Array<GUser>){
+		console.info("addPlayers",users)
 		for(let i = 0; i < users.length; i++){
 			this._battleControl.addPlayer(users[i]);
 		}

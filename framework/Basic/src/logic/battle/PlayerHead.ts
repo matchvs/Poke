@@ -143,6 +143,7 @@ module battle {
 
         public UpdateCardNum():void
         {
+            console.info("UpdateCardNum "+this._playerData.cardNumber);
             if(this._cardNumTxt)
             {
                 this._cardNumTxt.text=""+this._playerData.cardNumber;

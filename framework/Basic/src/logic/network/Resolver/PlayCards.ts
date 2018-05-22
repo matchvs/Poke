@@ -13,6 +13,7 @@ module network {
 				action:131,
 				data:data
 			};
+			event = data;
 			return event;
 		}
 

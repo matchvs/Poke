@@ -17,6 +17,7 @@ module network {
 					value: 3
 				}
 			};
+			event = data;
 			console.log("Package",event);
 			return event;
 		}
