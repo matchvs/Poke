@@ -39,11 +39,7 @@
 		"bin-debug/logic/game/CardListData.js",
 		"bin-debug/logic/game/Compare.js",
 		"bin-debug/logic/game/PlayCardTypes.js",
-
 		"bin-debug/Config.js",
-
-		"bin-debug/utils/WxUtils.js",
-
 		"bin-debug/logic/game/Prompt2.js",
 		"bin-debug/logic/game/SendCard.js",
 		"bin-debug/logic/network/BattleEvent.js",
@@ -61,13 +57,8 @@
 		"bin-debug/scene/BattleStageUI.js",
 		"bin-debug/scene/Game.js",
 		"bin-debug/scene/Login.js",
-
-		"bin-debug/scene/Ranking.js",
-		"bin-debug/scene/RankLists.js",
-
 		"bin-debug/scene/RankList.js",
 		"bin-debug/scene/RankListItem.js",
-
 		"bin-debug/scene/Result.js",
 		"bin-debug/scene/Room.js",
 		"bin-debug/scene/TopHeader.js",
