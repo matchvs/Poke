@@ -16,13 +16,12 @@
 		"Login": "resource/scene/Login.exml",
 		"Game": "resource/scene/Game.exml",
 		"BattleStageUI": "resource/scene/BattleStage.exml",
-		"RankLists": "resource/scene/rankList.exml",
 		"RankListItem": "resource/scene/rankListItem.exml",
 		"TopHeader": "resource/scene/TopHeader.exml",
 		"MatchDialog": "resource/scene/MatchDialog.exml",
 		"Room": "resource/scene/Room.exml",
 		"Result": "resource/scene/Result.exml",
-		"Ranking": "resource/scene/Ranking.exml"
+		"RankList": "resource/eui_skins/RankList.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
@@ -36,6 +35,7 @@
 		"resource/eui_skins/PanelSkin.exml",
 		"resource/eui_skins/ProgressBarSkin.exml",
 		"resource/eui_skins/RadioButtonSkin.exml",
+		"resource/eui_skins/RankList.exml",
 		"resource/eui_skins/ScrollerSkin.exml",
 		"resource/eui_skins/TextInputSkin.exml",
 		"resource/eui_skins/ToggleSwitchSkin.exml",
@@ -45,8 +45,6 @@
 		"resource/scene/Game.exml",
 		"resource/scene/Login.exml",
 		"resource/scene/MatchDialog.exml",
-		"resource/scene/Ranking.exml",
-		"resource/scene/rankList.exml",
 		"resource/scene/RankListItem.exml",
 		"resource/scene/Result.exml",
 		"resource/scene/Room.exml",

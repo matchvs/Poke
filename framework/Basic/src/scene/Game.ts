@@ -67,7 +67,7 @@ class Game extends eui.Component implements eui.UIComponent {
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
-				var arr = e.data[i].userProfile.split("/n");
+				var arr = e.data.userProfile.split("/n");
 				user.nickName =arr[0];
 				user.avator = arr[1];
 				user.pointValue = arr[2];
