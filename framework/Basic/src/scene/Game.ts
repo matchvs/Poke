@@ -27,12 +27,16 @@ class Game extends eui.Component implements eui.UIComponent {
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			//快速匹配
 			if (partName == "fastMatch") {
-				PokeMatchvsEngine.getInstance().joinRandomRoom(MatchvsData.defaultUserProfile);
+				PokeMatchvsEngine.getInstance().joinRandomRoom(GlobalData.myUser.nickName+"/n"+GlobalData.myUser.avator+"/n"+GlobalData.myUser.pointValue);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 				this.matchDialog = new MatchDialog();
 				SceneManager.showScene(this.matchDialog);
 			} else if (partName == "createRoom") {
+				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.defaultUserProfile);
+				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
+			} else if (partName == "inviteFriends") {
+				//todo 直接邀请
 				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.defaultUserProfile);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			}
