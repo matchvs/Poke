@@ -14,7 +14,7 @@
 	"game": [
 		"bin-debug/logic/GUser.js",
 		"bin-debug/logic/network/Resolver/IResolver.js",
-		"bin-debug/logic/game/PlayCardTypes.js",
+		"bin-debug/logic/game/Prompt.js",
 		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
@@ -38,8 +38,12 @@
 		"bin-debug/logic/battle/SendCardAnimal.js",
 		"bin-debug/logic/game/CardListData.js",
 		"bin-debug/logic/game/Compare.js",
+		"bin-debug/logic/game/PlayCardTypes.js",
+
+		"bin-debug/Config.js",
+
 		"bin-debug/utils/WxUtils.js",
-		"bin-debug/logic/game/Prompt.js",
+
 		"bin-debug/logic/game/Prompt2.js",
 		"bin-debug/logic/game/SendCard.js",
 		"bin-debug/logic/network/BattleEvent.js",
@@ -49,6 +53,7 @@
 		"bin-debug/logic/network/Resolver/DefaultResolver.js",
 		"bin-debug/logic/network/Resolver/GameReadyResolver.js",
 		"bin-debug/LoadingUI.js",
+		"bin-debug/logic/network/Resolver/PlayCards.js",
 		"bin-debug/matchvs/MatchvsData.js",
 		"bin-debug/matchvs/MatchvsMessage.js",
 		"bin-debug/matchvs/PokeMatchvsEngine.js",
@@ -56,7 +61,13 @@
 		"bin-debug/scene/BattleStageUI.js",
 		"bin-debug/scene/Game.js",
 		"bin-debug/scene/Login.js",
+
+		"bin-debug/scene/Ranking.js",
 		"bin-debug/scene/RankLists.js",
+
+		"bin-debug/scene/RankList.js",
+		"bin-debug/scene/RankListItem.js",
+
 		"bin-debug/scene/Result.js",
 		"bin-debug/scene/Room.js",
 		"bin-debug/scene/TopHeader.js",
@@ -64,6 +75,6 @@
 		"bin-debug/utils/ArrayTools.js",
 		"bin-debug/utils/MatchDialog.js",
 		"bin-debug/utils/Toast.js",
-		"bin-debug/Config.js"
+		"bin-debug/utils/WxUtils.js"
 	]
 }

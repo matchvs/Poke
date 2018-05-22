@@ -6,10 +6,11 @@ module battle {
         private static Delay_ShowCard: number = 25000;       	//25秒游戏发牌
 		
 		public _playerList = new Array<Player>(); 				//用户列表
-		private _myOwner = new Player();						//我自己
-		private _landLordUser = null;
+		private _myOwner:Player = new Player();						//我自己
+		private _landLordUser:Player = null;
 		private _callLandLordUID:number = 0;					//叫地主的人的ID
 		private _landLordCardList = [];							//底牌列表
+		private _tableCardList = [];							//桌面大牌
 		private _timesScore:string = "";
 
 		private _stage:BattleStageUI = null;
@@ -33,8 +34,8 @@ module battle {
 			this._playerHeader_right = new battle.PlayerHead();//下家
 			this._playerTimer = new PlayerTime();
 			this._playerTimer.Init();
-			this._stage._playerTimerSprite.addChild(this._playerTimer);
-			this._playerTimer.visible = false;
+			//this._stage._playerTimerSprite.addChild(this._playerTimer);
+			//this._playerTimer.visible = false;
 		}
 
 		public startGame(){
@@ -76,6 +77,9 @@ module battle {
 
 			//下一个叫地主
 			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.CALL_LANDLORD_NEXT,this.CallLandLordNext, this);
+
+			//
+			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.PLAYER_CARDS,this.PlayCards, this);
 		}
 
 
@@ -87,6 +91,7 @@ module battle {
 			let myUser = this._myOwner;
 			//获取牌列表
 			this._playerList.forEach((element)=>{
+				
 				for(let i = 0; i < list.length; i++){
 					if(list[i].userID == element.userID){
 						console.info("setCardList",list[i].card);
@@ -95,6 +100,8 @@ module battle {
 						element.IsReady = true;
 					}
 				}
+				//element.seatNo = seatNo;
+				console.info("element.seatNo"+element.seatNo);
 				//分配上下家
 				if(element.userID == myUser.userID){
 					element.LocalTableId = 3;
@@ -183,6 +190,7 @@ module battle {
 				this.landLordCardList = evt.data.landCards;
 				for(let i = 0; i < this._playerList.length; i++){
 					if(landOwnerID == this._playerList[i].userID){
+						this._landLordUser = new Player();
 						//获取地主
 						this._landLordUser = this._playerList[i];
 						//获取地主分数
@@ -195,8 +203,9 @@ module battle {
 					//如果地主是我就给我添加地主牌
 					this._myOwner.AddcardList(evt.data.landCards);
 				}
-
+				this._tableCardList = [];
 				this._stage.OverCallLand(this._landLordUser, evt.data.landCards, this._myOwner,this._timesScore);
+				this._stage.TurnPlayCard(this._landLordUser, (this._landLordUser.userID == this._myOwner.userID), true, this._tableCardList,BattleStageControl.Delay_ShowCard,false);
 			}
 		}
 
@@ -204,6 +213,58 @@ module battle {
 		 * 下一个叫地主的人
 		 */
 		private CallLandLordNext(event:egret.Event){
+		}
+
+		/**
+		 * UserID 获取player
+		 */
+		private getPlayerForUserID(userID):Player{
+			let player = null;
+			this._playerList.forEach((value)=>{
+				if(value.userID == userID){
+					player = value;
+				}
+			});
+			return player;
+		}
+
+		/**
+		 * seatNo获取player
+		 */
+		private getPlayerForSeatNo(seatNo):Player{
+			let player = null;
+			this._playerList.forEach((value)=>{
+				console.info("getPlayerForSeatNo "+value.seatNo);
+				if(value.seatNo == seatNo){
+					player = value;
+				}
+			});
+			return player;
+		}
+
+		/**
+		 * 收到出牌消息,显示牌
+		 */
+		public PlayCards(event:egret.Event){
+			console.info("出牌逻辑：",event.data);
+			//显示上一个出牌的人的牌
+			let player:Player = this.getPlayerForUserID(this._myOwner.userID);
+			let clist: Array<number> = event.data.cardlist;
+			//移除牌，玩家的牌
+			player.removeCards(clist);
+			//界面显示牌
+			this._stage.ShowPlay(player, event.data.cardlist, true, "");
+
+			//获取下一个出牌的人
+			let seatNo = player.seatNo;
+
+			if((++seatNo) >= 3){
+				seatNo = 0;
+			}
+			player = this.getPlayerForSeatNo(seatNo);
+			
+			//轮流出牌
+			this._stage.TurnPlayCard(player, (player.userID == this._myOwner.userID), false, this._tableCardList,BattleStageControl.Delay_ShowCard,false);
 		}
 
 		/**
@@ -294,16 +355,19 @@ module battle {
 				this._playerHeader_right.LandFlagVisible(true, false);
 			}
 
-			let left = "left";
-			if(landid == 2){
-				left ="right"
-			}
 
-			if(this["_playerHeader_"+left]){
-				this["_playerHeader_"+left].IsLandOwner = false;
-				this["_playerHeader_"+left].LandFlagVisible(true, true);
+			if(landid == 1){
+				if(this["_playerHeader_left"]){
+					this["_playerHeader_left"].IsLandOwner = false;
+					this["_playerHeader_left"].LandFlagVisible(true, true);
+				}
 			}
-
+			else if(landid == 2){
+				if(this["_playerHeader_right"]){
+					this["_playerHeader_right"].IsLandOwner = false;
+					this["_playerHeader_right"].LandFlagVisible(true, true);
+				}
+			}
 		}
 
 		/**
@@ -320,6 +384,8 @@ module battle {
 				this._playerHeader_right.UpdateCardNum();
 			}
 		}
+
+		
 
 	}
 }
