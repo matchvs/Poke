@@ -21,6 +21,8 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	private _battleButtonCtl:battle.BattleBtnControl = null;
 	private _battleButtonSprote:egret.Sprite = null;
 
+	private _resultSprite:egret.Sprite = null;
+	private _resultUI:ResultUI = null;
 	
 	public constructor() {
 		super();
@@ -65,6 +67,12 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		this.explameAddPlayer();
 		//显示用户头像
 		this.showTopUserInfo(GlobalData.myUser);
+
+		// this._resultSprite = new egret.Sprite();
+		// this.addChild(this._resultSprite);
+		this._resultUI = new ResultUI();
+		// this._resultSprite.addChild(this._resultUI);
+		// this._resultSprite.visible = false;
 		
 		//我的卡牌放置容器
 		this._myCardSprote = new egret.Sprite();
@@ -173,7 +181,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		//显示地主标志
 		this._battleControl.SetPlayerLandFlag(landplayer.LocalTableId);
 		//如果我自己是地主就显示我自己的地主标志
-		this._myCardControl.SetPlayerLandFlag(mainplayer.LocalTableId);
+		this._myCardControl.SetPlayerLandFlag(landplayer.LocalTableId);
 		//出牌动画重置
 		this._sendCardAnimal.Release(landplayer.LocalTableId);
 		//设置我的牌区域
@@ -256,5 +264,48 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
         //         this._effectSprite.addChild(eff2);
         //         this._effectList.push(eff2)
         //     }
+	}
+
+	public GameOver(iswin: boolean, p1: battle.Player, p2: battle.Player, p3: battle.Player,
+            islandwin: boolean, timestr: string, isactover: boolean, actrank: number, actHScore: number, actmoney: number, winplayer: battle.Player){
+		// this.b_battleControl.SetTimes(timestr);
+		this._battleButtonCtl.HideAll();
+
+		if (p1) {
+			this._tablecardControl.ShowTableCard(1, p1.cardList);
+		}
+		if (p2) {
+			this._tablecardControl.ShowTableCard(2, p2.cardList);
+		}
+		if (p3) {
+			this._tablecardControl.ShowTableCard(3, p3.cardList);
+			this._myCardControl.Release();
+		}
+
+		let result = new ResultUI();
+		SceneManager.showScene(result);
+		//result = this._resultUI;
+		result.init();
+		if(p1.isLandLord){
+			result.showResult(p1,p2,p3,iswin,islandwin);
+		}else if(p2.isLandLord){
+			result.showResult(p2,p1,p3,iswin,islandwin);
+		}else if(p3.isLandLord){
+			result.showResult(p3,p1,p2,iswin,islandwin);
+		}
+		
+		
+
+		//this._gameoverAniProxy.Start(p1.ResoultScore, p2.ResoultScore, p3.ResoultScore);
+		// egret.setTimeout(function (): void {
+		// 	if (data.GameData.flag == data.GameData.GameFlag_Activity) {
+		// 		windowui.ActivityResoultInst.Instance.InitInfo(p3, p1, p2, islandwin, actrank, actHScore, actmoney);
+		// 		windowui.ActivityResoultInst.Instance.Show();
+		// 	}
+		// 	else {
+		// 		windowui.ResoultInst.Instance.InitInfo(p3, p1, p2, iswin);
+		// 		windowui.ResoultInst.Instance.Show();
+		// 	}
+		// }, this, 3500);
 	}
 }
