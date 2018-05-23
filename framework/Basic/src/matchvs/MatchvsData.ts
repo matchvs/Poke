@@ -11,7 +11,7 @@ class MatchvsData {
 	public static DeviceID:string = "0";
 	public static gatewayID: number = 1;
 	public static pChannel:string = "MatchVS"
-	public static pPlatform:string = "release";
+	public static pPlatform:string = "alpha";
 	public static HtttpUrl:any = "http://vsopen.matchvs.com/wc5/getGameData.do?";
 	public static MatchvsReq:MatchvsEngine = new MatchvsEngine();
 	public static MatchvsRep:MatchvsResponse = new MatchvsResponse();

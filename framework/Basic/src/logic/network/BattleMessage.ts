@@ -37,6 +37,7 @@ module network {
 		 * @param {any} msg
 		 */
 		public ReceiveMessage(msg:string):number{
+			console.info("ReceiveMessage:",msg);
 			/**
 			 * 消息解析
 			 */
@@ -109,11 +110,9 @@ module network {
 		public sendToGameServer(action:NetMsgEvent,data:any){
 			//this.ReceiveMessage(this.sendMessage(action, data));
 			
-			MatchvsData.MatchvsRep.gameServerNotify = function(eventInfo:MsSendEventNotify){
-				console.info("gameServerNotify");
-				this.ReceiveMessage(eventInfo.cpProto);
-			}.bind(this);
-			MatchvsData.MatchvsReq.sendEventEx(0,this.sendMessage(action, data),1,[]);
+			MatchvsData.MatchvsRep.gameServerNotify = this.gameServerNotify.bind(this);
+			console.info("sendToGameServer");
+			MatchvsData.MatchvsReq.sendEventEx(1,this.sendMessage(action, data),0,[]);
 		}
 
 		//发送给玩家
@@ -130,6 +129,11 @@ module network {
 			// }.bind(this);
 			//MatchvsData.MatchvsReq.sendEvent(this.sendMessage(action, data));
 		} 
+
+		private gameServerNotify(eventInfo:MsSendEventNotify){
+			console.info("gameServerNotify");
+			this.ReceiveMessage(eventInfo.cpProto);
+		}
 
 	}
 }
