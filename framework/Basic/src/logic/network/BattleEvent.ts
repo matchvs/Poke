@@ -17,8 +17,11 @@ module network {
 		REPROT_SCORE_S = 128,			//上报分数
 		REPROT_SCORE_R = 129,			//上报分数响应
 
-		PLAY_CARDS_S = 130,
+		PLAY_CARDS_S = 130,				//出牌
 		PLAY_CARDS_R = 131,
+
+		GAME_OVER_S = 132,				//游戏结束上报
+		GAME_OVER_R = 133,				//游戏结束响应
 	}
 
 
@@ -39,5 +42,8 @@ module network {
 
 		//上报分数事件
 		public static REPORT_DATA = "ReportData";
+
+		//游戏结束
+		public static GAME_OVER = "GameOver";
 	}
 }
