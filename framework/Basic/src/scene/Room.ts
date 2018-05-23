@@ -18,6 +18,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	private iconViewList = [];
 	private actionViewList = [];
 	private actionTextViewList = [];
+	private isInvite = false;
 
 
 	public constructor() {
@@ -27,13 +28,18 @@ class Room extends eui.Component implements  eui.UIComponent {
 	/**
 	 * 房间ID
 	 */
-	public init(roomID:string) {
+	public init(roomID:string,isInvite:boolean) {
 		this.roomID = roomID;
+		this.isInvite = isInvite;
 	}
 
 
 	protected partAdded(partName:string,instance:any):void {
 		super.partAdded(partName,instance);
+		 if(this.isInvite) {
+			 WxUtils.wxTogether("邀请好友",this.roomID);
+			 this.isInvite = false;
+		}
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
@@ -105,7 +111,13 @@ class Room extends eui.Component implements  eui.UIComponent {
 		switch(e.type) {
 			//有人进来就通知
 			case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
-				this.userPlayer.push(e.data);
+				var user:GUser = new GUser;
+				var arr = e.data.userProfile.split("/n");
+				user.nickName =arr[0];
+				user.avator = arr[1];
+				user.pointValue = arr[2];
+				user.userID = e.data.userId;
+				this.userPlayer.push(user);
 				//房间内人数到达三个 就启动定时器;
 				this.initView(this.userPlayer);
 				if( this.userPlayer.length  == MatchvsData.maxPlayer) {
@@ -117,10 +129,11 @@ class Room extends eui.Component implements  eui.UIComponent {
 				this.userPlayer.push(GlobalData.myUser);
 				for(var i in e.data) {
 					var user:GUser = new GUser;
+					var arr = e.data[i].userProfile.split("/n");
+					user.nickName =arr[0];
+					user.avator = arr[1];
+					user.pointValue = arr[2];
 					user.userID = e.data[i].userId;
-					user.nickName = e.data[i].userId;
-					user.avator = e.data[i].userProfile;
-					user.pointValue = MatchvsData.defaultScore;
 					this.userPlayer.push(user);
 				}
 				this.initView(this.userPlayer);

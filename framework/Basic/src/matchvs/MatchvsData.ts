@@ -29,12 +29,14 @@ class MatchvsData {
 	
 	public static defaultScore = 10000;
 	public static defaultRoomInfo:MsCreateRoomInfo = new MsCreateRoomInfo("",3,1,1,1,"");
-	public static defaultUserProfile:string = GlobalData.myUser.nickName+"/n"+GlobalData.myUser.avator+"/n"+GlobalData.myUser.pointValue;
 
 
 	public constructor() {
 	}
 	
-
+	public static getDefaultUserProfile():string {
+		egret.log("自己加入房间的USerProFile",GlobalData.myUser.nickName+"/n"+GlobalData.myUser.avator+"/n"+GlobalData.myUser.pointValue);
+		return GlobalData.myUser.nickName+"/n"+GlobalData.myUser.avator+"/n"+GlobalData.myUser.pointValue;
+	}
 
 }

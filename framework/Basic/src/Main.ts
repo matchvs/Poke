@@ -222,7 +222,7 @@ class Main extends eui.UILayer {
             console.log(LaunchOption.query.roomID+"是多少");
             if(roomID != null && roomID != "" && roomID !=0) {
                 //昵称，头像，积分的顺序，用 /n 分割
-                PokeMatchvsEngine.getInstance().joinRoom(roomID,MatchvsData.defaultUserProfile);
+                PokeMatchvsEngine.getInstance().joinRoom(roomID,MatchvsData.getDefaultUserProfile());
                 this.removeEvent();
                 SceneManager.showScene(new Room());
             }
