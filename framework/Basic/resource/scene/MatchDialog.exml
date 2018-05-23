@@ -7,12 +7,12 @@
 	<e:Image height="420" x="110" y="358" source="resource/assets/lobby/bg_match_popup.png"/>
 	<e:Label text="匹配中..." x="243" y="403" textColor="0x333333" fontFamily="FZY4JW--GB1-0" size="38" textAlign="center" width="154" height="40" bold="true"/>
 	<e:Image id="cancel_match" width="230" height="78" x="205" y="661" source="resource/assets/lobby/btn_cancel.png"/>
-	<e:Group width="0" height="0" horizontalCenter="-11" verticalCenter="-9.5">
+	<e:Group width="78" height="45" horizontalCenter="-11" verticalCenter="-9.5">
 
 
-		<e:Image id="time_units" width="26" height="45" scaleX="1" scaleY="1" />
-		<e:Image id="time_tens" width="26" height="45" scaleX="1" scaleY="1" />
-		<e:Image id="time_hundreds" width="26" height="45" scaleX="1" scaleY="1" />
+		<e:Image id="time_units" width="26" height="45" scaleX="1" scaleY="1"  right="0"/>
+		<e:Image id="time_tens" width="26" height="45" scaleX="1" scaleY="1"  horizontalCenter="0"/>
+		<e:Image id="time_hundreds" width="26" height="45" scaleX="1" scaleY="1"  left="0"/>
 		
 	
 	</e:Group>

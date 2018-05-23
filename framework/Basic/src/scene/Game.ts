@@ -4,7 +4,7 @@ class Game extends eui.Component implements eui.UIComponent {
 	private roomName = "我是世界第一，你是谁？";
 	private roomPropety = "谁都可以来挑战我";
 	private matchDialog:MatchDialog = null;
-
+	private isInvite = false;
 
 	public constructor() {
 		super();
@@ -37,6 +37,7 @@ class Game extends eui.Component implements eui.UIComponent {
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			} else if (partName == "inviteFriends") {
 				//todo 直接邀请
+				this.isInvite = true;
 				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile());
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			}
@@ -92,11 +93,11 @@ class Game extends eui.Component implements eui.UIComponent {
 	  * 跳转游戏页面
 	  */
 	private startBattle(){
-		var login = new BattleStageUI();
+		var battles = new BattleStageUI();
 		this.matchDialog.stopTimer();
-		SceneManager.showScene(login);
-		login.init();
-		login.StartBattle(this.userPlayer);
+		battles.init();
+		battles.StartBattle(this.userPlayer);
+		SceneManager.showScene(battles);
 	}
 
 	/**
@@ -104,7 +105,8 @@ class Game extends eui.Component implements eui.UIComponent {
 	 */
 	private startRoomScene(roomID:string) {
 		let room = new Room();
-		room.init(roomID);
+		room.init(roomID,this.isInvite);
+		this.isInvite = false;
 		SceneManager.showScene(room);
 	}
 

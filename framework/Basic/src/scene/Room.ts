@@ -93,7 +93,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 			//踢人或者邀请
 			if(partName == "action") {
-				// PokeMatchvsEngine.getInstance().
+				this.userAction(instance);
 			}
 		}, this);
 	}
@@ -120,13 +120,12 @@ class Room extends eui.Component implements  eui.UIComponent {
 				this.userPlayer.push(user);
 				//房间内人数到达三个 就启动定时器;
 				this.initView(this.userPlayer);
-				if( this.userPlayer.length  == MatchvsData.maxPlayer) {
+				if( this.userPlayer.length  == 2) {
 					this.createTimer();
 				}
 			break;
 			//自己加入房间的通知
 			case MatchvsMessage.MATCHVS_JOINROOM_RSP:
-				this.userPlayer.push(GlobalData.myUser);
 				for(var i in e.data) {
 					var user:GUser = new GUser;
 					var arr = e.data[i].userProfile.split("/n");
@@ -137,7 +136,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 					this.userPlayer.push(user);
 				}
 				this.initView(this.userPlayer);
-				if( this.userPlayer.length  == MatchvsData.maxPlayer) {
+				if( this.userPlayer.length  == 2) {
 					this.createTimer();
 				}
 				this
@@ -193,6 +192,9 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 玩家退出将玩家的信息从页面上消失
 	 */
 	private removeView(userID:any) {
+		this.timer = null;
+		this.countDownLabel.text = "";
+		this.countDownTimer = 0;
 		for(var i in this.nameViewList) {
 			if(userID === this.nameViewList[i].text) {
 				this.nameViewList[i].text = "";
@@ -242,7 +244,20 @@ class Room extends eui.Component implements  eui.UIComponent {
 		this.countDownTimer++;
 		if(this.countDownTimer === 11) {
 			this.timer.stop();
+			this.startBattle();
 		}
+	}
+
+
+	/**
+	  * 跳转游戏页面
+	*/
+	private startBattle(){
+		this.userPlayer.push(GlobalData.myUser);
+		var battles = new BattleStageUI();
+		battles.init();
+		battles.StartBattle(this.userPlayer);
+		SceneManager.showScene(battles);
 	}
 
 	/**
