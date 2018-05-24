@@ -238,7 +238,7 @@ module battle {
             this._gameScene.addChild(this._playSprite);
             this._gameScene.addChild(this._readySprite);
 
-            this._readySprite.visible = true;
+            this._readySprite.visible = false;
             this._callSprite.visible = false;
             this._playSprite.visible = false;
 

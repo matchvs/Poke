@@ -271,8 +271,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	}
 
 	public GameOver(iswin: boolean, p1: battle.Player, p2: battle.Player, p3: battle.Player,
-            islandwin: boolean, timestr: string, isactover: boolean, actrank: number, actHScore: number, actmoney: number, winplayer: battle.Player){
-		// this.b_battleControl.SetTimes(timestr);
+            islandwin: boolean, timestr: number, isactover: boolean, actrank: number, actHScore: number, actmoney: number, winplayer: battle.Player){
 		this._battleButtonCtl.HideAll();
 
 		if (p1) {
@@ -288,28 +287,13 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 
 		let result = new ResultUI();
 		SceneManager.showScene(result);
-		//result = this._resultUI;
 		result.init();
 		if(p1.isLandLord){
-			result.showResult(p1,p2,p3,iswin,islandwin);
+			result.showResult(p1,p2,p3,iswin,islandwin,timestr);
 		}else if(p2.isLandLord){
-			result.showResult(p2,p1,p3,iswin,islandwin);
+			result.showResult(p2,p1,p3,iswin,islandwin,timestr);
 		}else if(p3.isLandLord){
-			result.showResult(p3,p1,p2,iswin,islandwin);
+			result.showResult(p3,p1,p2,iswin,islandwin,timestr);
 		}
-		
-		
-
-		//this._gameoverAniProxy.Start(p1.ResoultScore, p2.ResoultScore, p3.ResoultScore);
-		// egret.setTimeout(function (): void {
-		// 	if (data.GameData.flag == data.GameData.GameFlag_Activity) {
-		// 		windowui.ActivityResoultInst.Instance.InitInfo(p3, p1, p2, islandwin, actrank, actHScore, actmoney);
-		// 		windowui.ActivityResoultInst.Instance.Show();
-		// 	}
-		// 	else {
-		// 		windowui.ResoultInst.Instance.InitInfo(p3, p1, p2, iswin);
-		// 		windowui.ResoultInst.Instance.Show();
-		// 	}
-		// }, this, 3500);
 	}
 }

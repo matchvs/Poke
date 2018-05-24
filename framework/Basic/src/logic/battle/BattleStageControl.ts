@@ -251,7 +251,7 @@ module battle {
 			var tp2: Player = this.getPlayerByLocalTableId(2);
 			var tp3: Player = this.getPlayerByLocalTableId(3);
 			let winplayer = this.getPlayerForUserID(event.data.winerID);
-			this._stage.GameOver(iswin,tp1,tp2,tp3,islandwin,"",false, 0, 0, 0, winplayer);
+			this._stage.GameOver(iswin,tp1,tp2,tp3,islandwin,this._timesCount,false, 0, 0, 0, winplayer);
 		}
 
 		/**
