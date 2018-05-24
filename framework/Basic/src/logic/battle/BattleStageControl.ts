@@ -15,6 +15,7 @@ module battle {
 		private _playerPoint:number = 0;						//用户指针,指向当前用户,对应玩家seatNo
 		private _tablelistdata:gameLogic.CardListData = null;   //当前桌面上的牌
 		private _timesScore:string = "";
+		private _timesCount:number = 0;							//加倍数
 
 		private _playCardType: gameLogic.PlayCardTypes = null;   //判断牌类型
 		private _compare: gameLogic.Compare = null;              //比较牌
@@ -41,8 +42,8 @@ module battle {
 			this._playerHeader_right = new battle.PlayerHead();//下家
 			this._playerTimer = new PlayerTime();
 			this._playerTimer.Init();
-			//this._stage._playerTimerSprite.addChild(this._playerTimer);
-			//this._playerTimer.visible = false;
+			this._stage._playerTimerSprite.addChild(this._playerTimer);
+			this._playerTimer.visible = false;
 		}
 
 		public startGame(){
@@ -433,7 +434,7 @@ module battle {
 				return false;
 			}
 			if (cld.Type == gameLogic.PlayCardTypes.Types_Bomb) {
-				//this._TimeCount++;
+				this._timesCount++;
 			}
 			let player:Player = this.getPlayerForSeatNo(this._playerPoint);
 			console.info("_playerPoint",this._playerPoint);
@@ -449,14 +450,18 @@ module battle {
 					}
 				}
 				if (isspring) {
-					//this._TimeCount++;              	//春天
+					this._timesCount++;              	//春天
 				}
 				player.cardList = slist;               	//显示最后玩家牌
 				//this.GameOver();
-				this.sendGameOver({
-					winSeatNo:player.seatNo,			//胜利者座位
-					islandwin:player.isLandLord,		//是不是地主
-				});
+				if(player.userID == this._myOwner.userID){
+					this.sendGameOver({
+						winSeatNo:player.seatNo,			//胜利者座位
+						islandwin:player.isLandLord,		//是不是地主
+						timesCount:this._timesCount,		//加倍数
+					});
+				}
+				
 				return false;
 			}
 			console.info("RobotGameMgr-ShowCard> 出牌成功");

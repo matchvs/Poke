@@ -222,7 +222,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			this._myCardControl.SetBtnVisible();
 			if (player.cardNumber == 1 && player.cardNumber < tablelist.length)//自己单牌,别人打多张,没有牌直接过
 			{
-				//NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
+				network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.PLAY_CARDS_S, { cardlist: [] });
 				this._battleButtonCtl.HideAll();
 				return;
 			}
@@ -230,7 +230,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		else {
 			this._battleButtonCtl.HideAll();
 		}
-		//this._battleControl.SetPlayerTime(player, delaytime);
+		this._battleControl.SetPlayerTime(player, delaytime);
 		this._battleControl.UpdateAllCardNum();
 	}
 
