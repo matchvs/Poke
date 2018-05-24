@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin class="ResultSkins" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
 	<w:Config id="16381b9ad60" ></w:Config>
+	<e:Image id="bg" width="640" height="1136" x="0" y="0" source="resource/assets/bg.jpg"/>
 	<e:Image width="640" height="1136" x="0" y="0" source="resource/assets/result/bg_result.png"/>
-	<e:Image width="620" height="100" y="240" x="10" source="resource/assets/result/title_win.png"/>
+	<e:Image width="620" height="140" y="226.67" x="9" source="resource/assets/result/title_win.png"/>
 	<e:Image id="head_one" width="80" height="80" x="114" y="405"/>
 	<e:Label id="nickName_win" text="昵称01" x="219" y="414" width="86" height="20" textColor="0xffdfa6" size="26" textAlign="left" fontFamily="STYuanti-SC-Bold" verticalAlign="middle"/>
 	<e:Label id="integral_win" text="10000+30" x="251" y="457" size="26" width="136" height="23" textColor="0xffdfa6" textAlign="left" verticalAlign="middle"/>
