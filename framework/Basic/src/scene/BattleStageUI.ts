@@ -21,8 +21,10 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	private _battleButtonCtl:battle.BattleBtnControl = null;
 	private _battleButtonSprote:egret.Sprite = null;
 
-	private _resultSprite:egret.Sprite = null;
-	private _resultUI:ResultUI = null;
+	private _chatMsgProxy:battle.ChatMsgControl = null;
+	private _chatSprite:egret.Sprite = null;
+
+
 	
 	public constructor() {
 		super();
@@ -68,11 +70,6 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		//显示用户头像
 		this.showTopUserInfo(GlobalData.myUser);
 
-		// this._resultSprite = new egret.Sprite();
-		// this.addChild(this._resultSprite);
-		this._resultUI = new ResultUI();
-		// this._resultSprite.addChild(this._resultUI);
-		// this._resultSprite.visible = false;
 		
 		//我的卡牌放置容器
 		this._myCardSprote = new egret.Sprite();
@@ -110,6 +107,13 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		this._battleButtonSprote = new egret.Sprite();
 		this.addChild(this._battleButtonSprote);
 		this._battleButtonCtl.Init(this._battleButtonSprote);
+
+		this._chatSprite = new egret.Sprite();
+		this.addChild(this._chatSprite);
+		this._chatSprite.touchChildren = false;
+		this._chatSprite.touchEnabled = false;
+		this._chatMsgProxy = new battle.ChatMsgControl();
+		this._chatMsgProxy.Init(this._chatSprite);
 		
 		// 控制对战舞台类
 		this._battleControl = new battle.BattleStageControl(this);
@@ -244,7 +248,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			this._myCardControl.SetTableList(clist);
 		}else {
 			this._tablecardControl.ShowTableCard(player.LocalTableId, clist);
-			//this._chatMsgProxy.ShowTableCard(player.LocalTableId, "不要");
+			this._chatMsgProxy.ShowTableCard(player.LocalTableId, "不要");
 		}
 		//this._uiProxy.SetTimes(timestr);
 		// var cld:gameLogic.CardListData = this._type.GetType(clist);
