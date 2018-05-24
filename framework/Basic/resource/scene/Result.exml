@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin class="ResultSkins" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
 	<w:Config id="16381b9ad60" ></w:Config>
-	<e:Image id="bg" width="640" height="1136" x="0" y="0" source="resource/assets/bg.jpg"/>
+	<e:Image width="640" height="1136" x="0" y="0" source="resource/assets/bg.jpg"/>
 	<e:Image width="640" height="1136" x="0" y="0" source="resource/assets/result/bg_result.png"/>
-	<e:Image width="620" height="140" y="226.67" x="9" source="resource/assets/result/title_win.png"/>
-	<e:Image id="head_one" width="80" height="80" x="114" y="405"/>
-	<e:Label id="nickName_win" text="昵称01" x="219" y="414" width="86" height="20" textColor="0xffdfa6" size="26" textAlign="left" fontFamily="STYuanti-SC-Bold" verticalAlign="middle"/>
-	<e:Label id="integral_win" text="10000+30" x="251" y="457" size="26" width="136" height="23" textColor="0xffdfa6" textAlign="left" verticalAlign="middle"/>
+	<e:Image id="winTitleImg" width="620" height="140" y="220.3" x="12" source="resource/assets/result/title_win.png"/>
+	<e:Image id="head_landlord" width="80" height="80" x="114" y="405"/>
+	<e:Label id="nickName_landlord" text="昵称01" x="219" y="414" width="86" height="20" textColor="0xffdfa6" size="26" textAlign="left" fontFamily="STYuanti-SC-Bold" verticalAlign="middle"/>
+	<e:Label id="integral_landlord" text="10000+30" x="251" y="457" size="26" width="136" height="23" textColor="0xffdfa6" textAlign="left" verticalAlign="middle"/>
 	<e:Image width="28" height="30" x="216" y="453" source="resource/assets/rankList/icon_integral.png"/>
-	<e:Image id="icon_win" width="80" height="55" x="448" y="418" source="resource/assets/result/icon_result_win.png"/>
+	<e:Image id="icon_landlord" width="80" height="55" x="448" y="418" source="resource/assets/result/icon_result_win.png"/>
 	<e:Rect height="1" x="114" y="510" width="416" fillColor="0xaa6e5c" fillAlpha="0.8"/>
-	<e:Image width="80" height="80" x="114" y="534"/>
-	<e:Label id="nickName_win0" text="昵称02" x="219" y="543" width="86" height="20" textColor="0xFFDFA6" size="26" textAlign="left" fontFamily="STYuanti-SC-Bold" verticalAlign="middle"/>
+	<e:Image id="head_peasant1" width="80" height="80" x="114" y="534"/>
+	<e:Label id="nickName_peasant1" text="昵称02" x="219" y="543" width="86" height="20" textColor="0xFFDFA6" size="26" textAlign="left" fontFamily="STYuanti-SC-Bold" verticalAlign="middle"/>
 	<e:Image width="28" height="30" x="217" y="581" source="resource/assets/rankList/icon_integral.png"/>
-	<e:Label id="integral_win0" text="10000-30" x="253" y="586" size="26" width="136" height="23" textColor="0xFFDFA6" textAlign="left" verticalAlign="middle"/>
-	<e:Image id="icon_win0" width="80" height="55" x="449" y="545" source="resource/assets/result/icon_result_fail.png"/>
-	<e:Image width="80" height="80" x="114" y="665"/>
-	<e:Label id="nickName_win1" text="昵称02" x="219" y="674" width="86" height="20" textColor="0xFFDFA6" size="26" textAlign="left" fontFamily="STYuanti-SC-Bold" verticalAlign="middle"/>
+	<e:Label id="integral_peasant1" text="10000-30" x="253" y="586" size="26" width="136" height="23" textColor="0xFFDFA6" textAlign="left" verticalAlign="middle"/>
+	<e:Image id="icon_peasant1" width="80" height="55" x="449" y="545" source="resource/assets/result/icon_result_fail.png"/>
+	<e:Image id="head_peasant2" width="80" height="80" x="114" y="665"/>
+	<e:Label id="nickName_peasant2" text="昵称02" x="219" y="674" width="86" height="20" textColor="0xFFDFA6" size="26" textAlign="left" fontFamily="STYuanti-SC-Bold" verticalAlign="middle"/>
 	<e:Image width="28" height="30" x="217" y="713" source="resource/assets/rankList/icon_integral.png"/>
-	<e:Label id="integral_win1" text="10000-30" x="252" y="717" size="26" width="136" height="23" textColor="0xFFDFA6" textAlign="left" verticalAlign="middle"/>
-	<e:Image id="icon_win1" width="80" height="55" x="448" y="675" source="resource/assets/result/icon_result_fail.png"/>
+	<e:Label id="integral_peasant2" text="10000-30" x="252" y="717" size="26" width="136" height="23" textColor="0xFFDFA6" textAlign="left" verticalAlign="middle"/>
+	<e:Image id="icon_peasant2" width="80" height="55" x="448" y="675" source="resource/assets/result/icon_result_fail.png"/>
 	<e:Image width="344" height="98" x="148" y="911" source="resource/assets/result/btn_confirm.png"/>
 	<e:Image width="270" height="23" x="185" y="1094" source="resource/assets/login/footer_text.png"/>
 </e:Skin>

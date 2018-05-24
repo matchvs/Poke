@@ -20,7 +20,7 @@
 		"TopHeader": "resource/scene/TopHeader.exml",
 		"MatchDialog": "resource/scene/MatchDialog.exml",
 		"Room": "resource/scene/Room.exml",
-		"Result": "resource/scene/Result.exml",
+		"ResultUI": "resource/scene/Result.exml",
 		"RankList": "resource/eui_skins/RankList.exml"
 	},
 	"autoGenerateExmlsList": true,

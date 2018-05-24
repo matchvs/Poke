@@ -95,9 +95,10 @@ class Game extends eui.Component implements eui.UIComponent {
 	private startBattle(){
 		var battles = new BattleStageUI();
 		this.matchDialog.stopTimer();
+		SceneManager.showScene(battles);
 		battles.init();
 		battles.StartBattle(this.userPlayer);
-		SceneManager.showScene(battles);
+		
 	}
 
 	/**

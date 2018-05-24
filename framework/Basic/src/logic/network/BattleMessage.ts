@@ -29,7 +29,10 @@ module network {
 		private AddEventMap(){
 			this.battleEventMap[NetMsgEvent.GAME_READY_R] = BattleMsgEvent.GAME_READY;
 			this.battleEventMap[NetMsgEvent.CALL_LAND_RO] = BattleMsgEvent.CALL_LANDLORD_OVER;
+			this.battleEventMap[NetMsgEvent.CALL_LAND_RN] = BattleMsgEvent.CALL_LANDLORD_NEXT;
 			this.battleEventMap[NetMsgEvent.PLAY_CARDS_R] = BattleMsgEvent.PLAYER_CARDS;
+			this.battleEventMap[NetMsgEvent.GAME_OVER_R] = BattleMsgEvent.GAME_OVER;
+			this.battleEventMap[NetMsgEvent.REPROT_SCORE_R] = BattleMsgEvent.REPORT_DATA;
 		}
 
 		/**
@@ -94,6 +97,9 @@ module network {
 				break;
 				case NetMsgEvent.PLAY_CARDS_S:
 				pk = new PlayCardsResolver();
+				break;
+				case NetMsgEvent.GAME_OVER_S:
+				pk = new GameOverResolver();
 				break;
 				default:
 				break;

@@ -4,11 +4,13 @@
  */
 module battle {
     //import ChatInst = windowui.ChatInst;
-    export class BattleBtnControl {
+    export class BattleBtnControl extends egret.EventDispatcher {
         public static STATE_HideAll: number = 0;
         public static STATE_Qiangdizhu: number = 1;
         public static STATE_Playing: number = 2;
         public static STATE_Ready: number = 3;
+
+        public static PLAY_CARD_EVENT = "PLAY_CARD_EVENT";
 
         private _state: number = 0;
 
@@ -39,7 +41,7 @@ module battle {
 
         private _myCardProxy: MyCardControl = null;
         public constructor() {
-
+            super()
         }
 
         public get State(): number {
@@ -407,6 +409,7 @@ module battle {
                     console.info("牌类型出错");
                     return;
                 }
+                //this.dispatchEvent(new egret.Event(BattleBtnControl.PLAY_CARD_EVENT, false, false,  { cardlist: cardArr }));
                 network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.PLAY_CARDS_S, { cardlist: cardArr });
             }
             else if (e.currentTarget == this._sendPromt) {
@@ -424,7 +427,7 @@ module battle {
                 this._myCardProxy.Reset();
             }
             else if (e.currentTarget == this._sendNo) {
-                //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.PLAY_CARDS_S, { cardlist: [] });
             }
             else if (e.currentTarget == this._call3) {
                 this.HideAll();
@@ -442,7 +445,7 @@ module battle {
             }
             else if (e.currentTarget == this._callNo) {
                 this.HideAll();
-                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { value:0 });
+                network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.CALL_LAND_S, { score:0 });
                 console.log("叫地主 _callNo");
             }
         }
