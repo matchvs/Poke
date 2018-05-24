@@ -60,16 +60,22 @@ class Room{
             case GameData.MSG_EVENT.SEND_CARD:
                 break;
             case GameData.MSG_EVENT.TURN_CALL_LAND://叫地主
-                this.turnCallLand(userID, event.score);
+                this.turnCallLand(userID, event.data.score);
                 break;
             case GameData.MSG_EVENT.REPROT_SCORE://上报分数
-                this.reportPlayerScore(userID, event.rankValue);
+                this.reportPlayerScore(userID, event.data);
                 break;
             case GameData.MSG_EVENT.RESET_ROOM://重置房间
                 this.reSetRoom(userID);
                 break;
             case GameData.MSG_EVENT.CLEAR_SCROE://清空分数
-                this.clearPlayersScore(userID, event.userList);
+                this.clearPlayersScore(userID, event.data.userList);
+                break;
+            case GameData.MSG_EVENT.PLAY_CARDS://出牌
+                this.playCards(userID, event.data);
+                break;
+            case GameData.MSG_EVENT.GAME_OVER_S://游戏结束
+                this.gameOver(userID, event.data);
                 break;
             default:
                 log.info("Invaild Event");
@@ -142,9 +148,12 @@ class Room{
         log.debug("callOwner:"+userCard[callnum].userID);
         this.sendEvent({
             action: GameData.RSP_EVENT.SEND_CARD,
-            userCards: userCard,            //玩家牌列表
-            lanownList:cardList[3],         //底牌
-            callOwner: userCard[callnum].userID,       //第一次叫地主的人
+            data:{
+                userCards: userCard,            //玩家牌列表
+                lanownList:cardList[3],         //底牌
+                callOwner: userCard[callnum].userID,       //第一次叫地主的人
+            }
+            
         });
     }
 
@@ -217,18 +226,20 @@ class Room{
         if(callOver){
             this.sendEvent({
                 action: GameData.RSP_EVENT.LAND_CALL_OVER,
-                landOwner:this.landOwner.userID,
-                landCards:this.landCards,
-                score : this.landOwner.landOwnerScore,
+                data:{
+                    landOwner:this.landOwner.userID,
+                    landCards:this.landCards,
+                    value : this.landOwner.landOwnerScore,
+                }
             });
         }else{
             //如果没有确定地主 就让下一个人叫
             let next = this.getNextCall(userID);
             this.sendEvent({
                 action: GameData.RSP_EVENT.NEXT_CALL_LAND,//广播下一个人抢
-                userID: userID,
-                score : score,
-                nextUser:next,
+                data:{userID: userID,
+                value : score,
+                nextUser:next,}
             });
         }
     }
@@ -274,25 +285,27 @@ class Room{
      * @param {number} userID 
      * @param {number} _score 
      */
-    reportPlayerScore(userID, _score){
+    reportPlayerScore(userID, data){
         //房间上报数据状态
         this.roomState |= ROOMSTATE.GAME_REPORT;
         let player = this.players.get(userID);
         let event = {
             action: GameData.RSP_EVENT.REPROT_RESULT,
-            userID:userID,
-            status:1,
-            rank:0,
-            totleScore:0,
+            data:{
+                userID:userID,
+                status:1,
+                rank:0,
+                totleScore:0,
+            }
         };
         let self  = this;
         if(player){
-            log.debug("userID:"+userID+" score:"+_score);
-            player.planGameScore(_score, function(res){
+            log.debug("userID:"+userID+" data:",data);
+            player.reportGameScore(data, function(res){
                 if(res !== null){
-                    event.rank = res.rank;
-                    event.totleScore = res.totleScore;
-                    event.status = 0;
+                    event.data.rank = res.rank;
+                    event.data.totleScore = res.totleScore;
+                    event.data.status = 0;
                     self.sendEvent(event);
                 }
             });
@@ -329,6 +342,32 @@ class Room{
             });
         }
         
+    }
+
+    /**
+     * 出牌,只做转发
+     */
+    playCards(userid,dt){
+        this.sendEvent({
+            action:GameData.RSP_EVENT.PLAY_CARDS_R,
+            data:{
+                userID:userid,
+                cardlist:dt.cardlist,
+            }
+        });
+    }
+
+    /**
+     * 
+     * @param {number} userid 
+     * @param {any} dt 
+     */
+    gameOver(userid, dt){
+        dt.winerID = userid;
+        this.sendEvent({
+            action:GameData.RSP_EVENT.GAME_OVER_R,
+            data:dt
+        });
     }
 }
 

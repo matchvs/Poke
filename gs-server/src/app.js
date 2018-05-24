@@ -184,46 +184,6 @@ class App {
     onRoomDetail(request) {
         log.debug('onRoomDetail:');
     }
-
-    examplePush(request) {
-        let content = new textEncoding.TextDecoder("utf-8").decode(request.cpProto);
-        let args = content.split('|');
-        let cmd = args[0];
-        switch (cmd) {
-            case 'joinover':
-                log.debug('examplePush msg:', cmd);
-                this.pushHander.joinOver({
-                    gameID: request.gameID, 
-                    roomID: request.roomID,
-                });
-                break;
-            case 'kickplayer':
-                let destID = args[1];
-                if (destID) {
-                    log.debug('examplePush msg:', cmd)
-                    this.pushHander.kickPlayer({
-                        roomID: request.roomID,
-                        destID: destID,
-                    });
-                }
-                break;
-            case 'roomDetail':
-                log.debug('examplePush msg:', cmd);
-                this.pushHander.getRoomDetail({
-                    gameID: request.gameID, 
-                    roomID: request.roomID,
-                });
-                break;
-            default:
-                this.pushHander.pushEvent({
-                    gameID: request.gameID, 
-                    roomID: request.roomID, 
-                    pushType: 3, 
-                    content: request.cpProto,
-                });
-                break;
-        }
-    }
 }
 
 module.exports = App;
