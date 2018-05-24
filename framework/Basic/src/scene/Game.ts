@@ -30,6 +30,7 @@ class Game extends eui.Component implements eui.UIComponent {
 				PokeMatchvsEngine.getInstance().joinRandomRoom(MatchvsData.getDefaultUserProfile());
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
+				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 				this.matchDialog = new MatchDialog();
 				SceneManager.showScene(this.matchDialog);
 			} else if (partName == "createRoom") {
@@ -84,6 +85,10 @@ class Game extends eui.Component implements eui.UIComponent {
 			 	egret.log("接收到创建房间成功的消息");
 				this.startRoomScene(e.data.roomID);
 			 break;
+			 case MatchvsMessage.MATCHVS_LEVAE_ROOM:
+			 	
+			 break;
+			 
 		 }
 	 }
 
