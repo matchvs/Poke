@@ -38,6 +38,12 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 		super.partAdded(partName,instance);
 		this.allChildren[partName] = instance;
 		console.info("ResultUI partName",partName,instance);
+		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
+			if(partName = "confirm") {
+				//确定按钮
+				this.backConfirm(MatchvsData.gameMode);
+			}
+		},this);
 	}
 
 	public init(){
@@ -112,6 +118,18 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 		this.nickName_peasant2.text = peasant2.nickName;
 		this.integral_peasant2.text = peasant2.pointValue.toString();
 		
+	}
+	/**
+	 * 确定按钮
+	 * @param isGameMode false直接跳转到首页  true直接跳转到房间页面，userPlayer不要清空，房间需要重新打开，可以重新开始游戏
+	 */
+	private backConfirm(isGameMode) {
+		if(isGameMode) {
+			let room = new Room();
+			SceneManager.showScene(room);
+		} else{
+			SceneManager.showScene(new Game);
+		}
 	}
 	
 }

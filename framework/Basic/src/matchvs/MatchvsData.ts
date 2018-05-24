@@ -29,7 +29,7 @@ class MatchvsData {
 	
 	public static defaultScore = 10000;
 	public static defaultRoomInfo:MsCreateRoomInfo = new MsCreateRoomInfo("",3,1,1,1,"");
-
+	public static gameMode:boolean = false; // false  代表直接开始游戏，true代表邀请好友开始游戏
 
 	public constructor() {
 	}

@@ -37,7 +37,7 @@ class Game extends eui.Component implements eui.UIComponent {
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			} else if (partName == "inviteFriends") {
 				//todo 直接邀请
-				this.isInvite = true;
+				MatchvsData.gameMode = true;
 				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile());
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			}
