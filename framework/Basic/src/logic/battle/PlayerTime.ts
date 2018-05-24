@@ -65,6 +65,7 @@ module battle {
             this._startTime = egret.getTimer();
             this._alert=false;
             this._contain.visible=true;
+            this._txt.text="OK";
         }
 
         public Update():void {

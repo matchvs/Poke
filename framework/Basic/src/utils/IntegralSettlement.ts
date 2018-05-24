@@ -1,0 +1,8 @@
+class IntegralSettlement {
+	public constructor() {
+	}
+
+	
+
+	
+}
