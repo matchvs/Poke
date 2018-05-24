@@ -80,7 +80,6 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	private ReportDataOk(ev:egret.Event){
 		network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.REPORT_DATA,this.ReportDataOk, this);
 		console.info("上报分数：",ev.data);
-		if(("status" in ev.data))
 	}
 
 	/**
