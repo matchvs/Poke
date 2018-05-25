@@ -23,7 +23,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 
 	private _chatMsgProxy:battle.ChatMsgControl = null;
 	private _chatSprite:egret.Sprite = null;
-
+	private userPlayer = [];
 
 	
 	public constructor() {
@@ -51,6 +51,12 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		// GlobalData.myUser.nickName = "vv";
 		// GlobalData.myUser.userID = 85642;
 		// GlobalData.myUser.pointValue = 12535;
+	}
+
+	protected childrenCreated(): void {
+		super.childrenCreated();
+		this.init();
+		this.StartBattle(this.userPlayer);
 	}
 
 	/**
@@ -121,23 +127,22 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		
 	}
 
+	/**
+	 * 做与控件无关的操作
+	 */
 	public onShow(par:any){
-		try {
-			let users:Array<GUser> = [];
-			users = par;
-			if(par == null)return;
-			this.init();
-			this.StartBattle(users);
-		} catch (error) {
-			
-		}
-		
+		this.userPlayer = par;
+			// let users:Array<GUser> = [];
+			// users = par;
+			// if(par == null)return;
+		egret.log("BattleStageUI",par);
 	}
 
 	/**
 	 * 开始对战，要先添加用户
 	 */
 	public StartBattle(users:Array<GUser>){
+		egret.log("StartBattle",users);
 		this.addPlayers(users);
 
 		this._battleButtonCtl.RoomIn();

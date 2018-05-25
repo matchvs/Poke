@@ -5,7 +5,8 @@ class SceneManager {
     public static init(root: egret.DisplayObjectContainer) {
         this.root = root;
     }
-    public static showScene(scene: any,par?): egret.DisplayObject{
+    
+    public static showScene(scene: any, par?): egret.DisplayObject {
         if (!this.root) { console.error("SceneManager not be init()"); return; }
         if (!scene) { console.log("scene is null"); }
 
@@ -15,8 +16,8 @@ class SceneManager {
             if (child.constructor == scene) {
                 index = i;
                 scene = child;
-                if(scene.onShow)scene.onShow(par);
-                
+                if (scene.onShow) scene.onShow(par);
+
             }
         }
 
@@ -25,18 +26,25 @@ class SceneManager {
             this.root.swapChildren(scene, this.root.getChildAt(this.root.numChildren - 1));
         } else {
             scene = new scene(par);
-            if(scene.onShow)scene.onShow(par);
+            if (scene.onShow) scene.onShow(par);
             this.root.addChild(scene);
         }
+        // this.sceneStack.push(scene);
         console.log("[SceneManager] show  scene:" + scene + "@" + scene.hashCode);
-        return scene;
+        // this.currentScene && this.root.removeChild(this.currentScene);
+        // this.currentScene = sceene;
+        // console.log("[SceneManager] remove scene:" + this.currentScene);
     }
+
     public static back() {
-        var perScene = this.sceneStack.pop();
-        if (perScene) {
-            this.root.removeChild(perScene);
-            console.log("[SceneManager]  Back  to scene:" + perScene.name);
-        } else {
+        if (this.root.numChildren > 0) {
+            var perScene = this.root.getChildAt(this.root.numChildren - 1);
+            if (perScene) {
+                this.root.removeChild(perScene);
+                console.log("[SceneManager]  Back  to scene:" + perScene.name);
+            }
+        }
+        else {
             console.warn("[SceneManager] Not Back!");
         }
 

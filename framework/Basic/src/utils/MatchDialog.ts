@@ -6,7 +6,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	private fontImgtens:eui.Image = null;
 	private fontImghundreds:eui.Image = null;
 	private timer:egret.Timer;
-
+	private userPlayer = [];
 
 	public constructor() {
 		super();
@@ -18,7 +18,9 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	
 
 	protected partAdded(partName:string,instance:any):void {
-
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		super.partAdded(partName,instance);
 		if(partName == "time_units") {
 			this.fontImgUnits = instance;
@@ -41,6 +43,61 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 
 	}
 
+	/**
+	 * 接收Event信息
+	 */
+	 public onEvent(e:egret.Event):void {
+		 switch (e.type) {
+			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
+			 	this.userPlayer.push(GlobalData.myUser);
+				for(var i = 0; i < e.data.length; i++) {
+					var user:GUser = new GUser;
+					var arr = e.data[i].userProfile.split("/n");
+					user.nickName =arr[0];
+					user.avator = arr[1];
+					user.pointValue = arr[2];
+					user.userID = e.data[i].userId;
+					this.userPlayer.push(user);
+				}
+				egret.log("userPlayer的长度"+this.userPlayer.length);
+				if(this.userPlayer.length  == MatchvsData.maxPlayer) {
+					this.startBattle();
+				}
+			 break;
+			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
+				var user:GUser = new GUser;
+				var arr = e.data.userProfile.split("/n");
+				user.nickName =arr[0];
+				user.avator = arr[1];
+				user.pointValue = arr[2];
+				user.userID = e.data.userId;
+				this.userPlayer.push(user);
+				egret.log("NOTIFYuserPlayer的长度"+this.userPlayer.length);
+				if( this.userPlayer.length  == MatchvsData.maxPlayer) {
+					this.startBattle();	
+				}
+			 break;
+			 case MatchvsMessage.MATCHVS_LEVAE_ROOM:
+			 	this.userPlayer.length = 0;
+				 egret.log("接收到离开房间的消息");
+			 break;
+			 
+		 }
+	 }
+
+
+	 	 /**
+	  * 跳转游戏页面
+	  */
+	private startBattle(){
+		this.timer.stop();
+		SceneManager.showScene(BattleStageUI,this.userPlayer);
+	}
+
+
+	/**
+	 * 定时器时间的展示
+	 */
     private timerFunc() {
 		switch(this.defaultFont.toString().length) {
 			case 1:
@@ -71,6 +128,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	 * 将定时器停止
 	 */
 	public stopTimer() {
+		this.removeEventListener(MatchvsMessage.MATCHVS_DELET_TIME,this.onEvent,this);
 		this.timer.stop();
 	}
 

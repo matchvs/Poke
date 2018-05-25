@@ -215,12 +215,14 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	 */
 	private backConfirm(isGameMode) {
 		if(isGameMode) {
-			let room = new Room();
+			// let room = new Room();
 			// room.restart();
-			SceneManager.showScene(room);
+			var obj = {rooID: "", gameMode:MatchvsData.gameMode};
+			// obj.rooID = ;
+			SceneManager.showScene(Room,true);
 		} else{
 			PokeMatchvsEngine.getInstance().leaveRoom("战斗结束了");
-			SceneManager.showScene(new Game());
+			SceneManager.showScene(Game);
 		}
 	}
 	

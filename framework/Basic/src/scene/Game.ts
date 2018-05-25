@@ -30,11 +30,7 @@ class Game extends eui.Component implements eui.UIComponent {
 				//设置游戏模式为随机模式
 				MatchvsData.gameMode = false;
 				PokeMatchvsEngine.getInstance().joinRandomRoom(MatchvsData.getDefaultUserProfile());
-				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
-				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
-				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
-				this.matchDialog = new MatchDialog();
-				SceneManager.showScene(this.matchDialog);
+				this.matchDialog = SceneManager.showScene(MatchDialog);
 			} else if (partName == "createRoom") {
 				//设置游戏模式为好友开心模式
 				MatchvsData.gameMode = true;
@@ -56,42 +52,9 @@ class Game extends eui.Component implements eui.UIComponent {
 	 */
 	 public onEvent(e:egret.Event):void {
 		 switch (e.type) {
-			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
-			 	this.userPlayer.push(GlobalData.myUser);
-				for(var i = 0; i < e.data.length; i++) {
-					var user:GUser = new GUser;
-					var arr = e.data[i].userProfile.split("/n");
-					user.nickName =arr[0];
-					user.avator = arr[1];
-					user.pointValue = arr[2];
-					user.userID = e.data[i].userId;
-					this.userPlayer.push(user);
-				}
-				egret.log("userPlayer的长度"+this.userPlayer.length);
-				if(this.userPlayer.length  == MatchvsData.maxPlayer) {
-					this.startBattle();
-				}
-			 break;
-			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
-				var user:GUser = new GUser;
-				var arr = e.data.userProfile.split("/n");
-				user.nickName =arr[0];
-				user.avator = arr[1];
-				user.pointValue = arr[2];
-				user.userID = e.data.userId;
-				this.userPlayer.push(user);
-				egret.log("NOTIFYuserPlayer的长度"+this.userPlayer.length);
-				if( this.userPlayer.length  == MatchvsData.maxPlayer) {
-					this.startBattle();	
-				}
-			 break;
 			 case MatchvsMessage.MATCHVS_CREATE_ROOM:
 			 	egret.log("接收到创建房间成功的消息");
 				this.startRoomScene(e.data.roomID);
-			 break;
-			 case MatchvsMessage.MATCHVS_LEVAE_ROOM:
-			 	this.userPlayer.length = 0;
-				 egret.log("接收到离开房间的消息");
 			 break;
 			 
 		 }
@@ -99,26 +62,15 @@ class Game extends eui.Component implements eui.UIComponent {
 
 
 
-	 /**
-	  * 跳转游戏页面
-	  */
-	private startBattle(){
-		var battles = new BattleStageUI();
-		this.matchDialog.stopTimer();
-		SceneManager.showScene(battles);
-		battles.init();
-		battles.StartBattle(this.userPlayer);
-		
-	}
 
 	/**
 	 * 跳转到房间页面
 	 */
 	private startRoomScene(roomID:string) {
-		let room = new Room();
-		room.init(roomID);
+		var obj = {rooID: "", gameMode:MatchvsData.gameMode};
+		obj.rooID = roomID;
+		SceneManager.showScene(Room,obj);
 		this.isInvite = false;
-		SceneManager.showScene(room);
 	}
 
 

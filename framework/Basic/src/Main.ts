@@ -228,7 +228,7 @@ class Main extends eui.UILayer {
                 //昵称，头像，积分的顺序，用 /n 分割
                 PokeMatchvsEngine.getInstance().joinRoom(roomID,MatchvsData.getDefaultUserProfile());
                 this.removeEvent();
-                SceneManager.showScene(new Room());
+                SceneManager.showScene(Room);
             }
         } catch(err) {
             egret.log(err,err.message);
@@ -285,7 +285,7 @@ class Main extends eui.UILayer {
             onMsg:function(buf){
                 egret.log("玩家信息拿到了",buf);
                 var buf = JSON.parse(buf);
-                if(buf.data.dataList.length > 0) {
+                if(buf.data.dataList.length < 1) {
                     egret.log("没有拿到数据");
                     return null;
                 } else {

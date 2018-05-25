@@ -14,6 +14,7 @@ class MatchvsMessage {
 	public static MATCHVS_KICK_PLAYER_NOTIFY = "MATCHVS_KICK_PLAYER_NOTIFY";
 	public static MATCHVS_ROOM_DETAIL_RSP = "MATCHVS_ROOM_DETAIL_RSP";
 	public static MATCHVS_RANK_LIST = "MATCHVS_RANK_LIST";
+	public static MATCHVS_DELET_TIME = "MATCHVS_DELET_TIME";
 
 	public constructor() {
 	}

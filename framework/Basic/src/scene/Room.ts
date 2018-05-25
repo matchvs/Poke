@@ -25,13 +25,11 @@ class Room extends eui.Component implements  eui.UIComponent {
 		super();
 	}
 
-	/**
-	 * 房间ID
-	 */
-	public init(roomID:string) {
-		this.roomID = roomID;
-	}
 
+
+	public onShow(obj) {
+		this.roomID = obj.roomID;
+	}
 
 	/**
 	 * 重新进入房间
@@ -40,16 +38,16 @@ class Room extends eui.Component implements  eui.UIComponent {
 		this.roomID = roomID;
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
 		PokeMatchvsEngine.getInstance().getRoomDetail(roomID);
-
+		 if(MatchvsData.gameMode) {
+			 WxUtils.wxTogether("邀请好友",this.roomID);
+			//  this.isInvite = false;
+		}
 	}
 
 
 	protected partAdded(partName:string,instance:any):void {
 		super.partAdded(partName,instance);
-		 if(MatchvsData.gameMode) {
-			 WxUtils.wxTogether("邀请好友",this.roomID);
-			//  this.isInvite = false;
-		}
+
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
@@ -257,20 +255,20 @@ class Room extends eui.Component implements  eui.UIComponent {
 	*/
 	private startBattle(){
 		this.userPlayer.push(GlobalData.myUser);
-		var battles = new BattleStageUI();
-		battles.init();
-		battles.StartBattle(this.userPlayer);
-		SceneManager.showScene(battles);
+		// var battles = new BattleStageUI();
+		// battles.init();
+		// battles.StartBattle(this.userPlayer);
+		SceneManager.showScene(BattleStageUI,this.userPlayer);
 	}
 
 	/**
 	 * 显示顶部的用户信息
 	 */
 	public showTopUserInfo(user ?:GUser){
-			this._topHeader.init();
-			this._topHeader.ShowAvator(user.avator);
-			this._topHeader.SetNickName(user.nickName);
-			this._topHeader.SetPointValue(user.pointValue);
+		this._topHeader.init();
+		this._topHeader.ShowAvator(user.avator);
+		this._topHeader.SetNickName(user.nickName);
+		this._topHeader.SetPointValue(user.pointValue);
 	}
 
 
