@@ -34,6 +34,8 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	private _peasant1Text:string = "";
 	private _peasant2Text:string = "";
 
+
+
 	public constructor() {
 		super();
 	}
@@ -197,6 +199,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	private backConfirm(isGameMode) {
 		if(isGameMode) {
 			let room = new Room();
+			// room.restart();
 			SceneManager.showScene(room);
 		} else{
 			PokeMatchvsEngine.getInstance().leaveRoom("战斗结束了");

@@ -13,6 +13,7 @@ class MatchvsData {
 	public static pChannel:string = "MatchVS"
 	public static pPlatform:string = "alpha";
 	public static HtttpUrl:any = "http://vsopen.matchvs.com/wc5/getGameData.do?";
+	public static alphaHttpUrl:any = "http://alphavsopen.matchvs.com/wc5/getGameData.do?";
 	public static MatchvsReq:MatchvsEngine = new MatchvsEngine();
 	public static MatchvsRep:MatchvsResponse = new MatchvsResponse();
 	public static maxPlayer:number = 3; //随机匹配房间最大人数

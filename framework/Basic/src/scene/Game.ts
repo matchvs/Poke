@@ -27,6 +27,8 @@ class Game extends eui.Component implements eui.UIComponent {
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			//快速匹配
 			if (partName == "fastMatch") {
+				//设置游戏模式为随机模式
+				MatchvsData.gameMode = false;
 				PokeMatchvsEngine.getInstance().joinRandomRoom(MatchvsData.getDefaultUserProfile());
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
@@ -34,6 +36,8 @@ class Game extends eui.Component implements eui.UIComponent {
 				this.matchDialog = new MatchDialog();
 				SceneManager.showScene(this.matchDialog);
 			} else if (partName == "createRoom") {
+				//设置游戏模式为好友开心模式
+				MatchvsData.gameMode = true;
 				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile());
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			} else if (partName == "inviteFriends") {
@@ -86,7 +90,8 @@ class Game extends eui.Component implements eui.UIComponent {
 				this.startRoomScene(e.data.roomID);
 			 break;
 			 case MatchvsMessage.MATCHVS_LEVAE_ROOM:
-			 	
+			 	this.userPlayer.length = 0;
+				 egret.log("接收到离开房间的消息");
 			 break;
 			 
 		 }
@@ -111,17 +116,12 @@ class Game extends eui.Component implements eui.UIComponent {
 	 */
 	private startRoomScene(roomID:string) {
 		let room = new Room();
-		room.init(roomID,this.isInvite);
+		room.init(roomID);
 		this.isInvite = false;
 		SceneManager.showScene(room);
 	}
 
-	/**
-	 * 踢人
-	 */
-	private kickPlayer(userID:number) {
-		PokeMatchvsEngine.getInstance().kickPlayer(userID);
-	}
+
 
 	protected childrenCreated(): void {
 		super.childrenCreated();

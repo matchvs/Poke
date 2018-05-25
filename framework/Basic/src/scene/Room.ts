@@ -18,7 +18,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	private iconViewList = [];
 	private actionViewList = [];
 	private actionTextViewList = [];
-	private isInvite = false;
+	private isRestart = false;
 
 
 	public constructor() {
@@ -28,17 +28,27 @@ class Room extends eui.Component implements  eui.UIComponent {
 	/**
 	 * 房间ID
 	 */
-	public init(roomID:string,isInvite:boolean) {
+	public init(roomID:string) {
 		this.roomID = roomID;
-		this.isInvite = isInvite;
+	}
+
+
+	/**
+	 * 重新进入房间
+	 */
+	public restart(roomID:string) {
+		this.roomID = roomID;
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
+		PokeMatchvsEngine.getInstance().getRoomDetail(roomID);
+
 	}
 
 
 	protected partAdded(partName:string,instance:any):void {
 		super.partAdded(partName,instance);
-		 if(this.isInvite) {
+		 if(MatchvsData.gameMode) {
 			 WxUtils.wxTogether("邀请好友",this.roomID);
-			 this.isInvite = false;
+			//  this.isInvite = false;
 		}
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
@@ -126,20 +136,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			break;
 			//自己加入房间的通知
 			case MatchvsMessage.MATCHVS_JOINROOM_RSP:
-				for(var i in e.data) {
-					var user:GUser = new GUser;
-					var arr = e.data[i].userProfile.split("/n");
-					user.nickName =arr[0];
-					user.avator = arr[1];
-					user.pointValue = arr[2];
-					user.userID = e.data[i].userId;
-					this.userPlayer.push(user);
-				}
-				this.initView(this.userPlayer);
-				if( this.userPlayer.length  == 2) {
-					this.createTimer();
-				}
-				this
+				this.addUser(e.data);
 			break;
 			case MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY:
 				//获取数组下标，删除离开玩家的指定的下标，将定时器重置，倒计时也需要重置
@@ -155,6 +152,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 				if (this.timer != null) {
 					this.timer.stop();
 				}
+				this.userPlayer.length = 0;
 				SceneManager.back();
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY:
@@ -162,6 +160,9 @@ class Room extends eui.Component implements  eui.UIComponent {
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER:
 				this.removeView(e.data.userID);
+			break;
+			case MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP:
+				this.addUser(e.data.userInfos);
 			break;
 		}
 	}	
@@ -192,9 +193,11 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 玩家退出将玩家的信息从页面上消失
 	 */
 	private removeView(userID:any) {
-		this.timer = null;
-		this.countDownLabel.text = "";
-		this.countDownTimer = 0;
+		if(userID === GlobalData.myUser.userID) {
+			this.timer.stop;
+			this.countDownLabel.text = "";
+			this.countDownTimer = 0;
+		}
 		for(var i in this.nameViewList) {
 			if(userID === this.nameViewList[i].text) {
 				this.nameViewList[i].text = "";
@@ -269,6 +272,27 @@ class Room extends eui.Component implements  eui.UIComponent {
 			this._topHeader.SetNickName(user.nickName);
 			this._topHeader.SetPointValue(user.pointValue);
 	}
+
+
+	/**
+	 * 将玩家信息放入UserplayerList中
+	 */
+	public addUser(userPlayer:any) {
+		for(var i in userPlayer) {
+			var user:GUser = new GUser;
+			var arr = userPlayer[i].userProfile.split("/n");
+			user.nickName =arr[0];
+			user.avator = arr[1];
+			user.pointValue = arr[2];
+			user.userID = userPlayer[i].userId;
+			this.userPlayer.push(user);
+		}
+		this.initView(this.userPlayer);
+		if( this.userPlayer.length  == 2) {
+			this.createTimer();
+		}
+	}
+
 
 	
 }

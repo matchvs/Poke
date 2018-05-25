@@ -886,5 +886,25 @@ declare class MatchvsEngine {
 	* @param {string} key
 	*/
 	hashGet (gameID, userID, key) :void
+	
+
+	
+}
+declare class md5 {
+	 constructor();//构造函数
+	 
+	/**
+	*
+	*/
+	hex_md5 (s:string) :string
+
 }
 
+declare class MatchvsHttp {
+	constructor();//构造函数
+	
+	
+	get(url);
+	
+ 
+}

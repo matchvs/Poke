@@ -87,6 +87,17 @@ class PokeMatchvsEngine  {
 	 */
 	public joinRoom(roomID:string,userProfile:string) {
 		var result = MatchvsData.MatchvsReq.joinRoom(roomID,userProfile);
+		egret.log("加入房间result:"+result);
+		return result;
+	}
+
+	/**
+	 * 获取房间详情
+	 */
+	public getRoomDetail(roomID:string) {
+		var result = MatchvsData.MatchvsReq.getRoomDetail(roomID);
+		egret.log("获取房间详情result:"+result);
+		return result;
 	}
 
 
@@ -105,5 +116,34 @@ class PokeMatchvsEngine  {
 		MatchvsData.MatchvsReq.hashGet(MatchvsData.gameID,GlobalData.myUser.userID,key);
 	}
 
+	/**
+	 * 取全局排行榜数据
+	 */
+	public getRankList(key:string) {
+		// var request = new egret.HttpRequest();
+		// request.responseType = egret.HttpResponseType.TEXT;
+		//参数组合是安装首字母排序的
+		let keyList =  JSON.stringify([{"key":"rankList"}]);
+		egret.log(keyList);
+    	var params = "gameID=" + MatchvsData.gameID + "&userID=" + GlobalData.myUser.userID + "&keyList=" +keyList;
+    	//加上 appkey 和 token 进行MD5签名
+		var matchvsMD5 = new MD5();
+    	var sign = matchvsMD5.hex_md5(MatchvsData.appKey+"&gameID="+MatchvsData.gameID+"&userID="+GlobalData.myUser.userID+"&"+ MatchvsData.secret);
+		var rankListUrl = MatchvsData.alphaHttpUrl+params+"&sign="+sign;
+		egret.log(rankListUrl,rankListUrl);
+		// request.open(rankListUrl,egret.HttpMethod.GET);
+		// request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		// request.send();
+		// request.addEventListener(egret.Event.COMPLETE,this.onGetProgress,this);
+		// request.addEventListener(egret.IOErrorEvent.IO_ERROR,this.onGetProgress,this);
+		// request.addEventListener(egret.ProgressEvent.PROGRESS,this.onGetProgress,this);
+		var http = new MatchvsHttp();
+		http.get(rankListUrl);
+		
+	}
+
+	public onGetProgress() {
+
+	}
 
 }
