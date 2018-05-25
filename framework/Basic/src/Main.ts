@@ -176,7 +176,11 @@ class Main extends eui.UILayer {
             }
             GlobalData.myUser.userID = userInfo.id;
            	GlobalData.myUser.token = userInfo.token;
-            GlobalData.myUser.pointValue = MatchvsData.defaultScore;
+            if(this.getUserPointValue() == null)  {
+                GlobalData.myUser.pointValue = MatchvsData.defaultScore;
+            } else {
+                GlobalData.myUser.pointValue = this.getUserPointValue();
+            }
 
 
             //将自己的数据存到本地
@@ -270,6 +274,33 @@ class Main extends eui.UILayer {
 
     //     change();
     // }
+
+    public getUserPointValue ():number {
+		let keyList = JSON.stringify([{"key":"userID"}]);
+		var params = "gameID=" + MatchvsData.gameID + "&userID=" + GlobalData.myUser.userID + "&keyList=" +keyList;
+		var matchvsMD5 = new MD5();
+		var sign = matchvsMD5.hex_md5(MatchvsData.appKey+"&gameID="+MatchvsData.gameID+"&userID="+GlobalData.myUser.userID+"&"+ MatchvsData.secret);
+		var rankListUrl = MatchvsData.alphaHttpUrl+params+"&sign="+sign;
+		var http = new MatchvsHttp({
+            onMsg:function(buf){
+                egret.log("玩家信息拿到了",buf);
+                var buf = JSON.parse(buf);
+                if(buf.data.dataList.length > 0) {
+                    egret.log("没有拿到数据");
+                    return null;
+                } else {
+                    return JSON.parse(buf.data.dataList)[0].value;
+                }
+            },
+            onErr:function(errCode,errMsg){
+				egret.log(errCode,errMsg);
+                return null;
+			}
+        });
+		http.get(rankListUrl);
+        return null;
+	}
+
 
 
 
