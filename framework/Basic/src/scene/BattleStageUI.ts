@@ -121,6 +121,19 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		
 	}
 
+	public onShow(par:any){
+		try {
+			let users:Array<GUser> = [];
+			users = par;
+			if(par == null)return;
+			this.init();
+			this.StartBattle(users);
+		} catch (error) {
+			
+		}
+		
+	}
+
 	/**
 	 * 开始对战，要先添加用户
 	 */
