@@ -285,19 +285,24 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			this._myCardControl.Release();
 		}
 
-		// this.Release();
+		// 
 		// let result = new ResultUI();
 		//SceneManager.back();
 		//SceneManager.removeAll();
-		var result:ResultUI = SceneManager.showScene(ResultUI);
-		result.init();
-		if(p1.isLandLord){
-			result.showResult(p1,p2,p3,iswin,islandwin,timestr);
-		}else if(p2.isLandLord){
-			result.showResult(p2,p1,p3,iswin,islandwin,timestr);
-		}else if(p3.isLandLord){
-			result.showResult(p3,p1,p2,iswin,islandwin,timestr);
-		}
+		// var result:ResultUI = SceneManager.showScene(ResultUI);
+		// result.init();
+		// if(p1.isLandLord){
+		// 	result.showResult(p1,p2,p3,iswin,islandwin,timestr);
+		// }else if(p2.isLandLord){
+		// 	result.showResult(p2,p1,p3,iswin,islandwin,timestr);
+		// }else if(p3.isLandLord){
+		// 	result.showResult(p3,p1,p2,iswin,islandwin,timestr);
+		// }
+		// this.Release();
+
+		SceneManager.JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, this);
+
+		return;
 	}
 
 	public Release(){
