@@ -285,11 +285,11 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			this._myCardControl.Release();
 		}
 
-		this.Release();
-		let result = new ResultUI();
+		// this.Release();
+		// let result = new ResultUI();
 		//SceneManager.back();
 		//SceneManager.removeAll();
-		SceneManager.showScene(result);
+		var result:ResultUI = SceneManager.showScene(ResultUI);
 		result.init();
 		if(p1.isLandLord){
 			result.showResult(p1,p2,p3,iswin,islandwin,timestr);
@@ -298,7 +298,6 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		}else if(p3.isLandLord){
 			result.showResult(p3,p1,p2,iswin,islandwin,timestr);
 		}
-		
 	}
 
 	public Release(){
