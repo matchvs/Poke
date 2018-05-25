@@ -253,6 +253,7 @@ module battle {
 			var tp3: Player = this.getPlayerByLocalTableId(3);
 			let winplayer = this.getPlayerForUserID(event.data.winerID);
 			this._stage.GameOver(iswin,tp1,tp2,tp3,islandwin,this._timesCount,false, 0, 0, 0, winplayer);
+			this._stage = null;
 		}
 
 		/**
@@ -456,6 +457,7 @@ module battle {
 				player.cardList = slist;               	//显示最后玩家牌
 				//this.GameOver();
 				if(player.userID == this._myOwner.userID){
+					console.info("发送游戏结束消息：", player.userID, this);
 					this.sendGameOver({
 						winSeatNo:player.seatNo,			//胜利者座位
 						islandwin:player.isLandLord,		//是不是地主

@@ -220,7 +220,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			SceneManager.showScene(room);
 		} else{
 			PokeMatchvsEngine.getInstance().leaveRoom("战斗结束了");
-			SceneManager.showScene(new Game);
+			SceneManager.showScene(new Game());
 		}
 	}
 	

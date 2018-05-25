@@ -68,6 +68,7 @@
 		"bin-debug/utils/ArrayTools.js",
 		"bin-debug/utils/IntegralSettlement.js",
 		"bin-debug/utils/MatchDialog.js",
+		"bin-debug/utils/MD5.js",
 		"bin-debug/utils/Toast.js",
 		"bin-debug/Config.js"
 	]
