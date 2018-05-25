@@ -16,4 +16,5 @@
 "倍":{"x":57,"y":0,"w":54,"h":54,"offX":1,"offY":1,"sourceW":55,"sourceH":55},
 "开":{"x":170,"y":0,"w":53,"h":53,"offX":2,"offY":2,"sourceW":55,"sourceH":55},
 "人":{"x":113,"y":0,"w":55,"h":52,"offX":0,"offY":3,"sourceW":55,"sourceH":55},
-"始":{"x":0,"y":0,"w":55,"h":54,"offX":0,"offY":1,"sourceW":55,"sourceH":55}}}
+"始":{"x":0,"y":0,"w":55,"h":54,"offX":0,"offY":1,"sourceW":55,"sourceH":55},
+"10":{"x":0,"y":149,"w":55,"h":50,"offx":6,"offy":9,"sourceW":55,"sourceH":55}}}

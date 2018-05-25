@@ -3,9 +3,9 @@
 	<e:Group width="480" height="110" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0">
 		<e:Image id="ranking" width="26" height="45" x="23" y="29" source="{data.ranking}" scaleX="1" scaleY="1"/>
 		<e:Image id="head" width="80" height="80" x="82" y="6" source="{data.head}" scaleX="1" scaleY="1"/>
-		<e:Label id="nickName" x="187" y="17" size="26" text="{data.nickName}" fontFamily="STYuanti-SC-Bold" textColor="0x222222" scaleX="1" scaleY="1"/>
+		<e:Label id="nickName" x="187" y="17" size="26" text="{data.name}" fontFamily="STYuanti-SC-Bold" textColor="0x222222" scaleX="1" scaleY="1"/>
 		<e:Image width="28" height="30" x="185" y="55" source="resource/assets/rankList/icon_integral.png" scaleX="1" scaleY="1"/>
-		<e:Label id="score" x="221" y="60" text="{data.score}" width="82" height="23" textAlign="left" fontFamily="STYuanti-SC-Bold" textColor="0x222222" scaleX="1" scaleY="1"/>
-		<e:Rect width="480" height="1" y="115" fillAlpha="0.25" x="4" scaleX="1" scaleY="1"/>
+		<e:Label id="score" text="{data.score}" width="82" height="23" textAlign="left" fontFamily="STYuanti-SC-Bold" textColor="0x222222" scaleX="1" scaleY="1" verticalAlign="top" left="225" top="59"/>
+		<e:Rect width="480" height="1" y="110" fillAlpha="0.15" x="0" scaleX="1" scaleY="1"/>
 	</e:Group>
 </e:Skin>

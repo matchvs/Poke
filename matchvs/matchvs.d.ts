@@ -901,7 +901,7 @@ declare class md5 {
 }
 
 declare class MatchvsHttp {
-	constructor();//构造函数
+	constructor(callBack);//构造函数
 	
 	
 	get(url);

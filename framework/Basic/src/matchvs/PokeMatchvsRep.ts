@@ -137,6 +137,32 @@ class PokeMatchvsRep extends egret.EventDispatcher{
     errorResponse = function() {
 
     }
+
+    /**
+     * 排行榜正确回调
+     */
+    public onMsg(buf) {
+        // {
+		// 	onMsg: function(buf) {
+				egret.log("排行榜请求成功",buf);
+				var buf = JSON.parse(buf);
+				var listData = JSON.parse(buf.data.dataList[0].value);
+				egret.log(listData);
+				this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_RANK_LIST,false,false,listData));
+		// 	},
+		// 	onErr : function(errCode,errMsg){
+		// 	}
+		// }
+    }
+
+    	// 	this.onMsg = function (buf) {
+		
+	// 	},
+
+
+    public onErr(errCode,errMsg) {
+        egret.log(errCode,errMsg);
+    }
 	
 
 

@@ -120,8 +120,6 @@ class PokeMatchvsEngine  {
 	 * 取全局排行榜数据
 	 */
 	public getRankList(key:string) {
-		// var request = new egret.HttpRequest();
-		// request.responseType = egret.HttpResponseType.TEXT;
 		//参数组合是安装首字母排序的
 		let keyList =  JSON.stringify([{"key":"rankList"}]);
 		egret.log(keyList);
@@ -131,19 +129,38 @@ class PokeMatchvsEngine  {
     	var sign = matchvsMD5.hex_md5(MatchvsData.appKey+"&gameID="+MatchvsData.gameID+"&userID="+GlobalData.myUser.userID+"&"+ MatchvsData.secret);
 		var rankListUrl = MatchvsData.alphaHttpUrl+params+"&sign="+sign;
 		egret.log(rankListUrl,rankListUrl);
-		// request.open(rankListUrl,egret.HttpMethod.GET);
-		// request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		// request.send();
-		// request.addEventListener(egret.Event.COMPLETE,this.onGetProgress,this);
-		// request.addEventListener(egret.IOErrorEvent.IO_ERROR,this.onGetProgress,this);
-		// request.addEventListener(egret.ProgressEvent.PROGRESS,this.onGetProgress,this);
-		var http = new MatchvsHttp();
+		var http = new MatchvsHttp(PokeMatchvsRep.getInstance);
 		http.get(rankListUrl);
+		
 		
 	}
 
-	public onGetProgress() {
+	// public onMsg;
+	// public onErr;
+
+	// public onGetProgress(){
+
+	// 	this.onMsg = function (buf) {
+		
+	// 	},
+	// 	this.onErr = function (errCode, errMsg) {
+		
+	// 	}
+	// }
+
+
+}
+
+class onGetProgress {
+
+	public onMsg = function(buf) {
 
 	}
+
+
+	public onErr = function(errCode,errMsg) {
+
+	}
+
 
 }
