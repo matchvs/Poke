@@ -416,7 +416,7 @@ module battle {
                 //NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_GAME_READY,{});
                 var hasbigger: boolean = this._myCardProxy.getHasBigger();
                 if (!hasbigger) {
-                   //network.BattleMsg.getInstance().sendToPlayers(enums.NetEnum.CLIENT_2_GAME_SHOWCARD, { cardlist: [] });
+                   network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.PLAY_CARDS_S, { cardlist: [] });
                 }
                 else {
                     var hascar: boolean = this._myCardProxy.Prompt(false, true);

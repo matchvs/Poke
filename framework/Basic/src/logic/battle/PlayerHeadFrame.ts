@@ -13,23 +13,29 @@ module battle {
             this._headsp = new egret.Sprite();
             this.addChild(this._headsp);
             this._headsp.addChild(bg);
-
-            RES.getResByUrl(avatar, this.getImgOver, this,RES.ResourceItem.TYPE_IMAGE);
+            let headImg = new  eui.Image();
+            headImg.width = 88;
+            headImg.height = 88;
+            headImg.x = 6;
+            headImg.y = 6;
+            headImg.source = avatar;
+            this._headsp.addChild(headImg);
+            //RES.getResByUrl(avatar, this.getImgOver, this,RES.ResourceItem.TYPE_IMAGE);
             this.touchChildren=false;
         }
 
-        private getImgOver(event:egret.Texture):void {
-            console.log("getImgOver",event);
-            var bit:egret.Bitmap = new egret.Bitmap(event);
-            bit.width = 88;
-            bit.height = 88;
-            bit.x=6;
-            bit.y=6;
-            if(this._headsp)
-            {
-                this._headsp.addChild(bit);
-            }
-        }
+        // private getImgOver(event:egret.Texture):void {
+        //     console.log("getImgOver",event);
+        //     var bit:egret.Bitmap = new egret.Bitmap(event);
+        //     bit.width = 88;
+        //     bit.height = 88;
+        //     bit.x=6;
+        //     bit.y=6;
+        //     if(this._headsp)
+        //     {
+        //         this._headsp.addChild(bit);
+        //     }
+        // }
 
         public Release():void {
             if(this._headsp)

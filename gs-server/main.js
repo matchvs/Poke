@@ -22,6 +22,7 @@ function main() {
         app.setPushHander(pushHander);
         const log = log4js.getLogger();
         log.info('Game server started, listen on:', conf.addr);
+        Test_01.Start();
     });
 }
 

@@ -7,26 +7,63 @@ const log = log4js.getLogger();
 /**
  * 数据上报
  */
+var _reportData = null;
 class ReportData{
     constructor(){
-        var _reportData = this;
         this.gameID = GameData.Conf.GAMEID;
         this.appkey = GameData.Conf.APPKEY;
         this.secret = GameData.Conf.SECRET;
         this.scoreBuff = new Map();          //上报分数缓存列表 key = userID
         this.haveSort = new Array();         //用户分数排序列表 [{key:userID, value:score}]
         //this.rankUseList = new Array();      // [{userID:score},{userID:score}] length < 150
+        this.timerTasks = [];
     }
 
     /**
      * 获取上报数据的实例，单例类型
      */
     static getInstance(){
-        if(ReportData._reportData == null){
+        if(_reportData == null){
             log.debug("ReportData new")
-            ReportData._reportData = new ReportData();
+            _reportData = new ReportData();
         }
-        return ReportData._reportData;
+        return _reportData;
+    }
+
+    /**
+     * 读取排行榜数据
+     */
+    readRankListFromHttp(){
+        let self = this
+        let keylist = [{key:"rankList"}];
+        log.debug("readRankListFromHttp keylist",keylist);
+        this.getGameScore(0,keylist,(body)=>{
+            let resData = JSON.parse(body);
+            log.debug("readRankListFromHttp keylist",body);
+            if( resData.hasOwnProperty("status") && resData.hasOwnProperty("data")){
+                if(resData.status == 0){
+                    if(resData.data.dataList[0].hasOwnProperty("value")){
+                        let datas = JSON.parse(resData.data.dataList[0].value);
+                            datas.forEach(function(element){
+                                self.scoreBuff.set(element.key, element.value);
+                            });
+                            self.scoreBuffToSort();
+                            //self.writeRankListToHttp();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * 定时写入排行榜数据
+     */
+    writeRankListToHttp(){
+        let self = this;
+        this.timerTasks.push(setInterval(function(){
+            log.info("writ rank data to http");
+            self.saveRankData(GameData.Conf.RANK_NUM);
+        },30000));
     }
 
     /**
@@ -40,6 +77,10 @@ class ReportData{
         log.debug("addScoreBuff scoreBuff length:",this.scoreBuff.size);
     }
 
+    /**
+     * 查询用户是否存在缓存中
+     * @param {number} userid 
+     */
     findScoreBuffData(userid){
         return this.scoreBuff.get(userid);
     }
@@ -57,7 +98,7 @@ class ReportData{
     }
 
     /**
-     * 分数排行
+     * 计算排行
      */
     scoreBuffToSort(){
         let list = this.mapToKeyValuelist(this.scoreBuff);
@@ -66,7 +107,7 @@ class ReportData{
         this.haveSort = list.sort((a,b)=>{
             return a.value > b.value ? -1 : 1;
         });
-        //log.debug("scoreBuffToSort:",this.haveSort.length);
+        this.saveRankData(GameData.Conf.RANK_NUM);
     }
 
     /**
@@ -81,14 +122,14 @@ class ReportData{
     }
 
     /**
-     * 保存排名数据
-     * @param {number} beforeNum <= 150
+     * 保存前多少名的排名数据
+     * @param {number} beforeNum <= 120
      */
     saveRankData(beforeNum){
         if(beforeNum === undefined){
-            beforeNum = 150;
+            beforeNum = 120;
         }
-        if(beforeNum > 150){
+        if(beforeNum > 120){
             log.error("Only allow 150 data at a time");
             return;
         }
@@ -97,7 +138,13 @@ class ReportData{
         for(let i = 0; i < beforeNum && i < this.haveSort.length; i++){
             list.push(this.haveSort[i]);
         }
-        this.saveGameScore(list, 0);
+        log.debug("saveRankData list length:",list.length);
+        if(list.length == 0){
+            return;
+        }
+        let rankListSt = JSON.stringify(list);
+        let datalist = [{key:"rankList",value:rankListSt}];
+        this.saveGameScore(datalist);
     }
     
 
@@ -127,19 +174,6 @@ class ReportData{
         });
     }
 
-
-    /**
-     * 获取请求地主
-     * @return {string} url
-     */
-    getUrl(){
-        if(GameData.Conf.DATA_STORAGE_ENV == 1){
-            return GameData.HttpApi.RELEASE_HOST;
-        }else{
-            return GameData.HttpApi.ALPHA_HOST;
-        }
-    }
-
     /**
      * 
      * @param {string} dataObj "[{key:"name",value:1},{key:"name",value:2},{key:"name",value:3}]"
@@ -150,7 +184,7 @@ class ReportData{
         if(dataObj.length > 150){
             log.error("datalist too long");
         }else{
-            let url = this.getUrl()+option;
+            let url = (GameData.Conf.DATA_STORAGE_ENV == 1 ? GameData.HttpApi.RELEASE_HOST:GameData.HttpApi.ALPHA_HOST)+option;
             let params = "gameID="+this.gameID+"&userID="+userid;
             let sign = ArrayTools.md5Encode(this.appkey+"&"+params+"&"+this.secret);
             let dataStr = JSON.stringify(dataObj);
@@ -164,28 +198,28 @@ class ReportData{
     }
 
     /**
-     * 
+     * 保存列表数据
      * @param {Array} dataList [{key:"name",value:1},{key:"name",value:2},{key:"name",value:3}]
      * @param {number} userID 
      * @param {function} callBack function name(body) {}
      * @param {function} errCall function name(err) {}
      */
-    saveGameScore(dataList, userID, callBack, errCall){
+    saveGameScore(dataList, callBack, errCall){
         //log.log(typeof(callBack));
         if(typeof(callBack) === "undefined" || typeof(errCall) === "undefined" ){
-            this.doRequest(userID, dataList, GameData.HttpApi.SET_GAMEDATA, (body)=>{
+            this.doRequest(0, dataList, GameData.HttpApi.SET_GAMEDATA, (body)=>{
                 log.info("saveGameScore body:" + body);
             },(err)=>{
                 log.error(saveGameScore,err.message);
             });
         }else{
-            this.doRequest(userID, dataList, GameData.HttpApi.SET_GAMEDATA, callBack, errCall);
+            this.doRequest(0, dataList, GameData.HttpApi.SET_GAMEDATA, callBack, errCall);
         }
         
     }
 
     /**
-     * 删除玩家分数
+     * 删除列表数据
      * @param {number} userID 用户ID
      * @param {Array} keyList ["key1","key2"] 
      */
@@ -198,7 +232,7 @@ class ReportData{
     }
 
     /**
-     * 获取玩家分数
+     * 获取列表数据
      * @param {Array} keyList ["key1","key2"]
      */
     getGameScore(userID, keyList, resFun){
@@ -207,6 +241,9 @@ class ReportData{
         });
     }
     
+    /**
+     * 从数据库中更新缓存列表中的数据
+     */
     getRankUserData(){
         let list = [];
         for(let k of this.scoreBuff.keys()){
@@ -215,8 +252,6 @@ class ReportData{
         log.info(list);
         this.getGameScore(0, list);
     }
-
-
 }
 
 module.exports = ReportData;

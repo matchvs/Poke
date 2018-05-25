@@ -23,9 +23,8 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	private icon_peasant1:eui.Image = null;
 	private icon_peasant2:eui.Image = null;
 
-	private _landLord:battle.Player = null;
-	private _peasant1:battle.Player = null;
-	private _peasant2:battle.Player = null;
+	private _playerList:Array<battle.Player> = [];
+
 	private _iswin:boolean= false;
 	private _isLandWin:boolean = false
 	private _timesCount:number = 0;
@@ -75,26 +74,15 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	protected childrenCreated():void{
 		super.childrenCreated();
 		console.log("结算页面控件获取完毕：",this.allChildren);
+		//监听上报分数
+		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.REPORT_DATA,this.ReportDataOk, this);
 		
 	}
 
-	public setResultInfo(landLord:battle.Player, peasant1:battle.Player, peasant2:battle.Player, iswin:boolean, isLandWin:boolean){
-
+	private ReportDataOk(ev:egret.Event){
+		network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.REPORT_DATA,this.ReportDataOk, this);
+		console.info("上报分数：",ev.data);
 	}
-	// private showLandLordInfo(user:battle.Player){
-	// 	this.head_landlord.source = user.avator;
-	// 	this.nickName_landlord.text = user.nickName;
-	// 	this.integral_landlord.text = user.pointValue.toString();
-	// }
-
-	// private showPeasant1Info(user:battle.Player){
-
-	// }
-
-
-	// private showPeasant2Info(user:battle.Player){
-
-	// }
 
 	/**
 	 * @param {number} base 基础值
@@ -105,10 +93,30 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 		return base*(Math.pow(2,times));;
 	}
 
-	private ReporePointValue(){
-		network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.RESET_ROOM_S,{});
+	/**
+	 * 上报分数
+	 */
+	private ReporePointValue(v:number, t:number, m:number){
+		console.info("ReporePointValue",{times:t,model:m,value:v});
+		network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.REPROT_SCORE_S,{times:t,model:m,value:v});
+	}
+	private reSetMyScore(){
+		let bastBalue = 0;
+		for(let i = 0; i < this._playerList.length; i++){
+			if(this._playerList[i].userID == GlobalData.myUser.userID){
+				GlobalData.myUser.pointValue = this._playerList[i].pointValue;
+			}
+			if(this._playerList[i].isLandLord){
+				bastBalue = this._playerList[i].landlordScore;
+			}
+		}
+
+		this.ReporePointValue(GlobalData.myUser.pointValue, bastBalue*GlobalData.baseVaue, GlobalData.ReportModel);
 	}
 
+	/**
+	 * 计算结果值，最后结果值是变动的分数，比如地主赢，finalValue=两个农民减出来的分数
+	 */
 	private FinalValueResult(landowner:battle.Player, p1:battle.Player, p2:battle.Player, isLandWin:boolean, base:number, times:number):number{
 		let incValue = this.PointIncrement(base, times);
 		let finalValue = 0;
@@ -147,16 +155,22 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 				finalValue += landowner.pointValue;
 				landowner.pointValue = 0;
 			}
-			this._peasant1Text = p1.pointValue+"-"+ (finalValue/2);
-			this._peasant2Text = p2.pointValue+"-"+ (finalValue/2);
-			p1.pointValue = finalValue/2;
-			p2.pointValue = finalValue/2;
+			this._peasant1Text = p1.pointValue+"+"+ (finalValue/2);
+			this._peasant2Text = p2.pointValue+"+"+ (finalValue/2);
+			p1.pointValue += finalValue/2;
+			p2.pointValue += finalValue/2;
 		}
 		return finalValue;
 	}
 
+	
+	/**
+	 * 显示结果值
+	 */
 	public showResult(landLord:battle.Player, peasant1:battle.Player, peasant2:battle.Player, iswin:boolean, isLandWin:boolean, timesCount:number){
-		let finalValue = this.FinalValueResult(landLord,peasant1,peasant2,isLandWin,100,timesCount);
+		//获取
+		let finalValue = this.FinalValueResult(landLord, peasant1, peasant2, isLandWin, landLord.landlordScore*GlobalData.baseVaue,timesCount);
+		this._playerList = [landLord, peasant1, peasant2];
 		if(iswin){
 			this.winTitleImg.source = "resource/assets/result/title_win.png";
 		}else{
@@ -190,6 +204,9 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 		this.head_peasant2.source = peasant2.avator;
 		this.nickName_peasant2.text = peasant2.nickName;
 		
+
+		//重置我的分数和上报分数到服务器
+		this.reSetMyScore();
 		
 	}
 	/**

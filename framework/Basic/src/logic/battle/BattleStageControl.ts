@@ -220,6 +220,7 @@ module battle {
 		 * 游戏结束的时候调用
 		 */
 		public GameOver(event:egret.Event){
+			network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.GAME_OVER,this.GameOver, this);
 			console.info("游戏结束", event.data);
 			if(!("winerID" in event.data) || !("winSeatNo" in event.data) || !("islandwin" in event.data)){
 				console.error("消息格式错误");
@@ -666,7 +667,33 @@ module battle {
 			}
 		}
 
-		
+		public Release(){
+			console.info("BattleStageControl Release ");
+			//network.BattleMsg.getInstance() 是事件发送者，准备游戏发送回调
+			network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.GAME_READY,this.GameReadyEventCall, this);
 
+			//叫地主结束
+			network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.CALL_LANDLORD_OVER,this.CallLandLordOver, this);
+
+			//下一个叫地主
+			network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.CALL_LANDLORD_NEXT,this.CallLandLordNext, this);
+
+			//收到出牌消息
+			network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.PLAYER_CARDS,this.PlayCards, this);
+
+			//游戏结束
+			network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.GAME_OVER,this.GameOver, this);
+
+			if(this._playerTimer){
+				this._playerTimer.Release();
+			}
+			if(this._playerHeader_left){
+				this._playerHeader_left.Release();
+			}
+			if(this._playerHeader_right){
+				this._playerHeader_right.Release();
+			}
+			
+		}
 	}
 }

@@ -67,6 +67,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 
 	public init(){
 		this.explameAddPlayer();
+		console.info("BattleStageUI init");
 		//显示用户头像
 		this.showTopUserInfo(GlobalData.myUser);
 
@@ -127,8 +128,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		this.addPlayers(users);
 
 		this._battleButtonCtl.RoomIn();
-
-
+		this._battleControl.Release();
 		this._battleControl.init();
 		this._battleControl.startGame();
 	}
@@ -285,7 +285,10 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			this._myCardControl.Release();
 		}
 
+		this.Release();
 		let result = new ResultUI();
+		SceneManager.back();
+		//SceneManager.currentScene = this;
 		SceneManager.showScene(result);
 		result.init();
 		if(p1.isLandLord){
@@ -295,5 +298,14 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		}else if(p3.isLandLord){
 			result.showResult(p3,p1,p2,iswin,islandwin,timestr);
 		}
+		
+	}
+
+	public Release(){
+		this.removeChildren();
+		this._battleButtonCtl.Release();
+		this._myCardControl.Release();
+		this._tablecardControl.clearAll();
+		this._battleControl.Release();
 	}
 }
