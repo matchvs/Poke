@@ -287,8 +287,8 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 
 		this.Release();
 		let result = new ResultUI();
-		SceneManager.back();
-		//SceneManager.currentScene = this;
+		//SceneManager.back();
+		//SceneManager.removeAll();
 		SceneManager.showScene(result);
 		result.init();
 		if(p1.isLandLord){
