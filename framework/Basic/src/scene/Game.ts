@@ -74,7 +74,7 @@ class Game extends eui.Component implements eui.UIComponent {
 	 * 跳转到房间页面
 	 */
 	private startRoomScene(roomID:string) {
-		var obj = {roomID: "", gameMode:MatchvsData.gameMode,isInvite:this.isInvite};
+		var obj = {roomID: "", gameMode:MatchvsData.gameMode,isInvite:this.isInvite,isRestart:false};
 		obj.roomID = roomID;
 		this.removeEvent();
 		SceneManager.showScene(Room,obj);

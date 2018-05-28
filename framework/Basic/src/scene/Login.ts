@@ -1,4 +1,4 @@
-class Login extends eui.Component implements eui.UIComponent {
+class Login extends Base implements eui.UIComponent {
 	private that: any = this;
 	public constructor() {
 		super();
@@ -19,8 +19,12 @@ class Login extends eui.Component implements eui.UIComponent {
 			}
 
 		}, this);
+		this.onError();
 	}
 
+	protected onError() {
+		super.onError(this);
+	}
 
 	protected childrenCreated(): void {
 		super.childrenCreated();

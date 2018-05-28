@@ -7,6 +7,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	private fontImghundreds:eui.Image = null;
 	private timer:egret.Timer;
 	private userPlayer = [];
+	private roomID = "";
 
 	public constructor() {
 		super();
@@ -50,6 +51,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		 switch (e.type) {
 			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
 				this.addUser(e.data);
+				this.roomID = e.data.roomID;
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
@@ -92,7 +94,8 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	private startBattle(){
 		this.timer.stop();
 		this.removeEvent();
-		SceneManager.showScene(BattleStageUI,this.userPlayer);
+		var obj = {roomID: this.roomID, userList:this.userPlayer};
+		SceneManager.showScene(BattleStageUI,obj);
 	}
 
 

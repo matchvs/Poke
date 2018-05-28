@@ -35,13 +35,16 @@ class Room extends eui.Component implements  eui.UIComponent {
 				WxUtils.wxTogether("邀请好友",this.roomID);
 			}
 		}
+
+		if (obj.isRestart) {
+			this.restart(this.roomID);
+		}
 	}
 
 	/**
 	 * 重新进入房间
 	 */
 	public restart(roomID:string) {
-		this.roomID = roomID;
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
 		PokeMatchvsEngine.getInstance().getRoomDetail(roomID);
 	}
@@ -287,7 +290,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 		// var battles = new BattleStageUI();
 		// battles.init();
 		// battles.StartBattle(this.userPlayer);
-		SceneManager.showScene(BattleStageUI,this.userPlayer);
+		var obj = {roomID: this.roomID, userList:this.userPlayer};
+		SceneManager.showScene(BattleStageUI,obj);
 	}
 
 
