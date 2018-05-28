@@ -1,7 +1,9 @@
 class BattleStageUI extends eui.Component implements eui.UIComponent{
 
+	public roomID:string = "";
 
 	private _topHeader:TopHeader = null;//顶部用户自己的头像和积分位置
+	private _waitSendCard:eui.Label = null;
 	
 	private _battleControl: battle.BattleStageControl = null; //对战控制
 
@@ -39,6 +41,9 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		if(partName == "topHeader"){
 			this._topHeader = instance;
 		}
+		if(partName == "wait_sendCard"){
+			this._waitSendCard = instance;
+		}
 	}
 
 
@@ -71,12 +76,22 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		}
 	}
 
+	public WaitSendCardHide(){
+		this._waitSendCard.visible = false;
+	}
+
 	public init(){
 		this.explameAddPlayer();
 		console.info("BattleStageUI init");
 		//显示用户头像
 		this.showTopUserInfo(GlobalData.myUser);
 
+		//对手头像
+		this._playerHeadSprite = new egret.Sprite();
+		this.addChild(this._playerHeadSprite);
+
+		// 控制对战舞台类
+		this._battleControl = new battle.BattleStageControl(this);
 		
 		//我的卡牌放置容器
 		this._myCardSprote = new egret.Sprite();
@@ -94,10 +109,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		this._sendCardAnimal = new battle.SendCardAnimal();
 		this._sendCardAnimal.Init(this._sendCardSprote);
 
-		//对手头像
-		this._playerHeadSprite = new egret.Sprite();
-		this.addChild(this._playerHeadSprite);
-
+		
 		//倒计时
 		this._playerTimerSprite = new egret.Sprite();
 		this.addChild(this._playerTimerSprite);
@@ -122,20 +134,22 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		this._chatMsgProxy = new battle.ChatMsgControl();
 		this._chatMsgProxy.Init(this._chatSprite);
 		
-		// 控制对战舞台类
-		this._battleControl = new battle.BattleStageControl(this);
+		
 		
 	}
 
 	/**
 	 * 做与控件无关的操作
+	 * 在页面切换的时候，使用SceneManager切换要传输数据，可重写onShow
+	 * @param {any} par {userList:Array<Player>,roomID:""}
 	 */
 	public onShow(par:any){
-		this.userPlayer = par;
-			// let users:Array<GUser> = [];
-			// users = par;
-			// if(par == null)return;
+		if("userList" in par && "roomID" in par){
+			this.userPlayer = par.userList;
+			this.roomID = par.roomID;
+		}
 		egret.log("BattleStageUI",par);
+		
 	}
 
 	/**
@@ -268,24 +282,6 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			this._tablecardControl.ShowTableCard(player.LocalTableId, clist);
 			this._chatMsgProxy.ShowTableCard(player.LocalTableId, "不要");
 		}
-		//this._uiProxy.SetTimes(timestr);
-		// var cld:gameLogic.CardListData = this._type.GetType(clist);
-		// if (cld.Type == gameLogic.PlayCardTypes.Types_Bomb) {
-
-        //         var eff: effect.BombEffect = MandPool.getIns(effect.BombEffect);
-        //         eff.Init();
-        //         this._effectSprite.addChild(eff);
-        //         this._effectList.push(eff)
-        //     }
-        //     else if (cld.Type == gameLogic.PlayCardTypes.Types_ThreeN_Double ||
-        //         cld.Type == gameLogic.PlayCardTypes.Types_ThreeN_Signal ||
-        //         cld.Type == gameLogic.PlayCardTypes.Types_ThreeN) {
-
-        //         var eff2: effect.PlaneEffect = MandPool.getIns(effect.PlaneEffect);
-        //         eff2.Init();
-        //         this._effectSprite.addChild(eff2);
-        //         this._effectList.push(eff2)
-        //     }
 	}
 
 	public GameOver(iswin: boolean, p1: battle.Player, p2: battle.Player, p3: battle.Player,
@@ -318,7 +314,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		// }
 		// this.Release();
 
-		SceneManager.JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, this);
+		SceneManager.JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, this.roomID, this);
 
 		return;
 	}

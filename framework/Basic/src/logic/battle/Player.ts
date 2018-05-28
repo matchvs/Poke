@@ -6,7 +6,7 @@ module battle {
 		public seatNo = 0;							//座位号
 		public LocalTableId = 0;					//上下家标识 1 上家， 2下家 3-为自己
 		public IsReady = false;
-		public landlordScore = 0;
+		public landlordScore = 0;                   //叫地主分
 
 		private _cardNumber:Number = 0;				//牌数量
 

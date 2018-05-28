@@ -3,4 +3,5 @@
 	<w:Config id="163627e2052"/>
 	<e:Image width="640" height="1136" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" fillMode="scale" source="bg_game_jpg"/>
 	<ns1:TopHeader id="topHeader" width="636" height="69" x="2" y="2" enabled="true"/>
+	<e:Label id="wait_sendCard" text="等待其他玩家..." x="219" y="553" fontFamily="Microsoft YaHei" textColor="0xc1713a"/>
 </e:Skin>

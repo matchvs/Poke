@@ -5,6 +5,8 @@
 class ResultUI extends eui.Component implements  eui.UIComponent {
 	private allChildren:{[key:string]:any} = [];
 
+	private roomID:string = "";
+
 	private winTitleImg:eui.Image = null; //显示胜利还是失败
 
 	private head_landlord:eui.Image = null;
@@ -118,38 +120,48 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	 * 计算结果值，最后结果值是变动的分数，比如地主赢，finalValue=两个农民减出来的分数
 	 */
 	private FinalValueResult(landowner:battle.Player, p1:battle.Player, p2:battle.Player, isLandWin:boolean, base:number, times:number):number{
-		let incValue = this.PointIncrement(base, times);
-		let finalValue = 0;
+		let incValue:number = this.PointIncrement(base, times);
+		let finalValue:number = 0;
+		//landowner.pointValue = 100000;p1.pointValue = 100000;p2.pointValue = 100000;
 		if(isLandWin){
 			if(p1.pointValue > incValue){
+				console.info("显示结果值1：",landowner.pointValue,p1.pointValue,p2.pointValue);
 				this._peasant1Text = p1.pointValue+"-"+ incValue;
 				finalValue += incValue;
 				p1.pointValue -= incValue;
-				
+				console.info("显示结果值2：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			}else{
+				console.info("显示结果值3：",landowner.pointValue,p1.pointValue,p2.pointValue);
 				this._peasant1Text = p1.pointValue+"-"+ p1.pointValue;
 				finalValue += p1.pointValue;
 				p1.pointValue = 0;
+				console.info("显示结果值2：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			}
 
 			if(p2.pointValue > incValue){
+				console.info("显示结果值5：",landowner.pointValue,p1.pointValue,p2.pointValue);
+				finalValue += incValue;
 				this._peasant2Text = p2.pointValue+"-"+ incValue;
-				finalValue += incValue; 
 				p2.pointValue -= incValue;
+				console.info("显示结果值6：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			}else{
 				this._peasant2Text = p2.pointValue+"-"+ p2.pointValue;
 				finalValue += p2.pointValue;
 				p2.pointValue = 0;
 			}
 			this._landlordText = landowner.pointValue+"+"+ finalValue;
-			landowner.pointValue += finalValue;
+			console.info("显示结果值7：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+			landowner.pointValue = Number(landowner.pointValue) + Number(finalValue);
+			console.info("显示结果值8：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			
 		}else{
 			incValue = (incValue*2);
 			if(landowner.pointValue > incValue){
-				this._landlordText = landowner.pointValue+"-"+ incValue;
+				console.info("显示结果值9：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+				this._landlordText = landowner.pointValue +"-"+ incValue;
 				landowner.pointValue -= incValue;
 				finalValue += incValue;
+				console.info("显示结果值10：",landowner.pointValue,p1.pointValue,p2.pointValue);;
 			}else{
 				this._landlordText = landowner.pointValue+"-"+ landowner.pointValue;
 				finalValue += landowner.pointValue;
@@ -157,9 +169,15 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			}
 			this._peasant1Text = p1.pointValue+"+"+ (finalValue/2);
 			this._peasant2Text = p2.pointValue+"+"+ (finalValue/2);
-			p1.pointValue += finalValue/2;
-			p2.pointValue += finalValue/2;
+			console.info("显示结果值11：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+			p1.pointValue = Number(p1.pointValue) + Number(finalValue/2);
+			p2.pointValue = Number(p2.pointValue) + Number(finalValue/2);
+			console.info("显示结果值12：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+			
 		}
+
+		console.info("显示结果值：",landowner,p1,p2);
+
 		return finalValue;
 	}
 
@@ -167,7 +185,8 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	/**
 	 * 显示结果值
 	 */
-	public showResult(landLord:battle.Player, peasant1:battle.Player, peasant2:battle.Player, iswin:boolean, isLandWin:boolean, timesCount:number){
+	public showResult(landLord:battle.Player, peasant1:battle.Player, peasant2:battle.Player, iswin:boolean, isLandWin:boolean, timesCount:number, roomid:string){
+		this.roomID = roomid;
 		//获取
 		let finalValue = this.FinalValueResult(landLord, peasant1, peasant2, isLandWin, landLord.landlordScore*GlobalData.baseVaue,timesCount);
 		this._playerList = [landLord, peasant1, peasant2];

@@ -51,16 +51,16 @@ class SceneManager {
     }
 
 
-    public static JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, parent){
+    public static JumpResultUI(p3,p1,p2,iswin,islandwin,timestr , roomid:string, parent){
         SceneManager.root.removeChildren();
         let re = new ResultUI();
         SceneManager.root.addChild(re);
         if(p1.isLandLord){
-			re.showResult(p1,p2,p3,iswin,islandwin,timestr);
+			re.showResult(p1,p2,p3,iswin,islandwin,timestr,roomid);
 		}else if(p2.isLandLord){
-			re.showResult(p2,p1,p3,iswin,islandwin,timestr);
+			re.showResult(p2,p1,p3,iswin,islandwin,timestr,roomid);
 		}else if(p3.isLandLord){
-			re.showResult(p3,p1,p2,iswin,islandwin,timestr);
+			re.showResult(p3,p1,p2,iswin,islandwin,timestr,roomid);
 		}
         parent.Release();
     }

@@ -172,6 +172,7 @@ module battle {
 		 */
 		private GameReadyEventCall(event:egret.Event){
 			this.removeEventListener(network.BattleMsgEvent.GAME_READY, this.GameReadyEventCall, this);
+			this._stage.WaitSendCardHide();
 			console.info("GameReadyEventCall",event.data);
 			let data = event.data;
 			if(!data){
