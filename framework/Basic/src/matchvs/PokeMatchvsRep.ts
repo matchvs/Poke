@@ -134,6 +134,9 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,false,false,KickPlayerNotify));
     }
 
+    /**
+     * 错误回调
+     */
     errorResponse = function() {
 
     }

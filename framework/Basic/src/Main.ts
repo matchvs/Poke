@@ -176,11 +176,14 @@ class Main extends eui.UILayer {
             }
             GlobalData.myUser.userID = userInfo.id;
            	GlobalData.myUser.token = userInfo.token;
-            if(this.getUserPointValue() == null)  {
-                GlobalData.myUser.pointValue = MatchvsData.defaultScore;
-            } else {
-                GlobalData.myUser.pointValue = this.getUserPointValue();
-            }
+            this.getUserPointValue(GlobalData.myUser.userID);
+            // if(userPointValue == null)  {
+            //     egret.log("1111111111111")
+      
+            // } else {
+            //       egret.log("2222222222")
+            //         egret.log(" GlobalData.myUser.pointValue", GlobalData.myUser.pointValue)
+            // }
 
 
             //将自己的数据存到本地
@@ -275,11 +278,11 @@ class Main extends eui.UILayer {
     //     change();
     // }
 
-    public getUserPointValue ():number {
-		let keyList = JSON.stringify([{"key":"userID"}]);
-		var params = "gameID=" + MatchvsData.gameID + "&userID=" + GlobalData.myUser.userID + "&keyList=" +keyList;
+    public getUserPointValue (userID:any) {
+		let keyList = JSON.stringify([{"key":userID}]);
+		var params = "gameID=" + MatchvsData.gameID + "&userID="+userID+ "&keyList=" +keyList;
 		var matchvsMD5 = new MD5();
-		var sign = matchvsMD5.hex_md5(MatchvsData.appKey+"&gameID="+MatchvsData.gameID+"&userID="+GlobalData.myUser.userID+"&"+ MatchvsData.secret);
+		var sign = matchvsMD5.hex_md5(MatchvsData.appKey+"&gameID="+MatchvsData.gameID+"&userID="+userID+"&"+ MatchvsData.secret);
 		var rankListUrl = MatchvsData.alphaHttpUrl+params+"&sign="+sign;
 		var http = new MatchvsHttp({
             onMsg:function(buf){
@@ -287,18 +290,19 @@ class Main extends eui.UILayer {
                 var buf = JSON.parse(buf);
                 if(buf.data.dataList.length < 1) {
                     egret.log("没有拿到数据");
-                    return null;
+                    GlobalData.myUser.pointValue = MatchvsData.defaultScore;
                 } else {
-                    return JSON.parse(buf.data.dataList)[0].value;
+                    egret.log("玩家分数是",buf.data.dataList[0].value);
+                    GlobalData.myUser.pointValue = buf.data.dataList[0].value;
                 }
             },
             onErr:function(errCode,errMsg){
-				egret.log(errCode,errMsg);
+				egret.log("获取玩家错误信息",errMsg);
+                // GlobalData.myUser.pointValue = ;
                 return null;
 			}
         });
 		http.get(rankListUrl);
-        return null;
 	}
 
 
