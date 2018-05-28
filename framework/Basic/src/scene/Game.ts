@@ -4,7 +4,7 @@ class Game extends eui.Component implements eui.UIComponent {
 	private roomName = "我是世界第一，你是谁？";
 	private roomPropety = "谁都可以来挑战我";
 	private matchDialog:MatchDialog = null;
-	private isInvite = false;
+	private isInvite = false; //是否是邀请
 
 	public constructor() {
 		super();
@@ -39,6 +39,7 @@ class Game extends eui.Component implements eui.UIComponent {
 			} else if (partName == "inviteFriends") {
 				//todo 直接邀请
 				MatchvsData.gameMode = true;
+				this.isInvite = true; //进入房间直接邀请
 				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile());
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			}
@@ -60,6 +61,12 @@ class Game extends eui.Component implements eui.UIComponent {
 		 }
 	 }
 
+	 /**
+	  * 移除监听
+	  */
+	 public removeEvent() {
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
+	 }
 
 
 
@@ -67,8 +74,9 @@ class Game extends eui.Component implements eui.UIComponent {
 	 * 跳转到房间页面
 	 */
 	private startRoomScene(roomID:string) {
-		var obj = {rooID: "", gameMode:MatchvsData.gameMode};
-		obj.rooID = roomID;
+		var obj = {roomID: "", gameMode:MatchvsData.gameMode,isInvite:this.isInvite};
+		obj.roomID = roomID;
+		this.removeEvent();
 		SceneManager.showScene(Room,obj);
 		this.isInvite = false;
 	}

@@ -217,7 +217,7 @@ class Main extends eui.UILayer {
         return result;
     }
 
-        /**
+    /**
      * 微信邀请
      */
     public wxInvite () {
@@ -243,9 +243,9 @@ class Main extends eui.UILayer {
      * 在这里移除所有的监听
      */
     public removeEvent() {
-        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
         PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
         PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
     }
 
     /**

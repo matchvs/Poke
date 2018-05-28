@@ -25,6 +25,7 @@ class RankList extends eui.Component implements  eui.UIComponent {
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			if (partName == "close") {
 				SceneManager.back();
+				PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_RANK_LIST,this.onEvent,this);
 			}
 
 		}, this);

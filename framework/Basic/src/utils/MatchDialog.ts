@@ -21,6 +21,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		super.partAdded(partName,instance);
 		if(partName == "time_units") {
 			this.fontImgUnits = instance;
@@ -35,8 +36,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			if(partName == "cancel_match") {
 				PokeMatchvsEngine.getInstance().leaveRoom("不想等待匹配了");
-				this.stopTimer();
-				SceneManager.back();
+
 			}
 
 		},this);
@@ -49,20 +49,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	 public onEvent(e:egret.Event):void {
 		 switch (e.type) {
 			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
-			 	this.userPlayer.push(GlobalData.myUser);
-				for(var i = 0; i < e.data.length; i++) {
-					var user:GUser = new GUser;
-					var arr = e.data[i].userProfile.split("/n");
-					user.nickName =arr[0];
-					user.avator = arr[1];
-					user.pointValue = arr[2];
-					user.userID = e.data[i].userId;
-					this.userPlayer.push(user);
-				}
-				egret.log("userPlayer的长度"+this.userPlayer.length);
-				if(this.userPlayer.length  == MatchvsData.maxPlayer) {
-					this.startBattle();
-				}
+				this.addUser(e.data);
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
@@ -73,13 +60,26 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 				user.userID = e.data.userId;
 				this.userPlayer.push(user);
 				egret.log("NOTIFYuserPlayer的长度"+this.userPlayer.length);
-				if( this.userPlayer.length  == MatchvsData.maxPlayer) {
+				if( this.userPlayer.length  == (MatchvsData.maxPlayer-1)) {
+					this.userPlayer.push(GlobalData.myUser);
 					this.startBattle();	
 				}
 			 break;
+				
+			 case MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY:
+				//获取数组下标，删除离开玩家的指定的下标，将定时器重置，倒计时也需要重置
+				for(var i in this.userPlayer ) {
+					if(e.data.userId == this.userPlayer[i].userID) {
+						egret.log("删除userID在数组的位置"+i);
+						this.userPlayer.splice(parseInt(i),1);
+					}
+				}
+				break;
 			 case MatchvsMessage.MATCHVS_LEVAE_ROOM:
 			 	this.userPlayer.length = 0;
 				 egret.log("接收到离开房间的消息");
+				this.stopTimer();
+				SceneManager.back();
 			 break;
 			 
 		 }
@@ -91,6 +91,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	  */
 	private startBattle(){
 		this.timer.stop();
+		this.removeEvent();
 		SceneManager.showScene(BattleStageUI,this.userPlayer);
 	}
 
@@ -109,7 +110,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 				var b = Math.floor((this.defaultFont%100)/10);
 				this.fontImgUnits.source = a.toString();
 				this.fontImgtens.source = b.toString();  
-				
 			break
 			case 3:
 				var a = this.defaultFont%10;  
@@ -124,19 +124,42 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		this.defaultFont++;
     }
 
-	/**
-	 * 将定时器停止
+		/**
+	 * 将玩家信息放入UserplayerList中
 	 */
-	public stopTimer() {
-		this.removeEventListener(MatchvsMessage.MATCHVS_DELET_TIME,this.onEvent,this);
-		this.timer.stop();
+	public addUser(userPlayer:any) {
+		for(var i = 0; i <userPlayer.length; i++) {
+			var user:GUser = new GUser;
+			var arr =userPlayer[i].userProfile.split("/n");
+			user.nickName =arr[0];
+			user.avator = arr[1];
+			user.pointValue = arr[2];
+			user.userID = userPlayer[i].userId;
+			this.userPlayer.push(user);
+		}
+		egret.log("userPlayer的长度"+this.userPlayer.length);
+		if(this.userPlayer.length  == (MatchvsData.maxPlayer-1)) {
+			this.userPlayer.push(GlobalData.myUser);
+			this.startBattle();
+		}
 	}
 
 
-	 protected partRemoved(partName: string, instance: any){
-		 super.partRemoved(partName,instance);
-		 egret.log();
-	 }
+	/**
+	 * 将定时器停止,移除监听
+	 */
+	public stopTimer() {
+		this.removeEvent();
+		this.timer.stop();
+	}
+
+	public removeEvent() {
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
+		this.timer.removeEventListener(egret.TimerEvent.TIMER,this.timerFunc,this);
+	}
 
 
 	protected childrenCreated():void {

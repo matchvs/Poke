@@ -18,7 +18,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 	private iconViewList = [];
 	private actionViewList = [];
 	private actionTextViewList = [];
-	private isRestart = false;
+	// private isRestart = false; //是否是打完一局重新开始
+	// private isInvite = false; //是否进入房间直接邀请
 
 
 	public constructor() {
@@ -29,6 +30,11 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	public onShow(obj) {
 		this.roomID = obj.roomID;
+		if(obj.isInvite) {
+			if(MatchvsData.gameMode) {
+				WxUtils.wxTogether("邀请好友",this.roomID);
+			}
+		}
 	}
 
 	/**
@@ -38,16 +44,11 @@ class Room extends eui.Component implements  eui.UIComponent {
 		this.roomID = roomID;
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
 		PokeMatchvsEngine.getInstance().getRoomDetail(roomID);
-		 if(MatchvsData.gameMode) {
-			 WxUtils.wxTogether("邀请好友",this.roomID);
-			//  this.isInvite = false;
-		}
 	}
-
+	
 
 	protected partAdded(partName:string,instance:any):void {
 		super.partAdded(partName,instance);
-
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
@@ -140,7 +141,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 				//获取数组下标，删除离开玩家的指定的下标，将定时器重置，倒计时也需要重置
 				for(var i in this.userPlayer ) {
 					if(e.data.userId == this.userPlayer[i].userID) {
-						this.userPlayer.splice(parseInt(i));
+						this.userPlayer.splice(parseInt(i),1);
 					}
 				}
 				this.removeView(e.data.userId);
@@ -151,12 +152,23 @@ class Room extends eui.Component implements  eui.UIComponent {
 					this.timer.stop();
 				}
 				this.userPlayer.length = 0;
+				this.removeEvent();
 				SceneManager.back();
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY:
+				for(var i in this.userPlayer ) {
+					if(e.data.userId == this.userPlayer[i].userID) {
+						this.userPlayer.splice(parseInt(i),1);
+					}
+				}
 				this.removeView(e.data.userID);
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER:
+				for(var i in this.userPlayer ) {
+					if(e.data.userId == this.userPlayer[i].userID) {
+						this.userPlayer.splice(parseInt(i),1);
+					}
+				}
 				this.removeView(e.data.userID);
 			break;
 			case MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP:
@@ -164,6 +176,21 @@ class Room extends eui.Component implements  eui.UIComponent {
 			break;
 		}
 	}	
+
+
+	/**
+     * 在这里移除所有的监听
+     */
+    public removeEvent() {
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
+    }
+
 
 	/**
 	 * 显示其他玩家的基本信息
@@ -214,9 +241,10 @@ class Room extends eui.Component implements  eui.UIComponent {
 	public userAction(instance:any) {
 		if(instance.text != "" ) {
 			//踢人
-			PokeMatchvsEngine.getInstance().kickPlayer(instance.text); 
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
+			PokeMatchvsEngine.getInstance().kickPlayer(instance.text); 
+
 		} else {
 			try {
 				var par = "roomID ="+instance.text;
@@ -255,11 +283,14 @@ class Room extends eui.Component implements  eui.UIComponent {
 	*/
 	private startBattle(){
 		this.userPlayer.push(GlobalData.myUser);
+		this.removeEvent();
 		// var battles = new BattleStageUI();
 		// battles.init();
 		// battles.StartBattle(this.userPlayer);
 		SceneManager.showScene(BattleStageUI,this.userPlayer);
 	}
+
+
 
 	/**
 	 * 显示顶部的用户信息

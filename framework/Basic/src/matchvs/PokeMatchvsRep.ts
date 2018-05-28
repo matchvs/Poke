@@ -137,31 +137,21 @@ class PokeMatchvsRep extends egret.EventDispatcher{
     /**
      * 错误回调
      */
-    errorResponse = function() {
-
+    errorResponse = function(errCode:number, errMsg:string) {
+        egret.log("errCode"+errCode+"errMsg"+errMsg);
+        this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_ERROR),false,false,errCode+","+errMsg);
     }
 
     /**
      * 排行榜正确回调
      */
     public onMsg(buf) {
-        // {
-		// 	onMsg: function(buf) {
-				egret.log("排行榜请求成功",buf);
-				var buf = JSON.parse(buf);
-				var listData = JSON.parse(buf.data.dataList[0].value);
-				egret.log(listData);
-				this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_RANK_LIST,false,false,listData));
-		// 	},
-		// 	onErr : function(errCode,errMsg){
-		// 	}
-		// }
+        egret.log("排行榜请求成功",buf);
+        var buf = JSON.parse(buf);
+        var listData = JSON.parse(buf.data.dataList[0].value);
+        egret.log(listData);
+        this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_RANK_LIST,false,false,listData));
     }
-
-    	// 	this.onMsg = function (buf) {
-		
-	// 	},
-
 
     public onErr(errCode,errMsg) {
         egret.log(errCode,errMsg);
