@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin class="RoomSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*" >
 	<w:Config id="16372cff110" ></w:Config>
+	<e:Image height="1136" x="0" y="0" source="resource/assets/bg.jpg" width="640"/>
+	<e:Image width="636" height="69" x="2" y="2" source="resource/assets/lobby/bg_header.png"/>
+	<e:Image id="head" width="56" height="56" x="8" y="8"/>
+	<e:Label id="nickName" text="" x="83" y="10" width="66" height="20" fontFamily="STYuanti-SC-Bold" textAlign="left" size="20" textColor="0xffdfa6"/>
+	<e:Label id="integral" text="" x="112" y="40" size="20" fontFamily="STYuanti-SC-Bold" textColor="0xffdfa6" width="63" height="17"/>
 	<e:Image width="640" height="1136" x="0" y="0" source="resource/assets/bg.jpg"/>
-	<ns1:TopHeader id="topHeader" width="636" height="69" x="2" y="2" enabled="true"/>
+
 	<e:Label id="roomID_tabel" text="" x="70" y="158.58" textColor="0xffdfa6" fontFamily="FZY4JW--GB1-0" textAlign="center" width="500" height="29"/>
 	<e:Label id="countdown" text="" x="195" y="212" width="250" height="29" textAlign="center" textColor="0xffdfa6" fontFamily="FZY4JW--GB1-0"/>
 	<e:Rect width="560" height="141" x="40" y="296" fillColor="0x160103" fillAlpha="0.5" ellipseWidth="10" ellipseHeight="10"/>

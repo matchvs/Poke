@@ -1,7 +1,6 @@
 class Room extends eui.Component implements  eui.UIComponent {
 
 	public roomID:string = "";
-	private _topHeader:TopHeader = null;//顶部用户自己的头像和积分位置
 	private countDownLabel:eui.Label = null;
 	private userPlayer = [];
 	private timer:egret.Timer; //游戏开始倒数10秒定时器
@@ -50,6 +49,18 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	protected partAdded(partName:string,instance:any):void {
 		super.partAdded(partName,instance);
+				//昵称
+		if(partName == "nickName") {
+			instance.text = GlobalData.myUser.nickName;
+		}
+		//积分
+		if(partName == "integral") {
+			instance.text = GlobalData.myUser.pointValue;
+		}
+		//头像
+		if(partName == "head") {
+			instance.source = GlobalData.myUser.avator;
+		}
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
@@ -58,9 +69,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			case "roomID_tabel":
 				instance.text = "房间号："+this.roomID;
 			break;
-			case "topHeader":
-				this._topHeader = instance;
-			break;
+
 			case "my_icon":
 				instance.source = GlobalData.myUser.avator;
 			break;
@@ -293,17 +302,6 @@ class Room extends eui.Component implements  eui.UIComponent {
 		SceneManager.showScene(BattleStageUI,obj);
 	}
 
-
-
-	/**
-	 * 显示顶部的用户信息
-	 */
-	public showTopUserInfo(user ?:GUser){
-		this._topHeader.init();
-		this._topHeader.ShowAvator(user.avator);
-		this._topHeader.SetNickName(user.nickName);
-		this._topHeader.SetPointValue(user.pointValue);
-	}
 
 
 	/**
