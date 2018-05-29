@@ -21387,7 +21387,8 @@ try {
             MsRoomFilterEx: MsRoomFilterEx,
             LocalStore_Clear: LocalStore_Clear,
             MsReopenRoomResponse: MsReopenRoomResponse,
-            MsReopenRoomNotify: MsReopenRoomNotify
+            MsReopenRoomNotify: MsReopenRoomNotify,
+			MatchvsHttp:MatchvsHttp,
         };
     }
 }
@@ -21404,3 +21405,4 @@ window.MsRoomFilterEx = MsRoomFilterEx;
 window.LocalStore_Clear = LocalStore_Clear;
 window.MsReopenRoomResponse = MsReopenRoomResponse;
 window.MsReopenRoomNotify = MsReopenRoomNotify;
+window.MatchvsHttp = MatchvsHttp;
