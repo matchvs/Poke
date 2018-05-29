@@ -1,6 +1,6 @@
 {
-  "engineVersion": "5.1.5",
-  "compilerVersion": "5.1.5",
+  "engineVersion": "5.2.0",
+  "compilerVersion": "5.2.0",
   "template": {},
   "target": {
     "current": "web"
@@ -37,13 +37,12 @@
       "name": "promise"
     },
     {
-      "name":"matchvs",
-      "path":"../../matchvs"
+      "name": "matchvs",
+      "path": "../../matchvs"
     },
     {
-      "name":"wxshare",
-      "path":"../../wxshare"
+      "name": "wxshare",
+      "path": "../../wxshare"
     }
-
   ]
 }

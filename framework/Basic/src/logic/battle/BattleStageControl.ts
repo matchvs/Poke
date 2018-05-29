@@ -167,11 +167,19 @@ module battle {
 			this.leftOrRight();
 		}
 
+		private ReSendCard(){
+			this._stage.ReSendCards();
+			this._playerList.forEach(function(value){
+				value.clearPlayer();
+			});
+		}
+
 		/**
 		 * 准备游戏后, 收到发牌消息调用这个函数，给各个用户填写牌信息
 		 */
 		private GameReadyEventCall(event:egret.Event){
 			this.removeEventListener(network.BattleMsgEvent.GAME_READY, this.GameReadyEventCall, this);
+			this.ReSendCard();
 			this._stage.WaitSendCardHide();
 			console.info("GameReadyEventCall",event.data);
 			let data = event.data;

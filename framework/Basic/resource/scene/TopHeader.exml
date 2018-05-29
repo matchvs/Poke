@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin class="TopHead" width="636" height="69" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
-	<e:Image width="636" height="69" x="0" y="0" source="bg_header_png" locked="true"/>
-	<e:Image id="headImg" width="56" height="56" x="8" y="8" locked="true"/>
+	<e:Image width="636" height="69" x="0" y="0" source="bg_header_png"/>
+	<e:Image id="headImg" width="56" height="56" x="8" y="8"/>
 	<e:Label id="nickName" text="" x="83" y="10" width="150" height="20" size="20" fontFamily="STYuanti-SC-Bold" textColor="0xffdfa6" textAlign="left"/>
 	<e:Label id="pointValue" text="0" x="112" y="40" width="120" height="17" size="20" fontFamily="STYuanti-SC-Bold" textColor="0xffdfa6" anchorOffsetX="0" anchorOffsetY="0"/>
 </e:Skin>

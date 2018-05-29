@@ -2,7 +2,9 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 
 	public roomID:string = "";
 
-	private _topHeader:TopHeader = null;//顶部用户自己的头像和积分位置
+	private _topHeader:eui.Image = null;//顶部用户自己的头像和积分位置
+	private _topNickName:eui.Label = null;//顶部用户自己的头像和积分位置
+	private _topPointValue:eui.Label = null;//顶部用户自己的头像和积分位置
 	private _waitSendCard:eui.Label = null;
 	
 	private _battleControl: battle.BattleStageControl = null; //对战控制
@@ -38,11 +40,19 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	protected partAdded(partName: string, instance: any): void {
 		super.partAdded(partName, instance);
 		console.log("partAdded",partName,instance);
-		if(partName == "topHeader"){
+		if(partName == "headImg"){
 			this._topHeader = instance;
 		}
 		if(partName == "wait_sendCard"){
 			this._waitSendCard = instance;
+		}
+
+		if(partName == "nickName"){
+			this._topNickName = instance;
+		}
+
+		if(partName == "pointValue"){
+			this._topPointValue = instance;
 		}
 	}
 
@@ -69,10 +79,13 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	 */
 	public showTopUserInfo(user ?:GUser){
 		if(user){
-			this._topHeader.init();
-			this._topHeader.ShowAvator(user.avator);
-			this._topHeader.SetNickName(user.nickName);
-			this._topHeader.SetPointValue(user.pointValue);
+			// this._topHeader.init();
+			// this._topHeader.ShowAvator(user.avator);
+			// this._topHeader.SetNickName(user.nickName);
+			// this._topHeader.SetPointValue(user.pointValue);
+			this._topHeader.source = user.avator;
+			this._topNickName.text = user.nickName;
+			this._topPointValue.text = user.pointValue.toString();
 		}
 	}
 
@@ -298,27 +311,15 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			this._tablecardControl.ShowTableCard(3, p3.cardList);
 			this._myCardControl.Release();
 		}
-
-		// 
-		// let result = new ResultUI();
-		//SceneManager.back();
-		//SceneManager.removeAll();
-		// var result:ResultUI = SceneManager.showScene(ResultUI);
-		// result.init();
-		// if(p1.isLandLord){
-		// 	result.showResult(p1,p2,p3,iswin,islandwin,timestr);
-		// }else if(p2.isLandLord){
-		// 	result.showResult(p2,p1,p3,iswin,islandwin,timestr);
-		// }else if(p3.isLandLord){
-		// 	result.showResult(p3,p1,p2,iswin,islandwin,timestr);
-		// }
-		// this.Release();
-
 		SceneManager.JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, this.roomID, this);
-
 		return;
 	}
 
+	public ReSendCards(){
+		this._myCardSprote.removeChildren();
+		this._battleButtonCtl.HideAll();
+		this._sendCardSprote.removeChildren();
+	}
 	public Release(){
 		this.removeChildren();
 		this._battleButtonCtl.Release();

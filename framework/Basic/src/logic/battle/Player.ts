@@ -81,5 +81,14 @@ module battle {
                 }
             }
 		}
+
+        public clearPlayer(){
+            this.cardList = [];
+            this.landlordScore = 0;
+            this.seatNo = 0;
+            this.isLandLord = false;
+            this.LocalTableId = 0;
+            this._cardNumber =0;
+        }
 	}
 }
