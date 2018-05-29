@@ -49,27 +49,23 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	protected partAdded(partName:string,instance:any):void {
 		super.partAdded(partName,instance);
-				//昵称
-		if(partName == "nickName") {
-			instance.text = GlobalData.myUser.nickName;
-		}
-		//积分
-		if(partName == "integral") {
-			instance.text = GlobalData.myUser.pointValue;
-		}
-		//头像
-		if(partName == "head") {
-			instance.source = GlobalData.myUser.avator;
-		}
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		switch(partName) {
+			case "nickName":
+				instance.text = GlobalData.myUser.nickName;
+				break;
+			case "integral":
+				instance.text = GlobalData.myUser.pointValue;
+				break;
+			case "head":
+				instance.source = GlobalData.myUser.avator;
+				break;
 			case "roomID_tabel":
 				instance.text = "房间号："+this.roomID;
 			break;
-
 			case "my_icon":
 				instance.source = GlobalData.myUser.avator;
 			break;
@@ -109,18 +105,26 @@ class Room extends eui.Component implements  eui.UIComponent {
 			if(partName == "btn_leave_room") {
 				PokeMatchvsEngine.getInstance().leaveRoom("我走了");
 			}
-
 			//踢人或者邀请
 			if(partName == "action") {
-				this.userAction(instance);
+				this.userAction(this.name_one);
 			}
+			if (partName == "action1") {
+				this.userAction(this.name_two);
+			}
+			if(partName == "action_text") {
+				this.userAction(this.name_one);
+			}
+			if (partName == "action_text_one") {
+				this.userAction(this.name_two);
+			}
+
 		}, this);
 	}
 
 
 	protected childrenCreated():void {
 		super.childrenCreated();
-		this.showTopUserInfo(GlobalData.myUser);
 	}
 
 	/**
@@ -250,7 +254,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 用户操作，踢人或者邀请
 	 */
 	public userAction(instance:any) {
-		if(instance.text != "" ) {
+		if(instance.text != "" && instance.text != undefined ) {
 			//踢人
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
@@ -258,7 +262,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 		} else {
 			try {
-				var par = "roomID ="+instance.text;
+				var par = "roomID ="+this.roomID;
+				egret.log("约战的roomID"+this.roomID);
 				together("约战",par);
 			} catch (e){
 				egret.log(e,e.message);
