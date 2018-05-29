@@ -70,6 +70,7 @@ class Main extends eui.UILayer {
         // a.src("btnEquip_png");
         // a.backgrout("btnEquip_png");
         // this.addChild(a);
+        egret.ImageLoader.crossOrigin = "anonymous";
         await this.getWxUserInfo();
         SceneManager.init(this);
         await this.loadResource()

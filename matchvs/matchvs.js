@@ -230,8 +230,8 @@ function binl2b64(binarray) {
 //
 var format = function (fmt) {
     var argIndex = 1 // skip initial format argument
-    , args = [].slice.call(arguments), i = 0, n = fmt.length, result = '', c, escaped = false, arg, tmp, leadingZero = false, precision, nextArg = function () { return args[argIndex++]; }, slurpNumber = function () {
-        var digits = '';
+    , args = [].slice.call(arguments), i = 0, n = fmt.length, result = "", c, escaped = false, arg, tmp, leadingZero = false, precision, nextArg = function () { return args[argIndex++]; }, slurpNumber = function () {
+        var digits = "";
         while (/\d/.test(fmt[i])) {
             digits += fmt[i++];
             c = fmt[i];
@@ -242,11 +242,11 @@ var format = function (fmt) {
         c = fmt[i];
         if (escaped) {
             escaped = false;
-            if (c == '.') {
+            if (c == ".") {
                 leadingZero = false;
                 c = fmt[++i];
             }
-            else if (c == '0' && fmt[i + 1] == '.') {
+            else if (c == "0" && fmt[i + 1] == ".") {
                 leadingZero = true;
                 i += 2;
                 c = fmt[i];
@@ -256,44 +256,44 @@ var format = function (fmt) {
             }
             precision = slurpNumber();
             switch (c) {
-                case 'b':// number in binary
+                case "b":// number in binary
                     result += parseInt(nextArg(), 10).toString(2);
                     break;
-                case 'c':// character
+                case "c":// character
                     arg = nextArg();
-                    if (typeof arg === 'string' || arg instanceof String)
+                    if (typeof arg === "string" || arg instanceof String)
                         result += arg;
                     else
                         result += String.fromCharCode(parseInt(arg, 10));
                     break;
-                case 'd':// number in decimal
+                case "d":// number in decimal
                     result += parseInt(nextArg(), 10);
                     break;
-                case 'f':// floating point number
+                case "f":// floating point number
                     tmp = String(parseFloat(nextArg()).toFixed(precision || 6));
-                    result += leadingZero ? tmp : tmp.replace(/^0/, '');
+                    result += leadingZero ? tmp : tmp.replace(/^0/, "");
                     break;
-                case 'j':// JSON
+                case "j":// JSON
                     result += JSON.stringify(nextArg());
                     break;
-                case 'o':// number in octal
-                    result += '0' + parseInt(nextArg(), 10).toString(8);
+                case "o":// number in octal
+                    result += "0" + parseInt(nextArg(), 10).toString(8);
                     break;
-                case 's':// string
+                case "s":// string
                     result += nextArg();
                     break;
-                case 'x':// lowercase hexadecimal
-                    result += '0x' + parseInt(nextArg(), 10).toString(16);
+                case "x":// lowercase hexadecimal
+                    result += "0x" + parseInt(nextArg(), 10).toString(16);
                     break;
-                case 'X':// uppercase hexadecimal
-                    result += '0x' + parseInt(nextArg(), 10).toString(16).toUpperCase();
+                case "X":// uppercase hexadecimal
+                    result += "0x" + parseInt(nextArg(), 10).toString(16).toUpperCase();
                     break;
                 default:
                     result += c;
                     break;
             }
         }
-        else if (c === '%') {
+        else if (c === "%") {
             escaped = true;
         }
         else {
@@ -323,6 +323,7 @@ MatchvsLog.logI = function () {
     if (!this.logLock)
         return;
     var loc = "";
+    console.info("日志打开");
     try {
         throw new Error();
     }
@@ -381,12 +382,12 @@ var HttpConf = {
     VS_PRODUCT_URL: ""
 };
 /* ================ msutil.js ================= */
-if (typeof String.prototype.startsWith !== 'function') {
+if (typeof String.prototype.startsWith !== "function") {
     String.prototype.startsWith = function (prefix) {
         return this.slice(0, prefix.length) === prefix;
     };
 }
-if (typeof String.prototype.endsWith !== 'function') {
+if (typeof String.prototype.endsWith !== "function") {
     String.prototype.endsWith = function (suffix) {
         return this.indexOf(suffix, this.length - suffix.length) !== -1;
     };
@@ -1214,7 +1215,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                 goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING = !1;
                 goog.provide = function (a) {
                     if (!COMPILED && goog.isProvided_(a))
-                        throw Error('Namespace "' + a + '" already declared.');
+                        throw Error("Namespace \"" + a + "\" already declared.");
                     goog.constructNamespace_(a);
                 };
                 goog.constructNamespace_ = function (a, b) {
@@ -1236,7 +1237,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                     goog.moduleLoaderState_.moduleName = a;
                     if (!COMPILED) {
                         if (goog.isProvided_(a))
-                            throw Error('Namespace "' + a + '" already declared.');
+                            throw Error("Namespace \"" + a + "\" already declared.");
                         delete goog.implicitNamespaces_[a];
                     }
                 };
@@ -1353,10 +1354,10 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                 }, goog.importScript_ = function (a, b) {
                     (goog.global.CLOSURE_IMPORT_SCRIPT || goog.writeScriptTag_)(a, b) && (goog.dependencies_.written[a] = !0);
                 }, goog.IS_OLD_IE_ = !(goog.global.atob || !goog.global.document || !goog.global.document.all), goog.importModule_ = function (a) {
-                    goog.importScript_("", 'goog.retrieveAndExecModule_("' + a + '");') && (goog.dependencies_.written[a] = !0);
+                    goog.importScript_("", "goog.retrieveAndExecModule_(\"" + a + "\");") && (goog.dependencies_.written[a] = !0);
                 }, goog.queuedModules_ = [], goog.wrapModule_ = function (a, b) {
                     return goog.LOAD_MODULE_USING_EVAL &&
-                        goog.isDef(goog.global.JSON) ? "goog.loadModule(" + goog.global.JSON.stringify(b + "\n//# sourceURL=" + a + "\n") + ");" : 'goog.loadModule(function(exports) {"use strict";' + b + "\n;return exports});\n//# sourceURL=" + a + "\n";
+                        goog.isDef(goog.global.JSON) ? "goog.loadModule(" + goog.global.JSON.stringify(b + "\n//# sourceURL=" + a + "\n") + ");" : "goog.loadModule(function(exports) {\"use strict\";" + b + "\n;return exports});\n//# sourceURL=" + a + "\n";
                 }, goog.loadQueuedModules_ = function () {
                     var a = goog.queuedModules_.length;
                     if (0 < a) {
@@ -1397,7 +1398,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                             throw Error("Invalid module definition");
                         var d = goog.moduleLoaderState_.moduleName;
                         if (!goog.isString(d) || !d)
-                            throw Error('Invalid module name "' + d + '"');
+                            throw Error("Invalid module name \"" + d + "\"");
                         goog.moduleLoaderState_.declareLegacyNamespace ? goog.constructNamespace_(d, c) : goog.SEAL_MODULE_EXPORTS && Object.seal && Object.seal(c);
                         goog.loadedModules_[d] = c;
                     }
@@ -1408,7 +1409,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                     eval(a);
                     return {};
                 }, goog.writeScriptSrcNode_ = function (a) {
-                    goog.global.document.write('<script type="text/javascript" src="' + a + '">\x3c/script>');
+                    goog.global.document.write("<script type=\"text/javascript\" src=\"" + a + "\">\x3c/script>");
                 }, goog.appendScriptSrcNode_ = function (a) {
                     var b = goog.global.document, c = b.createElement("script");
                     c.type = "text/javascript";
@@ -1422,11 +1423,11 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                         if (!goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING && "complete" == c.readyState) {
                             if (/\bdeps.js$/.test(a))
                                 return !1;
-                            throw Error('Cannot write "' + a + '" after document load');
+                            throw Error("Cannot write \"" + a + "\" after document load");
                         }
                         var d = goog.IS_OLD_IE_;
-                        void 0 === b ? d ? (d = " onreadystatechange='goog.onScriptLoad_(this, " + ++goog.lastNonModuleScriptIndex_ + ")' ", c.write('<script type="text/javascript" src="' +
-                            a + '"' + d + ">\x3c/script>")) : goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING ? goog.appendScriptSrcNode_(a) : goog.writeScriptSrcNode_(a) : c.write('<script type="text/javascript">' + b + "\x3c/script>");
+                        void 0 === b ? d ? (d = " onreadystatechange='goog.onScriptLoad_(this, " + ++goog.lastNonModuleScriptIndex_ + ")' ", c.write("<script type=\"text/javascript\" src=\"" +
+                            a + "\"" + d + ">\x3c/script>")) : goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING ? goog.appendScriptSrcNode_(a) : goog.writeScriptSrcNode_(a) : c.write("<script type=\"text/javascript\">" + b + "\x3c/script>");
                         return !0;
                     }
                     return !1;
@@ -1908,7 +1909,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                         -1 != a.indexOf("&") && (a = a.replace(goog.string.AMP_RE_, "&amp;"));
                         -1 != a.indexOf("<") && (a = a.replace(goog.string.LT_RE_, "&lt;"));
                         -1 != a.indexOf(">") && (a = a.replace(goog.string.GT_RE_, "&gt;"));
-                        -1 != a.indexOf('"') && (a = a.replace(goog.string.QUOT_RE_, "&quot;"));
+                        -1 != a.indexOf("\"") && (a = a.replace(goog.string.QUOT_RE_, "&quot;"));
                         -1 != a.indexOf("'") && (a = a.replace(goog.string.SINGLE_QUOTE_RE_, "&#39;"));
                         -1 != a.indexOf("\x00") && (a = a.replace(goog.string.NULL_RE_, "&#0;"));
                         goog.string.DETECT_DOUBLE_ESCAPING && -1 != a.indexOf("e") && (a = a.replace(goog.string.E_RE_, "&#101;"));
@@ -1930,7 +1931,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                     return goog.string.contains(a, "&") ? goog.string.unescapeEntitiesUsingDom_(a, b) : a;
                 };
                 goog.string.unescapeEntitiesUsingDom_ = function (a, b) {
-                    var c = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"' }, d;
+                    var c = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": "\"" }, d;
                     d = b ? b.createElement("div") : goog.global.document.createElement("div");
                     return a.replace(goog.string.HTML_ENTITY_PATTERN_, function (a, b) {
                         var g = c[a];
@@ -1954,7 +1955,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                             case "gt":
                                 return ">";
                             case "quot":
-                                return '"';
+                                return "\"";
                             default:
                                 if ("#" == c.charAt(0)) {
                                     var d = Number("0" + c.substr(1));
@@ -1967,7 +1968,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                 };
                 goog.string.HTML_ENTITY_PATTERN_ = /&([^;\s<&]+);?/g;
                 goog.string.whitespaceEscape = function (a, b) {
-                    return goog.string.newLineToBr(a.replace(/  /g, " &#160;"), b);
+                    return goog.string.newLineToBr(a.replace(/ {2}/g, " &#160;"), b);
                 };
                 goog.string.preserveSpaces = function (a) {
                     return a.replace(/(^|[\n ]) /g, "$1" + goog.string.Unicode.NBSP);
@@ -2006,18 +2007,18 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                     "\r": "\\r",
                     "\t": "\\t",
                     "\x0B": "\\x0B",
-                    '"': '\\"',
+                    "\"": "\\\"",
                     "\\": "\\\\",
                     "<": "<"
                 };
                 goog.string.jsEscapeCache_ = { "'": "\\'" };
                 goog.string.quote = function (a) {
                     a = String(a);
-                    for (var b = ['"'], c = 0; c < a.length; c++) {
+                    for (var b = ["\""], c = 0; c < a.length; c++) {
                         var d = a.charAt(c), e = d.charCodeAt(0);
                         b[c + 1] = goog.string.specialEscapeChars_[d] || (31 < e && 127 > e ? d : goog.string.escapeChar(d));
                     }
-                    b.push('"');
+                    b.push("\"");
                     return b.join("");
                 };
                 goog.string.escapeString = function (a) {
@@ -3026,7 +3027,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                 };
                 goog.object.add = function (a, b, c) {
                     if (null !== a && b in a)
-                        throw Error('The object already contains the key "' + b + '"');
+                        throw Error("The object already contains the key \"" + b + "\"");
                     goog.object.set(a, b, c);
                 };
                 goog.object.get = function (a, b, c) {
@@ -4304,13 +4305,13 @@ function commEngineStateCheck(engineState, roomLoock, type) {
                     return e;
                 };
                 jspb.utils.debugBytesToTextFormat = function (a) {
-                    var b = '"';
+                    var b = "\"";
                     if (a) {
                         a = jspb.utils.byteSourceToUint8Array(a);
                         for (var c = 0; c < a.length; c++)
                             b += "\\x", 16 > a[c] && (b += "0"), b += a[c].toString(16);
                     }
-                    return b + '"';
+                    return b + "\"";
                 };
                 jspb.utils.debugScalarToTextFormat = function (a) {
                     return goog.isString(a) ? goog.string.quote(a) : a.toString();
@@ -5835,10 +5836,10 @@ function commEngineStateCheck(engineState, roomLoock, type) {
              * @public
              */
             // GENERATED CODE -- DO NOT EDIT!
-            var jspb = _require('google-protobuf');
+            var jspb = _require("google-protobuf");
             var goog = jspb;
             var global = window; // var global = Function('return this')();
-            goog.exportSymbol('proto.stream.ErrorCode', null, global);
+            goog.exportSymbol("proto.stream.ErrorCode", null, global);
             /**
              * @enum {number}
              */
@@ -5859,9 +5860,9 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.object.extend(exports, proto.stream);
         }, { "google-protobuf": 1 }], 3: [function (_require, module, exports) {
-            var myProto = _require('./sdk_pb');
-            var myProto1 = _require('./gateway_pb');
-            var myProto2 = _require('./errorcode_pb');
+            var myProto = _require("./sdk_pb");
+            var myProto1 = _require("./gateway_pb");
+            var myProto2 = _require("./errorcode_pb");
             module.exports = {
                 DataProto: myProto,
                 DataProto: myProto1,
@@ -5876,61 +5877,61 @@ function commEngineStateCheck(engineState, roomLoock, type) {
              * @public
              */
             // GENERATED CODE -- DO NOT EDIT!
-            var jspb = _require('google-protobuf');
+            var jspb = _require("google-protobuf");
             var goog = jspb;
             var global = window; // var global = Function('return this')();
-            var errorcode_pb = _require('./errorcode_pb.js');
-            goog.exportSymbol('proto.stream.BookInfo', null, global);
-            goog.exportSymbol('proto.stream.CmdId', null, global);
-            goog.exportSymbol('proto.stream.ConnDetailV2', null, global);
-            goog.exportSymbol('proto.stream.CreateRoom', null, global);
-            goog.exportSymbol('proto.stream.CreateRoomRsp', null, global);
-            goog.exportSymbol('proto.stream.DisconnectReq', null, global);
-            goog.exportSymbol('proto.stream.DisconnectRsp', null, global);
-            goog.exportSymbol('proto.stream.GetRoomDetailReq', null, global);
-            goog.exportSymbol('proto.stream.GetRoomDetailRsp', null, global);
-            goog.exportSymbol('proto.stream.GetRoomList', null, global);
-            goog.exportSymbol('proto.stream.GetRoomListExReq', null, global);
-            goog.exportSymbol('proto.stream.GetRoomListExRsp', null, global);
-            goog.exportSymbol('proto.stream.GetRoomListRsp', null, global);
-            goog.exportSymbol('proto.stream.HeartbeatReq', null, global);
-            goog.exportSymbol('proto.stream.HeartbeatRsp', null, global);
-            goog.exportSymbol('proto.stream.JoinOpenNotify', null, global);
-            goog.exportSymbol('proto.stream.JoinOpenReq', null, global);
-            goog.exportSymbol('proto.stream.JoinOpenRsp', null, global);
-            goog.exportSymbol('proto.stream.JoinOverNotify', null, global);
-            goog.exportSymbol('proto.stream.JoinOverReq', null, global);
-            goog.exportSymbol('proto.stream.JoinOverRsp', null, global);
-            goog.exportSymbol('proto.stream.JoinRoomReq', null, global);
-            goog.exportSymbol('proto.stream.JoinRoomRsp', null, global);
-            goog.exportSymbol('proto.stream.JoinRoomType', null, global);
-            goog.exportSymbol('proto.stream.KickPlayer', null, global);
-            goog.exportSymbol('proto.stream.KickPlayerNotify', null, global);
-            goog.exportSymbol('proto.stream.KickPlayerRsp', null, global);
-            goog.exportSymbol('proto.stream.LeaveRoomReq', null, global);
-            goog.exportSymbol('proto.stream.LeaveRoomRsp', null, global);
-            goog.exportSymbol('proto.stream.LoginReq', null, global);
-            goog.exportSymbol('proto.stream.LoginRsp', null, global);
-            goog.exportSymbol('proto.stream.LogoutRsp', null, global);
-            goog.exportSymbol('proto.stream.NetworkStateNotify', null, global);
-            goog.exportSymbol('proto.stream.NetworkStateReq', null, global);
-            goog.exportSymbol('proto.stream.NetworkStateRsp', null, global);
-            goog.exportSymbol('proto.stream.NoticeJoin', null, global);
-            goog.exportSymbol('proto.stream.NoticeLeave', null, global);
-            goog.exportSymbol('proto.stream.NoticeRoomProperty', null, global);
-            goog.exportSymbol('proto.stream.PlayerInfo', null, global);
-            goog.exportSymbol('proto.stream.RoomDetail', null, global);
-            goog.exportSymbol('proto.stream.RoomFilter', null, global);
-            goog.exportSymbol('proto.stream.RoomInfo', null, global);
-            goog.exportSymbol('proto.stream.RoomInfoEx', null, global);
-            goog.exportSymbol('proto.stream.RoomListSort', null, global);
-            goog.exportSymbol('proto.stream.RoomState', null, global);
-            goog.exportSymbol('proto.stream.SetRoomPropertyReq', null, global);
-            goog.exportSymbol('proto.stream.SetRoomPropertyRsp', null, global);
-            goog.exportSymbol('proto.stream.SortOrder', null, global);
-            goog.exportSymbol('proto.stream.TcpProtoHeader', null, global);
-            goog.exportSymbol('proto.stream.UserV2', null, global);
-            goog.exportSymbol('proto.stream.keyValue', null, global);
+            var errorcode_pb = _require("./errorcode_pb.js");
+            goog.exportSymbol("proto.stream.BookInfo", null, global);
+            goog.exportSymbol("proto.stream.CmdId", null, global);
+            goog.exportSymbol("proto.stream.ConnDetailV2", null, global);
+            goog.exportSymbol("proto.stream.CreateRoom", null, global);
+            goog.exportSymbol("proto.stream.CreateRoomRsp", null, global);
+            goog.exportSymbol("proto.stream.DisconnectReq", null, global);
+            goog.exportSymbol("proto.stream.DisconnectRsp", null, global);
+            goog.exportSymbol("proto.stream.GetRoomDetailReq", null, global);
+            goog.exportSymbol("proto.stream.GetRoomDetailRsp", null, global);
+            goog.exportSymbol("proto.stream.GetRoomList", null, global);
+            goog.exportSymbol("proto.stream.GetRoomListExReq", null, global);
+            goog.exportSymbol("proto.stream.GetRoomListExRsp", null, global);
+            goog.exportSymbol("proto.stream.GetRoomListRsp", null, global);
+            goog.exportSymbol("proto.stream.HeartbeatReq", null, global);
+            goog.exportSymbol("proto.stream.HeartbeatRsp", null, global);
+            goog.exportSymbol("proto.stream.JoinOpenNotify", null, global);
+            goog.exportSymbol("proto.stream.JoinOpenReq", null, global);
+            goog.exportSymbol("proto.stream.JoinOpenRsp", null, global);
+            goog.exportSymbol("proto.stream.JoinOverNotify", null, global);
+            goog.exportSymbol("proto.stream.JoinOverReq", null, global);
+            goog.exportSymbol("proto.stream.JoinOverRsp", null, global);
+            goog.exportSymbol("proto.stream.JoinRoomReq", null, global);
+            goog.exportSymbol("proto.stream.JoinRoomRsp", null, global);
+            goog.exportSymbol("proto.stream.JoinRoomType", null, global);
+            goog.exportSymbol("proto.stream.KickPlayer", null, global);
+            goog.exportSymbol("proto.stream.KickPlayerNotify", null, global);
+            goog.exportSymbol("proto.stream.KickPlayerRsp", null, global);
+            goog.exportSymbol("proto.stream.LeaveRoomReq", null, global);
+            goog.exportSymbol("proto.stream.LeaveRoomRsp", null, global);
+            goog.exportSymbol("proto.stream.LoginReq", null, global);
+            goog.exportSymbol("proto.stream.LoginRsp", null, global);
+            goog.exportSymbol("proto.stream.LogoutRsp", null, global);
+            goog.exportSymbol("proto.stream.NetworkStateNotify", null, global);
+            goog.exportSymbol("proto.stream.NetworkStateReq", null, global);
+            goog.exportSymbol("proto.stream.NetworkStateRsp", null, global);
+            goog.exportSymbol("proto.stream.NoticeJoin", null, global);
+            goog.exportSymbol("proto.stream.NoticeLeave", null, global);
+            goog.exportSymbol("proto.stream.NoticeRoomProperty", null, global);
+            goog.exportSymbol("proto.stream.PlayerInfo", null, global);
+            goog.exportSymbol("proto.stream.RoomDetail", null, global);
+            goog.exportSymbol("proto.stream.RoomFilter", null, global);
+            goog.exportSymbol("proto.stream.RoomInfo", null, global);
+            goog.exportSymbol("proto.stream.RoomInfoEx", null, global);
+            goog.exportSymbol("proto.stream.RoomListSort", null, global);
+            goog.exportSymbol("proto.stream.RoomState", null, global);
+            goog.exportSymbol("proto.stream.SetRoomPropertyReq", null, global);
+            goog.exportSymbol("proto.stream.SetRoomPropertyRsp", null, global);
+            goog.exportSymbol("proto.stream.SortOrder", null, global);
+            goog.exportSymbol("proto.stream.TcpProtoHeader", null, global);
+            goog.exportSymbol("proto.stream.UserV2", null, global);
+            goog.exportSymbol("proto.stream.keyValue", null, global);
             /**
              * Generated by JsPbCodeGenerator.
              * @param {Array=} opt_data Optional initial data array, typically from a
@@ -5946,7 +5947,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.LoginReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LoginReq.displayName = 'proto.stream.LoginReq';
+                proto.stream.LoginReq.displayName = "proto.stream.LoginReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6165,7 +6166,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.LoginRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LoginRsp.displayName = 'proto.stream.LoginRsp';
+                proto.stream.LoginRsp.displayName = "proto.stream.LoginRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6304,7 +6305,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.HeartbeatReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.HeartbeatReq.displayName = 'proto.stream.HeartbeatReq';
+                proto.stream.HeartbeatReq.displayName = "proto.stream.HeartbeatReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6443,7 +6444,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.HeartbeatRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.HeartbeatRsp.displayName = 'proto.stream.HeartbeatRsp';
+                proto.stream.HeartbeatRsp.displayName = "proto.stream.HeartbeatRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6582,7 +6583,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.DisconnectReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.DisconnectReq.displayName = 'proto.stream.DisconnectReq';
+                proto.stream.DisconnectReq.displayName = "proto.stream.DisconnectReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6741,7 +6742,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.DisconnectRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.DisconnectRsp.displayName = 'proto.stream.DisconnectRsp';
+                proto.stream.DisconnectRsp.displayName = "proto.stream.DisconnectRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6860,7 +6861,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.LogoutRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LogoutRsp.displayName = 'proto.stream.LogoutRsp';
+                proto.stream.LogoutRsp.displayName = "proto.stream.LogoutRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -6979,7 +6980,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.keyValue, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.keyValue.displayName = 'proto.stream.keyValue';
+                proto.stream.keyValue.displayName = "proto.stream.keyValue";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -7118,7 +7119,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.PlayerInfo, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.PlayerInfo.displayName = 'proto.stream.PlayerInfo';
+                proto.stream.PlayerInfo.displayName = "proto.stream.PlayerInfo";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -7275,7 +7276,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.BookInfo, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.BookInfo.displayName = 'proto.stream.BookInfo';
+                proto.stream.BookInfo.displayName = "proto.stream.BookInfo";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -7454,7 +7455,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.RoomInfo, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.RoomInfo.displayName = 'proto.stream.RoomInfo';
+                proto.stream.RoomInfo.displayName = "proto.stream.RoomInfo";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -7731,7 +7732,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.JoinRoomReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinRoomReq.displayName = 'proto.stream.JoinRoomReq';
+                proto.stream.JoinRoomReq.displayName = "proto.stream.JoinRoomReq";
             }
             /**
              * List of repeated fields within this message type.
@@ -8008,7 +8009,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.JoinRoomRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinRoomRsp.displayName = 'proto.stream.JoinRoomRsp';
+                proto.stream.JoinRoomRsp.displayName = "proto.stream.JoinRoomRsp";
             }
             /**
              * List of repeated fields within this message type.
@@ -8265,7 +8266,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.NoticeJoin, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NoticeJoin.displayName = 'proto.stream.NoticeJoin';
+                proto.stream.NoticeJoin.displayName = "proto.stream.NoticeJoin";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -8395,7 +8396,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.NoticeLeave, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NoticeLeave.displayName = 'proto.stream.NoticeLeave';
+                proto.stream.NoticeLeave.displayName = "proto.stream.NoticeLeave";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -8592,7 +8593,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.JoinOverReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOverReq.displayName = 'proto.stream.JoinOverReq';
+                proto.stream.JoinOverReq.displayName = "proto.stream.JoinOverReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -8789,7 +8790,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.JoinOverRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOverRsp.displayName = 'proto.stream.JoinOverRsp';
+                proto.stream.JoinOverRsp.displayName = "proto.stream.JoinOverRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -8946,7 +8947,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.JoinOverNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOverNotify.displayName = 'proto.stream.JoinOverNotify';
+                proto.stream.JoinOverNotify.displayName = "proto.stream.JoinOverNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9123,7 +9124,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.JoinOpenReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOpenReq.displayName = 'proto.stream.JoinOpenReq';
+                proto.stream.JoinOpenReq.displayName = "proto.stream.JoinOpenReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9320,7 +9321,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.JoinOpenRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOpenRsp.displayName = 'proto.stream.JoinOpenRsp';
+                proto.stream.JoinOpenRsp.displayName = "proto.stream.JoinOpenRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9477,7 +9478,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.JoinOpenNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.JoinOpenNotify.displayName = 'proto.stream.JoinOpenNotify';
+                proto.stream.JoinOpenNotify.displayName = "proto.stream.JoinOpenNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9654,7 +9655,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.LeaveRoomReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LeaveRoomReq.displayName = 'proto.stream.LeaveRoomReq';
+                proto.stream.LeaveRoomReq.displayName = "proto.stream.LeaveRoomReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -9851,7 +9852,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.LeaveRoomRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.LeaveRoomRsp.displayName = 'proto.stream.LeaveRoomRsp';
+                proto.stream.LeaveRoomRsp.displayName = "proto.stream.LeaveRoomRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10048,7 +10049,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.TcpProtoHeader, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.TcpProtoHeader.displayName = 'proto.stream.TcpProtoHeader';
+                proto.stream.TcpProtoHeader.displayName = "proto.stream.TcpProtoHeader";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10247,7 +10248,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.ConnDetailV2, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.ConnDetailV2.displayName = 'proto.stream.ConnDetailV2';
+                proto.stream.ConnDetailV2.displayName = "proto.stream.ConnDetailV2";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10466,7 +10467,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.UserV2, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.UserV2.displayName = 'proto.stream.UserV2';
+                proto.stream.UserV2.displayName = "proto.stream.UserV2";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10725,7 +10726,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.NetworkStateReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NetworkStateReq.displayName = 'proto.stream.NetworkStateReq';
+                proto.stream.NetworkStateReq.displayName = "proto.stream.NetworkStateReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -10904,7 +10905,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.NetworkStateRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NetworkStateRsp.displayName = 'proto.stream.NetworkStateRsp';
+                proto.stream.NetworkStateRsp.displayName = "proto.stream.NetworkStateRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11023,7 +11024,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.NetworkStateNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NetworkStateNotify.displayName = 'proto.stream.NetworkStateNotify';
+                proto.stream.NetworkStateNotify.displayName = "proto.stream.NetworkStateNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11202,7 +11203,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.CreateRoom, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CreateRoom.displayName = 'proto.stream.CreateRoom';
+                proto.stream.CreateRoom.displayName = "proto.stream.CreateRoom";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11383,7 +11384,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.CreateRoomRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CreateRoomRsp.displayName = 'proto.stream.CreateRoomRsp';
+                proto.stream.CreateRoomRsp.displayName = "proto.stream.CreateRoomRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11573,7 +11574,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.GetRoomList, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomList.displayName = 'proto.stream.GetRoomList';
+                proto.stream.GetRoomList.displayName = "proto.stream.GetRoomList";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11723,7 +11724,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.RoomFilter, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.RoomFilter.displayName = 'proto.stream.RoomFilter';
+                proto.stream.RoomFilter.displayName = "proto.stream.RoomFilter";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -11960,7 +11961,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.GetRoomListRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomListRsp.displayName = 'proto.stream.GetRoomListRsp';
+                proto.stream.GetRoomListRsp.displayName = "proto.stream.GetRoomListRsp";
             }
             /**
              * List of repeated fields within this message type.
@@ -12117,7 +12118,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.GetRoomListExReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomListExReq.displayName = 'proto.stream.GetRoomListExReq';
+                proto.stream.GetRoomListExReq.displayName = "proto.stream.GetRoomListExReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -12347,7 +12348,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.RoomInfoEx, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.RoomInfoEx.displayName = 'proto.stream.RoomInfoEx';
+                proto.stream.RoomInfoEx.displayName = "proto.stream.RoomInfoEx";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -12684,7 +12685,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.GetRoomListExRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomListExRsp.displayName = 'proto.stream.GetRoomListExRsp';
+                proto.stream.GetRoomListExRsp.displayName = "proto.stream.GetRoomListExRsp";
             }
             /**
              * List of repeated fields within this message type.
@@ -12861,7 +12862,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.GetRoomDetailReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomDetailReq.displayName = 'proto.stream.GetRoomDetailReq';
+                proto.stream.GetRoomDetailReq.displayName = "proto.stream.GetRoomDetailReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -13000,7 +13001,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.GetRoomDetailRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.GetRoomDetailRsp.displayName = 'proto.stream.GetRoomDetailRsp';
+                proto.stream.GetRoomDetailRsp.displayName = "proto.stream.GetRoomDetailRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -13150,7 +13151,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.RoomDetail, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.RoomDetail.displayName = 'proto.stream.RoomDetail';
+                proto.stream.RoomDetail.displayName = "proto.stream.RoomDetail";
             }
             /**
              * List of repeated fields within this message type.
@@ -13465,7 +13466,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.KickPlayer, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.KickPlayer.displayName = 'proto.stream.KickPlayer';
+                proto.stream.KickPlayer.displayName = "proto.stream.KickPlayer";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -13662,7 +13663,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.KickPlayerRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.KickPlayerRsp.displayName = 'proto.stream.KickPlayerRsp';
+                proto.stream.KickPlayerRsp.displayName = "proto.stream.KickPlayerRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -13841,7 +13842,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.KickPlayerNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.KickPlayerNotify.displayName = 'proto.stream.KickPlayerNotify';
+                proto.stream.KickPlayerNotify.displayName = "proto.stream.KickPlayerNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14038,7 +14039,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.SetRoomPropertyReq, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetRoomPropertyReq.displayName = 'proto.stream.SetRoomPropertyReq';
+                proto.stream.SetRoomPropertyReq.displayName = "proto.stream.SetRoomPropertyReq";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14235,7 +14236,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.SetRoomPropertyRsp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetRoomPropertyRsp.displayName = 'proto.stream.SetRoomPropertyRsp';
+                proto.stream.SetRoomPropertyRsp.displayName = "proto.stream.SetRoomPropertyRsp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14432,7 +14433,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.NoticeRoomProperty, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.NoticeRoomProperty.displayName = 'proto.stream.NoticeRoomProperty';
+                proto.stream.NoticeRoomProperty.displayName = "proto.stream.NoticeRoomProperty";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14679,32 +14680,32 @@ function commEngineStateCheck(engineState, roomLoock, type) {
              * @public
              */
             // GENERATED CODE -- DO NOT EDIT!
-            var jspb = _require('google-protobuf');
+            var jspb = _require("google-protobuf");
             var goog = jspb;
             var global = window; // var global = Function('return this')();
-            goog.exportSymbol('proto.stream.Broadcast', null, global);
-            goog.exportSymbol('proto.stream.BroadcastAck', null, global);
-            goog.exportSymbol('proto.stream.CheckIn', null, global);
-            goog.exportSymbol('proto.stream.CheckInAck', null, global);
-            goog.exportSymbol('proto.stream.CheckInNotify', null, global);
-            goog.exportSymbol('proto.stream.FrameBroadcast', null, global);
-            goog.exportSymbol('proto.stream.FrameBroadcastAck', null, global);
-            goog.exportSymbol('proto.stream.FrameDataNotify', null, global);
-            goog.exportSymbol('proto.stream.FrameSyncNotify', null, global);
-            goog.exportSymbol('proto.stream.Heartbeat', null, global);
-            goog.exportSymbol('proto.stream.HeartbeatAck', null, global);
-            goog.exportSymbol('proto.stream.Notify', null, global);
-            goog.exportSymbol('proto.stream.Publish', null, global);
-            goog.exportSymbol('proto.stream.PublishAck', null, global);
-            goog.exportSymbol('proto.stream.PublishNotify', null, global);
-            goog.exportSymbol('proto.stream.SDKHotelCmdID', null, global);
-            goog.exportSymbol('proto.stream.SetFrameSyncRate', null, global);
-            goog.exportSymbol('proto.stream.SetFrameSyncRateAck', null, global);
-            goog.exportSymbol('proto.stream.SetFrameSyncRateNotify', null, global);
-            goog.exportSymbol('proto.stream.SetUseTimeStamp', null, global);
-            goog.exportSymbol('proto.stream.SetUseTimeStampAck', null, global);
-            goog.exportSymbol('proto.stream.Subscribe', null, global);
-            goog.exportSymbol('proto.stream.SubscribeAck', null, global);
+            goog.exportSymbol("proto.stream.Broadcast", null, global);
+            goog.exportSymbol("proto.stream.BroadcastAck", null, global);
+            goog.exportSymbol("proto.stream.CheckIn", null, global);
+            goog.exportSymbol("proto.stream.CheckInAck", null, global);
+            goog.exportSymbol("proto.stream.CheckInNotify", null, global);
+            goog.exportSymbol("proto.stream.FrameBroadcast", null, global);
+            goog.exportSymbol("proto.stream.FrameBroadcastAck", null, global);
+            goog.exportSymbol("proto.stream.FrameDataNotify", null, global);
+            goog.exportSymbol("proto.stream.FrameSyncNotify", null, global);
+            goog.exportSymbol("proto.stream.Heartbeat", null, global);
+            goog.exportSymbol("proto.stream.HeartbeatAck", null, global);
+            goog.exportSymbol("proto.stream.Notify", null, global);
+            goog.exportSymbol("proto.stream.Publish", null, global);
+            goog.exportSymbol("proto.stream.PublishAck", null, global);
+            goog.exportSymbol("proto.stream.PublishNotify", null, global);
+            goog.exportSymbol("proto.stream.SDKHotelCmdID", null, global);
+            goog.exportSymbol("proto.stream.SetFrameSyncRate", null, global);
+            goog.exportSymbol("proto.stream.SetFrameSyncRateAck", null, global);
+            goog.exportSymbol("proto.stream.SetFrameSyncRateNotify", null, global);
+            goog.exportSymbol("proto.stream.SetUseTimeStamp", null, global);
+            goog.exportSymbol("proto.stream.SetUseTimeStampAck", null, global);
+            goog.exportSymbol("proto.stream.Subscribe", null, global);
+            goog.exportSymbol("proto.stream.SubscribeAck", null, global);
             /**
              * Generated by JsPbCodeGenerator.
              * @param {Array=} opt_data Optional initial data array, typically from a
@@ -14720,7 +14721,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.CheckIn, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CheckIn.displayName = 'proto.stream.CheckIn';
+                proto.stream.CheckIn.displayName = "proto.stream.CheckIn";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -14919,7 +14920,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.CheckInAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CheckInAck.displayName = 'proto.stream.CheckInAck';
+                proto.stream.CheckInAck.displayName = "proto.stream.CheckInAck";
             }
             /**
              * List of repeated fields within this message type.
@@ -15144,7 +15145,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.Heartbeat, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Heartbeat.displayName = 'proto.stream.Heartbeat';
+                proto.stream.Heartbeat.displayName = "proto.stream.Heartbeat";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -15303,7 +15304,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.HeartbeatAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.HeartbeatAck.displayName = 'proto.stream.HeartbeatAck';
+                proto.stream.HeartbeatAck.displayName = "proto.stream.HeartbeatAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -15422,7 +15423,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.Broadcast, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Broadcast.displayName = 'proto.stream.Broadcast';
+                proto.stream.Broadcast.displayName = "proto.stream.Broadcast";
             }
             /**
              * List of repeated fields within this message type.
@@ -15635,7 +15636,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.BroadcastAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.BroadcastAck.displayName = 'proto.stream.BroadcastAck';
+                proto.stream.BroadcastAck.displayName = "proto.stream.BroadcastAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -15754,7 +15755,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.CheckInNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.CheckInNotify.displayName = 'proto.stream.CheckInNotify';
+                proto.stream.CheckInNotify.displayName = "proto.stream.CheckInNotify";
             }
             /**
              * List of repeated fields within this message type.
@@ -15979,7 +15980,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.Notify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Notify.displayName = 'proto.stream.Notify';
+                proto.stream.Notify.displayName = "proto.stream.Notify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -16156,7 +16157,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.Subscribe, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Subscribe.displayName = 'proto.stream.Subscribe';
+                proto.stream.Subscribe.displayName = "proto.stream.Subscribe";
             }
             /**
              * List of repeated fields within this message type.
@@ -16361,7 +16362,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.SubscribeAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SubscribeAck.displayName = 'proto.stream.SubscribeAck';
+                proto.stream.SubscribeAck.displayName = "proto.stream.SubscribeAck";
             }
             /**
              * List of repeated fields within this message type.
@@ -16516,7 +16517,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.Publish, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.Publish.displayName = 'proto.stream.Publish';
+                proto.stream.Publish.displayName = "proto.stream.Publish";
             }
             /**
              * List of repeated fields within this message type.
@@ -16729,7 +16730,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.PublishAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.PublishAck.displayName = 'proto.stream.PublishAck';
+                proto.stream.PublishAck.displayName = "proto.stream.PublishAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -16868,7 +16869,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.PublishNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.PublishNotify.displayName = 'proto.stream.PublishNotify';
+                proto.stream.PublishNotify.displayName = "proto.stream.PublishNotify";
             }
             /**
              * List of repeated fields within this message type.
@@ -17081,7 +17082,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.SetUseTimeStamp, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetUseTimeStamp.displayName = 'proto.stream.SetUseTimeStamp';
+                proto.stream.SetUseTimeStamp.displayName = "proto.stream.SetUseTimeStamp";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -17262,7 +17263,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.SetUseTimeStampAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetUseTimeStampAck.displayName = 'proto.stream.SetUseTimeStampAck';
+                proto.stream.SetUseTimeStampAck.displayName = "proto.stream.SetUseTimeStampAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -17401,7 +17402,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.SetFrameSyncRate, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetFrameSyncRate.displayName = 'proto.stream.SetFrameSyncRate';
+                proto.stream.SetFrameSyncRate.displayName = "proto.stream.SetFrameSyncRate";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -17600,7 +17601,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.SetFrameSyncRateAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetFrameSyncRateAck.displayName = 'proto.stream.SetFrameSyncRateAck';
+                proto.stream.SetFrameSyncRateAck.displayName = "proto.stream.SetFrameSyncRateAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -17719,7 +17720,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.SetFrameSyncRateNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.SetFrameSyncRateNotify.displayName = 'proto.stream.SetFrameSyncRateNotify';
+                proto.stream.SetFrameSyncRateNotify.displayName = "proto.stream.SetFrameSyncRateNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -17898,7 +17899,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.FrameBroadcast, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.FrameBroadcast.displayName = 'proto.stream.FrameBroadcast';
+                proto.stream.FrameBroadcast.displayName = "proto.stream.FrameBroadcast";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -18075,7 +18076,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.FrameBroadcastAck, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.FrameBroadcastAck.displayName = 'proto.stream.FrameBroadcastAck';
+                proto.stream.FrameBroadcastAck.displayName = "proto.stream.FrameBroadcastAck";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -18194,7 +18195,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.FrameDataNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.FrameDataNotify.displayName = 'proto.stream.FrameDataNotify';
+                proto.stream.FrameDataNotify.displayName = "proto.stream.FrameDataNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -18411,7 +18412,7 @@ function commEngineStateCheck(engineState, roomLoock, type) {
             };
             goog.inherits(proto.stream.FrameSyncNotify, jspb.Message);
             if (goog.DEBUG && !COMPILED) {
-                proto.stream.FrameSyncNotify.displayName = 'proto.stream.FrameSyncNotify';
+                proto.stream.FrameSyncNotify.displayName = "proto.stream.FrameSyncNotify";
             }
             if (jspb.Message.GENERATE_TO_OBJECT) {
                 /**
@@ -19134,6 +19135,7 @@ function MsReopenRoomNotify(roomID, userID, cpProto) {
     this.userID = userID;
     this.cpProto = cpProto;
 } /* ================ matchvsnetwork.js ================= */
+//adapter weixin
 function MatchvsNetWorkCallBack() {
     /**
      *
@@ -19149,238 +19151,225 @@ function MatchvsNetWorkCallBack() {
     this.onErr = function (errCode, errMsg) {
     };
 }
-/**
- * var callback = new MatchvsNetWorkCallBack();
- * @param host String,ex:"127.0.0.1:12345";
- * @param callback MatchvsNetWorkCallBack
- * @constructor
- */
-function MatchvsNetWork(host, callback) {
-    var socket;
-    var mCallBack = callback;
-    var mHost = host;
-    var bufQueue = [];
-    this.send = function (message) {
-        if (!window.WebSocket) {
-            return;
-        }
-        if (isIE()) {
-            var uint8A = new Uint8Array(message.buffer.byteLength);
-            for (var i = 0; i < uint8A.length; i++) {
-                uint8A[i] = (message.getUint8(i));
-            }
-            message = uint8A;
-        }
-        if (socket.readyState === WebSocket.OPEN) {
-            //log(message);
-            socket.send(message);
-        }
-        else {
-            bufQueue.push(message);
-        }
-    };
-    this.close = function () {
-        if (socket) {
-            socket.close();
-        }
-    };
-    if (!window.WebSocket) {
-        window.WebSocket = window.MozWebSocket;
-    }
-    if (window.WebSocket) {
-        socket = new WebSocket(host);
-        socket.onmessage = function (event) {
-            var reader = new FileReader();
-            reader.readAsArrayBuffer(event.data);
-            //  当读取操作成功完成时调用.
-            reader.onload = function (evt) {
-                if (evt.target.readyState === FileReader.DONE) {
-                    var dataView = new DataView(reader.result);
-                    mCallBack.onMsg(dataView);
-                }
-                else {
-                    mCallBack.onErr(1606, "[err]parse fail");
+var MatchvsNetWork;
+var MatchvsHttp;
+try {
+    if (typeof (wx) !== "undefined") {
+        MatchvsNetWork = function MatchvsNetWork(host, callback) {
+            console.log("use wx.socket ");
+            /**
+             * WebSocket 任务，可通过 wx.connectSocket() 接口创建返回。
+             * @type {socket}
+             */
+            var socket = null;
+            var socketOpen = false;
+            var socketMsgQueue = [];
+            var mCallBack = callback;
+            var mHost = host;
+            var that = this;
+            this.close = function () {
+                if (socket) {
+                    socket.close();
                 }
             };
-        };
-        socket.onopen = function (event) {
-            while (bufQueue.length > 0) {
-                socket.send(bufQueue.pop());
+            /**
+             * msg {DataView}
+             */
+            this.send = function (msg) {
+                if (socketOpen) {
+                    socket.send({
+                        data: msg.buffer,
+                    });
+                }
+                else {
+                    //只缓存一百
+                    if (socketMsgQueue.length < 100) {
+                        socketMsgQueue.push(msg);
+                    }
+                }
+            };
+            function connect() {
+                socket = wx.connectSocket({
+                    url: host,
+                    header: {
+                        "engine": "WeiXinGame"
+                    }
+                });
             }
-            mCallBack.onConnect && mCallBack.onConnect(mHost);
+            connect();
+            console.log("SocketTask:" + socket);
+            socket.onOpen(function (res) {
+                console.log("[wx.WebSocket][connect]:" + res);
+                socketOpen = true;
+                while (socketMsgQueue.length > 0) {
+                    that.send(socketMsgQueue.pop());
+                }
+                mCallBack.onConnect && mCallBack.onConnect(mHost);
+            });
+            socket.onClose(function (res) {
+                socketOpen = false;
+                mCallBack.onDisConnect && mCallBack.onDisConnect(mHost);
+            });
+            socket.onMessage(function (res) {
+                var dataView = new DataView(res.data);
+                //console.log("[wx.WebSocket] [recv] size:" + dataView.byteLength);
+                mCallBack.onMsg(dataView);
+            });
         };
-        socket.onclose = function (event) {
-            mCallBack.onDisConnect && mCallBack.onDisConnect(mHost);
-        };
-        socket.onerror = function (event) {
-            if (event.type && event.type === "error") {
-                return;
+        MatchvsHttp = function MatchvsHttp(callback) {
+            this.mCallback = callback;
+            function send(url, callback, isPost, params) {
+                wx.request({
+                    url: url,
+                    data: {
+                        x: "",
+                        y: ""
+                    },
+                    header: {
+                        "content-type": "application/json"
+                    },
+                    success: function (res) {
+                        var rsp = JSON.stringify(res.data);
+                        MatchvsLog.logI("http success:" + rsp);
+                        callback.onMsg(rsp);
+                    },
+                    fail: function (res) {
+                        MatchvsLog.logI("http fail:" + res.errMsg);
+                        callback.onErr(0, res.errMsg);
+                    }
+                });
             }
-            callback.onErr(1606, event);
+            /**
+             * HTTP GET
+             * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do?key=fa"
+             */
+            this.get = function (url) {
+                send(url, this.mCallback, false, null);
+            };
+            /**
+             * HTTP POST
+             * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do"
+             * @param params {String} ex:"lorem=ipsum&name=binny";
+             */
+            this.post = function (url, params) {
+                send(url, this.mCallback, true, params);
+            };
         };
     }
     else {
-        alert("Not Support the WebSocket！");
-    }
-}
-function MatchvsHttp(callback) {
-    this.mCallback = callback;
-    function send(url, callback, isPost, params) {
-        var http = new XMLHttpRequest();
-        http.open(isPost ? "POST" : "GET", url, true);
-        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        http.onreadystatechange = function () {
-            if (http.readyState === 4) {
-                if (http.status === 200) {
-                    callback.onMsg(http.responseText);
-                    MatchvsLog.logI("[HTTP:](" + url + ")+" + http.responseText);
+        MatchvsNetWork = function MatchvsNetWork(host, callback) {
+            console.log("use web.socket ");
+            var socket;
+            var mCallBack = callback;
+            var mHost = host;
+            var bufQueue = [];
+            this.send = function (message) {
+                if (!window.WebSocket) {
+                    return;
+                }
+                if (isIE()) {
+                    var uint8A = new Uint8Array(message.buffer.byteLength);
+                    for (var i = 0; i < uint8A.length; i++) {
+                        uint8A[i] = (message.getUint8(i));
+                    }
+                    message = uint8A;
+                }
+                if (socket.readyState === WebSocket.OPEN) {
+                    //log(message);
+                    socket.send(message);
                 }
                 else {
-                    callback.onErr(http.status, http.statusText);
+                    bufQueue.push(message);
                 }
+            };
+            this.close = function () {
+                if (socket) {
+                    socket.close();
+                }
+            };
+            if (!window.WebSocket) {
+                window.WebSocket = window.MozWebSocket;
             }
-        };
-        if (isPost) {
-            http.send(params);
-        }
-        else {
-            http.send(null);
-        }
-    }
-    /**
-     * HTTP GET
-     * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do?key=fa"
-     */
-    this.get = function (url) {
-        send(url, this.mCallback, false, null);
-    };
-    /**
-     * HTTP POST
-     * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do"
-     * @param params {String} ex:"lorem=ipsum&name=binny";
-     */
-    this.post = function (url, params) {
-        send(url, this.mCallback, true, params);
-    };
-}
-//adapter weixin
-if (typeof (wx) !== "undefined") {
-    function MatchvsNetWorkCallBack() {
-        /**
-         *
-         * @param buf DataView
-         */
-        this.onMsg = function (buf) {
-        };
-        /**
-         *
-         * @param errCode int
-         * @param errMsg String
-         */
-        this.onErr = function (errCode, errMsg) {
-        };
-    }
-    function MatchvsNetWork(host, callback) {
-        /**
-         * WebSocket 任务，可通过 wx.connectSocket() 接口创建返回。
-         * @type {SocketTask}
-         */
-        var socket = null;
-        var socketOpen = false;
-        var socketMsgQueue = [];
-        var mCallBack = callback;
-        var mHost = host;
-        var that = this;
-        this.close = function () {
-            if (socket) {
-                socket.close();
-            }
-        };
-        /**
-         * msg {DataView}
-         */
-        this.send = function (msg) {
-            if (socketOpen) {
-                socket.send({
-                    data: msg.buffer,
-                });
+            if (window.WebSocket) {
+                socket = new WebSocket(host);
+                socket.onmessage = function (event) {
+                    var reader = new FileReader();
+                    reader.readAsArrayBuffer(event.data);
+                    //  当读取操作成功完成时调用.
+                    reader.onload = function (evt) {
+                        if (evt.target.readyState === FileReader.DONE) {
+                            var dataView = new DataView(reader.result);
+                            mCallBack.onMsg(dataView);
+                        }
+                        else {
+                            mCallBack.onErr(1606, "[err]parse fail");
+                        }
+                    };
+                };
+                socket.onopen = function (event) {
+                    while (bufQueue.length > 0) {
+                        socket.send(bufQueue.pop());
+                    }
+                    mCallBack.onConnect && mCallBack.onConnect(mHost);
+                };
+                socket.onclose = function (event) {
+                    mCallBack.onDisConnect && mCallBack.onDisConnect(mHost);
+                };
+                socket.onerror = function (event) {
+                    if (event.type && event.type === "error") {
+                        return;
+                    }
+                    callback.onErr(1606, event);
+                };
             }
             else {
-                //只缓存一百
-                if (socketMsgQueue.length < 100) {
-                    socketMsgQueue.push(msg);
-                }
+                alert("Not Support the WebSocket！");
             }
         };
-        function connect() {
-            socket = wx.connectSocket({
-                url: host,
-                header: {
-                    'engine': 'WeiXinGame'
+        MatchvsHttp = function MatchvsHttp(callback) {
+            this.mCallback = callback;
+            function send(url, callback, isPost, params) {
+                var http = new XMLHttpRequest();
+                http.open(isPost ? "POST" : "GET", url, true);
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                http.onreadystatechange = function () {
+                    if (http.readyState === 4) {
+                        if (http.status === 200) {
+                            callback.onMsg(http.responseText);
+                            MatchvsLog.logI("[HTTP:](" + url + ")+" + http.responseText);
+                        }
+                        else {
+                            callback.onErr(http.status, http.statusText);
+                        }
+                    }
+                };
+                if (isPost) {
+                    http.send(params);
                 }
-            });
-        }
-        connect();
-        console.log("SocketTask:" + socket);
-        socket.onOpen(function (res) {
-            console.log("[wx.WebSocket][connect]:" + res);
-            socketOpen = true;
-            while (socketMsgQueue.length > 0) {
-                that.send(socketMsgQueue.pop());
+                else {
+                    http.send(null);
+                }
             }
-            mCallBack.onConnect && mCallBack.onConnect(mHost);
-        });
-        socket.onClose(function (res) {
-            socketOpen = false;
-            mCallBack.onDisConnect && mCallBack.onDisConnect(mHost);
-        });
-        socket.onMessage(function (res) {
-            var dataView = new DataView(res.data);
-            //console.log("[wx.WebSocket] [recv] size:" + dataView.byteLength);
-            mCallBack.onMsg(dataView);
-        });
-    }
-    function MatchvsHttp(callback) {
-        this.mCallback = callback;
-        function send(url, callback, isPost, params) {
-            // var pars = params.splt("&");
-            //TODO post
-            var requestTask = wx.request({
-                url: url,
-                data: {
-                    x: '',
-                    y: ''
-                },
-                header: {
-                    'content-type': 'application/json'
-                },
-                success: function (res) {
-                    var rsp = JSON.stringify(res.data);
-                    MatchvsLog.logI("http success:" + rsp);
-                    callback.onMsg(rsp);
-                },
-                fail: function (res) {
-                    MatchvsLog.logI("http fail:" + res.errMsg);
-                    callback.onErr(0, res.errMsg);
-                }
-            });
-        }
-        /**
-         * HTTP GET
-         * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do?key=fa"
-         */
-        this.get = function (url) {
-            send(url, this.mCallback, false, null);
-        };
-        /**
-         * HTTP POST
-         * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do"
-         * @param params {String} ex:"lorem=ipsum&name=binny";
-         */
-        this.post = function (url, params) {
-            send(url, this.mCallback, true, params);
+            /**
+             * HTTP GET
+             * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do?key=fa"
+             */
+            this.get = function (url) {
+                send(url, this.mCallback, false, null);
+            };
+            /**
+             * HTTP POST
+             * @param url {String} ex:"http://testpay.matchvs.com/wc3/submitOrder.do"
+             * @param params {String} ex:"lorem=ipsum&name=binny";
+             */
+            this.post = function (url, params) {
+                send(url, this.mCallback, true, params);
+            };
         };
     }
+}
+catch (e) {
+    console.warn("network adapter warning:" + e.message);
 }
 /* ================ matchvsprotocol.js ================= */
 //================== CMD =======================
@@ -19762,7 +19751,7 @@ function MatchvsProtocol() {
         roomFilter.setMode(Number(filter.mode));
         roomFilter.setFull(filter.full);
         roomFilter.setCanwatch(filter.canWatch);
-        roomFilter.setRoomproperty(str2u8array(filter.roomproperty));
+        roomFilter.setRoomproperty(str2u8array(filter.roomProperty));
         roomFilter.setState(filter.state);
         pkg.setGameid(gameID);
         pkg.setRoomfilter(roomFilter);
@@ -20250,11 +20239,11 @@ function MatchvsEngine() {
                     engine.mRsp.kickPlayerResponse && engine.mRsp.kickPlayerResponse(new MsKickPlayerRsp(packet.payload.getStatus(), packet.payload.getOwner(), packet.payload.getUserid()));
                     break;
                 case CMD_KICK_PLAYER_NOTIFY:
-                    if (packet.payload.getUserid().toString() === engine.mUserID && engine.mHotelHeartBeatTimer != null) {
+                    if (packet.payload.getUserid().toString() === ("" + engine.mUserID) && engine.mHotelHeartBeatTimer != null) {
                         clearInterval(engine.mHotelHeartBeatTimer);
                         engine.mHotelHeartBeatTimer = null;
                         engine.mEngineState &= ~ENGE_STATE.IN_ROOM;
-                        engine.mEngineState |= ENGE_STATE.LEAVE_ROOMING;
+                        engine.mEngineState |= ENGE_STATE.HAVE_LOGIN;
                     }
                     engine.mRsp.kickPlayerNotify && engine.mRsp.kickPlayerNotify(new MsKickPlayerNotify(packet.payload.getUserid(), packet.payload.getSrcuserid(), utf8ByteArrayToString(packet.payload.getCpproto()), packet.payload.getOwner()));
                     break;
@@ -20493,6 +20482,7 @@ function MatchvsEngine() {
         return "MatchVS-SDK-JS_v1.3.0.beta.201805016";
     };
     this.uninit = function () {
+        engine.mEngineState = ENGE_STATE.NONE;
         return 0;
     };
     /**
@@ -20549,9 +20539,9 @@ function MatchvsEngine() {
             return ret;
         if (userProfile.length > 512)
             return -21;
-        if (typeof matchinfo !== 'object')
+        if (typeof matchinfo !== "object")
             return -1;
-        if (typeof userProfile !== 'string')
+        if (typeof userProfile !== "string")
             return -1;
         var roomJoin = new MsRoomJoin(MsEnum.JoinRoomType.joinRoomWithProperty, this.mUserID, 1, this.mGameID, matchinfo.maxPlayer, matchinfo.mode, matchinfo.canWatch, userProfile, matchinfo.tags);
         var buf = this.mProtocol.joinRoomWithProperties(roomJoin);
@@ -20946,7 +20936,7 @@ MatchvsEngine.prototype.logout = function (cpProto) {
  */
 MatchvsEngine.prototype.heartBeat = function () {
     var Instance = M_ENGINE;
-    if (Instance.mGameID === undefined || Instance.mGameID === '' || Instance.mGameID === 0) {
+    if (Instance.mGameID === undefined || Instance.mGameID === "" || Instance.mGameID === 0) {
         return;
     }
     var roomID;
@@ -20998,7 +20988,7 @@ MatchvsEngine.prototype.sendEvent = function (data) {
             sequence: this.mProtocol.seq - 1,
             result: -7
         }; //正在加入房间
-    if (typeof data !== 'string')
+    if (typeof data !== "string")
         return { sequence: this.mProtocol.seq - 1, result: -1 };
     var destType = 0;
     var msgType = 0;
@@ -21057,7 +21047,7 @@ MatchvsEngine.prototype.sendEventEx = function (msgType, data, desttype, userids
             sequence: this.mProtocol.seq - 1,
             result: -7
         }; //正在加入房间
-    if (typeof data !== 'string')
+    if (typeof data !== "string")
         return { sequence: this.mProtocol.seq - 1, result: -1 };
     if (!(msgType === 0 || msgType === 1 || msgType === 2))
         return { sequence: this.mProtocol.seq - 1, result: -23 };
