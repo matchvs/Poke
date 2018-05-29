@@ -40,8 +40,6 @@ class RankList extends eui.Component implements  eui.UIComponent {
 	public onEvent(e:egret.Event):void {
 		switch(e.type) {
 			case MatchvsMessage.MATCHVS_RANK_LIST:
-				// let rankList = new RankList();
-				// this.dsListHeros = [obj]
 				for(var i= 0; i < e.data.length; i++) {
 					var obj = {ranking: "", name: "", score: "" ,head:""};
 					obj.ranking = (i+1)+"";
@@ -52,7 +50,7 @@ class RankList extends eui.Component implements  eui.UIComponent {
 					}
 
 					if (e.data[i].avator == "" ){
-						obj.head = "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1526543170&di=15a734dd177962fd4c3c3d45295314f8&src=http://img5.duitang.com/uploads/blog/201410/06/20141006162725_FTrrj.jpeg";
+						obj.head = "http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg";
 					} else {
 						obj.head = e.data[i].avator;
 					}

@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "description_json,loading2_png,toast-bg_png,bg_jpg,bg_game_jpg,timefont_json,bg_header_png,bg_match_popup_png,btn_cancel_png,btn_create_room_png,btn_fast_match_png,btn_invite_friends_png,btn_login_png,footer_text_png,logo_png,bg_rank_list_png,btn_close_png,icon_integral_png,bg_result_png,btn_confirm_png,icon_result_fail_png,icon_result_win_png,result_animation_toptitle_lost_png,result_animation_toptitle_win_png,title_fail_png,title_win_png,bg_room_list_item_png,btn_leave_room_png,ui_game_json,ui_loading_json",
+			"keys": "description_json,toast-bg_png,bg_jpg,bg_game_jpg,timefont_json,bg_header_png,bg_match_popup_png,btn_cancel_png,btn_create_room_png,btn_fast_match_png,btn_invite_friends_png,btn_login_png,footer_text_png,logo_png,bg_rank_list_png,btn_close_png,icon_integral_png,bg_result_png,btn_confirm_png,icon_result_fail_png,icon_result_win_png,result_animation_toptitle_lost_png,result_animation_toptitle_win_png,title_fail_png,title_win_png,bg_room_list_item_png,btn_leave_room_png,ui_game_json,ui_loading_json,hScrollBar02_png",
 			"name": "preload"
 		}
 	],
@@ -10,11 +10,6 @@
 			"url": "config/description.json",
 			"type": "json",
 			"name": "description_json"
-		},
-		{
-			"url": "loading/loading2.png",
-			"type": "image",
-			"name": "loading2_png"
 		},
 		{
 			"url": "loading/toast-bg.png",
@@ -158,6 +153,11 @@
 			"type": "sheet",
 			"url": "assets/ui/ui_loading.json",
 			"subkeys": "btn_queding_no,btn_quxiao,title1,ui_loading_top,ui_panel_bg,ui_panel_txt,ui_role1,ui_tips_bg,btn_queding"
+		},
+		{
+			"name": "hScrollBar02_png",
+			"type": "image",
+			"url": "assets/rankList/hScrollBar02.png"
 		}
 	]
 }
