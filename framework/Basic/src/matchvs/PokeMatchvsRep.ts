@@ -58,10 +58,10 @@ class PokeMatchvsRep extends egret.EventDispatcher{
     loginRsp = function(loginRsp) {
         if(loginRsp.status == 200) {
             egret.log("登录成功"+loginRsp.status);
-            this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_LOGIN,false,false,loginRsp));
         } else {
             egret.log("登录失败，错误码："+loginRsp.status);
         }
+         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_LOGIN,false,false,loginRsp));
     }
 
     /**

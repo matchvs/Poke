@@ -8,6 +8,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	private timer:egret.Timer;
 	private userPlayer = [];
 	private roomID = "";
+	private obj = null;
 
 	public constructor() {
 		super();
@@ -16,10 +17,14 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
         this.timer.addEventListener(egret.TimerEvent.TIMER,this.timerFunc,this);
 		this.timer.start();
 	}
+
+
+	public onShow(obj) {
+		this.obj = obj;
+	}
 	
 
 	protected partAdded(partName:string,instance:any):void {
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
@@ -41,7 +46,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 			}
 
 		},this);
-
 	}
 
 	/**
@@ -49,10 +53,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	 */
 	 public onEvent(e:egret.Event):void {
 		 switch (e.type) {
-			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
-				this.addUser(e.data);
-				this.roomID = e.data.roomID;
-			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
 				var arr = e.data.userProfile.split("/n");
@@ -79,7 +79,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 				break;
 			 case MatchvsMessage.MATCHVS_LEVAE_ROOM:
 			 	this.userPlayer.length = 0;
-				 egret.log("接收到离开房间的消息");
+				egret.log("接收到离开房间的消息");
 				this.stopTimer();
 				SceneManager.back();
 			 break;
@@ -167,6 +167,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 
 	protected childrenCreated():void {
 		super.childrenCreated();
+		this.addUser(this.obj);
 	}
 
 

@@ -112,7 +112,6 @@ class Main extends eui.UILayer {
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
             //初始化
             PokeMatchvsEngine.getInstance().init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
-            
             // matchvsEngine.registerUser();
             await RES.loadConfig("resource/default.res.json", "resource/");
             await this.loadTheme();
@@ -156,8 +155,13 @@ class Main extends eui.UILayer {
                 PokeMatchvsEngine.getInstance().login(e.data.id,e.data.token);
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
-                Toast.show("登录成功");
-                this.wxInvite();
+                if(e.data.status == 200) {
+                    Toast.show("登录成功");
+                    this.wxInvite();
+                } else {
+                    Toast.show("登录失败，重新登录");
+                    PokeMatchvsEngine.getInstance().login(e.data.id,e.data.token);
+                }
             break;
         }
     }
