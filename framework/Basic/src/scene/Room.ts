@@ -122,6 +122,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	protected onEvent(e:egret.Event) {
 		switch(e.type) {
 			//有人进来就通知
+			
 			case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
 				var arr = e.data.userProfile.split("/n");
