@@ -21,10 +21,12 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 
 	public onShow(obj) {
 		this.obj = obj;
+		egret.log("show11111111111111111111");
 	}
 	
 
 	protected partAdded(partName:string,instance:any):void {
+		egret.log("partAdded111111111111111111111111111111");
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
@@ -94,6 +96,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	private startBattle(){
 		this.timer.stop();
 		this.removeEvent();
+		egret.log("跳转11111111111111111111");
 		var obj = {roomID: this.roomID, userList:this.userPlayer};
 		SceneManager.showScene(BattleStageUI,obj);
 	}
@@ -167,6 +170,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 
 	protected childrenCreated():void {
 		super.childrenCreated();
+		egret.log("ui加载完成1111111111111111111");
 		this.addUser(this.obj);
 	}
 

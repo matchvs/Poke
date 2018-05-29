@@ -55,6 +55,7 @@ class Game extends eui.Component implements eui.UIComponent {
 			case MatchvsMessage.MATCHVS_JOINROOM_RSP:
 				// this.addUser(e.data);
 				// this.roomID = e.data.roomID;
+				this.removeEvent();
 				SceneManager.showScene(MatchDialog,e.data);
 			 break;
 			 case MatchvsMessage.MATCHVS_CREATE_ROOM:
@@ -70,6 +71,7 @@ class Game extends eui.Component implements eui.UIComponent {
 	  */
 	 public removeEvent() {
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
+		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 	 }
 
 
