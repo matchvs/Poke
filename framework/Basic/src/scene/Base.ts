@@ -12,7 +12,7 @@ class Base extends eui.Component{
 
 
 	private onEvent() {
-		egret.log("111111111111111111111111111111111111111111111111fdsfffffffffffffffffffffff");
+		egret.log("错误");
 	}
 
 

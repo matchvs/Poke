@@ -26,8 +26,6 @@ class Room extends eui.Component implements  eui.UIComponent {
 		super();
 	}
 
-
-
 	public onShow(obj) {
 		this.roomID = obj.roomID;
 		if(obj.isInvite) {
