@@ -298,9 +298,10 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 		}
 		if (p3) {
 			this._tablecardControl.ShowTableCard(3, p3.cardList);
-			this._myCardControl.Release();
+			// this._myCardControl.Release();
 		}
-		SceneManager.JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, this.roomID, this);
+		SceneManager.JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, this.roomID);
+		this.Release();
 		return;
 	}
 

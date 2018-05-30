@@ -51,7 +51,7 @@ class SceneManager {
     }
 
 
-    public static JumpResultUI(p3,p1,p2,iswin,islandwin,timestr , roomid:string, parent){
+    public static JumpResultUI(p3,p1,p2,iswin,islandwin,timestr , roomid:string){
         SceneManager.root.removeChildren();
         let re = new ResultUI();
         SceneManager.root.addChild(re);
@@ -62,7 +62,6 @@ class SceneManager {
 		}else if(p3.isLandLord){
 			re.showResult(p3,p1,p2,iswin,islandwin,timestr,roomid);
 		}
-        parent.Release();
     }
 
     public static ErrorPage(msg:string, callFun:Function, obj:any){
