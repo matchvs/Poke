@@ -12,7 +12,13 @@ class Login extends Base implements eui.UIComponent {
 			// Toast.show("click:" + partName);
 			if (partName == "btn_login") {
 				// Toast.show("ceshi");
-				SceneManager.showScene(Game);
+				if (MatchvsData.loginStatus) {
+					MatchvsData.loginStatus = false;
+					SceneManager.showScene(Game);
+				} else {
+					egret.log("重新登录",GlobalData.myUser.userID+"/n"+GlobalData.myUser.token);
+					PokeMatchvsEngine.getInstance().login(GlobalData.myUser.userID,GlobalData.myUser.token);
+				}
 			} else if (partName == "rank_list") {
 				// var rankList = new RankList();
 				SceneManager.showScene(RankList);

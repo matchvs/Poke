@@ -76,12 +76,54 @@ class Main extends eui.UILayer {
         await this.loadResource()
         this.createGameScene();
         Toast.initRes(this, "resource/loading/toast-bg.png");
+        this.initializeAsync();
         // const result = await RES.getResAsync("description_json")
         // this.startAnimation(result);
         // await platform.login();
         // const userInfo = await platform.getUserInfo();
         // console.log(userInfo);
 
+    }
+
+
+    /**
+     * faceBook
+     */
+    private initializeAsync(): void {
+        FBInstant.initializeAsync().then(function () {
+            egret.log("getLocale:", FBInstant.getLocale());
+            egret.log("getPlatform:", FBInstant.getPlatform());
+            egret.log("getSDKVersion", FBInstant.getSDKVersion());
+            egret.log("getSupportedAPIs", FBInstant.getSupportedAPIs());
+            egret.log("getEntryPointData", FBInstant.getEntryPointData());
+            
+        })
+        setTimeout(function () {
+            FBInstant.setLoadingProgress(100);
+        }, 1000);
+        this.initStartGameAsync();
+    }
+
+
+    /**
+     * faceBook
+     */
+    private initStartGameAsync() {
+        FBInstant.startGameAsync().then(
+            function () {
+                // Retrieving context and player information can only be done
+                // once startGameAsync() resolves
+                var contextId = FBInstant.context.getID();
+                var contextType = FBInstant.context.getType();
+                var playerName = FBInstant.player.getName();
+                var playerPic = FBInstant.player.getPhoto();
+                var playerId = FBInstant.player.getID();
+ 
+                // Once startGameAsync() resolves it also means the loading view has 
+                // been removed and the user can see the game viewport
+            }).catch(function (e) {
+                console.log("startgame error", e)
+            });
     }
 
     /**
@@ -156,13 +198,8 @@ class Main extends eui.UILayer {
                 PokeMatchvsEngine.getInstance().login(e.data.id,e.data.token);
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
-                if(e.data.status == 200) {
-                    Toast.show("登录成功");
-                    this.wxInvite();
-                } else {
-                    Toast.show("登录失败，重新登录");
-                    PokeMatchvsEngine.getInstance().login(e.data.id,e.data.token);
-                }
+                Toast.show("登录成功");
+                this.wxInvite();
             break;
         }
     }
@@ -177,7 +214,7 @@ class Main extends eui.UILayer {
                 GlobalData.myUser.nickName = userInfo.id;
             }
             if (GlobalData.myUser.avator == "") {
-           	    GlobalData.myUser.avator = MatchvsData.defaultIcon[Math.round(10*Math.random())];
+           	    GlobalData.myUser.avator = MatchvsData.FCdefaultIcon[Math.round(10*Math.random())];
             }
             GlobalData.myUser.userID = userInfo.id;
            	GlobalData.myUser.token = userInfo.token;
