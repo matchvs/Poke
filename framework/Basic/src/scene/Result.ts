@@ -44,13 +44,13 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	protected partAdded(partName:string,instance:any):void{
 		super.partAdded(partName,instance);
 		this.allChildren[partName] = instance;
-		console.info("ResultUI partName",partName,instance);
-		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
-			if(partName = "confirm") {
-				//确定按钮
-				this.backConfirm(MatchvsData.gameMode);
-			}
-		},this);
+		//egret.log("ResultUI partName",partName);
+		if(partName == "confirm") {
+			instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
+					//确定按钮
+					this.backConfirm(MatchvsData.gameMode);
+			},this);
+		}
 		
 	}
 
@@ -77,7 +77,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 
 	protected childrenCreated():void{
 		super.childrenCreated();
-		console.log("结算页面控件获取完毕：",this.allChildren);
+		//console.log("结算页面控件获取完毕：",this.allChildren);
 		//监听上报分数
 		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.REPORT_DATA,this.ReportDataOk, this);
 		network.NetworkStateCheck.getInstance().RegistNetListen(this);
@@ -107,9 +107,12 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	private reSetMyScore(){
 		let bastBalue = 0;
 		for(let i = 0; i < this._playerList.length; i++){
+			
 			if(this._playerList[i].userID == GlobalData.myUser.userID){
-				GlobalData.myUser.pointValue = this._playerList[i].pointValue;
+				let sco  = this._playerList[i].pointValue;
+				GlobalData.myUser.pointValue = sco;
 			}
+
 			if(this._playerList[i].isLandLord){
 				bastBalue = this._playerList[i].landlordScore;
 			}
@@ -124,7 +127,6 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	private FinalValueResult(landowner:battle.Player, p1:battle.Player, p2:battle.Player, isLandWin:boolean, base:number, times:number):number{
 		let incValue:number = this.PointIncrement(base, times);
 		let finalValue:number = 0;
-		//landowner.pointValue = 100000;p1.pointValue = 100000;p2.pointValue = 100000;
 		if(isLandWin){
 			if(p1.pointValue > incValue){
 				console.info("显示结果值1：",landowner.pointValue,p1.pointValue,p2.pointValue);
@@ -152,18 +154,18 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 				p2.pointValue = 0;
 			}
 			this._landlordText = landowner.pointValue+"+"+ finalValue;
-			console.info("显示结果值7：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+			console.info("显示结果值7：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			landowner.pointValue = Number(landowner.pointValue) + Number(finalValue);
 			console.info("显示结果值8：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			
 		}else{
 			incValue = (incValue*2);
 			if(landowner.pointValue > incValue){
-				console.info("显示结果值9：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+				console.info("显示结果值9：",landowner.pointValue,p1.pointValue,p2.pointValue);
 				this._landlordText = landowner.pointValue +"-"+ incValue;
 				landowner.pointValue -= incValue;
 				finalValue += incValue;
-				console.info("显示结果值10：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+				console.info("显示结果值10：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			}else{
 				this._landlordText = landowner.pointValue+"-"+ landowner.pointValue;
 				finalValue += landowner.pointValue;
@@ -171,14 +173,14 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			}
 			this._peasant1Text = p1.pointValue+"+"+ (finalValue/2);
 			this._peasant2Text = p2.pointValue+"+"+ (finalValue/2);
-			console.info("显示结果值11：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+			console.info("显示结果值11：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			p1.pointValue = Number(p1.pointValue) + Number(finalValue/2);
 			p2.pointValue = Number(p2.pointValue) + Number(finalValue/2);
-			console.info("显示结果值12：",landowner.pointValue,p1.pointValue,p2.pointValue);;
+			console.info("显示结果值12：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			
 		}
 
-		console.info("显示结果值：",landowner,p1,p2);
+		// console.info("显示结果值：",landowner,p1,p2);
 
 		return finalValue;
 	}
@@ -191,7 +193,9 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 		this.roomID = roomid;
 		//获取
 		let finalValue = this.FinalValueResult(landLord, peasant1, peasant2, isLandWin, landLord.landlordScore*GlobalData.baseVaue,timesCount);
-		this._playerList = [landLord, peasant1, peasant2];
+		this._playerList.push(landLord) ;
+		this._playerList.push(peasant1) ;
+		this._playerList.push(peasant2) ;
 		if(iswin){
 			this.winTitleImg.source = "resource/assets/result/title_win.png";
 		}else{
@@ -236,10 +240,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	 */
 	private backConfirm(isGameMode) {
 		if(isGameMode) {
-			// let room = new Room();
-			// room.restart();
 			var obj = {rooID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:false};
-			// obj.rooID = ;
 			SceneManager.showScene(Room,obj);
 		} else{
 			PokeMatchvsEngine.getInstance().leaveRoom("战斗结束了");

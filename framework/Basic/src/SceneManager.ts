@@ -62,6 +62,7 @@ class SceneManager {
 		}else if(p3.isLandLord){
 			re.showResult(p3,p1,p2,iswin,islandwin,timestr,roomid);
 		}
+        
     }
 
     public static ErrorPage(msg:string, callFun:Function, obj:any){
