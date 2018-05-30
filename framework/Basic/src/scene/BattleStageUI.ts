@@ -311,9 +311,9 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	}
 	public Release(){
 		this.removeChildren();
-		this._battleButtonCtl.Release();
-		this._myCardControl.Release();
-		this._tablecardControl.clearAll();
-		this._battleControl.Release();
+		this._battleButtonCtl && this._battleButtonCtl.Release();
+		this._battleButtonCtl && this._myCardControl.Release();
+		this._battleButtonCtl && this._tablecardControl.clearAll();
+		this._battleButtonCtl && this._battleControl.Release();
 	}
 }

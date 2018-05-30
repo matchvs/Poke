@@ -51,10 +51,11 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 				this.backConfirm(MatchvsData.gameMode);
 			}
 		},this);
+		
 	}
 
 	public init(){
-		network.NetworkStateCheck.getInstance().RegistNetListen(this);
+		
 		this.winTitleImg = this.allChildren["winTitleImg"];
 
 		this.head_landlord = this.allChildren["head_landlord"];
@@ -79,7 +80,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 		console.log("结算页面控件获取完毕：",this.allChildren);
 		//监听上报分数
 		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.REPORT_DATA,this.ReportDataOk, this);
-		
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 	}
 
 	private ReportDataOk(ev:egret.Event){

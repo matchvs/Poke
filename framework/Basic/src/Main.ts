@@ -214,7 +214,7 @@ class Main extends eui.UILayer {
                 GlobalData.myUser.nickName = userInfo.id;
             }
             if (GlobalData.myUser.avator == "") {
-           	    GlobalData.myUser.avator = MatchvsData.FCdefaultIcon[Math.round(10*Math.random())];
+           	    GlobalData.myUser.avator = MatchvsData.defaultIcon[Math.round(10*Math.random())];
             }
             GlobalData.myUser.userID = userInfo.id;
            	GlobalData.myUser.token = userInfo.token;

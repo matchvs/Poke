@@ -29,6 +29,7 @@ module network {
 			if(this._curr && "Release" in this._curr ){
 				this._curr.Release();
 			}
+			console.log("CancelListen:取消网络错误监听");
 		}
 		
 		/**
