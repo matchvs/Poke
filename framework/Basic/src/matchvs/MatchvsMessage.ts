@@ -16,6 +16,7 @@ class MatchvsMessage {
 	public static MATCHVS_RANK_LIST = "MATCHVS_RANK_LIST";
 	public static MATCHVS_DELET_TIME = "MATCHVS_DELET_TIME";
 	public static MATCHVS_ERROR = "MATCHVS_ERROR";
+	public static MATCHVS_NETWORKSTATE = "MATCHVS_NETWORKSTATE";
 
 	public constructor() {
 	}

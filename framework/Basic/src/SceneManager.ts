@@ -64,6 +64,13 @@ class SceneManager {
 		}
         parent.Release();
     }
+
+    public static ErrorPage(msg:string, callFun:Function, obj:any){
+        SceneManager.root.removeChildren();
+        let errpage:ErrorNote = new ErrorNote();
+        errpage.SetErrorMsg(msg, callFun);
+        SceneManager.root.addChild(errpage);
+    }
 }
 
 

@@ -61,6 +61,12 @@ class PokeMatchvsEngine  {
 		return result;
 	}
 
+	public loginOut():number{
+		var result = MatchvsData.MatchvsReq.logout("累了困了");
+		egret.log("登出：",result);
+		return result;
+	}
+
 	/**
 	 * 创建房间
 	 * @param roomPropety 传递自己的微信昵称与微信头像地址

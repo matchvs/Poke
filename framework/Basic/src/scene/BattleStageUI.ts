@@ -57,16 +57,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	}
 
 
-	/**
-	 * 添加几个假的用户
-	 */
-	public explameAddPlayer(){
-		// GlobalData.myUser = new GUser();
-		// GlobalData.myUser.avator = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526393669326&di=835161a2290b3b6ae1740bd39eb52f3e&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201609%2F16%2F20160916214658_UcHjJ.jpeg";
-		// GlobalData.myUser.nickName = "vv";
-		// GlobalData.myUser.userID = 85642;
-		// GlobalData.myUser.pointValue = 12535;
-	}
+
 
 	protected childrenCreated(): void {
 		super.childrenCreated();
@@ -79,10 +70,6 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	 */
 	public showTopUserInfo(user ?:GUser){
 		if(user){
-			// this._topHeader.init();
-			// this._topHeader.ShowAvator(user.avator);
-			// this._topHeader.SetNickName(user.nickName);
-			// this._topHeader.SetPointValue(user.pointValue);
 			this._topHeader.source = user.avator;
 			this._topNickName.text = user.nickName;
 			this._topPointValue.text = user.pointValue.toString();
@@ -94,8 +81,10 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	}
 
 	public init(){
-		this.explameAddPlayer();
 		console.info("BattleStageUI init");
+
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
+
 		//显示用户头像
 		this.showTopUserInfo(GlobalData.myUser);
 

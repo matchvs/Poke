@@ -184,7 +184,7 @@ module battle {
             this._tableSprite_3.alpha = 0;
             this._tableSprite_3.scaleX = this._tableSprite_3.scaleY = 1.5;
             this._tableSprite_3.alpha = 1;
-            egret.Tween.get(this._tableSprite_3).to({ x: 20, y: 500, scaleX: 1, scaleY: 1, alpha: 1 }, 300, egret.Ease.circIn);
+            egret.Tween.get(this._tableSprite_3).to({ x: 20, y: 450, scaleX: 1, scaleY: 1, alpha: 1 }, 300, egret.Ease.circIn);
         }
 
 

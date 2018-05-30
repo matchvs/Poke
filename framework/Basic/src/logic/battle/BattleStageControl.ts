@@ -97,6 +97,14 @@ module battle {
 			//游戏结束
 			network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_OVER,this.GameOver, this);
 
+			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_NETWORKSTATE, this.NetworkState, this);
+
+		}
+
+		private NetworkState(ev:egret.Event){
+			if("userID" in ev.data && "state" in ev.data){
+				
+			}
 		}
 
 		/**

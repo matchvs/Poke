@@ -8,10 +8,12 @@
 		"MatchDialog": "resource/scene/MatchDialog.exml",
 		"Room": "resource/scene/Room.exml",
 		"ResultUI": "resource/scene/Result.exml",
-		"RankList": "resource/eui_skins/RankList.exml"
+		"RankList": "resource/eui_skins/RankList.exml",
+		"ErrorNote": "resource/eui_skins/ErrorNote.exml"
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
+		"resource/eui_skins/ErrorNote.exml",
 		"resource/eui_skins/RankList.exml",
 		"resource/scene/BattleStage.exml",
 		"resource/scene/Game.exml",

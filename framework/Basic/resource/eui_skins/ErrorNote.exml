@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ErrorNoteSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" >
+	<w:Config id="163af30cf90" ></w:Config>
+	<e:Image width="640" height="1136" x="0" y="0" source="resource/assets/bg.jpg"/>
+	<e:Rect width="640" height="1136" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" strokeAlpha="1" enabled="true" fillColor="0x5e5050" fillAlpha="0"/>
+	<e:Image width="420" height="420" x="110" y="358" anchorOffsetX="0" anchorOffsetY="0" source="bg_match_popup_png" fillMode="scale"/>
+	<e:Label id="lb_message" text="" x="160" y="507" anchorOffsetX="0" width="319.34" anchorOffsetY="0" height="108.67" textColor="0x633232" size="24"/>
+	<e:Button id="btn_ok" label="" x="260" y="656.34" height="60" anchorOffsetX="0" width="120" anchorOffsetY="0">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_queding" source.down="btn_queding_no"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image width="100" height="50" x="270" y="358" anchorOffsetX="0" anchorOffsetY="0" source="title1" fillMode="scale"/>
+</e:Skin>
