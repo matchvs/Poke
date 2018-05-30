@@ -8,7 +8,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	private timer:egret.Timer;
 	private userPlayer = [];
 	private roomID = "";
-	private obj = null;
 
 	public constructor() {
 		super();
@@ -19,14 +18,8 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	}
 
 
-	public onShow(obj) {
-		this.obj = obj;
-		egret.log("show11111111111111111111");
-	}
-	
-
 	protected partAdded(partName:string,instance:any):void {
-		egret.log("partAdded111111111111111111111111111111");
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
@@ -55,6 +48,10 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	 */
 	 public onEvent(e:egret.Event):void {
 		 switch (e.type) {
+			case MatchvsMessage.MATCHVS_JOINROOM_RSP:
+				this.addUser(e.data);
+				this.roomID = e.data.roomID;
+			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
 				var arr = e.data.userProfile.split("/n");
@@ -90,13 +87,12 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	 }
 
 
-	 	 /**
+	 /**
 	  * 跳转游戏页面
 	  */
 	private startBattle(){
 		this.timer.stop();
 		this.removeEvent();
-		egret.log("跳转11111111111111111111");
 		var obj = {roomID: this.roomID, userList:this.userPlayer};
 		SceneManager.showScene(BattleStageUI,obj);
 	}
@@ -129,6 +125,11 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		egret.log("时间"+this.defaultFont);
 		this.defaultFont++;
     }
+
+
+	public Release (){
+		this.stopTimer();
+	}
 
 		/**
 	 * 将玩家信息放入UserplayerList中
@@ -170,8 +171,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 
 	protected childrenCreated():void {
 		super.childrenCreated();
-		egret.log("ui加载完成1111111111111111111");
-		this.addUser(this.obj);
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 	}
 
 
