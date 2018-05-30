@@ -44,6 +44,7 @@ class Game extends eui.Component implements eui.UIComponent {
 			}
 
 		}, this);
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 	}
 
 	
@@ -72,6 +73,10 @@ class Game extends eui.Component implements eui.UIComponent {
 	 public removeEvent() {
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
+	 }
+
+	 public Release(){
+		 this.removeEvent();
 	 }
 
 

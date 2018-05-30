@@ -54,6 +54,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	}
 
 	public init(){
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 		this.winTitleImg = this.allChildren["winTitleImg"];
 
 		this.head_landlord = this.allChildren["head_landlord"];
@@ -243,6 +244,10 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			PokeMatchvsEngine.getInstance().leaveRoom("战斗结束了");
 			SceneManager.showScene(Game);
 		}
+	}
+
+	public Release(){
+		this.removeChildren();
 	}
 	
 }

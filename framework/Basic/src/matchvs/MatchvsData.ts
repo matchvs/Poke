@@ -12,21 +12,24 @@ class MatchvsData {
 	public static gatewayID: number = 1;
 	public static pChannel:string = "MatchVS"
 	public static pPlatform:string = "alpha";
-	public static HtttpUrl:any = "http://vsopen.matchvs.com/wc5/getGameData.do?";
-	public static alphaHttpUrl:any = "http://alphavsopen.matchvs.com/wc5/getGameData.do?";
+	public static HtttpUrl:any = "https://vsopen.matchvs.com/wc5/getGameData.do?";
+	public static alphaHttpUrl:any = "https://alphavsopen.matchvs.com/wc5/getGameData.do?";
 	public static MatchvsReq:MatchvsEngine = new MatchvsEngine();
 	public static MatchvsRep:MatchvsResponse = new MatchvsResponse();
 	public static maxPlayer:number = 3; //随机匹配房间最大人数
-	public static defaultIcon = ["http://alphazwimg.matchvs.com/egret/Three-Poker/img/images1.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images3.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images4.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images5.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images6.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images7.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images8.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images9.jpg",
-								"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images10.jpg",
+	public static defaultIcon = ["http://193.112.47.13/headimg/1.jpg",
+								"http://193.112.47.13/headimg/2.jpg",
+								"http://193.112.47.13/headimg/3.jpg",
+								"http://193.112.47.13/headimg/4.jpg",
+								"http://193.112.47.13/headimg/5.jpg",
+								"http://193.112.47.13/headimg/6.jpg",
+								"http://193.112.47.13/headimg/7.jpg",
+								"http://193.112.47.13/headimg/8.jpg",
+								"http://193.112.47.13/headimg/9.jpg",
+								"http://193.112.47.13/headimg/11.jpg",
+								"http://193.112.47.13/headimg/12.jpg",
+								"http://193.112.47.13/headimg/13.jpg",
+								"http://193.112.47.13/headimg/14.jpg",
 								];
 	
 	public static defaultScore = 10000;
