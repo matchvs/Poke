@@ -48,7 +48,7 @@ module network {
 			let data = e.data;
 			this.CancelListen();
 			SceneManager.ErrorPage("其他玩家网络连接断开, 这局无效，返回到大厅...",function(){
-				PokeMatchvsEngine.getInstance().leaveRoom("玩家断开");
+				PokeMatchvsEngine.getInstance.leaveRoom("玩家断开");
 				SceneManager.showScene(Game);
 			},this);
 		}
@@ -61,7 +61,7 @@ module network {
 			this.CancelListen();
 			//PokeMatchvsEngine.getInstance().loginOut();
 			SceneManager.ErrorPage("您的网络连接断开, 需要重新登录...",function(){
-				PokeMatchvsEngine.getInstance().init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
+				PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
 				SceneManager.showScene(Login);
 			},this);
 		}

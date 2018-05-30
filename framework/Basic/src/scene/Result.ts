@@ -242,7 +242,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			// obj.rooID = ;
 			SceneManager.showScene(Room,obj);
 		} else{
-			PokeMatchvsEngine.getInstance().leaveRoom("战斗结束了");
+			PokeMatchvsEngine.getInstance.leaveRoom("战斗结束了");
 			SceneManager.showScene(Game);
 		}
 	}

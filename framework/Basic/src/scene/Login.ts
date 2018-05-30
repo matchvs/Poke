@@ -18,7 +18,7 @@ class Login extends Base implements eui.UIComponent {
 				} else {
 					Toast.show("登录失败，重试中");
 					egret.log("重新登录",GlobalData.myUser.userID+"/n"+GlobalData.myUser.token);
-					PokeMatchvsEngine.getInstance().login(GlobalData.myUser.userID,GlobalData.myUser.token);
+					PokeMatchvsEngine.getInstance.login(GlobalData.myUser.userID,GlobalData.myUser.token);
 				}
 			} else if (partName == "rank_list") {
 				// var rankList = new RankList();

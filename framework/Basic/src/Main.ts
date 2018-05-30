@@ -137,7 +137,7 @@ class Main extends eui.UILayer {
                 GlobalData.myUser.nickName =  userinfo.nickName;
                 GlobalData.myUser.avator = userinfo.avatarUrl;
                 //todo 
-                PokeMatchvsEngine.getInstance().hashGet("integral");
+                PokeMatchvsEngine.getInstance.hashGet("integral");
             });
         } catch(e) {
             egret.log("错误",e.message);
@@ -154,7 +154,7 @@ class Main extends eui.UILayer {
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
             //初始化
-            PokeMatchvsEngine.getInstance().init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
+            PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
             // matchvsEngine.registerUser();
             await RES.loadConfig("resource/default.res.json", "resource/");
             await this.loadTheme();
@@ -188,14 +188,14 @@ class Main extends eui.UILayer {
                 // if(userInfo) {
                     
                 // } else {
-                    PokeMatchvsEngine.getInstance().registerUser();
+                    PokeMatchvsEngine.getInstance.registerUser();
                 // }
             break;
             //注册
             case MatchvsMessage.MATCHVS_REGISTERUSER:
                 // this.userID = e.data.id;
                 this.userInfoStore(e.data);
-                PokeMatchvsEngine.getInstance().login(e.data.id,e.data.token);
+                PokeMatchvsEngine.getInstance.login(e.data.id,e.data.token);
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
                 Toast.show("登录成功");
@@ -271,7 +271,7 @@ class Main extends eui.UILayer {
             console.log(LaunchOption.query.roomID+"是多少");
             if(roomID != null && roomID != "" && roomID !=0) {
                 //昵称，头像，积分的顺序，用 /n 分割
-                PokeMatchvsEngine.getInstance().joinRoom(roomID,MatchvsData.getDefaultUserProfile());
+                PokeMatchvsEngine.getInstance.joinRoom(roomID,MatchvsData.getDefaultUserProfile());
                 this.removeEvent();
                 SceneManager.showScene(Room);
             }
