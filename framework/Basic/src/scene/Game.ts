@@ -28,18 +28,18 @@ class Game extends eui.Component implements eui.UIComponent {
 			if (partName == "fastMatch") {
 				//设置游戏模式为随机模式
 				MatchvsData.gameMode = false;
-				PokeMatchvsEngine.getInstance().joinRandomRoom(MatchvsData.getDefaultUserProfile());
+				PokeMatchvsEngine.getInstance.joinRandomRoom(MatchvsData.getDefaultUserProfile());
 				SceneManager.showScene(MatchDialog);
 			} else if (partName == "createRoom") {
 				//设置游戏模式为好友开心模式
 				MatchvsData.gameMode = true;
-				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile());
+				PokeMatchvsEngine.getInstance.creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile());
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			} else if (partName == "inviteFriends") {
 				//todo 直接邀请
 				MatchvsData.gameMode = true;
 				this.isInvite = true; //进入房间直接邀请
-				PokeMatchvsEngine.getInstance().creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile());
+				PokeMatchvsEngine.getInstance.creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile());
 				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			}
 

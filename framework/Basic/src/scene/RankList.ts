@@ -12,7 +12,7 @@ class RankList extends eui.Component implements  eui.UIComponent {
 
 	public constructor() {
 		super();
-		PokeMatchvsEngine.getInstance().getRankList("");
+		PokeMatchvsEngine.getInstance.getRankList("");
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_RANK_LIST,this.onEvent,this);
 	}
 

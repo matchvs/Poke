@@ -8,7 +8,7 @@ class PokeMatchvsEngine  {
 	}
 
 
-	public static getInstance():PokeMatchvsEngine {  
+	public static get getInstance():PokeMatchvsEngine {  
          if (this._instance == null) {    
             this._instance = new PokeMatchvsEngine();  
          }    

@@ -43,7 +43,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 */
 	public restart(roomID:string) {
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
-		PokeMatchvsEngine.getInstance().getRoomDetail(roomID);
+		PokeMatchvsEngine.getInstance.getRoomDetail(roomID);
 	}
 	
 
@@ -103,7 +103,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			if(partName == "btn_leave_room") {
-				PokeMatchvsEngine.getInstance().leaveRoom("我走了");
+				PokeMatchvsEngine.getInstance.leaveRoom("我走了");
 			}
 			//踢人或者邀请
 			if(partName == "action") {
@@ -258,7 +258,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			//踢人
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
-			PokeMatchvsEngine.getInstance().kickPlayer(instance.text); 
+			PokeMatchvsEngine.getInstance.kickPlayer(instance.text); 
 
 		} else {
 			try {
