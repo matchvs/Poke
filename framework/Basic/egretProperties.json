@@ -37,6 +37,9 @@
       "name": "promise"
     },
     {
+      "name": "egret-facebook"
+    },
+    {
       "name": "matchvs",
       "path": "../../matchvs"
     },

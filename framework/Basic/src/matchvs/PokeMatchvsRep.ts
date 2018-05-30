@@ -45,7 +45,6 @@ class PokeMatchvsRep extends egret.EventDispatcher{
 	registerUserRsp = function(userInfo) {
         if (userInfo.status == 0) {
             egret.log("注册成功"+userInfo.status);
-
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_REGISTERUSER,false,false,userInfo));
         } else {
             egret.log("注册失败，错误码："+userInfo.status);
@@ -58,11 +57,12 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
     loginRsp = function(loginRsp) {
         if(loginRsp.status == 200) {
+            MatchvsData.loginStatus = true;
             egret.log("登录成功"+loginRsp.status);
+            this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_LOGIN,false,false,loginRsp));
         } else {
             egret.log("登录失败，错误码："+loginRsp.status);
         }
-         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_LOGIN,false,false,loginRsp));
     }
 
     /**

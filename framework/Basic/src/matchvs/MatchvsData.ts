@@ -31,10 +31,23 @@ class MatchvsData {
 								"http://193.112.47.13/headimg/13.jpg",
 								"http://193.112.47.13/headimg/14.jpg",
 								];
+	public static FCdefaultIcon = ["https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								"https://scontent-lax3-1.xx.fbcdn.net/v/t1.0-0/p206x206/22366452_1967021146906417_8277070881351653528_n.jpg?_nc_cat=0&oh=b3dfcda6a2aba65b074a779c8985c519&oe=5B8BDAE3",
+								];
 	
 	public static defaultScore = 10000;
 	public static defaultRoomInfo:MsCreateRoomInfo = new MsCreateRoomInfo("",3,1,1,1,"");
 	public static gameMode:boolean = false; // false  代表直接开始游戏，true代表邀请好友开始游戏
+	public static loginStatus = false;
+
 
 	public constructor() {
 	}
