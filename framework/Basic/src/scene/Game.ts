@@ -24,12 +24,12 @@ class Game extends eui.Component implements eui.UIComponent {
 			instance.source = GlobalData.myUser.avator;
 		}
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
-			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 			//快速匹配
 			if (partName == "fastMatch") {
 				//设置游戏模式为随机模式
 				MatchvsData.gameMode = false;
 				PokeMatchvsEngine.getInstance().joinRandomRoom(MatchvsData.getDefaultUserProfile());
+				SceneManager.showScene(MatchDialog);
 			} else if (partName == "createRoom") {
 				//设置游戏模式为好友开心模式
 				MatchvsData.gameMode = true;
@@ -53,12 +53,6 @@ class Game extends eui.Component implements eui.UIComponent {
 	 */
 	 public onEvent(e:egret.Event):void {
 		 switch (e.type) {
-			case MatchvsMessage.MATCHVS_JOINROOM_RSP:
-				// this.addUser(e.data);
-				// this.roomID = e.data.roomID;
-				this.removeEvent();
-				SceneManager.showScene(MatchDialog,e.data);
-			 break;
 			 case MatchvsMessage.MATCHVS_CREATE_ROOM:
 			 	egret.log("接收到创建房间成功的消息");
 				this.startRoomScene(e.data.roomID);
@@ -71,7 +65,6 @@ class Game extends eui.Component implements eui.UIComponent {
 	  * 移除监听
 	  */
 	 public removeEvent() {
-		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 	 }
 
