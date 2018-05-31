@@ -67,8 +67,7 @@ class Main extends eui.UILayer {
         await this.getWxUserInfo();
         SceneManager.init(this);
         await this.loadResource()
-        this.createGameScene();
-        this.wxInvite();
+
         // this.initializeAsync();
     }
 
@@ -146,6 +145,7 @@ class Main extends eui.UILayer {
             await this.loadTheme();
             await RES.loadGroup("preload", 0, loadingView);
             this.stage.removeChild(loadingView);
+            this.createGameScene();
 
         }
         catch (e) {
@@ -186,7 +186,11 @@ class Main extends eui.UILayer {
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
                 Toast.show("登录成功");
-              
+                if (MatchvsData.loginStatus) {
+                    this.wxInvite();
+                } else {
+                    Toast.show("登录失败，邀请失效了");
+                }
             break;
         }
     }
@@ -227,9 +231,9 @@ class Main extends eui.UILayer {
     }
 
     protected createGameScene(): void {
-        var login = new Login();
-        this.addChild(login);
-
+        // var login = new Login();
+        // this.addChild(login);
+        SceneManager.showScene(Login);
         // var login = new BattleStageUI();
         // this.addChild(login);
         // login.init();

@@ -26,6 +26,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	}
 
 	public onShow(obj) {
+		MatchvsData.loginStatus = false;
 		this.roomID = obj.roomID;
 		if(obj.isInvite) {
 			if(MatchvsData.gameMode) {
