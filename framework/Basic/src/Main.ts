@@ -62,69 +62,56 @@ class Main extends eui.UILayer {
     }
 
     private async runGame() {
-        // let a :MatchvsImageView = new MatchvsImageView(this);
-        // a.width = 200;
-        // a.height = 200;
-        // a.x = 200;
-        // a.y = 50;
-        // a.src("btnEquip_png");
-        // a.backgrout("btnEquip_png");
-        // this.addChild(a);
+        Toast.initRes(this, "resource/loading/toast-bg.png");
         egret.ImageLoader.crossOrigin = "anonymous";
         await this.getWxUserInfo();
         SceneManager.init(this);
         await this.loadResource()
         this.createGameScene();
-        Toast.initRes(this, "resource/loading/toast-bg.png");
-        this.initializeAsync();
-        // const result = await RES.getResAsync("description_json")
-        // this.startAnimation(result);
-        // await platform.login();
-        // const userInfo = await platform.getUserInfo();
-        // console.log(userInfo);
-
+        this.wxInvite();
+        // this.initializeAsync();
     }
 
 
-    /**
-     * faceBook
-     */
-    private initializeAsync(): void {
-        FBInstant.initializeAsync().then(function () {
-            egret.log("getLocale:", FBInstant.getLocale());
-            egret.log("getPlatform:", FBInstant.getPlatform());
-            egret.log("getSDKVersion", FBInstant.getSDKVersion());
-            egret.log("getSupportedAPIs", FBInstant.getSupportedAPIs());
-            egret.log("getEntryPointData", FBInstant.getEntryPointData());
+    // /**
+    //  * faceBook
+    //  */
+    // private initializeAsync(): void {
+    //     FBInstant.initializeAsync().then(function () {
+    //         egret.log("getLocale:", FBInstant.getLocale());
+    //         egret.log("getPlatform:", FBInstant.getPlatform());
+    //         egret.log("getSDKVersion", FBInstant.getSDKVersion());
+    //         egret.log("getSupportedAPIs", FBInstant.getSupportedAPIs());
+    //         egret.log("getEntryPointData", FBInstant.getEntryPointData());
             
-        })
-        setTimeout(function () {
-            FBInstant.setLoadingProgress(100);
-        }, 1000);
-        this.initStartGameAsync();
-    }
+    //     })
+    //     setTimeout(function () {
+    //         FBInstant.setLoadingProgress(100);
+    //     }, 1000);
+    //     this.initStartGameAsync();
+    // }
 
 
-    /**
-     * faceBook
-     */
-    private initStartGameAsync() {
-        FBInstant.startGameAsync().then(
-            function () {
-                // Retrieving context and player information can only be done
-                // once startGameAsync() resolves
-                var contextId = FBInstant.context.getID();
-                var contextType = FBInstant.context.getType();
-                var playerName = FBInstant.player.getName();
-                var playerPic = FBInstant.player.getPhoto();
-                var playerId = FBInstant.player.getID();
+    // /**
+    //  * faceBook
+    //  */
+    // private initStartGameAsync() {
+    //     FBInstant.startGameAsync().then(
+    //         function () {
+    //             // Retrieving context and player information can only be done
+    //             // once startGameAsync() resolves
+    //             var contextId = FBInstant.context.getID();
+    //             var contextType = FBInstant.context.getType();
+    //             var playerName = FBInstant.player.getName();
+    //             var playerPic = FBInstant.player.getPhoto();
+    //             var playerId = FBInstant.player.getID();
  
-                // Once startGameAsync() resolves it also means the loading view has 
-                // been removed and the user can see the game viewport
-            }).catch(function (e) {
-                console.log("startgame error", e)
-            });
-    }
+    //             // Once startGameAsync() resolves it also means the loading view has 
+    //             // been removed and the user can see the game viewport
+    //         }).catch(function (e) {
+    //             console.log("startgame error", e)
+    //         });
+    // }
 
     /**
      * 获取微信头像，存储起来
@@ -155,11 +142,11 @@ class Main extends eui.UILayer {
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
             //初始化
             PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
-            // matchvsEngine.registerUser();
             await RES.loadConfig("resource/default.res.json", "resource/");
             await this.loadTheme();
             await RES.loadGroup("preload", 0, loadingView);
             this.stage.removeChild(loadingView);
+
         }
         catch (e) {
             console.error(e);
@@ -199,7 +186,7 @@ class Main extends eui.UILayer {
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
                 Toast.show("登录成功");
-                this.wxInvite();
+              
             break;
         }
     }
@@ -265,15 +252,13 @@ class Main extends eui.UILayer {
     public wxInvite () {
         try {
             var LaunchOption = getLaunchOptionsSync();
-            console.log(JSON.stringify(LaunchOption.query)+"11");
-            var roomID  = LaunchOption.query.roomID;
-            console.log(LaunchOption.query+"22");
-            console.log(LaunchOption.query.roomID+"是多少");
+            var roomID  =  LaunchOption.query.roomID;
             if(roomID != null && roomID != "" && roomID !=0) {
                 //昵称，头像，积分的顺序，用 /n 分割
+                var obj = {roomID: roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:false};
                 PokeMatchvsEngine.getInstance.joinRoom(roomID,MatchvsData.getDefaultUserProfile());
                 this.removeEvent();
-                SceneManager.showScene(Room);
+                SceneManager.showScene(Room,obj);
             }
         } catch(err) {
             egret.log(err,err.message);
@@ -290,35 +275,6 @@ class Main extends eui.UILayer {
         PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
     }
 
-    /**
-     * 描述文件加载成功，开始播放动画
-     * Description file loading is successful, start to play the animation
-     */
-    // private startAnimation(result: Array<any>): void {
-    //     let parser = new egret.HtmlTextParser();
-
-    //     let textflowArr = result.map(text => parser.parse(text));
-    //     let textfield = this.textfield;
-    //     let count = -1;
-    //     let change = () => {
-    //         count++;
-    //         if (count >= textflowArr.length) {
-    //             count = 0;
-    //         }
-    //         let textFlow = textflowArr[count];
-
-    //         // 切换描述内容
-    //         // Switch to described content
-    //         textfield.textFlow = textFlow;
-    //         let tw = egret.Tween.get(textfield);
-    //         tw.to({ "alpha": 1 }, 200);
-    //         tw.wait(2000);
-    //         tw.to({ "alpha": 0 }, 200);
-    //         tw.call(change, this);
-    //     };
-
-    //     change();
-    // }
 
     public getUserPointValue (userID:any) {
 		let keyList = JSON.stringify([{"key":userID}]);

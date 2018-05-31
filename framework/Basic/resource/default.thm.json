@@ -3,7 +3,7 @@
 		"Login": "resource/scene/Login.exml",
 		"Game": "resource/scene/Game.exml",
 		"BattleStageUI": "resource/scene/BattleStage.exml",
-		"RankListItem": "resource/scene/rankListItem.exml",
+		"RankListItem": "resource/scene/RankListItem.exml",
 		"TopHeader": "resource/scene/TopHeader.exml",
 		"MatchDialog": "resource/scene/MatchDialog.exml",
 		"Room": "resource/scene/Room.exml",
