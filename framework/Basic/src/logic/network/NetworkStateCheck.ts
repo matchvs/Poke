@@ -47,7 +47,7 @@ module network {
 		private networkStateNotify(e:egret.Event){
 			let data = e.data;
 			this.CancelListen();
-			SceneManager.ErrorPage("其他玩家网络连接断开, 这局无效，返回到大厅...",function(){
+			SceneManager.ErrorPage("其他玩家网络连接断开，请返回到大厅...",function(){
 				PokeMatchvsEngine.getInstance.leaveRoom("玩家断开");
 				SceneManager.showScene(Game);
 			},this);
