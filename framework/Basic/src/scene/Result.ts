@@ -100,9 +100,9 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	/**
 	 * 上报分数
 	 */
-	private ReporePointValue(v:number, t:number, m:number, avr:string){
+	private ReporePointValue(v:number, t:number, m:number, avr:string, na:string){
 		console.info("ReporePointValue",{times:t,model:m,value:v});
-		network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.REPROT_SCORE_S,{times:t,model:m,value:v,avator:avr});
+		network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.REPROT_SCORE_S,{times:t,model:m,value:v,avator:avr,name:na});
 	}
 	private reSetMyScore(){
 		let bastBalue = 0;
@@ -118,7 +118,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			}
 		}
 
-		this.ReporePointValue(GlobalData.myUser.pointValue, bastBalue*GlobalData.baseVaue, GlobalData.ReportModel, GlobalData.myUser.avator);
+		this.ReporePointValue(GlobalData.myUser.pointValue, bastBalue*GlobalData.baseVaue, GlobalData.ReportModel, GlobalData.myUser.avator,GlobalData.myUser.nickName);
 	}
 
 	/**
