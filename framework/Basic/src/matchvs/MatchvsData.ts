@@ -52,9 +52,10 @@ class MatchvsData {
 	public constructor() {
 	}
 	
-	public static getDefaultUserProfile():string {
+	public static getDefaultUserProfile():any {
+		var obj = {nickName:GlobalData.myUser.nickName,avator:GlobalData.myUser.avator,pointValue:GlobalData.myUser.pointValue};
 		egret.log("自己加入房间的USerProFile",GlobalData.myUser.nickName+"/n"+GlobalData.myUser.avator+"/n"+GlobalData.myUser.pointValue);
-		return GlobalData.myUser.nickName+"/n"+GlobalData.myUser.avator+"/n"+GlobalData.myUser.pointValue;
+		return JSON.stringify(obj);
 	}
 
 }

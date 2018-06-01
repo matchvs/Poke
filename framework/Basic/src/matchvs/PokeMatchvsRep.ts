@@ -150,7 +150,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         egret.log("排行榜请求成功",buf);
         var buf = JSON.parse(buf);
         var listData = JSON.parse(buf.data.dataList[0].value);
-        egret.log(listData);
+        var listData = this.ab2str(egret.Base64Util.decode(buf.data.dataList[0].value)) 
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_RANK_LIST,false,false,listData));
     }
 
@@ -167,5 +167,9 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_NETWORKSTATE,false,false,event));
     }
 
+
+    private ab2str(buf) {
+		return String.fromCharCode.apply(null, new Uint16Array(buf));
+	}
 
 }

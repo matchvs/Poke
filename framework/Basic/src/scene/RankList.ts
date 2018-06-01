@@ -52,7 +52,7 @@ class RankList extends eui.Component implements  eui.UIComponent {
 					if (e.data[i].avator == "" ){
 						obj.head = "http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg";
 					} else {
-						obj.head = e.data[i].avator;
+						thisegret.Base64Util.decode( e.data[i].avator);
 					}
 					obj.score = e.data[i].value;
 					this.dsListHeros.push(obj);
@@ -63,6 +63,8 @@ class RankList extends eui.Component implements  eui.UIComponent {
 		}
 	}
 
-
+	private ab2str(buf) {
+		return String.fromCharCode.apply(null, new Uint16Array(buf));
+	}
 	
 }

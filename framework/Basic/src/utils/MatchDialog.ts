@@ -54,10 +54,10 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
-				var arr = e.data.userProfile.split("/n");
-				user.nickName =arr[0];
-				user.avator = arr[1];
-				user.pointValue = arr[2];
+				var arr = JSON.parse(e.data.userProfile);
+				user.nickName =arr.nickName;
+				user.avator = arr.avator;
+				user.pointValue = arr.pointValue;
 				user.userID = e.data.userId;
 				this.userPlayer.push(user);
 				egret.log("NOTIFYuserPlayer的长度"+this.userPlayer.length);

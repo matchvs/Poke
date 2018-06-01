@@ -30,7 +30,11 @@ class Room extends eui.Component implements  eui.UIComponent {
 		this.roomID = obj.roomID;
 		if(obj.isInvite) {
 			if(MatchvsData.gameMode) {
-				WxUtils.wxTogether("邀请好友",this.roomID);
+				try {
+					WxUtils.wxTogether("邀请好友",this.roomID);
+				} catch (e) {
+					PokeMatchvsEngine.getInstance.leaveRoom("");
+				}
 			}
 		}
 
@@ -139,10 +143,10 @@ class Room extends eui.Component implements  eui.UIComponent {
 			
 			case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
-				var arr = e.data.userProfile.split("/n");
-				user.nickName =arr[0];
-				user.avator = arr[1];
-				user.pointValue = arr[2];
+				var arr = JSON.parse(e.data.userProfile);
+				user.nickName =arr.nickName;
+				user.avator = arr.avator;
+				user.pointValue = arr.pointValue;
 				user.userID = e.data.userId;
 				this.userPlayer.push(user);
 				//房间内人数到达三个 就启动定时器;
@@ -329,6 +333,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 			this.createTimer();
 		}
 	}
+
+
 
 
 	
