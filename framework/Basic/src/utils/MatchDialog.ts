@@ -137,10 +137,10 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	public addUser(userPlayer:any) {
 		for(var i = 0; i <userPlayer.length; i++) {
 			var user:GUser = new GUser;
-			var arr =userPlayer[i].userProfile.split("/n");
-			user.nickName =arr[0];
-			user.avator = arr[1];
-			user.pointValue = arr[2];
+			var arr = JSON.parse(userPlayer[i].userProfile);
+			user.nickName =arr.nickName;
+			user.avator = arr.avator;
+			user.pointValue = arr.pointValue;
 			user.userID = userPlayer[i].userId;
 			this.userPlayer.push(user);
 		}
