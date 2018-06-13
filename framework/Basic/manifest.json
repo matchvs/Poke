@@ -14,8 +14,8 @@
 	"game": [
 		"bin-debug/logic/GUser.js",
 		"bin-debug/logic/network/Resolver/IResolver.js",
-		"bin-debug/scene/Base.js",
 		"bin-debug/logic/network/BattleEvent.js",
+		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
 		"bin-debug/SceneManager.js",
 		"bin-debug/ThemeAdapter.js",
@@ -43,7 +43,7 @@
 		"bin-debug/logic/game/Prompt.js",
 		"bin-debug/logic/game/Prompt2.js",
 		"bin-debug/logic/game/SendCard.js",
-		"bin-debug/Config.js",
+		"bin-debug/utils/WxUtils.js",
 		"bin-debug/logic/network/BattleMessage.js",
 		"bin-debug/logic/network/BattleMsgEvent.js",
 		"bin-debug/logic/network/NetworkStateCheck.js",
@@ -57,7 +57,7 @@
 		"bin-debug/matchvs/MatchvsMessage.js",
 		"bin-debug/matchvs/PokeMatchvsEngine.js",
 		"bin-debug/matchvs/PokeMatchvsRep.js",
-		"bin-debug/Main.js",
+		"bin-debug/scene/Base.js",
 		"bin-debug/scene/BattleStageUI.js",
 		"bin-debug/scene/ErrorNote.js",
 		"bin-debug/scene/Game.js",
@@ -73,6 +73,6 @@
 		"bin-debug/utils/MatchDialog.js",
 		"bin-debug/utils/MD5.js",
 		"bin-debug/utils/Toast.js",
-		"bin-debug/utils/WxUtils.js"
+		"bin-debug/Config.js"
 	]
 }
