@@ -28,12 +28,18 @@ class RoomsCtl{
     }
 
     //房间加玩家
-    palyerEnter(roomID, userID){
+    /**
+     * 
+     * @param {string} roomID 
+     * @param {number} userID 
+     * @param {string} userProfile
+     */
+    palyerEnter(roomID, userID, userProfile){
         log.debug("palyerEnter roomID:"+roomID);
         let room = this.get(roomID);
         if(room){
             log.debug("palyerEnter userID:"+userID);
-            room.addPlayer(userID);
+            room.addPlayer(userID, userProfile);
         }
     }
     //退出房间

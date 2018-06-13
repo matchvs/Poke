@@ -77,8 +77,9 @@ class App {
      * @memberof App
      */
     onJoinRoom(request) {
-        //log.debug('onJoinRoom:', request);
-        this.roomCtl.palyerEnter(request.roomID, request.userID);
+        let con = new textEncoding.TextDecoder("utf-8").decode(request.joinExtInfo.userProfile);
+        log.debug('onJoinRoom:',con);
+        this.roomCtl.palyerEnter(request.roomID, request.userID, con);
     }
     
     /**

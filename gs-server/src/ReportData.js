@@ -15,9 +15,28 @@ class ReportData{
         this.secret = GameData.Conf.SECRET;
         this.scoreBuff = new Map();          //上报分数缓存列表 key = userID
         this.haveSort = new Array();         //用户分数排序列表 [{key:userID, value:score}]
-        //this.rankUseList = new Array();      // [{userID:score},{userID:score}] length < 150
         this.timerTasks = [];
     }
+
+    /**
+     * base64 编码
+     * @param {string} str 
+     */
+    base64Encode(str){
+        var b = new Buffer(str);
+        var s = b.toString('base64');
+        return s;
+    }
+
+    /**
+     * base 解码
+     * @param {string} str 
+     */
+    base64Decode(str){
+        var c = new Buffer(str, 'base64')
+        var d = c.toString();
+        return d;
+    } 
 
     /**
      * 获取上报数据的实例，单例类型
@@ -43,9 +62,10 @@ class ReportData{
             if( resData.hasOwnProperty("status") && resData.hasOwnProperty("data")){
                 if(resData.status == 0){
                     if(resData.data.dataList[0].hasOwnProperty("value")){
-                        let datas = JSON.parse(resData.data.dataList[0].value);
+                        let vl = self.base64Decode(resData.data.dataList[0].value);
+                        let datas = JSON.parse(vl);
                             datas.forEach(function(element){
-                                self.scoreBuff.set(element.key, element.value);
+                                self.scoreBuff.set(element.key, self.MapdataPare(element));
                             });
                             self.scoreBuffToSort();
                             //self.writeRankListToHttp();
@@ -66,14 +86,33 @@ class ReportData{
         },30000));
     }
 
+    MapdataPare(data, k){
+        let name = "";
+        let avator = "";
+        let score = 0;
+        if("name" in data){
+            name = data.name;
+        }
+        if("avator" in data){
+            avator = data.avator;
+        }
+        if("value" in data){
+            score = data.value
+        }
+        if(k){
+            return {key:k, value: score, name:name, avator:avator};
+        }
+        return {value: score, name:name,avator:avator};
+    }
+
     /**
      * 添加分数列表
      * @param {number} userid 
      * @param {number} score 
      */
-    addScoreBuff(userid, score){
-        log.debug("userID:"+userid+" score:"+score);
-        this.scoreBuff.set(userid, score);
+    addScoreBuff(userid, data){
+        log.debug("userID:"+userid+" score:",data);
+        this.scoreBuff.set(userid, this.MapdataPare(data));
         log.debug("addScoreBuff scoreBuff length:",this.scoreBuff.size);
     }
 
@@ -92,7 +131,7 @@ class ReportData{
     mapToKeyValuelist(_map){
         let list = [];
         for(let [k,p] of _map){
-            list.push({key:k, value: p});
+            list.push(this.MapdataPare(p,k));
         }
         return list;
     }
@@ -143,7 +182,12 @@ class ReportData{
             return;
         }
         let rankListSt = JSON.stringify(list);
-        let datalist = [{key:"rankList",value:rankListSt}];
+        let ec = this.base64Encode(rankListSt);
+        log.debug("rankListSt encode:",rankListSt);
+
+        //log.debug("rankListSt encode:", this.base64Decode(ec));
+
+        let datalist = [{key:"rankList",value:ec}];
         this.saveGameScore(datalist);
     }
     
@@ -176,7 +220,7 @@ class ReportData{
 
     /**
      * 
-     * @param {string} dataObj "[{key:"name",value:1},{key:"name",value:2},{key:"name",value:3}]"
+     * @param {string} dataObj "[{key:k, value: score, name:name, avator:avator},{key:k, value: score, name:name, avator:avator}]"
      * @param {string} option the enum for GameData
      * @param {Function} callBack (body)=>{}
      */
@@ -199,7 +243,7 @@ class ReportData{
 
     /**
      * 保存列表数据
-     * @param {Array} dataList [{key:"name",value:1},{key:"name",value:2},{key:"name",value:3}]
+     * @param {Array} dataList [{key:k, value: score, name:name, avator:avator},{key:k, value: score, name:name, avator:avator}]
      * @param {number} userID 
      * @param {function} callBack function name(body) {}
      * @param {function} errCall function name(err) {}
@@ -210,7 +254,7 @@ class ReportData{
             this.doRequest(0, dataList, GameData.HttpApi.SET_GAMEDATA, (body)=>{
                 log.info("saveGameScore body:" + body);
             },(err)=>{
-                log.error(saveGameScore,err.message);
+                log.error("saveGameScore",err.message);
             });
         }else{
             this.doRequest(0, dataList, GameData.HttpApi.SET_GAMEDATA, callBack, errCall);

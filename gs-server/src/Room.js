@@ -27,9 +27,20 @@ class Room{
     }
 
     //添加玩家
-    addPlayer(userID){
+    addPlayer(userID, userProfile){
         let p = new Player(userID);
         p.userID = userID;
+        if(userProfile){
+            let obj = JSON.parse(userProfile);
+            if("nickName" in obj){
+                p.nickName = obj.nickName;
+                //log.debug(p.nickName);
+            }
+            if("avator" in obj){
+                p.avator = obj.avator;
+                //log.debug(p.avator);
+            }
+        }
         this.players.set(userID,p);
         log.debug("players count :"+this.players.size);
     }
@@ -285,7 +296,7 @@ class Room{
      * @param {number} userID 
      * @param {number} _score 
      */
-    reportPlayerScore(userID, data){
+    reportPlayerScore(userID, dt){
         //房间上报数据状态
         this.roomState |= ROOMSTATE.GAME_REPORT;
         let player = this.players.get(userID);
@@ -300,8 +311,8 @@ class Room{
         };
         let self  = this;
         if(player){
-            log.debug("userID:"+userID+" data:",data);
-            player.reportGameScore(data, function(res){
+            log.debug("userID:"+userID+" data:",dt);
+            player.reportGameScore(dt, function(res){
                 if(res !== null){
                     event.data.rank = res.rank;
                     event.data.totleScore = res.totleScore;

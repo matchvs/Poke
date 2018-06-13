@@ -6,6 +6,8 @@ const log = log4js.getLogger();
 class Player{
     constructor(userID){
         this.userID = userID;       //用户ID
+        this.nickName = "";
+        this.avator = "";
         this.cardList = [];         //手中的牌
         this.integral = 0;          //积分
         this.isLandOwner = false;   //是否是地主
@@ -43,6 +45,12 @@ class Player{
     reportGameScore(data, _callback){
         let model = data.model;
         let score = data.value;
+        if("avator" in data ){
+            this.avator = data.avator;
+        }
+        if("name" in data){
+            this.nickName = data.name+"";
+        }
         //计算游戏分数
         this.planGameScore(this.userID, _callback, (oriScore, incScore)=>{
             if(model == 1){
@@ -109,7 +117,7 @@ class Player{
         let report = ReportData.getInstance();
         let event = null;
         //添加新分数到内存中
-        report.addScoreBuff(userid, _score);
+        report.addScoreBuff(userid, {value:_score,name:this.nickName,avator:this.avator});
         //排序一下
         report.scoreBuffToSort();
 
