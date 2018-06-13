@@ -41,6 +41,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 			}
 
 		},this);
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 	}
 
 	/**

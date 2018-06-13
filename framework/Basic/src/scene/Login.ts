@@ -1,4 +1,4 @@
-class Login extends Base implements eui.UIComponent {
+class Login extends eui.Component implements eui.UIComponent {
 	private that: any = this;
 	public constructor() {
 		super();
@@ -26,12 +26,10 @@ class Login extends Base implements eui.UIComponent {
 			}
 
 		}, this);
-		this.onError();
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 	}
 
-	protected onError() {
-		super.onError(this);
-	}
+
 
 	protected childrenCreated(): void {
 		super.childrenCreated();
