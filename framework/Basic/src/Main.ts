@@ -32,24 +32,12 @@ class Main extends eui.UILayer {
     public root:egret.DisplayObjectContainer;
     private topMask = new egret.Shape();
     private userID:string;
-    // public rep:PokeMatchvsRep = null;
+    private roomID:any;
+    
 
     protected createChildren(): void {
         super.createChildren();
 
-        // egret.lifecycle.addLifecycleListener((context) => {
-        //     // custom lifecycle plugin
-        // })
-
-        // egret.lifecycle.onPause = () => {
-        //     egret.ticker.pause();
-        // }
-
-        // egret.lifecycle.onResume = () => {
-        //     egret.ticker.resume();
-        // }
-
-        //inject the custom material parser
         //注入自定义的素材解析器
         let assetAdapter = new AssetAdapter();
         egret.registerImplementation("eui.IAssetAdapter", assetAdapter);
@@ -68,7 +56,6 @@ class Main extends eui.UILayer {
         SceneManager.init(this);
         await this.loadResource()
 
-        // this.initializeAsync();
     }
 
 
@@ -170,11 +157,6 @@ class Main extends eui.UILayer {
         egret.log(e);
         switch(e.type) {
             case MatchvsMessage.MATCHVS_INIT:
-                //todo  在这里要获取一下本地的数据，如果本地有存储的用户信息就跳过注册，直接去登录
-                // var userInfo:any = egret.localStorage.getItem("userInfo");
-                // if(userInfo) {
-                    
-                // } else {
                     PokeMatchvsEngine.getInstance.registerUser();
                 // }
             break;
@@ -191,6 +173,11 @@ class Main extends eui.UILayer {
                 } else {
                     Toast.show("登录失败，邀请失效了");
                 }
+            break;
+            case MatchvsMessage.MATCHVS_JOINROOM_RSP:
+                this.removeEvent();
+                var obj = {roomID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:true};
+                SceneManager.showScene(Room,obj);
             break;
         }
     }
@@ -210,34 +197,11 @@ class Main extends eui.UILayer {
             GlobalData.myUser.userID = userInfo.id;
            	GlobalData.myUser.token = userInfo.token;
             this.getUserPointValue(GlobalData.myUser.userID);
-            // if(userPointValue == null)  {
-            //     egret.log("1111111111111")
-      
-            // } else {
-            //       egret.log("2222222222")
-            //         egret.log(" GlobalData.myUser.pointValue", GlobalData.myUser.pointValue)
-            // }
 
-
-            //将自己的数据存到本地
-            // var key:string = "userInfo";
-            // var value:any = {};
-            // value.nickName = GlobalData.myUser.nickName;
-            // value.avator = GlobalData.myUser.avator;
-            // value.userID = GlobalData.myUser.userID;
-            // value.token = GlobalData.myUser.token;
-            // value.pointValue = GlobalData.myUser.pointValue;
-            // egret.localStorage.setItem(key,JSON.stringify(value));
     }
 
     protected createGameScene(): void {
-        // var login = new Login();
-        // this.addChild(login);
         SceneManager.showScene(Login);
-        // var login = new BattleStageUI();
-        // this.addChild(login);
-        // login.init();
-        // login.StartBattle(GUser.explameAddPlayer());
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -256,13 +220,10 @@ class Main extends eui.UILayer {
     public wxInvite () {
         try {
             var LaunchOption = getLaunchOptionsSync();
-            var roomID  =  LaunchOption.query.roomID;
-            if(roomID != null && roomID != "" && roomID !=0) {
+             this.roomID  =  LaunchOption.query.roomID;
+            if(  this.roomID  != null &&   this.roomID  != "" &&  this.roomID  !=0) {
                 //昵称，头像，积分的顺序，用 /n 分割
-                var obj = {roomID: roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:false};
-                PokeMatchvsEngine.getInstance.joinRoom(roomID,MatchvsData.getDefaultUserProfile());
-                this.removeEvent();
-                SceneManager.showScene(Room,obj);
+                PokeMatchvsEngine.getInstance.joinRoom(this.roomID,MatchvsData.getDefaultUserProfile());
             }
         } catch(err) {
             egret.log(err,err.message);
@@ -277,6 +238,7 @@ class Main extends eui.UILayer {
         PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
         PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
         PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
     }
 
 
