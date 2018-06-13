@@ -4,7 +4,6 @@
  *
  */
 class ArrayTools {
-    private static _b64keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     public constructor() {
     }
 
@@ -41,7 +40,7 @@ class ArrayTools {
 			'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
 			'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 			'w', 'x', 'y', 'z', '0', '1', '2', '3',
-			'4', '5', '6', '7', '8', '9', '+', '/'
+			'4', '5', '6', '7', '8', '9', '+', '/','='
 	];
 
 	public static UTF16ToUTF8(str) {
