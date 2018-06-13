@@ -125,7 +125,7 @@ class PokeMatchvsEngine  {
 	/**
 	 * 取全局排行榜数据
 	 */
-	public getRankList(key:string) {
+	public getRankList(key:any) {
 		//参数组合是安装首字母排序的
 		let keyList =  JSON.stringify([{"key":"rankList"}]);
 		egret.log(keyList);
@@ -136,7 +136,7 @@ class PokeMatchvsEngine  {
 		var rankListUrl = MatchvsData.alphaHttpUrl+params+"&sign="+sign;
 		egret.log(rankListUrl,rankListUrl);
 		var http = new MatchvsHttp(PokeMatchvsRep.getInstance);
-		http.get(rankListUrl);
+		http.get(rankListUrl+"&timer="+key);
 		
 		
 	}
