@@ -33,6 +33,7 @@ class Main extends eui.UILayer {
     private topMask = new egret.Shape();
     private userID:string;
     private roomID:any;
+    private timer:egret.Timer;
     
 
     protected createChildren(): void {
@@ -126,14 +127,14 @@ class Main extends eui.UILayer {
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
+            PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
             //初始化
-            PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
             await RES.loadConfig("resource/default.res.json", "resource/");
             await this.loadTheme();
             await RES.loadGroup("preload", 0, loadingView);
             this.stage.removeChild(loadingView);
             this.createGameScene();
-
+            PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
         }
         catch (e) {
             console.error(e);
@@ -168,17 +169,25 @@ class Main extends eui.UILayer {
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
                 Toast.show("登录成功");
-                if (MatchvsData.loginStatus) {
-                    this.wxInvite();
-                } else {
-                    Toast.show("登录失败，邀请失效了");
-                }
+                this.timer = new egret.Timer(1000,1);
+                this.timer.addEventListener(egret.TimerEvent.TIMER,this.timerFunc,this)
+                this.timer.start();
             break;
             case MatchvsMessage.MATCHVS_JOINROOM_RSP:
                 this.removeEvent();
                 var obj = {roomID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:true};
+                console.log("执行跳转啊。。。。。。。。。。。。。");
+                MatchvsData.gameMode = true;
                 SceneManager.showScene(Room,obj);
             break;
+        }
+    }
+
+    private timerFunc() {
+        if (MatchvsData.loginStatus) {
+            this.wxInvite();
+        } else {
+            Toast.show("登录失败，邀请失效了");
         }
     }
 
@@ -223,6 +232,7 @@ class Main extends eui.UILayer {
              this.roomID  =  LaunchOption.query.roomID;
             if(  this.roomID  != null &&   this.roomID  != "" &&  this.roomID  !=0) {
                 //昵称，头像，积分的顺序，用 /n 分割
+
                 PokeMatchvsEngine.getInstance.joinRoom(this.roomID,MatchvsData.getDefaultUserProfile());
             }
         } catch(err) {

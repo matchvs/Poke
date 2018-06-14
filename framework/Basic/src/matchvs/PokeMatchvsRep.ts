@@ -17,6 +17,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         MatchvsData.MatchvsRep.networkStateNotify = this.networkStateNotify.bind(this);
         //todo 添加全局的一个异常监听
         MatchvsData.MatchvsRep.errorResponse = this.errorResponse.bind(this);
+        MatchvsData.MatchvsRep.getRoomDetailResponse = this.getRoomDetailResponse.bind(this);
 	}
 
     public static get getInstance():PokeMatchvsRep {  
@@ -156,6 +157,14 @@ class PokeMatchvsRep extends egret.EventDispatcher{
 
     public onErr(errCode,errMsg) {
         egret.log(errCode,errMsg);
+    }
+
+    /**
+     * 获取房间详情
+     */
+    getRoomDetailResponse = function(rsp) {
+        console.log("获取房间详情成功");
+        this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,false,false,rsp));
     }
 	
     /**
