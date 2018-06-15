@@ -139,9 +139,13 @@ class PokeMatchvsRep extends egret.EventDispatcher{
     /**
      * 错误回调
      */
-    errorResponse = function(errCode:number, errMsg:string) {
-        egret.log("errCode"+errCode+"errMsg"+errMsg);
-        this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_ERROR),false,false,errCode+","+errMsg);
+    public errorResponse = function(errCode:number, errMsg:string) {
+        egret.log("errCode："+errCode+" errMsg:"+errMsg);
+        let data ={
+            code:errCode,
+            msg:errMsg
+        }
+        this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_ERROR,false,false,data));
     }
 
     /**

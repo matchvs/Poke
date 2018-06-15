@@ -2,9 +2,24 @@ module network {
 	export class NetworkStateCheck {
 
 		private static _instance:NetworkStateCheck = null;
+		//错误码选择
+		private _errCodeMap:{[key:number]:any} = [];
 		private _curr:any = null;
 		public constructor() {
-			
+			this.InitErrorData();
+		}
+
+		public InitErrorData(){
+			this.addErrCodeData(1001,"您的网络连接断开, 需要重新登录...",this.returnSceneLogin);
+			this.addErrCodeData(406,"房间已经关闭...",this.returnSceneGameLoy);
+			this.addErrCodeData(405,"房间人已经满了...",this.returnSceneGameLoy);
+			this.addErrCodeData(404,"找不到您要的信息...",this.returnSceneLogin);
+			this.addErrCodeData(500,"游戏服务器错误...",this.returnSceneLogin);
+			this.addErrCodeData(402,"用户信息验证错误...",this.returnSceneLogin);
+		}
+
+		public addErrCodeData(code:number, msg:string, call:Function){
+			this._errCodeMap[code] = {message:msg, callBack:call}
 		}
 
 		public static getInstance():NetworkStateCheck{
@@ -47,10 +62,26 @@ module network {
 		private networkStateNotify(e:egret.Event){
 			let data = e.data;
 			this.CancelListen();
-			SceneManager.ErrorPage("其他玩家网络连接断开，请返回到大厅...",function(){
-				PokeMatchvsEngine.getInstance.leaveRoom("玩家断开");
-				SceneManager.showScene(Game);
-			},this);
+			if(data.state == 1){
+				SceneManager.ErrorPage("其他玩家网络连接断开，请返回到大厅...",this.returnSceneGameLoy,this);
+			}
+		}
+
+		/**
+		 * 跳到大厅
+		 */
+		private returnSceneGameLoy(){
+			PokeMatchvsEngine.getInstance.leaveRoom("玩家断开");
+			console.info("跳到大厅");
+			SceneManager.showScene(Game);
+		}
+		/**
+		 * 跳到登录
+		 */
+		private returnSceneLogin(){
+			console.info("跳到登录");
+			PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
+			SceneManager.showScene(Login);
 		}
 
 		/**
@@ -59,11 +90,14 @@ module network {
 		private NetorkError(e:egret.Event){
 			let data = e.data;
 			this.CancelListen();
-			//PokeMatchvsEngine.getInstance().loginOut();
-			SceneManager.ErrorPage("您的网络连接断开, 需要重新登录...",function(){
-				PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
-				SceneManager.showScene(Login);
-			},this);
+			console.info("触发错误：",data.code);
+			let errData = this._errCodeMap[Number(data.code)];
+			if(errData){
+				SceneManager.ErrorPage(errData.message, errData.callBack,this);
+			}
+			// }else{
+			// 	SceneManager.ErrorPage("服务返回错误："+data.code,this.returnSceneLogin,this);
+			// }
 		}
 	}
 }

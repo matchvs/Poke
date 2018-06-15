@@ -37,7 +37,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			if(partName == "cancel_match") {
 				PokeMatchvsEngine.getInstance.leaveRoom("不想等待匹配了");
-
 			}
 
 		},this);
