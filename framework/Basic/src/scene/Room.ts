@@ -55,7 +55,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
-		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.REPORT_DATA,this.onEvent, this);
+		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_IS_OK,this.onEvent, this);
 	}
 	
 
@@ -201,7 +201,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 					this.isOwnew(true);
 				}
 			break;
-			case network.BattleMsgEvent.REPORT_DATA:
+			case network.BattleMsgEvent.GAME_IS_OK:
+				console.log("11111111111111111111111111");
 				this.createTimer();
 			break;
 		}
@@ -329,7 +330,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	//创建一个定时器
 	private createTimer() {
-		this.timer = new egret.Timer(1000,10);
+		this.timer = new egret.Timer(1000,11);
 		//注册事件侦听器
         this.timer.addEventListener(egret.TimerEvent.TIMER,this.showCounDownLabel,this);
 		this.timer.start();
@@ -343,7 +344,6 @@ class Room extends eui.Component implements  eui.UIComponent {
 		this.countDownTimer++;
 		if(this.countDownTimer === 11) {
 			this.timer.stop();
-			
 			this.startBattle();
 		}
 	}
