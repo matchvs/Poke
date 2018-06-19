@@ -23,7 +23,6 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	public constructor() {
 		super();
-		this.userPlayer = [];
 	}
 
 	public onShow(obj) {
@@ -55,6 +54,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
+		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.REPORT_DATA,this.onEvent, this);
 	}
 	
 
@@ -153,9 +154,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 				this.userPlayer.push(user);
 				//房间内人数到达三个 就启动定时器;
 				this.initView(this.userPlayer);
-				if( this.userPlayer.length  == 2) {
-					this.createTimer();
-				}
+				// if( this.userPlayer.length  == 2) {
+				// }
 			break;
 			//自己加入房间的通知
 			case MatchvsMessage.MATCHVS_JOINROOM_RSP:
@@ -165,7 +165,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			case MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY:
 				//获取数组下标，删除离开玩家的指定的下标，将定时器重置，倒计时也需要重置
 				this.removeView(e.data);
-				if(e.data.ownew !== GlobalData.myUser.userID) {
+				if(e.data.owner !== GlobalData.myUser.userID) {
 					this.isOwnew(false);
 				} else {
 					this.isOwnew(true);
@@ -192,12 +192,17 @@ class Room extends eui.Component implements  eui.UIComponent {
 				this.removeView(e.data);
 			break;
 			case MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP:
+				this.userPlayer = [];
+				network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.GAME_IS_OKS, {});
 				this.addUser(e.data.userInfos);
 				if(e.data.owner !== GlobalData.myUser.userID) {
 					this.isOwnew(false);
 				} else {
 					this.isOwnew(true);
 				}
+			break;
+			case network.BattleMsgEvent.REPORT_DATA:
+				this.createTimer();
 			break;
 		}
 	}	
@@ -214,6 +219,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
+		network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.REPORT_DATA,this.onEvent, this);
     }
 
 
@@ -247,16 +253,23 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 玩家退出将玩家的信息从页面上消失
 	 */
 	private removeView(data:any) {
+		var id;
+		if (data.userId === undefined) {
+			id = data.userID;
+		} else {
+			id = data.userId;
+		}
+		console.log(id,"data.userId");
 		if (this.timer != null) {
 			this.timer.stop();
 		}
 		for(var a = 0; a < this.userPlayer.length;a++ ) {
-			if(data.userId == this.userPlayer[a].userID) {
+			if(id == this.userPlayer[a].userID) {
 				this.userPlayer.splice(a,1);
 			}
 		}
-		if(data.userId === GlobalData.myUser.userID) {
-		
+			console.log( GlobalData.myUser.userID," GlobalData.myUser.userID");
+		if(id === GlobalData.myUser.userID) {
 			this.countDownLabel.text = "";
 			this.countDownTimer = 0;
 			this.removeEvent();
@@ -292,10 +305,11 @@ class Room extends eui.Component implements  eui.UIComponent {
 		console.log("正在操作名字为"+name+"玩家")
 		if(name != "" && name != undefined ) {
 			//踢人
-			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
 			for (var i = 0;i < this.userPlayer.length; i++) {
-				if (name.equle(this.userPlayer[i].nickName)) {
+				console.log(this.userPlayer[i]);
+				console.log(this.userPlayer[i].nickName);
+				if (name === this.userPlayer[i].nickName) {
 					PokeMatchvsEngine.getInstance.kickPlayer(this.userPlayer[i].userID); 
 				}
 			}
@@ -315,7 +329,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	//创建一个定时器
 	private createTimer() {
-		this.timer = new egret.Timer(1000,0);
+		this.timer = new egret.Timer(1000,10);
 		//注册事件侦听器
         this.timer.addEventListener(egret.TimerEvent.TIMER,this.showCounDownLabel,this);
 		this.timer.start();
@@ -368,9 +382,9 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 		}
 		this.initView(this.userPlayer);
-		if( this.userPlayer.length  == 2) {
-			this.createTimer();
-		}
+		// if( this.userPlayer.length  == 2) {
+		// 	this.createTimer();
+		// }
 	}
 
 	/**
