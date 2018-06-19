@@ -10,7 +10,8 @@ module network {
 		}
 
 		public InitErrorData(){
-			this.addErrCodeData(1001,"您的网络连接断开, 需要重新登录...",this.returnSceneLogin);
+			this.addErrCodeData(1001,"您的【游戏】连接断开, 需要重新登录...",this.returnSceneLogin);
+			this.addErrCodeData(1002,"您的【房间】连接断开, 请重开游戏...",this.returnSceneGameLoy);
 			this.addErrCodeData(406,"房间已经关闭...",this.returnSceneGameLoy);
 			this.addErrCodeData(405,"房间人已经满了...",this.returnSceneGameLoy);
 			this.addErrCodeData(404,"找不到您要的信息...",this.returnSceneLogin);

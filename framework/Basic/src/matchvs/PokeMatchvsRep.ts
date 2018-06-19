@@ -141,6 +141,11 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
     public errorResponse = function(errCode:number, errMsg:string) {
         egret.log("errCode："+errCode+" errMsg:"+errMsg);
+        if(errCode == 1001){
+            if(errMsg != "" && errMsg.indexOf("hotel") >= 0){
+                errCode = 1002; //这里自定义把hotel断开改为 1002
+            }
+        }
         let data ={
             code:errCode,
             msg:errMsg

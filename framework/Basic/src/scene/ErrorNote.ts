@@ -30,6 +30,8 @@ class ErrorNote extends eui.Component implements  eui.UIComponent {
 				}
 		},this);
 		this._lb_message.text = this._error_msg;
+		//
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 	}
 
 
