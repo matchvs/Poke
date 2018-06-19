@@ -23,6 +23,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	public constructor() {
 		super();
+		this.userPlayer = [];
 	}
 
 	public onShow(obj) {
@@ -49,16 +50,17 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 */
 	public restart(roomID:string) {
 		PokeMatchvsEngine.getInstance.getRoomDetail(roomID);
-	}
-	
-
-	protected partAdded(partName:string,instance:any):void {
-		super.partAdded(partName,instance);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
+	}
+	
+
+	protected partAdded(partName:string,instance:any):void { 
+		super.partAdded(partName,instance);
+
 		switch(partName) {
 			case "nickName":
 				instance.text = GlobalData.myUser.nickName;
@@ -141,7 +143,6 @@ class Room extends eui.Component implements  eui.UIComponent {
 	protected onEvent(e:egret.Event) {
 		switch(e.type) {
 			//有人进来就通知
-			
 			case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
 				var user:GUser = new GUser;
 				var arr = JSON.parse(e.data.userProfile);
@@ -165,10 +166,9 @@ class Room extends eui.Component implements  eui.UIComponent {
 				//获取数组下标，删除离开玩家的指定的下标，将定时器重置，倒计时也需要重置
 				this.removeView(e.data);
 				if(e.data.ownew !== GlobalData.myUser.userID) {
-					this.action.visible = false;
-					this.action1.visible = false;
-					this.actionText.visible = false;
-					this.actionText1.visible = false;
+					this.isOwnew(false);
+				} else {
+					this.isOwnew(true);
 				}
 			break;
 			case MatchvsMessage.MATCHVS_LEVAE_ROOM:
@@ -178,15 +178,14 @@ class Room extends eui.Component implements  eui.UIComponent {
 				}
 				this.userPlayer.length = 0;
 				this.removeEvent();
-				SceneManager.back();
+				SceneManager.showScene(Game);
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY:
 				this.removeView(e.data);
-				if(e.data.ownew !== GlobalData.myUser.userID) {
-					this.action.visible = false;
-					this.action1.visible = false;
-					this.actionText.visible = false;
-					this.actionText1.visible = false;
+				if(e.data.owner !== GlobalData.myUser.userID) {
+					this.isOwnew(false);
+				} else {
+					this.isOwnew(true);
 				}
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER:
@@ -194,11 +193,10 @@ class Room extends eui.Component implements  eui.UIComponent {
 			break;
 			case MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP:
 				this.addUser(e.data.userInfos);
-				if(e.data.ownew !== GlobalData.myUser.userID) {
-					this.action.visible = false;
-					this.action1.visible = false;
-					this.actionText.visible = false;
-					this.actionText1.visible = false;
+				if(e.data.owner !== GlobalData.myUser.userID) {
+					this.isOwnew(false);
+				} else {
+					this.isOwnew(true);
 				}
 			break;
 		}
@@ -249,21 +247,22 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 玩家退出将玩家的信息从页面上消失
 	 */
 	private removeView(data:any) {
-		console.log(data.userId+"离开111")
+		if (this.timer != null) {
+			this.timer.stop();
+		}
 		for(var a = 0; a < this.userPlayer.length;a++ ) {
 			if(data.userId == this.userPlayer[a].userID) {
 				this.userPlayer.splice(a,1);
 			}
 		}
 		if(data.userId === GlobalData.myUser.userID) {
-			this.timer.stop;
+		
 			this.countDownLabel.text = "";
 			this.countDownTimer = 0;
 			this.removeEvent();
-			SceneManager.back();
+			SceneManager.showScene(Game);
 		}
 		var name;
-		console.log(this.beKickedOutName+"this.beKickedOutName");
 		if (this.beKickedOutName == "") {
 			console.log(data.cpProto+"data.cpProto");
 			var arr = JSON.parse(data.cpProto);
@@ -289,12 +288,14 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 用户操作，踢人或者邀请
 	 */
 	public userAction(instance:any) {
-		if(instance.text != "" && instance.text != undefined ) {
+		var name = instance.text;
+		console.log("正在操作名字为"+name+"玩家")
+		if(name != "" && name != undefined ) {
 			//踢人
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
 			for (var i = 0;i < this.userPlayer.length; i++) {
-				if (instance.text .equle(this.userPlayer[i].nickName)) {
+				if (name.equle(this.userPlayer[i].nickName)) {
 					PokeMatchvsEngine.getInstance.kickPlayer(this.userPlayer[i].userID); 
 				}
 			}
@@ -372,7 +373,15 @@ class Room extends eui.Component implements  eui.UIComponent {
 		}
 	}
 
-
+	/**
+	 * 是否是房主,是房主 传true 不是传 false，来确定按钮的显示隐藏
+	 */
+	public isOwnew(isOwnew :boolean) {
+		this.action.visible = isOwnew;
+		this.action1.visible = isOwnew;
+		this.actionText.visible = isOwnew;
+		this.actionText1.visible = isOwnew;
+	}
 
 
 	

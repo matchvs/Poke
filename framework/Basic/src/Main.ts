@@ -127,7 +127,6 @@ class Main extends eui.UILayer {
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
             PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
-            PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
             //初始化
             await RES.loadConfig("resource/default.res.json", "resource/");
             await this.loadTheme();
@@ -210,6 +209,7 @@ class Main extends eui.UILayer {
     }
 
     protected createGameScene(): void {
+        // this.removeEvent()
         SceneManager.showScene(Login);
     }
     /**
@@ -232,7 +232,7 @@ class Main extends eui.UILayer {
              this.roomID  =  LaunchOption.query.roomID;
             if(  this.roomID  != null &&   this.roomID  != "" &&  this.roomID  !=0) {
                 //昵称，头像，积分的顺序，用 /n 分割
-
+                PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
                 PokeMatchvsEngine.getInstance.joinRoom(this.roomID,MatchvsData.getDefaultUserProfile());
             }
         } catch(err) {
