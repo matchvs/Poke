@@ -14,10 +14,13 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         MatchvsData.MatchvsRep.leaveRoomNotify = this.leaveRoomNotify.bind(this);
         MatchvsData.MatchvsRep.leaveRoomResponse = this.leaveRoomRsp.bind(this);
         MatchvsData.MatchvsRep.kickPlayerResponse = this.kickPlayerRsp.bind(this);
+        MatchvsData.MatchvsRep.kickPlayerNotify = this.KickPlayerNotify.bind(this);
         MatchvsData.MatchvsRep.networkStateNotify = this.networkStateNotify.bind(this);
         //todo 添加全局的一个异常监听
         MatchvsData.MatchvsRep.errorResponse = this.errorResponse.bind(this);
         MatchvsData.MatchvsRep.getRoomDetailResponse = this.getRoomDetailResponse.bind(this);
+        MatchvsData.MatchvsRep.sendEventResponse = this.sendEventResponse.bind(this);
+        MatchvsData.MatchvsRep.sendEventNotify = this.sendEventNotify.bind(this);
 	}
 
     public static get getInstance():PokeMatchvsRep {  
@@ -179,6 +182,27 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         egret.log("networkStateNotify",event);
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_NETWORKSTATE,false,false,event));
     }
+
+    /**
+     * 发送消息回调
+     */
+    private sendEventResponse (sendEventRsp) {
+        if(sendEventRsp.status === 200) {
+            this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_SEND_EVENT_RSP,false,false,sendEventRsp));
+        } else {
+            console.log("发送消息失败 status"+sendEventRsp.status);
+        }
+    }
+
+    /**
+     * 收到消息通知
+     */
+    private sendEventNotify (eventInfo) {
+        this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_SEND_EVENT_NOTIFY,false,false,eventInfo));
+        console.log("收到消息 status"+eventInfo);
+    }
+
+
 
 
     private ab2str(buf) {

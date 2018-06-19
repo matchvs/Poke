@@ -33,6 +33,7 @@ module network {
 			this.battleEventMap[NetMsgEvent.PLAY_CARDS_R] = BattleMsgEvent.PLAYER_CARDS;
 			this.battleEventMap[NetMsgEvent.GAME_OVER_R] = BattleMsgEvent.GAME_OVER;
 			this.battleEventMap[NetMsgEvent.REPROT_SCORE_R] = BattleMsgEvent.REPORT_DATA;
+			this.battleEventMap[NetMsgEvent.GAME_IS_OKR] = BattleMsgEvent.GAME_IS_OK;
 		}
 
 		/**

@@ -138,12 +138,19 @@ class PokeMatchvsEngine  {
 		var http = new MatchvsHttp(PokeMatchvsRep.getInstance);
 		http.get(rankListUrl+"&timer="+key);
 		
-		
+	}
+
+	/**
+	 * 发送消息扩展接口，给gameServer
+	 */
+	public sendEventEx(action,cpProto:string) {
+		var result = MatchvsData.MatchvsReq.sendEventEx(1,JSON.stringify({action:action,data:cpProto}),1,[]);
+		console.log("发送消息 result"+ result);
+		return result;
 	}
 
 	// public onMsg;
 	// public onErr;
-
 	// public onGetProgress(){
 
 	// 	this.onMsg = function (buf) {
