@@ -175,7 +175,6 @@ class Main extends eui.UILayer {
             case MatchvsMessage.MATCHVS_JOINROOM_RSP:
                 this.removeEvent();
                 var obj = {roomID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:true};
-                console.log("执行跳转啊。。。。。。。。。。。。。");
                 MatchvsData.gameMode = true;
                 SceneManager.showScene(Room,obj);
             break;
@@ -186,7 +185,7 @@ class Main extends eui.UILayer {
         if (MatchvsData.loginStatus) {
             this.wxInvite();
         } else {
-            Toast.show("登录失败，邀请失效了");
+            Toast.show("登录失败");
         }
     }
 

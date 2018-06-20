@@ -21,6 +21,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         MatchvsData.MatchvsRep.getRoomDetailResponse = this.getRoomDetailResponse.bind(this);
         MatchvsData.MatchvsRep.sendEventResponse = this.sendEventResponse.bind(this);
         MatchvsData.MatchvsRep.sendEventNotify = this.sendEventNotify.bind(this);
+        
 	}
 
     public static get getInstance():PokeMatchvsRep {  
@@ -80,6 +81,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_JOINROOM_RSP,false,false,roomUserInfonList));
         } else {
             egret.log("进入房间失败，错误码："+status);
+            Toast.show("进入房间失败");
         }
     }
 
@@ -111,12 +113,12 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      * 创建房间成功回调
      */
     createRoomRsp = function(createRoomRsp) {
-        if (createRoomRsp.status == 200) {
-            egret.log("进入房间成功");
+        // if (createRoomRsp.status == 200) {
+            // egret.log("进入房间成功");
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_CREATE_ROOM,false,false,createRoomRsp));
-        } else {
-            egret.log("进入房间失败："+createRoomRsp.status);
-        }
+        // } else {
+            // egret.log("进入房间失败："+createRoomRsp.status);
+        // }
     }
 
     /**

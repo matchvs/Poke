@@ -20,15 +20,24 @@ class Room extends eui.Component implements  eui.UIComponent {
 	// private isRestart = false; //是否是打完一局重新开始
 	// private isInvite = false; //是否进入房间直接邀请
 	private beKickedOutName = "";
+	private obj;
 
 	public constructor() {
 		super();
+		this.userPlayer.length = 0;
 	}
 
 	public onShow(obj) {
 		MatchvsData.loginStatus = false;
+		this.obj = obj;
 		this.roomID = obj.roomID;
-		if(obj.isInvite) {
+
+	}
+
+	protected childrenCreated():void {
+		super.childrenCreated();
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
+		if(this.obj.isInvite) {
 			if(MatchvsData.gameMode) {
 				try {
 					var par = "roomID="+this.roomID;
@@ -39,7 +48,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			}
 		}
 
-		if (obj.isRestart) {
+		if (this.obj.isRestart) {
 			this.restart(this.roomID);
 		}
 	}
@@ -133,10 +142,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	}
 
 
-	protected childrenCreated():void {
-		super.childrenCreated();
-		network.NetworkStateCheck.getInstance().RegistNetListen(this);
-	}
+
 
 	/**
 	 * 接收消息
@@ -202,7 +208,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 				}
 			break;
 			case network.BattleMsgEvent.GAME_IS_OK:
-				console.log("11111111111111111111111111");
+				console.log("gameServer 通知倒计时开始");
 				this.createTimer();
 			break;
 		}
