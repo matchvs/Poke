@@ -33,8 +33,9 @@ class Room extends eui.Component implements  eui.UIComponent {
 			if(MatchvsData.gameMode) {
 				try {
 					var par = "roomID="+this.roomID;
-					WxUtils.wxTogether("邀请好友",par);
+					together("邀请好友",par);
 				} catch (e) {
+					console.warn(e,e.message)
 					// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 					// PokeMatchvsEngine.getInstance.leaveRoom("");
 					// return;
@@ -58,7 +59,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 */
 	public restart(roomID:string) {
 		PokeMatchvsEngine.getInstance.getRoomDetail(roomID);
-		// network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_IS_OK,this.onEvent, this);
+		network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.GAME_IS_OKS, {});
 	}
 
 	public initEvent() {
