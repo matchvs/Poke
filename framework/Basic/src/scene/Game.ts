@@ -33,12 +33,14 @@ class Game extends eui.Component implements eui.UIComponent {
 					Toast.show("您随机匹配点击的太快了，请稍后");
 					return;
 				}
+				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 			} else if (partName == "createRoom") {
 				//设置游戏模式为好友开心模式
 				MatchvsData.gameMode = true;
 				if(PokeMatchvsEngine.getInstance.creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile())) {
 					Toast.show("创建房间太快了，我已经跟不上了");
 				}
+				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			} else if (partName == "inviteFriends") {
 				//todo 直接邀请
 				MatchvsData.gameMode = true;
@@ -46,6 +48,7 @@ class Game extends eui.Component implements eui.UIComponent {
 				if(PokeMatchvsEngine.getInstance.creatRoom(this.roomName,this.roomPropety,MatchvsData.maxPlayer,MatchvsData.getDefaultUserProfile())) {
 					Toast.show("创建房间太快了，我已经跟不上了");
 				}
+				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
 			}
 
 		}, this);
@@ -59,8 +62,9 @@ class Game extends eui.Component implements eui.UIComponent {
 	 public onEvent(e:egret.Event):void {
 		 switch (e.type) {
 			 case MatchvsMessage.MATCHVS_CREATE_ROOM:
-			 	egret.log("接收到创建房间成功的消息");
 				if (e.data.status == 200) {
+			 		console.log("接收到创建房间成功的消息");
+					network.BattleMsg.getInstance().sendToGameServer(network.NetMsgEvent.GAME_IS_OKS, {});
 					this.startRoomScene(e.data.roomID);
         		} else {
 					Toast.show("创建房间失败了");
@@ -102,8 +106,7 @@ class Game extends eui.Component implements eui.UIComponent {
 
 	protected childrenCreated(): void {
 		super.childrenCreated();
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_CREATE_ROOM,this.onEvent,this);
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
+		// console.log("Game","childrenCreated");
 	}
 
 }

@@ -164,7 +164,6 @@ class Main extends eui.UILayer {
             case MatchvsMessage.MATCHVS_REGISTERUSER:
                 // this.userID = e.data.id;
                 this.userInfoStore(e.data);
-                PokeMatchvsEngine.getInstance.login(e.data.id,e.data.token);
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
                 Toast.show("登录成功");

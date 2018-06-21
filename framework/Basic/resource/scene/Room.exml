@@ -27,6 +27,6 @@
 	<e:Label id="action_text_one" text="邀请" x="491" y="664" size="24" fontFamily="STYuanti-SC-Bold" width="51" height="26" textAlign="center" textColor="0xebae4c"/>
 	<e:Image width="636" height="69" x="2" y="2" source="resource/assets/lobby/bg_header.png"/>
 	<e:Image id="head" width="56" height="56" x="8" y="8"/>
-	<e:Label id="nickName" text="" x="83" y="10" width="66" height="20" fontFamily="STYuanti-SC-Bold" textAlign="left" size="20" textColor="0xffdfa6"/>
+	<e:Label id="nickName" text="" x="83" y="10" width="160" height="20" fontFamily="STYuanti-SC-Bold" textAlign="left" size="20" textColor="0xffdfa6"/>
 	<e:Label id="integral" text="" x="112" y="40" size="20" fontFamily="STYuanti-SC-Bold" textColor="0xffdfa6" width="150" height="17" textAlign="left"/>
 </e:Skin>
