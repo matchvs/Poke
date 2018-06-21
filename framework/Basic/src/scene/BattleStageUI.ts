@@ -83,6 +83,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	public init(){
 		console.info("BattleStageUI init");
 
+		//注册网络异常监听
 		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 
 		//显示用户头像
