@@ -20,13 +20,16 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 
 	public onShow(obj) { 
 		this.roomID = obj;
-
-	}
-
-	protected partAdded(partName:string,instance:any):void {
+		console.log("onshou");
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
+		
+	}
+
+	protected partAdded(partName:string,instance:any):void {
+
 		super.partAdded(partName,instance);
 		if(partName == "time_units") {
 			this.fontImgUnits = instance;
@@ -40,7 +43,11 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			if(partName == "cancel_match") {
-				PokeMatchvsEngine.getInstance.leaveRoom("不想等待匹配了");
+				if (PokeMatchvsEngine.getInstance.leaveRoom("不想等待匹配了") == -6) {
+					this.userPlayer.length = 0;
+					this.stopTimer();
+					SceneManager.back();
+				}
 			}
 
 		},this);
@@ -173,7 +180,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	protected childrenCreated():void {
 		super.childrenCreated();
 		network.NetworkStateCheck.getInstance().RegistNetListen(this);
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
 		PokeMatchvsEngine.getInstance.getRoomDetail(this.roomID);	
 	}
 

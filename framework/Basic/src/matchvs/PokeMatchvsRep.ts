@@ -38,7 +38,8 @@ class PokeMatchvsRep extends egret.EventDispatcher{
     initRsp= function(status) {
         if(status === 200) {
             egret.log("初始化成功"+status);
-            this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_INIT,false,false,status));
+            PokeMatchvsEngine.getInstance.registerUser();
+            // this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_INIT,false,false,status));
         } else{
             egret.log("初始化失败，错误码"+status);
         }
@@ -50,6 +51,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
 	registerUserRsp = function(userInfo) {
         if (userInfo.status == 0) {
             egret.log("注册成功"+userInfo.status);
+            PokeMatchvsEngine.getInstance.login(userInfo.id,userInfo.token);
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_REGISTERUSER,false,false,userInfo));
         } else {
             egret.log("注册失败，错误码："+userInfo.status);
