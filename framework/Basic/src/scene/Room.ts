@@ -69,6 +69,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
+		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_IS_OK,this.onEvent, this);
 	}
 	
 
@@ -226,7 +227,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
-		network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.REPORT_DATA,this.onEvent, this);
+		network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.GAME_IS_OK,this.onEvent, this);
     }
 
 
