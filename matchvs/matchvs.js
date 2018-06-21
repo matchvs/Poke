@@ -20211,6 +20211,7 @@ var NetWorkCallBackImp = function (engine) {
      */
     this.onDisConnect = function (host, event) {
         engine.mRsp.onDisConnect && engine.mRsp.onDisConnect(host);
+        engine.mEngineState = ENGE_STATE.HAVE_INIT;
         if (host.endsWith(HttpConf.HOST_GATWAY_ADDR)) {
             if (event && event.code && (event.code === MvsCode.CODE_1000 || event.code === MvsCode.CODE_1005)) {
                 MatchvsLog.logI("gateway close is friend");
@@ -20218,8 +20219,6 @@ var NetWorkCallBackImp = function (engine) {
             else {
                 ErrorRspWork(engine.mRsp.errorResponse, MvsCode.NetWorkErr, "gateway network error");
             }
-            engine.mEngineState = ENGE_STATE.HAVE_INIT;
-            MatchvsLog.logI("EngineState", engine.mEngineState);
             clearInterval(this.gtwTimer);
         }
         else if (host.endsWith(HttpConf.HOST_HOTEL_ADDR)) {
@@ -20236,9 +20235,9 @@ var NetWorkCallBackImp = function (engine) {
                 //engine.mHotelTimer = null;
             }
             //退出房间状态取消
-            engine.mEngineState = ENGE_STATE.HAVE_INIT;
             engine.mEngineState |= ENGE_STATE.HAVE_LOGIN;
         }
+        MatchvsLog.logI("EngineState", engine.mEngineState);
     };
 };
 function LoginRspWork() {
@@ -20275,7 +20274,6 @@ function JoinRoomRspWork() {
     this.doSubHandle = function (event, engine) {
         var status = event.payload.getStatus();
         if (status === 200) {
-            engine.mEngineState |= ENGE_STATE.IN_ROOM;
             var mBookInfo = event.payload.getBookinfo();
             engine.mRoomInfo = event.payload.getRoominfo();
             engine.mUserListForJoinRoomRsp = event.payload.getUsersList();
@@ -20293,7 +20291,6 @@ function JoinRoomRspWork() {
 function CreateRoomRspWork() {
     this.doSubHandle = function (event, engine) {
         if (event.payload.getStatus() === 200) {
-            engine.mEngineState |= ENGE_STATE.IN_ROOM;
             var mBookInfo = event.payload.getBookinfo();
             event.roomInfo.setRoomid(event.payload.getRoomid());
             event.roomInfo.setOwner(event.payload.getOwner());
@@ -20311,30 +20308,34 @@ function CheckInRoomRspWork() {
     this.doSubHandle = function (event, engine) {
         var status = event.payload.getStatus();
         if (status !== 200) {
-            ErrorRspWork(engine.mRsp.errorResponse, status, "");
+            ErrorRspWork(engine.mRsp.errorResponse, status, "check in error");
+            engine.mHotelNetWork && engine.mHotelNetWork.close();
         }
-        engine.mAllPlayers = event.payload.getCheckinsList(); //checkins;
-        var roomUserList = [];
-        engine.mUserListForJoinRoomRsp.forEach(function (user) {
-            var roomuser = new MsRoomUserInfo(user.getUserid(), utf8ByteArrayToString(user.getUserprofile()));
-            roomUserList.push(roomuser);
-        });
-        //房间信息
-        var roominfo = new MsRoomInfo(engine.mRoomInfo.getRoomid(), utf8ByteArrayToString(engine.mRoomInfo.getRoomproperty()), engine.mRoomInfo.getOwner());
-        if ((engine.mEngineState & ENGE_STATE.CREATEROOM) === ENGE_STATE.CREATEROOM) {
-            //创建房间
-            engine.mEngineState &= ~ENGE_STATE.CREATEROOM;
-            engine.mRsp.createRoomResponse && engine.mRsp.createRoomResponse(new MsCreateRoomRsp(status, engine.mRoomInfo.getRoomid(), engine.mRoomInfo.getOwner()));
+        else {
+            engine.mAllPlayers = event.payload.getCheckinsList(); //checkins;
+            var roomUserList = [];
+            engine.mUserListForJoinRoomRsp.forEach(function (user) {
+                var roomuser = new MsRoomUserInfo(user.getUserid(), utf8ByteArrayToString(user.getUserprofile()));
+                roomUserList.push(roomuser);
+            });
+            //房间信息
+            var roominfo = new MsRoomInfo(engine.mRoomInfo.getRoomid(), utf8ByteArrayToString(engine.mRoomInfo.getRoomproperty()), engine.mRoomInfo.getOwner());
+            engine.mEngineState |= ENGE_STATE.IN_ROOM;
+            if ((engine.mEngineState & ENGE_STATE.CREATEROOM) === ENGE_STATE.CREATEROOM) {
+                //创建房间
+                engine.mRsp.createRoomResponse && engine.mRsp.createRoomResponse(new MsCreateRoomRsp(status, engine.mRoomInfo.getRoomid(), engine.mRoomInfo.getOwner()));
+            }
+            else if ((engine.mEngineState & ENGE_STATE.JOIN_ROOMING) === ENGE_STATE.JOIN_ROOMING) {
+                //加入房间
+                engine.mRsp.joinRoomResponse && engine.mRsp.joinRoomResponse(status, roomUserList, roominfo);
+            }
+            else if ((engine.mEngineState & ENGE_STATE.RECONNECTING) === ENGE_STATE.RECONNECTING) {
+                engine.mRsp.reconnectResponse && engine.mRsp.reconnectResponse(status, roomUserList, roominfo);
+            }
         }
-        else if ((engine.mEngineState & ENGE_STATE.JOIN_ROOMING) === ENGE_STATE.JOIN_ROOMING) {
-            //加入房间
-            engine.mEngineState &= ~ENGE_STATE.JOIN_ROOMING;
-            engine.mRsp.joinRoomResponse && engine.mRsp.joinRoomResponse(status, roomUserList, roominfo);
-        }
-        else if ((engine.mEngineState & ENGE_STATE.RECONNECTING) === ENGE_STATE.RECONNECTING) {
-            engine.mEngineState &= ~ENGE_STATE.RECONNECTING;
-            engine.mRsp.reconnectResponse && engine.mRsp.reconnectResponse(status, roomUserList, roominfo);
-        }
+        engine.mEngineState &= ~ENGE_STATE.CREATEROOM;
+        engine.mEngineState &= ~ENGE_STATE.JOIN_ROOMING;
+        engine.mEngineState &= ~ENGE_STATE.RECONNECTING;
     };
 }
 function CheckInRoomNtfyWork() {
