@@ -137,7 +137,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			}else{
 				console.info("显示结果值3：",landowner.pointValue,p1.pointValue,p2.pointValue);
 				this._peasant1Text = p1.pointValue+"-"+ p1.pointValue;
-				finalValue += p1.pointValue;
+				finalValue += Number(p1.pointValue);
 				p1.pointValue = 0;
 				console.info("显示结果值2：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			}
@@ -150,10 +150,10 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 				console.info("显示结果值6：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			}else{
 				this._peasant2Text = p2.pointValue+"-"+ p2.pointValue;
-				finalValue += p2.pointValue;
+				finalValue += Number(p2.pointValue);
 				p2.pointValue = 0;
 			}
-			this._landlordText = landowner.pointValue+"+"+ finalValue;
+			this._landlordText = landowner.pointValue+"+"+ Number(finalValue);
 			console.info("显示结果值7：",landowner.pointValue,p1.pointValue,p2.pointValue);
 			landowner.pointValue = Number(landowner.pointValue) + Number(finalValue);
 			console.info("显示结果值8：",landowner.pointValue,p1.pointValue,p2.pointValue);
