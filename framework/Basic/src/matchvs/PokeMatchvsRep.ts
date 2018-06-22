@@ -66,7 +66,12 @@ class PokeMatchvsRep extends egret.EventDispatcher{
         if(loginRsp.status == 200) {
             MatchvsData.loginStatus = true;
             egret.log("登录成功"+loginRsp.status);
+            // 没有断线重连功能，登陆成功后发现还再房间中就退出房间
+            if(loginRsp.roomID != undefined && loginRsp.roomID != "") {
+                PokeMatchvsEngine.getInstance.leaveRoom("不要断线重连了");
+            }
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_LOGIN,false,false,loginRsp));
+
         } else {
             egret.log("登录失败，错误码："+loginRsp.status);
         }
