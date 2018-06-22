@@ -20308,6 +20308,8 @@ function CheckInRoomRspWork() {
     this.doSubHandle = function (event, engine) {
         var status = event.payload.getStatus();
         if (status !== 200) {
+            engine.mEngineState = ENGE_STATE.HAVE_INIT;
+            engine.mEngineState |= ENGE_STATE.HAVE_LOGIN;
             ErrorRspWork(engine.mRsp.errorResponse, status, "check in error");
             engine.mHotelNetWork && engine.mHotelNetWork.close();
         }
@@ -20322,20 +20324,20 @@ function CheckInRoomRspWork() {
             var roominfo = new MsRoomInfo(engine.mRoomInfo.getRoomid(), utf8ByteArrayToString(engine.mRoomInfo.getRoomproperty()), engine.mRoomInfo.getOwner());
             engine.mEngineState |= ENGE_STATE.IN_ROOM;
             if ((engine.mEngineState & ENGE_STATE.CREATEROOM) === ENGE_STATE.CREATEROOM) {
+                engine.mEngineState &= ~ENGE_STATE.CREATEROOM;
                 //创建房间
                 engine.mRsp.createRoomResponse && engine.mRsp.createRoomResponse(new MsCreateRoomRsp(status, engine.mRoomInfo.getRoomid(), engine.mRoomInfo.getOwner()));
             }
             else if ((engine.mEngineState & ENGE_STATE.JOIN_ROOMING) === ENGE_STATE.JOIN_ROOMING) {
+                engine.mEngineState &= ~ENGE_STATE.JOIN_ROOMING;
                 //加入房间
                 engine.mRsp.joinRoomResponse && engine.mRsp.joinRoomResponse(status, roomUserList, roominfo);
             }
             else if ((engine.mEngineState & ENGE_STATE.RECONNECTING) === ENGE_STATE.RECONNECTING) {
+                engine.mEngineState &= ~ENGE_STATE.RECONNECTING;
                 engine.mRsp.reconnectResponse && engine.mRsp.reconnectResponse(status, roomUserList, roominfo);
             }
         }
-        engine.mEngineState &= ~ENGE_STATE.CREATEROOM;
-        engine.mEngineState &= ~ENGE_STATE.JOIN_ROOMING;
-        engine.mEngineState &= ~ENGE_STATE.RECONNECTING;
     };
 }
 function CheckInRoomNtfyWork() {
@@ -20843,7 +20845,7 @@ function MatchvsEngine() {
      * @returns {number}
      */
     this.leaveRoom = function (cpProto) {
-        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 1);
+        var ret = commEngineStateCheck(this.mEngineState, this.mEngineState, 3);
         if (ret !== 0)
             return ret;
         var roomid = this.mRecntRoomID;

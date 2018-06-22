@@ -62,8 +62,8 @@ module network {
 		 */
 		private networkStateNotify(e:egret.Event){
 			let data = e.data;
-			this.CancelListen();
-			if(data.state == 1){
+			if(data.state == 3){
+				this.CancelListen();
 				SceneManager.ErrorPage("其他玩家网络连接断开，请返回到大厅...",this.returnSceneGameLoy,this);
 			}
 		}
@@ -90,10 +90,10 @@ module network {
 		 */
 		private NetorkError(e:egret.Event){
 			let data = e.data;
-			this.CancelListen();
 			console.info("触发错误：",data.code);
 			let errData = this._errCodeMap[Number(data.code)];
 			if(errData){
+				this.CancelListen();
 				SceneManager.ErrorPage(errData.message, errData.callBack,this);
 			}
 			// }else{

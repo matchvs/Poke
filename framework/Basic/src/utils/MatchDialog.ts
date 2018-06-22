@@ -25,7 +25,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
-		
 	}
 
 	protected partAdded(partName:string,instance:any):void {
@@ -180,7 +179,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	protected childrenCreated():void {
 		super.childrenCreated();
 		network.NetworkStateCheck.getInstance().RegistNetListen(this);
-		PokeMatchvsEngine.getInstance.getRoomDetail(this.roomID);	
+		PokeMatchvsEngine.getInstance.getRoomDetail(this.roomID);
 	}
 
 

@@ -683,6 +683,7 @@ module battle {
 
 		//有玩家离开房间就提示玩家离开房间，需要回到大厅。
 		private leaveRoomNotify(event:egret.Event){
+			PokeMatchvsEngine.getInstance.leaveRoom("他们都不玩了，我也离开");
 			SceneManager.ErrorPage("玩家"+event.data.userId+"离开房间，请返回到大厅...",()=>{
 				SceneManager.showScene(Game);
 			},this);
@@ -705,7 +706,7 @@ module battle {
 			//游戏结束
 			network.BattleMsg.getInstance().removeEventListener(network.BattleMsgEvent.GAME_OVER,this.GameOver, this);
 
-			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.leaveRoomNotify,this);
+			PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.leaveRoomNotify,this);
 
 			if(this._playerTimer){
 				this._playerTimer.Release();
