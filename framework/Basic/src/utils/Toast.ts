@@ -28,7 +28,7 @@ class Toast extends egret.DisplayObjectContainer {
 
     public static show(msg: string): void {
         if (this._cont) {
-            var toast: Toast = new Toast(msg, this._cont.stage.stageWidth, this._cont.stage.stageHeight);
+            var toast: Toast = new Toast(msg, 650, 1150);
             this._cont.addChild(toast);
         }
     }

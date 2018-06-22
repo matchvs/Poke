@@ -164,7 +164,6 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      * 排行榜正确回调
      */
     public onMsg(buf) {
-        egret.log("排行榜请求成功",buf);
         var buf = JSON.parse(buf);
         //var listData = this.ab2str(egret.Base64Util.decode(buf.data.dataList[0].value));
         var listData = ArrayTools.Base64Decode(buf.data.dataList[0].value);
