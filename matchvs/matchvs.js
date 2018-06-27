@@ -20211,8 +20211,8 @@ var NetWorkCallBackImp = function (engine) {
      */
     this.onDisConnect = function (host, event) {
         engine.mRsp.onDisConnect && engine.mRsp.onDisConnect(host);
-        engine.mEngineState = ENGE_STATE.HAVE_INIT;
         if (host.endsWith(HttpConf.HOST_GATWAY_ADDR)) {
+            engine.mEngineState = ENGE_STATE.HAVE_INIT;
             if (event && event.code && (event.code === MvsCode.CODE_1000 || event.code === MvsCode.CODE_1005)) {
                 MatchvsLog.logI("gateway close is friend");
             }
@@ -20234,8 +20234,11 @@ var NetWorkCallBackImp = function (engine) {
                 clearInterval(this.mHotelTimer);
                 //engine.mHotelTimer = null;
             }
-            //退出房间状态取消
-            engine.mEngineState |= ENGE_STATE.HAVE_LOGIN;
+            //退出房间状态取消,这里只能一个个状态取消，不能使用 = 号，不然出现先断开gateway 再断开 hotel状态码就不对
+            engine.mEngineState &= ~ENGE_STATE.JOIN_ROOMING;
+            engine.mEngineState &= ~ENGE_STATE.LEAVE_ROOMING;
+            engine.mEngineState &= ~ENGE_STATE.IN_ROOM;
+            engine.mEngineState &= ~ENGE_STATE.CREATEROOM;
         }
         MatchvsLog.logI("EngineState", engine.mEngineState);
     };

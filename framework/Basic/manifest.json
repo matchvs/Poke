@@ -43,7 +43,7 @@
 		"bin-debug/logic/game/Prompt.js",
 		"bin-debug/logic/game/Prompt2.js",
 		"bin-debug/logic/game/SendCard.js",
-		"bin-debug/Config.js",
+		"bin-debug/utils/WxUtils.js",
 		"bin-debug/logic/network/BattleMessage.js",
 		"bin-debug/logic/network/BattleMsgEvent.js",
 		"bin-debug/logic/network/NetworkStateCheck.js",
@@ -73,6 +73,6 @@
 		"bin-debug/utils/MatchDialog.js",
 		"bin-debug/utils/MD5.js",
 		"bin-debug/utils/Toast.js",
-		"bin-debug/utils/WxUtils.js"
+		"bin-debug/Config.js"
 	]
 }

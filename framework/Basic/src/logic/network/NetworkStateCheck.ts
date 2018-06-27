@@ -5,6 +5,7 @@ module network {
 		//错误码选择
 		private _errCodeMap:{[key:number]:any} = [];
 		private _curr:any = null;
+		private _gtwDisConn:boolean = false;
 		public constructor() {
 			this.InitErrorData();
 		}
@@ -74,6 +75,7 @@ module network {
 		private returnSceneGameLoy(){
 			PokeMatchvsEngine.getInstance.leaveRoom("玩家断开");
 			console.info("跳到大厅");
+			this._gtwDisConn = false;
 			SceneManager.showScene(Game);
 		}
 		/**
@@ -81,6 +83,7 @@ module network {
 		 */
 		private returnSceneLogin(){
 			console.info("跳到登录");
+			this._gtwDisConn = false;
 			PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
 			SceneManager.showScene(Login);
 		}
@@ -91,6 +94,12 @@ module network {
 		private NetorkError(e:egret.Event){
 			let data = e.data;
 			console.info("触发错误：",data.code);
+			if(data.code == 1001){
+				this._gtwDisConn = true;
+			}
+			if(data.code == 1002 && this._gtwDisConn){
+				data.code = 1001;
+			}
 			let errData = this._errCodeMap[Number(data.code)];
 			if(errData){
 				this.CancelListen();
