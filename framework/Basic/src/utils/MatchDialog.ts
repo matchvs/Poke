@@ -183,6 +183,10 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	}
 
 
+	public Release(){
+		 this.removeEvent();
+	 }
+
 	Num = [9,99,999,9999,9999,99999,999999];
 
 	public getIntLenth (x:number) {
