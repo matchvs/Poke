@@ -1,5 +1,6 @@
 class Login extends eui.Component implements eui.UIComponent {
 	private that: any = this;
+
 	public constructor() {
 		super();
 		Toast.initRes(this, "resource/loading/toast-bg.png");
@@ -14,15 +15,16 @@ class Login extends eui.Component implements eui.UIComponent {
 				// Toast.show("ceshi");
 				if (MatchvsData.loginStatus) {
 					MatchvsData.loginStatus = false;
-					SceneManager.showScene(Game);
+					var gameLayer = new Game();
+					this.addChild(gameLayer);
 				} else {
 					Toast.show("登录失败，重试中");
 					egret.log("重新登录",GlobalData.myUser.userID+"/n"+GlobalData.myUser.token);
 					PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
 				}
 			} else if (partName == "rank_list") {
-				// var rankList = new RankList();
-				SceneManager.showScene(RankList);
+				var rankList = new RankList();
+				this.addChild(rankList);
 			}
 
 		}, this);

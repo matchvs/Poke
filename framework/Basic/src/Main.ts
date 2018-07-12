@@ -34,7 +34,9 @@ class Main extends eui.UILayer {
     private userID:string;
     private roomID:any;
     private timer:egret.Timer;
-    
+    private loginLayer:Login;
+    private roomLayer:Room;
+
 
     protected createChildren(): void {
         super.createChildren();
@@ -54,7 +56,7 @@ class Main extends eui.UILayer {
         Toast.initRes(this, "resource/loading/toast-bg.png");
         egret.ImageLoader.crossOrigin = "anonymous";
         await this.getWxUserInfo();
-        SceneManager.init(this);
+        // SceneManager.init(this);
         await this.loadResource()
 
     }
@@ -166,25 +168,24 @@ class Main extends eui.UILayer {
                 this.userInfoStore(e.data);
             break;
             case MatchvsMessage.MATCHVS_LOGIN:
-                Toast.show("登录成功");
-                this.timer = new egret.Timer(1000,1);
-                this.timer.addEventListener(egret.TimerEvent.TIMER,this.timerFunc,this)
-                this.timer.start();
+                if (e.data.status == 200) {
+                    Toast.show("登录成功");
+                    MatchvsData.loginStatus = true;
+                    this.timer = new egret.Timer(1000,1);
+                    this.timer.addEventListener(egret.TimerEvent.TIMER,this.wxInvite,this)
+                    this.timer.start();
+                } else {
+                    Toast.show("登录失败");
+                }
+      
             break;
             case MatchvsMessage.MATCHVS_JOINROOM_RSP:
                 this.removeEvent();
                 var obj = {roomID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:true};
                 MatchvsData.gameMode = true;
-                SceneManager.showScene(Room,obj);
+                this.roomLayer = new Room();
+                this.addChild(this.roomLayer);
             break;
-        }
-    }
-
-    private timerFunc() {
-        if (MatchvsData.loginStatus) {
-            this.wxInvite();
-        } else {
-            Toast.show("登录失败");
         }
     }
 
@@ -208,7 +209,9 @@ class Main extends eui.UILayer {
 
     protected createGameScene(): void {
         // this.removeEvent()
-        SceneManager.showScene(Login);
+        this.loginLayer = new Login();
+        this.addChild(this.loginLayer)
+        // SceneManager.showScene(Login);
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

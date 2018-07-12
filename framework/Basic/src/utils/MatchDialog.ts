@@ -9,8 +9,10 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	private userPlayer = [];
 	private roomID = "";
 
-	public constructor() {
+	public constructor(obj) {
 		super();
+		console.log('MatchDialog','constructor');
+		this.roomID = obj;
 		this.timer = new egret.Timer(1000,0);
 		//注册事件侦听器
         this.timer.addEventListener(egret.TimerEvent.TIMER,this.timerFunc,this);
@@ -18,17 +20,21 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		this.userPlayer.length = 0;
 	}
 
-	public onShow(obj) { 
-		this.roomID = obj;
-		console.log("onshou");
+	// public onShow(obj) { 
+		// this.roomID = obj;
+		// console.log("onshou");
+		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
+		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
+		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
+		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
+	// }
+
+	protected partAdded(partName:string,instance:any):void {
+		console.log('MatchDialog','partAdded');
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
-	}
-
-	protected partAdded(partName:string,instance:any):void {
-
 		super.partAdded(partName,instance);
 		if(partName == "time_units") {
 			this.fontImgUnits = instance;
@@ -178,6 +184,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 
 	protected childrenCreated():void {
 		super.childrenCreated();
+		console.log('MatchDialog','childrenCreated');
 		network.NetworkStateCheck.getInstance().RegistNetListen(this);
 		PokeMatchvsEngine.getInstance.getRoomDetail(this.roomID);
 	}

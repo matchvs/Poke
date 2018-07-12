@@ -13,6 +13,12 @@ class Room extends eui.Component implements  eui.UIComponent {
 	private action1:eui.Rect = null;
 	private actionText:eui.Label = null;
 	private actionText1:eui.Label = null;
+	private nickName:eui.Label = null;
+	private integral:eui.Label = null;
+	private head:eui.Image = null;
+	private roomID_tabel:eui.Label = null;
+	private my_icon:eui.Image = null;
+	private my_name:eui.Label = null;
 	private nameViewList = [];
 	private iconViewList = [];
 	private actionViewList = [];
@@ -21,9 +27,13 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	public constructor() {
 		super();
+
 	}
 
 	public onShow(obj) {
+		if (this.nickName != null) {
+			this.showName();
+		}
 		console.log("Room","onShow");
 		MatchvsData.loginStatus = false;
 		this.userPlayer.length = 0;
@@ -46,8 +56,19 @@ class Room extends eui.Component implements  eui.UIComponent {
 		if (obj.isRestart) {
 			this.restart(this.roomID);
 		}
-
 	}
+	
+
+	public showName() {
+		console.log('Room','showName');
+		this.nickName.text =  GlobalData.myUser.nickName;
+		this.integral.text = GlobalData.myUser.pointValue+"";
+		this.head.source = GlobalData.myUser.avator;
+		this.roomID_tabel.text = "房间号："+this.roomID;
+		this.my_icon.source = GlobalData.myUser.avator;
+		this.my_name.text = GlobalData.myUser.nickName;
+	}
+
 
 	protected childrenCreated():void {
 		super.childrenCreated();
@@ -71,27 +92,35 @@ class Room extends eui.Component implements  eui.UIComponent {
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
 		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_IS_OK,this.onEvent, this);
 	}
+
+		
 	
 
 	protected partAdded(partName:string,instance:any):void { 
 		super.partAdded(partName,instance);
 		switch(partName) {
 			case "nickName":
+			 	this.nickName = instance;
 				instance.text = GlobalData.myUser.nickName;
 				break;
 			case "integral":
+				this.integral = instance;
 				instance.text = GlobalData.myUser.pointValue;
 				break;
 			case "head":
+				this.head = instance;
 				instance.source = GlobalData.myUser.avator;
 				break;
 			case "roomID_tabel":
+				this.roomID_tabel = instance;
 				instance.text = "房间号："+this.roomID;
 			break;
 			case "my_icon":
+				this.my_icon = instance;
 				instance.source = GlobalData.myUser.avator;
 			break;
 			case "my_name":
+				this.my_name = instance;
 				instance.text = GlobalData.myUser.nickName;
 			break;
 			case "countdown":
@@ -186,7 +215,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 				}
 				this.userPlayer.length = 0;
 				this.removeEvent();
-				SceneManager.showScene(Game);
+				SceneManager.back();
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY:
 				this.removeView(e.data);

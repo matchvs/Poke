@@ -27,7 +27,7 @@ class SceneManager {
         } else {
             scene = new scene(par);
             if (scene.onShow) {
-                console.log(scene.constructor ,"onShow");
+                // console.log(scene.constructor ,"onShow");
                 scene.onShow(par);
             }  
             this.root.addChild(scene);
