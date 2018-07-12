@@ -20,14 +20,13 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		this.userPlayer.length = 0;
 	}
 
-	// public onShow(obj) { 
-		// this.roomID = obj;
-		// console.log("onshou");
-		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
-		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
-		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
-		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
-	// }
+	public initEvent() { 
+		console.log("initEvent");
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
+	}
 
 	protected partAdded(partName:string,instance:any):void {
 		console.log('MatchDialog','partAdded');
@@ -45,18 +44,26 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 		if(partName == "time_hundreds") {
 			this.fontImghundreds = instance;
 		}
-		
-		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
-			if(partName == "cancel_match") {
+		if(partName == "cancel_match") {
+			instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 				if (PokeMatchvsEngine.getInstance.leaveRoom("不想等待匹配了") == -6) {
 					this.userPlayer.length = 0;
 					this.stopTimer();
-					SceneManager.back();
+					var roomPanel = new Game();
+					this.addChild(roomPanel);
 				}
-			}
-
-		},this);
+			},this);
+		};
 		network.NetworkStateCheck.getInstance().RegistNetListen(this);
+	}
+
+	protected childrenCreated():void {
+		super.childrenCreated();
+		console.log('MatchDialog','childrenCreated');
+		network.NetworkStateCheck.getInstance().RegistNetListen(this);
+		PokeMatchvsEngine.getInstance.getRoomDetail(this.roomID);
+		this.initEvent();
+		
 	}
 
 	/**
@@ -95,7 +102,11 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 			 	this.userPlayer.length = 0;
 				egret.log("接收到离开房间的消息");
 				this.stopTimer();
+				// var roomPanel = new Game();
+				// this.addChild(roomPanel);
+				// roomPanel = null;
 				SceneManager.back();
+				console.log('MatchDialog','back_game');
 			 break;
 			 
 		 }
@@ -182,12 +193,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	}
 
 
-	protected childrenCreated():void {
-		super.childrenCreated();
-		console.log('MatchDialog','childrenCreated');
-		network.NetworkStateCheck.getInstance().RegistNetListen(this);
-		PokeMatchvsEngine.getInstance.getRoomDetail(this.roomID);
-	}
+
 
 
 	public Release(){

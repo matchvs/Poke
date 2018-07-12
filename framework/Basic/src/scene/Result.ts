@@ -34,7 +34,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	private _landlordText:string = "";
 	private _peasant1Text:string = "";
 	private _peasant2Text:string = "";
-
+	private userInfo = [];  
 
 
 	public constructor() {
@@ -217,19 +217,18 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 		this.integral_peasant1.text = this._peasant1Text;
 		this.integral_peasant2.text = this._peasant2Text;
 
-
 		this.head_landlord.source = landLord.avator;
 		this.nickName_landlord.text = landLord.nickName;
-		
-
+		var obj = {nickName:landLord.nickName,pointValue:landLord.avator};
+		this.userInfo.push(obj);
 		this.head_peasant1.source = peasant1.avator;
 		this.nickName_peasant1.text = peasant1.nickName;
-		
-
+		var obj1 = {nickName:peasant1.nickName,pointValue:peasant1.avator};
+		this.userInfo.push(obj1);
 		this.head_peasant2.source = peasant2.avator;
 		this.nickName_peasant2.text = peasant2.nickName;
-		
-
+		var obj2 = {nickName:peasant2.nickName,pointValue:peasant2.avator};
+		this.userInfo.push(obj2);
 		//重置我的分数和上报分数到服务器
 		this.reSetMyScore();
 		
@@ -240,7 +239,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	 */
 	private backConfirm(isGameMode) {
 		if(isGameMode) {
-			var obj = {roomID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:true};
+			var obj = {roomID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:true,roomInfo:this.userInfo};
 			SceneManager.showScene(Room,obj);
 		} else{
 			PokeMatchvsEngine.getInstance.leaveRoom("战斗结束了");

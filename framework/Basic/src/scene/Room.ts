@@ -24,6 +24,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 	private actionViewList = [];
 	private actionTextViewList = [];
 	private beKickedOutName = "";
+	private restartRoomInfo = [];
 
 	public constructor() {
 		super();
@@ -56,6 +57,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 		if (obj.isRestart) {
 			this.restart(this.roomID);
 		}
+		this.restartRoomInfo = obj.roomInfo;
 	}
 	
 
@@ -218,6 +220,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 				SceneManager.back();
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY:
+				console.log('Room');
+				console.log('Room',JSON.stringify(e.data)+"2");
 				this.removeView(e.data);
 				if(e.data.owner !== GlobalData.myUser.userID) {
 					this.isOwnew(false);
@@ -292,8 +296,9 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 玩家退出将玩家的信息从页面上消失
 	 */
 	private removeView(data:any) {
+		console.log('Room',JSON.stringify(data));
 		var id;
-		if (data.userId === undefined) {
+		if (data.userId == undefined) {
 			id = data.userID;
 		} else {
 			id = data.userId;
@@ -344,7 +349,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
 			for (var i = 0;i < this.userPlayer.length; i++) {
 				if (name === this.userPlayer[i].nickName) {
-					PokeMatchvsEngine.getInstance.kickPlayer(this.userPlayer[i].userID); 
+					PokeMatchvsEngine.getInstance.kickPlayer(this.userPlayer[i].userID,name); 
 				}
 			}
 			this.beKickedOutName = instance.text;
@@ -402,9 +407,18 @@ class Room extends eui.Component implements  eui.UIComponent {
 			var user:GUser = new GUser;
 			var arr = JSON.parse(userPlayer[i].userProfile);
 			if(arr.userID !== GlobalData.myUser.userID) {
+				if (this.restartRoomInfo.length > 0) {
+					for (var a in this.restartRoomInfo) {
+						if (arr.nickName == this.restartRoomInfo[a].nickName) {
+								user.pointValue = this.restartRoomInfo[a].pointValue;
+						}
+					}
+				}
 				user.nickName =arr.nickName;
 				user.avator = arr.avator;
-				user.pointValue = arr.pointValue;
+				if (user.pointValue == undefined) {
+					user.pointValue = arr.pointValue;
+				}
 				user.userID = userPlayer[i].userId;
 				this.userPlayer.push(user);
 			}

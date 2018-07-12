@@ -34,8 +34,6 @@ class Main extends eui.UILayer {
     private userID:string;
     private roomID:any;
     private timer:egret.Timer;
-    private loginLayer:Login;
-    private roomLayer:Room;
 
 
     protected createChildren(): void {
@@ -54,6 +52,15 @@ class Main extends eui.UILayer {
 
     private async runGame() {
         Toast.initRes(this, "resource/loading/toast-bg.png");
+
+        var rootView = new egret.Sprite();
+        rootView.width = this.stage.width;
+        rootView.height = this.stage.height;
+        rootView.x = 0;
+        rootView.y = 0;
+        this.addChild(rootView);
+        SceneManager.init(rootView);
+
         egret.ImageLoader.crossOrigin = "anonymous";
         await this.getWxUserInfo();
         // SceneManager.init(this);
@@ -183,8 +190,7 @@ class Main extends eui.UILayer {
                 this.removeEvent();
                 var obj = {roomID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:true};
                 MatchvsData.gameMode = true;
-                this.roomLayer = new Room();
-                this.addChild(this.roomLayer);
+                SceneManager.showScene(Room,obj);
             break;
         }
     }
@@ -209,9 +215,7 @@ class Main extends eui.UILayer {
 
     protected createGameScene(): void {
         // this.removeEvent()
-        this.loginLayer = new Login();
-        this.addChild(this.loginLayer)
-        // SceneManager.showScene(Login);
+        SceneManager.showScene(Login);
     }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

@@ -71,9 +71,7 @@ class Game extends eui.Component implements eui.UIComponent {
         		}
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
-				var MatchDialog = new MatchDialog(e.data.roomID);
-				this.addChild(MatchDialog);
-				// SceneManager.showScene(MatchDialog,e.data.roomID);
+				SceneManager.showScene(MatchDialog,e.data.roomID);
 			 break;
 		 }
 	 }
@@ -100,9 +98,7 @@ class Game extends eui.Component implements eui.UIComponent {
 	private startRoomScene(roomID:string) {
 		var obj = {roomID: roomID, gameMode:MatchvsData.gameMode,isInvite:this.isInvite,isRestart:true};
 		this.removeEvent();
-		var Room = new Room(obj);
-		this.addChild(Room);
-		// SceneManager.showScene(Room,obj);
+		SceneManager.showScene(Room,obj);
 		this.isInvite = false;
 	}
 

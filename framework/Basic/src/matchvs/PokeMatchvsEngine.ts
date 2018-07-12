@@ -81,8 +81,9 @@ class PokeMatchvsEngine  {
 	/**
 	 * 踢人
 	 */
-	public kickPlayer(userID:number) {
-		var result = MatchvsData.MatchvsReq.kickPlayer(userID,"你无法跟我一起游戏了");
+	public kickPlayer(userID:number,name:string) {
+		var obj = {nickName:name,proto:"你无法跟我一起游戏了"}
+		var result = MatchvsData.MatchvsReq.kickPlayer(userID,JSON.stringify(obj));
 		egret.log("踢出" +userID+"result:"+result);
 		return result;
 	}
