@@ -29,11 +29,6 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	}
 
 	protected partAdded(partName:string,instance:any):void {
-		console.log('MatchDialog','partAdded');
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
 		super.partAdded(partName,instance);
 		if(partName == "time_units") {
 			this.fontImgUnits = instance;
