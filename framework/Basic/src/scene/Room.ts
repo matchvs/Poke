@@ -219,7 +219,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 				}
 				this.userPlayer.length = 0;
 				this.removeEvent();
-				SceneManager.back();
+				SceneManager.showScene(Game);
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY:
 				console.log('Room');
