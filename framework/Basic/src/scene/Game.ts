@@ -71,6 +71,7 @@ class Game extends eui.Component implements eui.UIComponent {
         		}
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_RSP:
+				this.removeEvent();
 				SceneManager.showScene(MatchDialog,e.data.roomID);
 			 break;
 		 }

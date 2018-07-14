@@ -57,7 +57,9 @@ class Room extends eui.Component implements  eui.UIComponent {
 		if (obj.isRestart) {
 			this.restart(this.roomID);
 		}
-		this.restartRoomInfo = obj.roomInfo;
+		if (obj.roomInfo != undefined) {
+			this.restartRoomInfo = obj.roomInfo;
+		}
 	}
 	
 
@@ -408,7 +410,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			var arr = JSON.parse(userPlayer[i].userProfile);
 			if(arr.userID !== GlobalData.myUser.userID) {
 				if (this.restartRoomInfo != undefined) {
-					for (var a in this.restartRoomInfo) {
+					for (var a = 0;  a <  this.restartRoomInfo.length; a++) {
 						if (arr.nickName == this.restartRoomInfo[a].nickName) {
 								user.pointValue = this.restartRoomInfo[a].pointValue;
 						}
