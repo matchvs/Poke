@@ -407,7 +407,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			var user:GUser = new GUser;
 			var arr = JSON.parse(userPlayer[i].userProfile);
 			if(arr.userID !== GlobalData.myUser.userID) {
-				if (this.restartRoomInfo.length > 0) {
+				if (this.restartRoomInfo != undefined) {
 					for (var a in this.restartRoomInfo) {
 						if (arr.nickName == this.restartRoomInfo[a].nickName) {
 								user.pointValue = this.restartRoomInfo[a].pointValue;
