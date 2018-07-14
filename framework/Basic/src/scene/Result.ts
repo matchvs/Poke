@@ -219,15 +219,15 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 
 		this.head_landlord.source = landLord.avator;
 		this.nickName_landlord.text = landLord.nickName;
-		var obj = {nickName:landLord.nickName,pointValue:landLord.avator};
+		var obj = {nickName:landLord.nickName,pointValue:landLord.pointValue};
 		this.userInfo.push(obj);
 		this.head_peasant1.source = peasant1.avator;
 		this.nickName_peasant1.text = peasant1.nickName;
-		var obj1 = {nickName:peasant1.nickName,pointValue:peasant1.avator};
+		var obj1 = {nickName:peasant1.nickName,pointValue:peasant1.pointValue};
 		this.userInfo.push(obj1);
 		this.head_peasant2.source = peasant2.avator;
 		this.nickName_peasant2.text = peasant2.nickName;
-		var obj2 = {nickName:peasant2.nickName,pointValue:peasant2.avator};
+		var obj2 = {nickName:peasant2.nickName,pointValue:peasant2.pointValue};
 		this.userInfo.push(obj2);
 		//重置我的分数和上报分数到服务器
 		this.reSetMyScore();
