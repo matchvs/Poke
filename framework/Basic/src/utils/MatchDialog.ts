@@ -44,8 +44,7 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 				if (PokeMatchvsEngine.getInstance.leaveRoom("不想等待匹配了") == -6) {
 					this.userPlayer.length = 0;
 					this.stopTimer();
-					var roomPanel = new Game();
-					this.addChild(roomPanel);
+					SceneManager.showScene(Game);
 				}
 			},this);
 		};
@@ -67,21 +66,14 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	 public onEvent(e:egret.Event):void {
 		 switch (e.type) {
 			case MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP:
-				this.addUser(e.data.userInfos);
+				for (var i in e.data.userInfos) {
+					if (e.data.userInfos[i].userId != GlobalData.myUser.userID ) {
+						this.addUser(e.data.userInfos[i]);
+					}
+				}
 			 break;
 			 case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
-				var user:GUser = new GUser;
-				var arr = JSON.parse(e.data.userProfile);
-				user.nickName =arr.nickName;
-				user.avator = arr.avator;
-				user.pointValue = arr.pointValue;
-				user.userID = e.data.userId;
-				this.userPlayer.push(user);
-				egret.log("NOTIFYuserPlayer的长度"+this.userPlayer.length);
-				if( this.userPlayer.length  == (MatchvsData.maxPlayer-1)) {
-					this.userPlayer.push(GlobalData.myUser);
-					this.startBattle();	
-				}
+			 	this.addUser(e.data);
 			 break;
 				
 			 case MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY:
@@ -152,16 +144,26 @@ class MatchDialog extends eui.Component implements  eui.UIComponent {
 	 * 将玩家信息放入UserplayerList中
 	 */
 	public addUser(userPlayer:any) {
-		for(var i = 0; i <userPlayer.length; i++) {
-			if  (userPlayer[i].userId != GlobalData.myUser.userID) {
-				var user:GUser = new GUser;
-				var arr = JSON.parse(userPlayer[i].userProfile);
-				user.nickName =arr.nickName;
-				user.avator = arr.avator;
-				user.pointValue = arr.pointValue;
-				user.userID = userPlayer[i].userId;
-				this.userPlayer.push(user);
+		if (this.userPlayer.length > 0) {
+			for(var i = 0; i <this.userPlayer.length; i++) {
+				if(userPlayer.userId != this.userPlayer[i].userID) {
+					var user:GUser = new GUser;
+					var arr = JSON.parse(userPlayer.userProfile);
+					user.nickName =arr.nickName;
+					user.avator = arr.avator;
+					user.pointValue = arr.pointValue;
+					user.userID = userPlayer.userId;
+					this.userPlayer.push(user);
+				}
 			}
+		} else {
+			var user:GUser = new GUser;
+			var arr = JSON.parse(userPlayer.userProfile);
+			user.nickName =arr.nickName;
+			user.avator = arr.avator;
+			user.pointValue = arr.pointValue;
+			user.userID = userPlayer.userId;
+			this.userPlayer.push(user);
 		}
 		egret.log("userPlayer的长度"+this.userPlayer.length);
 		if(this.userPlayer.length  == (MatchvsData.maxPlayer-1)) {
