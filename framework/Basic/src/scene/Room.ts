@@ -197,7 +197,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 				user.userID = e.data.userId;
 				this.userPlayer.push(user);
 				//房间内人数到达三个 就启动定时器;
-				this.initView(this.userPlayer);
+				this.initView(user);
 			break;
 			//自己加入房间的通知
 			case MatchvsMessage.MATCHVS_JOINROOM_RSP:
@@ -277,18 +277,19 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 显示其他玩家的基本信息
 	 */
 	private initView(userPlayer:any) {
-		egret.log("展示其他玩家信息");
+		egret.log("展示其他玩家信息",userPlayer.nickName);
 		this.nameViewList = [this.name_one,this.name_two];
 		this.iconViewList = [this.icon_one,this.icon_two];
 		this.actionViewList = [this.action,this.action1];
 		this.actionTextViewList = [this.actionText,this.actionText1];
-		for(var i =0; i < this.userPlayer.length;i++) {
+		for(var i =0; i < this.nameViewList.length;i++) {
 			if(this.nameViewList[i].text == "") {
-				this.nameViewList[i].text = userPlayer[i].nickName;
-				this.iconViewList[i].source = userPlayer[i].avator;
+				this.nameViewList[i].text = userPlayer.nickName;
+				this.iconViewList[i].source = userPlayer.avator;
 				this.actionViewList[i].strokeColor = "11169372"
 				this.actionTextViewList[i].text = "踢人";
 				this.actionTextViewList[i].textColor = "11169372";
+				return;
 			}
 		}
 	}
@@ -299,6 +300,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 */
 	private removeView(data:any) {
 		console.log('Room',JSON.stringify(data));
+		this.countDownLabel.text = "";
+		this.countDownTimer = 0;
 		var id;
 		if (data.userId == undefined) {
 			id = data.userID;
@@ -408,25 +411,23 @@ class Room extends eui.Component implements  eui.UIComponent {
 		for(var i = 0; i <userPlayer.length; i++) {
 			var user:GUser = new GUser;
 			var arr = JSON.parse(userPlayer[i].userProfile);
-			if(arr.userID !== GlobalData.myUser.userID) {
-				if (this.restartRoomInfo != undefined) {
-					for (var a = 0;  a <  this.restartRoomInfo.length; a++) {
-						if (arr.nickName == this.restartRoomInfo[a].nickName) {
-								user.pointValue = this.restartRoomInfo[a].pointValue;
-						}
+			user.nickName =arr.nickName;
+			user.avator = arr.avator;
+			if (this.restartRoomInfo != undefined) {
+				for (var a = 0;  a <  this.restartRoomInfo.length; a++) {
+					if (arr.nickName == this.restartRoomInfo[a].nickName) {
+						user.pointValue = this.restartRoomInfo[a].pointValue;
 					}
 				}
-				user.nickName =arr.nickName;
-				user.avator = arr.avator;
-				if (user.pointValue == undefined) {
-					user.pointValue = arr.pointValue;
-				}
-				user.userID = userPlayer[i].userId;
-				this.userPlayer.push(user);
+			} else {
+				user.pointValue = arr.pointValue;
 			}
-
+			user.userID = userPlayer[i].userId;
+			if (user.userID != GlobalData.myUser.userID) {
+				this.initView(user);
+			}
+			this.userPlayer.push(user);
 		}
-		this.initView(this.userPlayer);
 	}
 
 	/**
