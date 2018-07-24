@@ -8,10 +8,10 @@ const log  = log4js.getLogger();
 
 const ROOMSTATE ={
     NONE:0x00000000,
-    GAME_READ:0x00000001,
-    CALL_LANDOVER: 0x00000002,
-    GAME_START: 0x00000004,
-    GAME_REPORT:0x00000008,
+    GAME_READ:1<<1,
+    CALL_LANDOVER: 1<<2,
+    GAME_START: 1<<3,
+    GAME_REPORT:1<<4,
 }
 
 class Room{
@@ -20,6 +20,13 @@ class Room{
         this.roomID = roomID;
         this.players = new Map();
         this.pushHander = pushHander;//引擎业务处理对象
+        this.roomState = ROOMSTATE.NONE;
+        this.landOwner = null;
+        this.landCards = [];
+        this.callOwnerLocat = new Player();
+    }
+
+    reInitRoom(){
         this.roomState = ROOMSTATE.NONE;
         this.landOwner = null;
         this.landCards = [];
@@ -87,6 +94,8 @@ class Room{
                 break;
             case GameData.MSG_EVENT.GAME_OVER_S://游戏结束
                 this.gameOver(userID, event.data);
+            case GameData.MSG_EVENT.INROOM_ISOK_S://加入指定房间OK
+                this.checkIsOk(userID);
                 break;
             default:
                 log.info("Invaild Event");
@@ -100,12 +109,13 @@ class Room{
      * @param {number} userID 
      */
     eventReady(userID){
-        log.debug("eventReady:"+userID);
         let player = this.players.get(userID);
         if(player){
-            log.debug(userID+" had ready");
+            log.debug("  eventReady 用户存在："+userID);
             player.isReady = true;
             this.checkGameStart();
+        }else{
+            log.debug(" eventReady 没有找到这个用户："+userID);
         }
     }
 
@@ -114,6 +124,7 @@ class Room{
      */
     checkGameStart(){
         if(!(this.roomState & ROOMSTATE.GAME_START) && this.players.size >= GameData.Conf.MAX_PLAYER_NUM){
+            log.debug(" 可以发牌");
             let allReady = true;
             for (let [k, p] of this.players) {
                 if (!p.isReady) {
@@ -130,7 +141,11 @@ class Room{
                 // 通知房间内玩家开始游戏,并发牌
                 this.noticeSendCards();
                 this.roomState |= ROOMSTATE.GAME_START;
+            }else{
+                log.debug("还有人没有准备好！");
             }
+        }else{
+            log.debug(" 检测是否都准备好，房间状态：" + this.roomState, "房间人数：" + this.players.size);
         }
     }
 
@@ -156,7 +171,7 @@ class Room{
         let callnum = Math.floor(Math.random()*3);
         callnum = 0;
         this.callOwnerLocat = callnum;
-        log.debug("callOwner:"+userCard[callnum].userID);
+        log.debug("叫地主的人:"+userCard[callnum].userID);
         this.sendEvent({
             action: GameData.RSP_EVENT.SEND_CARD,
             data:{
@@ -164,7 +179,6 @@ class Room{
                 lanownList:cardList[3],         //底牌
                 callOwner: userCard[callnum].userID,       //第一次叫地主的人
             }
-            
         });
     }
 
@@ -317,6 +331,7 @@ class Room{
                     event.data.rank = res.rank;
                     event.data.totleScore = res.totleScore;
                     event.data.status = 0;
+                    self.reInitRoom(); 
                     self.sendEvent(event);
                 }
             });
@@ -379,6 +394,34 @@ class Room{
             action:GameData.RSP_EVENT.GAME_OVER_R,
             data:dt
         });
+    }
+
+    /**
+     * 加入指定房间的时候，判断是否所有人都加入，而且Ok了
+     * @param {number} userid
+     */
+    checkIsOk(userid){
+        let player = this.players.get(userid);
+        if (player) {
+            log.debug(userid + " had ready");
+            player.isOk = true;
+            //如果人数少了就返回
+            if (this.players.size < GameData.Conf.MAX_PLAYER_NUM) {
+                return ;
+            }
+            for (let [k, p] of this.players) {
+                //如果有一个人没有OK就 不行
+                if (!p.isOk) {
+                    return;
+                }
+            }
+            this.sendEvent({
+                action: GameData.RSP_EVENT.INROOM_ISOK_R,
+                data:{
+                    canStart:1
+                }
+            });
+        }
     }
 }
 

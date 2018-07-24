@@ -62,13 +62,20 @@ class ReportData{
             if( resData.hasOwnProperty("status") && resData.hasOwnProperty("data")){
                 if(resData.status == 0){
                     if(resData.data.dataList[0].hasOwnProperty("value")){
-                        let vl = self.base64Decode(resData.data.dataList[0].value);
-                        let datas = JSON.parse(vl);
-                            datas.forEach(function(element){
-                                self.scoreBuff.set(element.key, self.MapdataPare(element));
-                            });
-                            self.scoreBuffToSort();
-                            //self.writeRankListToHttp();
+                        // let vl = self.base64Decode(resData.data.dataList[0].value);
+                        // let datas = JSON.parse(vl);
+                        // datas.forEach(function(element){
+                        //     self.scoreBuff.set(element.key, self.MapdataPare(element));
+                        // });
+                        let element = {
+                            key:3634266,
+                            name:"维维",
+                            value:104200,
+                            avator:"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIK942UaccTwGKEgIUhxibu1JYGp7BdfNLofiav05CUJDHn9cm7Vs9tCjljVticyoeWWq02C4nVnoChg/132"
+                        }
+                        self.scoreBuff.set(element.key, self.MapdataPare(element));
+                        self.scoreBuffToSort();
+                        //self.writeRankListToHttp();
                     }
                 }
             }

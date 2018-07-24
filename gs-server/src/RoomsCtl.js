@@ -40,6 +40,8 @@ class RoomsCtl{
         if(room){
             log.debug("palyerEnter userID:"+userID);
             room.addPlayer(userID, userProfile);
+        }else{
+            log.debug("房间已经不存在:" + roomID);
         }
     }
     //退出房间
@@ -47,7 +49,7 @@ class RoomsCtl{
         log.debug("playerExit roomID:"+roomID);
         let room  = this.get(roomID);
         if(room){
-            log.debug("playerExit userID:"+userID);
+            log.debug("玩家退出房间:"+userID);
             room.delPlayer(userID);
         }
 

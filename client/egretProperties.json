@@ -1,6 +1,6 @@
 {
-  "engineVersion": "5.1.5",
-  "compilerVersion": "5.1.5",
+  "engineVersion": "5.2.0",
+  "compilerVersion": "5.2.0",
   "template": {},
   "target": {
     "current": "web"
@@ -16,37 +16,36 @@
   },
   "modules": [
     {
-      "name": "egret",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "egret"
     },
     {
-      "name": "game",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "eui"
     },
     {
-      "name": "res",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "assetsmanager"
     },
     {
-      "name": "gui",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "tween"
     },
     {
-      "name": "socket",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "game"
     },
     {
-      "name": "tween",
-      "path": "${EGRET_APP_DATA}/4.0.0"
+      "name": "dragonBones"
     },
-
+    {
+      "name": "promise"
+    },
+    {
+      "name": "egret-facebook"
+    },
     {
       "name": "matchvs",
-      "path": "../matchvs_wx"
+      "path": "../../matchvs"
     },
     {
-      "name":"wxshare",
-      "path":"../wxshare"
+      "name": "wxshare",
+      "path": "../../wxshare"
     }
   ]
 }

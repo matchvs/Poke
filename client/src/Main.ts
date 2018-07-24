@@ -1,180 +1,304 @@
-import numberToBlendMode = egret.sys.numberToBlendMode;
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//  Copyright (c) 2014-present, Egret Technology.
+//  All rights reserved.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Egret nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
+//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
+//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//////////////////////////////////////////////////////////////////////////////////////
 
-class Main extends egret.DisplayObjectContainer {
+class Main extends eui.UILayer {
 
-    private static instance: Main = null;
-    private status:Number;
+    public root:egret.DisplayObjectContainer;
+    private topMask = new egret.Shape();
+    private userID:string;
+    private roomID:any;
+    private timer:egret.Timer;
 
-    public static reconnect(): void {
-        Main.instance.preloadover(null);
-    }
-    
-    /**
-     * 加载进度界面
-     * loading process interface
-     */
-    public static textlog: egret.TextField = null;
-    public constructor() {
-        super();
-        this.addEventListener(egret.Event.ADDED_TO_STAGE,this.onAddToStage,this);
-        
-    }
 
-    private onAddToStage(event: egret.Event) {
-        Config.StageWidth = this.stage.stageWidth;
-        Config.StageHeight = this.stage.stageHeight;
-        this.stage.scaleMode = egret.StageScaleMode.SHOW_ALL;
-        LayerMgr.Instance.Init(this);
-        
-        //判断系统类型
-        this.setos();
-        //设置加载进度界面
-        windowui.LoadingInst.Instance.Show();
-        windowui.LoadingInst.Instance.SetText("正在打开游戏");
-        //初始化
-        LoadMgr.Instance.Init();
-        let channel = "MatchVS";
-        let platform = "release"
-        this.status = PokesData.engine.init(PokesData.response,channel,platform,PokesData.gameID);
-        //回调绑定
-        // PokesData.ResponseBind("initResponse",this);
-        PokesData.response.initResponse = this.initResponse.bind(this);
-        PokesData.response.registerUserResponse = this.registerUserResponse.bind(this);
-        PokesData.response.loginResponse = this.loginResponse.bind(this);
+    protected createChildren(): void {
+        super.createChildren();
 
-        LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_PRELOAD,this.preloadover,this);
-        LoadMgr.Instance.addEventListener(LoadMgr.LOADOVER_LOBBY,this.createScene,this);
-        // this.stage.addEventListener(egret.Event.RESIZE,this.resizefun,this);
-        Main.instance = this;
+        //注入自定义的素材解析器
+        let assetAdapter = new AssetAdapter();
+        egret.registerImplementation("eui.IAssetAdapter", assetAdapter);
+        egret.registerImplementation("eui.IThemeAdapter", new ThemeAdapter());
 
-        this.pushHistory();
-        window.addEventListener("popstate",function(e) {
-            alert("离开将开启自动托管");//根据自己的需求实现自己的功能 
-        },false);
 
+        this.runGame().catch(e => {
+            console.log(e);
+        })
     }
 
-    /**
-     * 引擎初始化回调
-     */
-    initResponse = function(status) {
-        if(status === 200) {
-            windowui.LoadingInst.Instance.SetText("初始化成功");
-            PokesData.engine.registerUser();
-        } else{
-            egret.log("初始化失败，错误码"+status);
-        }
+    private async runGame() {
+        Toast.initRes(this, "resource/loading/toast-bg.png");
+
+        var rootView = new egret.Sprite();
+        rootView.width = this.stage.width;
+        rootView.height = this.stage.height;
+        rootView.x = 0;
+        rootView.y = 0;
+        this.addChild(rootView);
+        SceneManager.init(rootView);
+
+        egret.ImageLoader.crossOrigin = "anonymous";
+        await this.getWxUserInfo();
+        // SceneManager.init(this);
+        await this.loadResource()
+
     }
 
-    /**
-     * 注册用户回调函数
-     */
-    registerUserResponse = function (userInfo) {
-        if (userInfo.status === 0) {
-            egret.log("注册用户成功");
-            //将ID存储到本地
-            data.GameData.userid = userInfo.id;
-            egret.localStorage.setItem("userId",String(userInfo.id));
 
-            //token
-            egret.localStorage.setItem("token",userInfo.token);
-            data.GameData.token = userInfo.token;
-   
-            if (userInfo.name === null || userInfo.name === "") {
-                //姓名
-                data.GameData.nickname = userInfo.id ;
-            } else {
-                //姓名
-                data.GameData.nickname = userInfo.name ;
-            }
-            egret.localStorage.setItem("name",userInfo.name);
-
-            this.login(userInfo.id,userInfo.token);
-            windowui.LoadingInst.Instance.SetText("注册用户成功");
-        } else {
-            egret.log("注册用户失败,错误码:"+userInfo.status)
-        }
-    }
-
-    /**
-     * 用户登录
-     */
-    private login(userid :number ,token:string) {
-        let gameVersion:number = 1.0;
-        let deviceID = "88888888";
-        let getwayID = 1;
-        PokesData.engine.login(userid,token,PokesData.gameID,gameVersion,PokesData.appKey,PokesData.secret,deviceID,getwayID);
-    }
-
-    /**
-     * 登录回调函数
-     */
-    loginResponse = function(onLogin) {
-        if(onLogin.status === 200) {
-            egret.log("登录成功");
-            windowui.LoadingInst.Instance.SetText("登录成功");
-            LoadMgr.Instance.Load("lobby");
-      
-        } else {
-            egret.log("用户登录失败,错误码:"+onLogin.status)
-        }
-    }
-
-    /**
-     * 修改网页url
-     */
-    private pushHistory() {
-        var state = {
-            title: "title",
-            url: "#"
-        };
-        window.history.pushState(state,"title","#");
-    }
-    
-    private setos(): void {
-        var u = navigator.userAgent;
-        if(u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-            Config.System = "Android";
-        }
-        else if(u.indexOf('iPhone') > -1) {//苹果手机
-            Config.System = "iPhone";
-        }
-        else if(u.indexOf('Windows Phone') > -1) {//winphone手机
-            Config.System = "Windows Phone";
-        }
-        else if(u.indexOf('Windows') > -1) {
-            Config.System = "Windows";
-        }
-    }
-
-    // private resizefun(e: egret.Event = null): void {
-    //     var currWidth = this.stage.stageWidth;
-    //     var currHeight = this.stage.stageHeight;
-    //     trace("Main-resizefun->",currWidth,currHeight);
+    // /**
+    //  * faceBook
+    //  */
+    // private initializeAsync(): void {
+    //     FBInstant.initializeAsync().then(function () {
+    //         egret.log("getLocale:", FBInstant.getLocale());
+    //         egret.log("getPlatform:", FBInstant.getPlatform());
+    //         egret.log("getSDKVersion", FBInstant.getSDKVersion());
+    //         egret.log("getSupportedAPIs", FBInstant.getSupportedAPIs());
+    //         egret.log("getEntryPointData", FBInstant.getEntryPointData());
+            
+    //     })
+    //     setTimeout(function () {
+    //         FBInstant.setLoadingProgress(100);
+    //     }, 1000);
+    //     this.initStartGameAsync();
     // }
 
 
-    /**
-     * 此处替换为注册登录逻辑。
-     */
-    private preloadover(e: egret.Event): void {
-        LoadMgr.Instance.removeEventListener(LoadMgr.LOADOVER_PRELOAD,this.preloadover,this);
-        windowui.LoadingInst.Instance.setSkin();
-    }
+    // /**
+    //  * faceBook
+    //  */
+    // private initStartGameAsync() {
+    //     FBInstant.startGameAsync().then(
+    //         function () {
+    //             // Retrieving context and player information can only be done
+    //             // once startGameAsync() resolves
+    //             var contextId = FBInstant.context.getID();
+    //             var contextType = FBInstant.context.getType();
+    //             var playerName = FBInstant.player.getName();
+    //             var playerPic = FBInstant.player.getPhoto();
+    //             var playerId = FBInstant.player.getID();
+ 
+    //             // Once startGameAsync() resolves it also means the loading view has 
+    //             // been removed and the user can see the game viewport
+    //         }).catch(function (e) {
+    //             console.log("startgame error", e)
+    //         });
+    // }
 
+    /**
+     * 获取微信头像，存储起来
+     */
+    private getWxUserInfo() {
+        try{
+            getWxUserInfo(function callback (userinfo){
+                egret.log("main",userinfo);
+                var data ;
+                GlobalData.myUser.nickName =  userinfo.nickName;
+                GlobalData.myUser.avator = userinfo.avatarUrl;
+                //todo 
+                PokeMatchvsEngine.getInstance.hashGet("integral");
+            });
+        } catch(e) {
+            egret.log("错误",e.message);
+        }
+        
+    }
     
-    /**
-     * 创建场景界面
-     * Create scene interface
-     */
-    private createScene(e: egret.Event): void {
-        LocalMgr.Instance.LoadData();
-        LoadMgr.Instance.removeEventListener(LoadMgr.LOADOVER_LOBBY,this.createScene,this);
-        windowui.LoadingInst.Instance.Hide();
-        SceneMgr.Instance.ShowScene(scene.LobbyScene);
-        // 发送成功
-        NetMgr.Instance.SendMsg(enums.NetEnum.CLIENT_2_CENTER_LOGIN_OK);
+
+    private async loadResource() {
+        try {
+            const loadingView = new LoadingUI();
+            this.stage.addChild(loadingView);
+            PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
+            PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
+            PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
+            //初始化
+            await RES.loadConfig("resource/default.res.json", "resource/");
+            await this.loadTheme();
+            await RES.loadGroup("preload", 0, loadingView);
+            this.stage.removeChild(loadingView);
+            this.createGameScene();
+            PokeMatchvsEngine.getInstance.init(MatchvsData.pChannel,MatchvsData.pPlatform,MatchvsData.gameID);
+        }
+        catch (e) {
+            console.error(e);
+            
+        }
+    }
+
+    private loadTheme() {
+        return new Promise((resolve, reject) => {
+            // load skin theme configuration file, you can manually modify the file. And replace the default skin.
+            //加载皮肤主题配置文件,可以手动修改这个文件。替换默认皮肤。
+            let theme = new eui.Theme("resource/default.thm.json", this.stage);
+            theme.addEventListener(eui.UIEvent.COMPLETE, () => {
+                resolve();
+            }, this);
+
+        })
+    }
+
+    public onEvent(e:egret.Event):void {
+        egret.log(e);
+        switch(e.type) {
+            case MatchvsMessage.MATCHVS_INIT:
+                    PokeMatchvsEngine.getInstance.registerUser();
+                // }
+            break;
+            //注册
+            case MatchvsMessage.MATCHVS_REGISTERUSER:
+                // this.userID = e.data.id;
+                this.userInfoStore(e.data);
+            break;
+            case MatchvsMessage.MATCHVS_LOGIN:
+                if (e.data.status == 200) {
+                    Toast.show("登录成功");
+                    MatchvsData.loginStatus = true;
+                    this.timer = new egret.Timer(1000,1);
+                    this.timer.addEventListener(egret.TimerEvent.TIMER,this.wxInvite,this)
+                    this.timer.start();
+                } else {
+                    Toast.show("登录失败");
+                }
+      
+            break;
+            case MatchvsMessage.MATCHVS_JOINROOM_RSP:
+                this.removeEvent();
+                var obj = {roomID: this.roomID, gameMode:MatchvsData.gameMode,isInvite:false,isRestart:true};
+                MatchvsData.gameMode = true;
+                SceneManager.showScene(Room,obj);
+            break;
+        }
     }
 
 
+    protected userInfoStore(userInfo:any): void {
+            /**
+             * 微信头像与昵称的获取在注册之前，如果已经存在，就使用微信的，如果为"",就使用ID代替昵称，头像为随机；
+             * 还需要存在本地
+             */
+            if (GlobalData.myUser.nickName == "")  {
+                GlobalData.myUser.nickName = userInfo.id;
+            }
+            if (GlobalData.myUser.avator == "") {
+           	    GlobalData.myUser.avator = MatchvsData.defaultIcon[Math.round(10*Math.random())];
+            }
+            GlobalData.myUser.userID = userInfo.id;
+           	GlobalData.myUser.token = userInfo.token;
+            this.getUserPointValue(GlobalData.myUser.userID);
+
+    }
+
+    protected createGameScene(): void {
+        // this.removeEvent()
+        SceneManager.showScene(Login);
+    }
+    /**
+     * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
+     * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
+     */
+    private createBitmapByName(name: string): egret.Bitmap {
+        let result = new egret.Bitmap();
+        let texture: egret.Texture = RES.getRes(name);
+        result.texture = texture;
+        return result;
+    }
+
+    /**
+     * 微信邀请
+     */
+    public wxInvite () {
+        try {
+            var LaunchOption = getLaunchOptionsSync();
+             this.roomID  =  LaunchOption.query.roomID;
+            if(  this.roomID  != null &&   this.roomID  != "" &&  this.roomID  !=0) {
+                //昵称，头像，积分的顺序，用 /n 分割
+                PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
+                PokeMatchvsEngine.getInstance.joinRoom(this.roomID,MatchvsData.getDefaultUserProfile());
+            }
+        } catch(err) {
+            egret.log(err,err.message);
+        }
+    }
+
+
+    /**
+     * 在这里移除所有的监听
+     */
+    public removeEvent() {
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_LOGIN,this.onEvent,this);
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_INIT,this.onEvent,this);
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_REGISTERUSER,this.onEvent,this);
+        PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
+    }
+
+
+    public getUserPointValue (userID:any) {
+		let keyList = JSON.stringify([{"key":userID}]);
+		var params = "gameID=" + MatchvsData.gameID + "&userID="+userID+ "&keyList=" +keyList;
+		var matchvsMD5 = new MD5();
+		var sign = matchvsMD5.hex_md5(MatchvsData.appKey+"&gameID="+MatchvsData.gameID+"&userID="+userID+"&"+ MatchvsData.secret);
+		var rankListUrl = MatchvsData.alphaHttpUrl+params+"&sign="+sign;
+		var http = new MatchvsHttp({
+            onMsg:function(buf){
+                egret.log("玩家信息拿到了",buf);
+                var buf = JSON.parse(buf);
+                if(buf.data.dataList.length < 1) {
+                    egret.log("没有拿到数据");
+                    GlobalData.myUser.pointValue = MatchvsData.defaultScore;
+                } else {
+                    egret.log("玩家分数是",buf.data.dataList[0].value);
+                    GlobalData.myUser.pointValue = buf.data.dataList[0].value;
+                }
+            },
+            onErr:function(errCode,errMsg){
+				egret.log("获取玩家错误信息",errMsg);
+                // GlobalData.myUser.pointValue = ;
+                return null;
+			}
+        });
+		http.get(rankListUrl);
+	}
+
+
+
+
+    /**
+     * 点击按钮
+     * Click the button
+     */
+    private onButtonClick(e: egret.TouchEvent) {
+        if(e.$currentTarget == this.topMask) {
+
+        }
+        let panel = new eui.Panel();
+        panel.title = "Title";
+        panel.horizontalCenter = 0;
+        panel.verticalCenter = 0;
+        this.addChild(panel);
+    }
 }

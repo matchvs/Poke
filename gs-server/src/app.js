@@ -46,9 +46,9 @@ class App {
      * @memberof App
      */
     onCreateRoom(request) {
-        log.debug('onCreateRoom:');
+        log.debug(' onCreateRoom:', "roomID"+request.roomID, "userID:"+request.userID);
         this.roomCtl.add(request.gameID, request.roomID, this.pushHander);
-        log.info("room count:"+this.roomCtl.showRoomNum());
+        log.info(" 当前房间数量:"+this.roomCtl.showRoomNum());
     }
 
     /**
@@ -59,7 +59,7 @@ class App {
      * @memberof App
      */
     onDeleteRoom(request) {
-        log.debug('onDeleteRoom:');
+        log.debug('onDeleteRoom:' + request.roomID);
         this.roomCtl.delete(request.roomID);
     }
     
@@ -78,7 +78,7 @@ class App {
      */
     onJoinRoom(request) {
         let con = new textEncoding.TextDecoder("utf-8").decode(request.joinExtInfo.userProfile);
-        log.debug('onJoinRoom:',con);
+        log.debug(' onJoinRoom:',con);
         this.roomCtl.palyerEnter(request.roomID, request.userID, con);
     }
     
@@ -91,7 +91,7 @@ class App {
      * @memberof App
      */
     onJoinOver(request) {
-        log.debug('onJoinOver:');
+        log.debug(' onJoinOver:');
     }
     
     /**
@@ -103,7 +103,7 @@ class App {
      * @memberof App
      */
     onLeaveRoom(request) {
-        log.debug('onLeaveRoom:', request.roomID);
+        log.debug(' onLeaveRoom:', request.roomID, "userID:"+request.userID);
         let room = this.roomCtl.get(request.roomID);
         if(room){
             room.delPlayer(request.userID);
@@ -136,10 +136,10 @@ class App {
      * @memberof App
      */
     onUserState(request) {
-        log.debug('onUserState:', request.state);
+        log.debug(' 玩家状态:', request.state, "roomID:" + request.roomID, "userID:" + request.userID);
         let room = this.roomCtl.get(request.roomID);
         if(room && request.state === 3){
-            log.debug('onUserState:', request.userID);
+            log.debug('玩家已离开:', request.userID);
             room.delPlayer(request.userID);
         }
     }

@@ -7,7 +7,8 @@ var GameData = {
         REPROT_SCORE:128,
         CLEAR_SCROE:183,
         PLAY_CARDS:130,             //出牌
-        GAME_OVER_S:132             //游戏结束
+        GAME_OVER_S:132,             //游戏结束
+        INROOM_ISOK_S:134                //加入指定房间的时候，确认OK了
     },
 
     RSP_EVENT:{
@@ -18,6 +19,7 @@ var GameData = {
         RESET_OK:141,               //重置OK
         PLAY_CARDS_R:131,
         GAME_OVER_R:133,            //游戏结束
+        INROOM_ISOK_R:135,          //加入指定房间时，确认OK回复，可以开始游戏。
     },
 
     Conf:{

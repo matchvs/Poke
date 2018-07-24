@@ -18,6 +18,7 @@ class Player{
         this.isCallLandOwner = false;
         this.gameScore = 0;
         this.ranking = 0;
+        this.isOk = false;
     }
 
     reInitInfo(){
@@ -31,6 +32,7 @@ class Player{
         this.isCallLandOwner = false;
         this.gameScore = 0;
         this.ranking = 0;
+        this.isOk = false;
     }
 
     PlayCards(cards){
@@ -127,7 +129,6 @@ class Player{
         log.debug("rank:", ranking);
 
         let dataliet = [{key:userid,value:_score}];
-
         //保存当前用户的数据
         report.saveGameScore(dataliet, (body)=>{
             log.debug(body);
@@ -135,6 +136,7 @@ class Player{
             if(repData.status === 0){
                 event = {rank:ranking, totleScore:dataliet[0].value};
                 _callback(event);
+                this.reInitInfo();
             }else{
                 log.error("dataliet:",dataliet);
                 log.error("save data error:",body);
