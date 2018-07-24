@@ -219,9 +219,9 @@ module battle {
             this._tableList=clist;
         }
         //发送完成,返回消息
-        public SendOver():void
+        public SendOver(list ?:Array<number>):void
         {
-            this.setCard();
+            this.setCard(list);
         }
 
         //获取点选的牌
@@ -467,7 +467,7 @@ module battle {
             }
         }
 
-        private setCard() {
+        private setCard(lt?:Array<number>) {
             var rlen:number = this._cardVlist.length;
             var ri:number = 0;
             for (ri = 0; ri < rlen; ri++) {
@@ -475,7 +475,11 @@ module battle {
                 card.Release();
             }
             this._cardVlist = [];
+            if(lt){
+                this._player.removeCards(lt)
+            }
             var clist:Array<number> = this._player.cardList;
+            console.info("MyCardControl  setCard length:", this._player.cardNumber);
             clist.sort(function (a:number, b:number) {
                     if (a % 100 == b % 100) {
                         if (a > b) {

@@ -340,12 +340,13 @@ module battle {
 		 */
 		private getPlayerForSeatNo(seatNo):Player{
 			let player = null;
-			this._playerList.forEach((value)=>{
-				console.info("getPlayerForSeatNo "+value.seatNo);
-				if(value.seatNo == seatNo){
-					player = value;
+			for(let i = 0; i < this._playerList.length; i++){
+				if(this._playerList[i].seatNo == seatNo){
+					player = this._playerList[i];
+					console.info("getPlayerForSeatNo ",this._playerList[i]);
+					return this._playerList[i];
 				}
-			});
+			}
 			return player;
 		}
 		
@@ -518,7 +519,10 @@ module battle {
 			let Crushed:number = 1;
 			let isnew = this._tablelistdata == null; //是否出完一轮，新出牌
 			//移除牌，玩家的牌
-			//player.removeCards(clist);
+			player.removeCards(clist);
+			console.info("myPlayer",this._myOwner, " sendCardPlayer:", player)
+			//界面显示牌
+			this._stage.ShowPlay(player, clist,  (player.userID == this._myOwner.userID) , "");
 
 			if (this._tableCardList == null || this._tableCardList.length == 0) {
 				let yasplayer:Player = this.getPlayerEnemy(player);
@@ -536,9 +540,6 @@ module battle {
 				this._lastSendCardPlayer = player;
             }
 
-			//界面显示牌
-			this._stage.ShowPlay(player, clist,  (player.userID == this._myOwner.userID) , "");
-
 
 			//获取下一个出牌的人
 			player = this.getNextPlayerPoint(player.seatNo);
@@ -548,9 +549,9 @@ module battle {
 				this._tableCardList = [];
 				this._lastSendCardPlayer = null;
 			}
-			console.info("轮到该玩家出牌 isnew:", isnew);
-			console.info("轮到该玩家出牌 player:", player);
-			console.info("轮到该玩家出牌 _tableCardList:", this._tableCardList);
+			console.info("新的一轮 isnew:", isnew);
+			console.info("下一个出牌人 player:", player);
+			console.info("当前桌上牌 _tableCardList:", this._tableCardList);
 			//轮流出牌
 			this._stage.TurnPlayCard(player, (player.userID == this._myOwner.userID), isnew, this._tableCardList, BattleStageControl.Delay_ShowCard, false);
 		}

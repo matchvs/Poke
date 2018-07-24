@@ -274,9 +274,10 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 	 */ 
 	public ShowPlay(player: battle.Player, clist: Array<number>, isme: boolean, timestr: string){
 		this._battleControl.UpdateAllCardNum();
+		console.info("BattleStageUI ShowPlay isme:",isme);
 		if (isme) {
             //如果出牌人是我，更新我的牌数量
-            this._myCardControl.SendOver();
+            this._myCardControl.SendOver(clist);
         }
 		if (clist != null && clist.length > 0) {
 			this._tablecardControl.ShowTableCard(player.LocalTableId, clist);

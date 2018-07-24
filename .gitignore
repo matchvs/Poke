@@ -1,4 +1,4 @@
-﻿matchvs_wx/matchvs.min.js
+matchvs_wx/matchvs.min.js
 matchvs_wx/matchvs.js
 matchvs_wx/matchvs.d.ts
 matchvs/matchvs.min.js
@@ -426,3 +426,4 @@ framework/Basic/libs/*
 framework/Basic_wxgame/*
 framework/Basic/bin-release/*
 
+framework/Basic/updateTime.json
