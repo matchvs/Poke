@@ -35,6 +35,7 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 	private _peasant1Text:string = "";
 	private _peasant2Text:string = "";
 	private userInfo = [];  
+	
 
 
 	public constructor() {
@@ -177,7 +178,10 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			p1.pointValue = Number(p1.pointValue) + Number(finalValue/2);
 			p2.pointValue = Number(p2.pointValue) + Number(finalValue/2);
 			console.info("显示结果值12：",landowner.pointValue,p1.pointValue,p2.pointValue);
-			
+			var obj1 = {nickName:p1.nickName,pointValue: p1.pointValue};
+			this.userInfo.push(obj1);
+			var obj2 = {nickName:p2.nickName,pointValue:p2.pointValue};
+			this.userInfo.push(obj2);
 		}
 
 		// console.info("显示结果值：",landowner,p1,p2);
@@ -219,16 +223,14 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 
 		this.head_landlord.source = landLord.avator;
 		this.nickName_landlord.text = landLord.nickName;
-		var obj = {nickName:landLord.nickName,pointValue:this._landlordText};
-		this.userInfo.push(obj);
+		// var obj = {nickName:landLord.nickName,pointValue:eval(this._landlordText)};
+		// this.userInfo.push(obj);
 		this.head_peasant1.source = peasant1.avator;
 		this.nickName_peasant1.text = peasant1.nickName;
-		var obj1 = {nickName:peasant1.nickName,pointValue: this._peasant1Text};
-		this.userInfo.push(obj1);
+
 		this.head_peasant2.source = peasant2.avator;
 		this.nickName_peasant2.text = peasant2.nickName;
-		var obj2 = {nickName:peasant2.nickName,pointValue:this._peasant2Text};
-		this.userInfo.push(obj2);
+
 		//重置我的分数和上报分数到服务器
 		this.reSetMyScore();
 		

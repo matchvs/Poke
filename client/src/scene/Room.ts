@@ -39,7 +39,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 		MatchvsData.loginStatus = false;
 		this.userPlayer.length = 0;
 		this.roomID = obj.roomID;
-		this.initEvent();
+
 		if(obj.isInvite) {
 			if(MatchvsData.gameMode) {
 				try {
@@ -47,9 +47,6 @@ class Room extends eui.Component implements  eui.UIComponent {
 					together("邀请好友",par);
 				} catch (e) {
 					console.warn(e,e.message)
-					// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
-					// PokeMatchvsEngine.getInstance.leaveRoom("");
-					// return;
 				}
 			}
 		}
@@ -76,6 +73,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	protected childrenCreated():void {
 		super.childrenCreated();
+		this.initEvent();
 		console.log("Room","childrenCreated");
 	}
 
@@ -89,11 +87,13 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	public initEvent() {
 		network.NetworkStateCheck.getInstance().RegistNetListen(this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,this.onEvent,this);
 		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,this.onEvent,this);
+		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
 		network.BattleMsg.getInstance().addEventListener(network.BattleMsgEvent.GAME_IS_OK,this.onEvent, this);
 	}
 
@@ -102,6 +102,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 	protected partAdded(partName:string,instance:any):void { 
 		super.partAdded(partName,instance);
+		console.log('Room','partAdded');
 		switch(partName) {
 			case "nickName":
 			 	this.nickName = instance;
@@ -159,7 +160,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 
 		instance.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e: egret.TouchEvent) {
 			if(partName == "btn_leave_room") {
-				PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_LEVAE_ROOM,this.onEvent,this);
+
 				PokeMatchvsEngine.getInstance.leaveRoom(MatchvsData.getDefaultUserProfile());
 			}
 			//踢人或者邀请
@@ -189,15 +190,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 		switch(e.type) {
 			//有人进来就通知
 			case MatchvsMessage.MATCHVS_JOINROOM_NOTIFY:
-				var user:GUser = new GUser;
-				var arr = JSON.parse(e.data.userProfile);
-				user.nickName =arr.nickName;
-				user.avator = arr.avator;
-				user.pointValue = arr.pointValue;
-				user.userID = e.data.userId;
-				this.userPlayer.push(user);
-				//房间内人数到达三个 就启动定时器;
-				this.initView(user);
+				this.addUser(e.data);
 			break;
 			//自己加入房间的通知
 			case MatchvsMessage.MATCHVS_JOINROOM_RSP:
@@ -236,7 +229,11 @@ class Room extends eui.Component implements  eui.UIComponent {
 			break;
 			case MatchvsMessage.MATCHVS_ROOM_DETAIL_RSP:
 				this.userPlayer = [];
-				this.addUser(e.data.userInfos);
+				for (var i in e.data.userInfos) {
+					if (e.data.userInfos[i].userId != GlobalData.myUser.userID ) {
+						this.addUser(e.data.userInfos[i]);
+					}
+				}
 				if(e.data.owner !== GlobalData.myUser.userID) {
 					this.isOwnew(false);
 				} else {
@@ -351,7 +348,6 @@ class Room extends eui.Component implements  eui.UIComponent {
 		console.log("正在操作名字为"+name+"玩家")
 		if(name != "" && name != undefined ) {
 			//踢人
-			PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_KICK_PLAYER,this.onEvent,this);
 			for (var i = 0;i < this.userPlayer.length; i++) {
 				if (name === this.userPlayer[i].nickName) {
 					PokeMatchvsEngine.getInstance.kickPlayer(this.userPlayer[i].userID,name); 
@@ -408,26 +404,26 @@ class Room extends eui.Component implements  eui.UIComponent {
 	 * 将玩家信息放入UserplayerList中
 	 */
 	public addUser(userPlayer:any) {
-		for(var i = 0; i <userPlayer.length; i++) {
-			var user:GUser = new GUser;
-			var arr = JSON.parse(userPlayer[i].userProfile);
-			user.nickName =arr.nickName;
-			user.avator = arr.avator;
-			if (this.restartRoomInfo != undefined) {
-				for (var a = 0;  a <  this.restartRoomInfo.length; a++) {
-					if (arr.nickName == this.restartRoomInfo[a].nickName) {
-						user.pointValue = this.restartRoomInfo[a].pointValue;
-					}
+		var user:GUser = new GUser;
+		var arr = JSON.parse(userPlayer.userProfile);
+		console.log(arr.nickName+'有'+arr.pointValue);
+		user.nickName =arr.nickName;
+		user.avator = arr.avator;
+		console.log(this.restartRoomInfo);
+		if (this.restartRoomInfo.length > 0) {
+			for (var a = 0;  a <  this.restartRoomInfo.length; a++) {
+				if (arr.nickName == this.restartRoomInfo[a].nickName) {
+					user.pointValue = this.restartRoomInfo[a].pointValue;
+					console.log('第二次重新开始，我的分数是'+ this.restartRoomInfo[a].pointValue);
 				}
-			} else {
-				user.pointValue = arr.pointValue;
 			}
-			user.userID = userPlayer[i].userId;
-			if (user.userID != GlobalData.myUser.userID) {
-				this.initView(user);
-			}
-			this.userPlayer.push(user);
+		} else {
+			user.pointValue = arr.pointValue;
+			console.log('初始分数'+  arr.pointValue);
 		}
+		user.userID = userPlayer.userId;
+		this.initView(user);
+		this.userPlayer.push(user);
 	}
 
 	/**
