@@ -50,13 +50,13 @@ class Room extends eui.Component implements  eui.UIComponent {
 				}
 			}
 		}
-
-		if (obj.isRestart) {
-			this.restart(this.roomID);
-		}
 		if (obj.roomInfo != undefined) {
 			this.restartRoomInfo = obj.roomInfo;
 		}
+		if (obj.isRestart) {
+			this.restart(this.roomID);
+		}
+	
 	}
 	
 
