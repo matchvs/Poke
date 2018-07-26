@@ -406,15 +406,15 @@ class Room extends eui.Component implements  eui.UIComponent {
 	public addUser(userPlayer:any) {
 		var user:GUser = new GUser;
 		var arr = JSON.parse(userPlayer.userProfile);
-		console.log(arr.nickName+'有'+arr.pointValue+'id是'+arr.id);
+		console.log(arr.nickName+'有'+arr.pointValue+'id是'+userPlayer.userID);
 		user.nickName =arr.nickName;
 		user.avator = arr.avator;
 		console.log('第二次传过来的信息'+JSON.stringify(this.restartRoomInfo));
 		if (this.restartRoomInfo.length > 0) {
 			for (var a = 0;  a <  this.restartRoomInfo.length; a++) {
 				console.log('a是：'+a);
-				console.log('我的id是'+arr.id,'对比的id是'+this.restartRoomInfo[a].userID);
-				if (arr.userID == this.restartRoomInfo[a].userID) {
+				console.log('我的id是'+userPlayer.id,'对比的id是'+this.restartRoomInfo[a].userID);
+				if (userPlayer.userID == this.restartRoomInfo[a].userID) {
 					user.pointValue = this.restartRoomInfo[a].pointValue;
 					console.log('第二次重新开始，我的分数是'+ this.restartRoomInfo[a].pointValue);
 				}
