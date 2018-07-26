@@ -1,6 +1,6 @@
 {
-  "engineVersion": "5.2.0",
-  "compilerVersion": "5.2.0",
+  "engineVersion": "5.2.4",
+  "compilerVersion": "5.2.4",
   "template": {},
   "target": {
     "current": "web"
@@ -41,11 +41,11 @@
     },
     {
       "name": "matchvs",
-      "path": "../../matchvs"
+      "path": "../matchvs"
     },
     {
       "name": "wxshare",
-      "path": "../../wxshare"
+      "path": "../wxshare"
     }
   ]
 }
