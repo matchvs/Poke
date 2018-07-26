@@ -1,9 +1,9 @@
 /************************************************************************************************************
  *
  * Describe :   Matchvs skd .d.ts define files for typescrip
- * Version  :   Develop 1.6.000
+ * Version  :   Develop v3.7.3.1
  *
- * CHANGE   :   2018.05.1
+ * CHANGE   :   2018.07.12
  *
  *
  ************************************************************************************************************/
@@ -90,7 +90,9 @@ declare class MsRoomInfo{
     public roomID:string;
     public roomProperty:any;
     public ownerId:number;
-    constructor(roomId:string, roomProperty:any, ownerId:number)
+    public owner:number;
+    public state:number;
+    constructor(roomID:string, roomProperty:any, owner:number, state?:number)
 }
 
 /**
@@ -98,6 +100,7 @@ declare class MsRoomInfo{
  */
 declare class MsRoomUserInfo{
     public userId:number;
+    public userID:number;
     public userProfile:string;
     constructor(userID:number,userProfile:string)
 }
@@ -188,10 +191,11 @@ declare class MsGetRoomListExRsp{
 declare class MsRegistRsp{
     public status:number;
     public id:number;
+    public userID:number;
     public token:string;
     public name:string;
     public avatar:string;
-    constructor(status:number,id:number,token:string,name:string,avatar:string)
+    constructor(status:number,userID:number,token:string,name:string,avatar:string)
 }
 
 /**
@@ -209,7 +213,7 @@ declare class MsLoginRsp{
 declare class MsHeartBeatResponse{
     public gameID:number;
     public gsExist:number;
-    constructor(gameId:number, gsExist:number)
+    constructor(gameID:number, gsExist:number)
 }
 
 /**
@@ -222,7 +226,7 @@ declare class MsRoomInfoEx{
     public mode:number;
     public canWatch:number;
     public roomProperty:string;
-    constructor(roomId:string, roomName:string,maxplayer:number,mode:number,canWatch:number,roomProperty:string);
+    constructor(roomID:string, roomName:string,maxplayer:number,mode:number,canWatch:number,roomProperty:string);
 }
 
 /**
@@ -232,16 +236,18 @@ declare class MsLeaveRoomRsp{
     public status:number;
     public roomID:string;
     public userId:number;
+    public userID:number;//新增
     public cpProto:string;
-    constructor(status:number, roomId:string, userId:number, cpProto:string);
+    constructor(status:number, roomID:string, userID:number, cpProto:string);
 }
 
 declare class MsLeaveRoomNotify{
     public userId:number;
+    public userID:number;
     public roomID:string;
     public owner:number;
     public cpProto:string;
-    constructor(userId:number, roomID:string, owner:number, cpProto:string)
+    constructor(userID:number, roomID:string, owner:number, cpProto:string)
 }
 
 /**
@@ -249,10 +255,12 @@ declare class MsLeaveRoomNotify{
  */
 declare class MsKickPlayerNotify{
     public userId:number;
+    public userID:number;
     public srcUserId:number;
+    public srcUserID:number;
     public cpProto:string;
     public owner:number;
-    constructor(userId:number, srcUserId:number, cpProto:string, owner:number);
+    constructor(userID:number, srcUserID:number, cpProto:string, owner:number);
 }
 
 /**
@@ -282,6 +290,7 @@ declare class MsSendEventRsp{
  */
 declare class MsSendEventNotify{
     public srcUserId:number;
+    public srcUserID:number;
     public cpProto:string;
     constructor(srcUserID:number, cpProto:string);
 }
@@ -290,6 +299,7 @@ declare class MsSendEventNotify{
  * 接收gameServerNotify发送的消息，srcUserId 为 0
  */
 declare class MsGameServerNotifyInfo{
+    public srcUserID:number;
     public srcUserId:number;
     public cpProto:string;
     constructor(srcUserID:number, cpProto:string);
@@ -297,9 +307,10 @@ declare class MsGameServerNotifyInfo{
 
 declare class MsSendEventGroupNotify{
     public srcUid:number;
+    public srcUserID:number;
     public groups:Array<string>;
     public cpProto:string;
-    constructor(srcUid:number, groups:Array<string>, cpProto:string);
+    constructor(srcUserID:number, groups:Array<string>, cpProto:string);
 }
 
 
@@ -579,11 +590,11 @@ declare class MatchvsResponse {
 
     /**
      * 分组消息发送异步回调
-     * @param {number} srcUid
+     * @param {number} srcUserID
      * @param {Array<string>} groups
      * @param {string} cpProto
      */
-    sendEventGroupNotify(srcUid:number, groups:Array<string>, cpProto:string);
+    sendEventGroupNotify(srcUserID:number, groups:Array<string>, cpProto:string);
 
     /**
      *
@@ -844,10 +855,10 @@ declare class MatchvsEngine {
      * @param {number} msgType          0-包含destUids  1-排除destUids
      * @param {string} data             要发送的数据
      * @param {number} desttype         0-客户端+not CPS  1-not客户端+ CPS   2-客户端 + CPS
-     * @param {Array<number>} userids   玩家ID集合 [1,2,3,4,5]
+     * @param {Array<number>} userIDs   玩家ID集合 [1,2,3,4,5]
      * @returns {{sequence: number, result: number}}
      */
-    sendEventEx(msgType:number, data:string, desttype:number, userids:Array<number>):any
+    sendEventEx(msgType:number, data:string, desttype:number, userIDs:Array<number>):any
 
     /**
      * 发送消息

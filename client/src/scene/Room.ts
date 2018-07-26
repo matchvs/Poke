@@ -413,7 +413,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 		if (this.restartRoomInfo.length > 0) {
 			for (var a = 0;  a <  this.restartRoomInfo.length; a++) {
 				console.log('a是：'+a);
-				console.log('我的id是'+userPlayer.id,'对比的id是'+this.restartRoomInfo[a].userID);
+				console.log('我的id是'+userPlayer.userID,'对比的id是'+this.restartRoomInfo[a].userID);
 				if (userPlayer.userID == this.restartRoomInfo[a].userID) {
 					user.pointValue = this.restartRoomInfo[a].pointValue;
 					console.log('第二次重新开始，我的分数是'+ this.restartRoomInfo[a].pointValue);
