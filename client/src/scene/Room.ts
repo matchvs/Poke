@@ -409,10 +409,10 @@ class Room extends eui.Component implements  eui.UIComponent {
 		console.log(arr.nickName+'有'+arr.pointValue);
 		user.nickName =arr.nickName;
 		user.avator = arr.avator;
-		console.log(this.restartRoomInfo);
+		console.log('第二次传过来的信息'+JSON.stringify(this.restartRoomInfo));
 		if (this.restartRoomInfo.length > 0) {
 			for (var a = 0;  a <  this.restartRoomInfo.length; a++) {
-				if (arr.nickName == this.restartRoomInfo[a].nickName) {
+				if (arr.userID == this.restartRoomInfo[a].userID) {
 					user.pointValue = this.restartRoomInfo[a].pointValue;
 					console.log('第二次重新开始，我的分数是'+ this.restartRoomInfo[a].pointValue);
 				}

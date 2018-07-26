@@ -178,9 +178,9 @@ class ResultUI extends eui.Component implements  eui.UIComponent {
 			p1.pointValue = Number(p1.pointValue) + Number(finalValue/2);
 			p2.pointValue = Number(p2.pointValue) + Number(finalValue/2);
 			console.info("显示结果值12：",landowner.pointValue,p1.pointValue,p2.pointValue);
-			var obj1 = {nickName:p1.nickName,pointValue: p1.pointValue};
+			var obj1 = {userID:p1.userID,pointValue: p1.pointValue};
 			this.userInfo.push(obj1);
-			var obj2 = {nickName:p2.nickName,pointValue:p2.pointValue};
+			var obj2 = {userID:p2.userID,pointValue:p2.pointValue};
 			this.userInfo.push(obj2);
 		}
 
