@@ -69,9 +69,9 @@ class ReportData{
                         // });
                         let element = {
                             key:3634266,
-                            name:"维维",
+                            name:"boss",
                             value:104200,
-                            avator:"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIK942UaccTwGKEgIUhxibu1JYGp7BdfNLofiav05CUJDHn9cm7Vs9tCjljVticyoeWWq02C4nVnoChg/132"
+                            avator:"http://pic.vszone.cn/upload/avatar/1464079976.png"
                         }
                         self.scoreBuff.set(element.key, self.MapdataPare(element));
                         self.scoreBuffToSort();
