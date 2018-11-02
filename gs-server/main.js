@@ -3,7 +3,7 @@ const path = require('path');
 const log4js = require('log4js');
 const GS = require('gameserver-nodejs');
 const App = require('./src/app');
-const ReportData = require("./src/ReportData");
+const ReportDataNew = require("./src/ReportDataNew");
 const Test_01 = require("./src/Test.js");
 const CONFIG_PATH = path.resolve(__dirname, './conf/config.json');
 
@@ -22,7 +22,8 @@ function main() {
         app.setPushHander(pushHander);
         const log = log4js.getLogger();
         log.info('Game server started, listen on:', conf.addr);
-        Test_01.Start();
+        let report = new ReportDataNew();
+        report.CreatorRankConfig();
     });
 }
 

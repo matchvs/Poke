@@ -1,4 +1,5 @@
 const ReportData = require("./ReportData");
+const ReportDataNew = require("./ReportDataNew");
 const log4js = require('log4js');
 
 const log = log4js.getLogger();
@@ -40,6 +41,9 @@ class Player{
     }
 
     /**
+     * 玩家分数上报接口, 这个上报分时是使用 http 全局存储接口实现的，
+     * 属于旧版本，在效率上，和数据上使用有很大局限性，现在改为 新版本 reportGameScoreNew 接口
+     * 上报游戏排行分数，此接口使用的是全新的独立排行榜接口，在新能上和局限性上得到很大的提升。
      * 
      * @param {object} data 分数 {times:1,model:1,value:19}
      * @param {function} _callback 结果回调函数 
@@ -56,8 +60,10 @@ class Player{
         //计算游戏分数
         this.planGameScore(this.userID, _callback, (oriScore, incScore)=>{
             if(model == 1){
+                // 覆盖
                 this.gameScore = score;
             }else if(model == 2){
+                // 累加
                 this.gameScore = oriScore + score;
             }
             this.gameScore = this.gameScore < 0 ? 0: this.gameScore;
@@ -67,9 +73,52 @@ class Player{
         });
     }
 
+    /**
+     * 上报分数新接口，不用在 gameServer 自己排行，借助独立的排行榜系统排序。
+     * @param {*} data 分数 {times:1,model:1,value:19}
+     * @param {*} _callback 结果回调函数 (res, err)=>{}
+     */
+    reportGameScoreNew(data, _callback){
+        let score = data.value;
+        if ("avator" in data) {
+            this.avator = data.avator;
+        }
+        if ("name" in data) {
+            this.nickName = data.name + "";
+        }
+        let report_new = new ReportDataNew();
+
+        report_new.UpdateScores({userID:this.userID, value: score}, (res, err)=>{
+            if (err) {
+                _callback(null, err);
+                return;
+            }
+            // 上传用户昵称和头像信息
+            report_new.RecordUserListInfo(this.userID, [
+                { userID: this.userID, name: this.nickName || "", avatar: this.avator || "" },
+            ], (res, err) =>{
+                if (err){
+                    log.error("用户信息上传失败：", err);
+                }
+            });
+
+            //获取用户当前排行
+            let grades = {
+                userID: this.userID
+            }
+            report_new.GetUserRank(grades, (res, err) => {
+                if(err){
+                    _callback(null, err);
+                    return;
+                }
+                _callback(res, null);
+            });
+        });
+    }
+
 
     /**
-     * 
+     * 计算用户分数
      * @param {userID} userID 用户ID
      * @param {function} resFun 结果出来回调函数
      * @param {function} operateFun 计算分数操作函数 (oriScore:number, incScore:number){return resScore}
@@ -148,7 +197,7 @@ class Player{
     }
 
     /**
-     * 
+     * 清理用户数据
      * @param {Array} userlist [userid,userid]
      */
     clearScoreData(userlist){

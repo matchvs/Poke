@@ -306,9 +306,9 @@ class Room{
     }
 
     /**
-     * 上报分数
-     * @param {number} userID 
-     * @param {number} _score 
+     * 收到上报分数的消息调用上报分数模块接口
+     * @param {number} userID 上报的玩家ID
+     * @param {number} dt 上报的数据
      */
     reportPlayerScore(userID, dt){
         //房间上报数据状态
@@ -326,12 +326,16 @@ class Room{
         let self  = this;
         if(player){
             log.debug("userID:"+userID+" data:",dt);
-            player.reportGameScore(dt, function(res){
+            player.reportGameScoreNew(dt, function(res, err){
                 if(res !== null){
-                    event.data.rank = res.rank;
-                    event.data.totleScore = res.totleScore;
+                    log.info("上报成功：", res);
+                    event.data.rank = res.data.rank;
+                    event.data.totleScore = res.data.value;
                     event.data.status = 0;
                     self.reInitRoom(); 
+                    self.sendEvent(event);
+                }else{
+                    log.error("report data error ", JSON.stringify(err));
                     self.sendEvent(event);
                 }
             });
@@ -348,6 +352,10 @@ class Room{
         }
     }
 
+    /**
+     * 重置房间中的参数
+     * @param {number} userID 
+     */
     reSetRoom(userID){
         if((this.roomState & ROOMSTATE.GAME_REPORT)){
             this.roomState = ROOMSTATE.NONE;

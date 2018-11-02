@@ -17,6 +17,12 @@ class ArrayTools {
         });
     };
 
+    static GetRandomNum(Min, Max) {
+        let Range = Max - Min;
+        let Rand = Math.random();
+        return (Min + Math.round(Rand * Range));
+    } 
+
     //数组排序
     static Sort(list) {
         list.sort(function (a, b) {

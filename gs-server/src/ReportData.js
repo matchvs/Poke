@@ -9,6 +9,7 @@ const log = log4js.getLogger();
  */
 var _reportData = null;
 class ReportData{
+    
     constructor(){
         this.gameID = GameData.Conf.GAMEID;
         this.appkey = GameData.Conf.APPKEY;
@@ -69,9 +70,9 @@ class ReportData{
                         // });
                         let element = {
                             key:3634266,
-                            name:"boss",
+                            name:"维维",
                             value:104200,
-                            avator:"http://pic.vszone.cn/upload/avatar/1464079976.png"
+                            avator:"https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIK942UaccTwGKEgIUhxibu1JYGp7BdfNLofiav05CUJDHn9cm7Vs9tCjljVticyoeWWq02C4nVnoChg/132"
                         }
                         self.scoreBuff.set(element.key, self.MapdataPare(element));
                         self.scoreBuffToSort();

@@ -1,20 +1,23 @@
 class RankList extends eui.Component implements  eui.UIComponent {
 	private rankList:eui.List;
-	private dsListHeros:Array<Object> = [];
-            // { ranking: "1", nickName: "乖宝宝", score: "10000" ,head:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526552548316&di=e90e3532b6906f745c2006446bd4c216&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201501%2F14%2F20150114145326_sQPjW.jpeg"}
-            // , { ranking: "2", nickName: "小乖乖", score: "9852" ,head:"https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1526543170&di=1f42a59764ace471c6d9ffc50d3315ac&src=http://p.3761.com/pic/81841417221689.jpg"}
-            // , { ranking: "3", nickName: "爱我不到黎明", score: "9583",head:"https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1526543170&di=15a734dd177962fd4c3c3d45295314f8&src=http://img5.duitang.com/uploads/blog/201410/06/20141006162725_FTrrj.jpeg"}
-            // , { ranking: "4", nickName: "回头最寂寞", score: "6543",head: "https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1526543241&di=d3855933248104e0888253044491a25b&src=http://www.th7.cn/d/file/p/2016/12/06/410a028423831f08a3a0effd5d2e781a.jpg"}
-            // , { ranking: "5", nickName: "我怕来不及", score: "5684" ,head:"https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1526543241&di=5fba65f1b8dc266ae84ef4572b78445f&src=http://www.ld12.com/upimg358/allimg/20160629/195257580739086.jpg"}
-            // , { ranking: "6", nickName: "小甜蜜、幸福满溢", score: "5562",head: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526553605118&di=a69dcf9d481b834119bee994dabe261c&imgtype=0&src=http%3A%2F%2Fwww.qqzhi.com%2Fuploadpic%2F2015-01-29%2F231109552.jpg"}
-            // , { ranking: "7", nickName: "哼゜还不是你给宠坏的", score: "4523",head: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526553368958&di=e726e3dbbde97b31e512b507850a2851&imgtype=0&src=http%3A%2F%2Fcdnq.duitang.com%2Fuploads%2Fitem%2F201504%2F30%2F20150430125352_aeTLk.jpeg" }
+	private http:MvsHttpApi = new MvsHttpApi();
+	private userMap:{[key:number]:any} = [];
+	private dsListHeros:Array<any> = [];
+	// { ranking: "1", name: "乖宝宝", score: "10000" ,head:"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg"}
+            // , { ranking: "2", name: "小乖乖", score: "9852" ,head:"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg"}
+            // , { ranking: "3", name: "爱我不到黎明", score: "9583",head:"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg"}
+            // , { ranking: "4", name: "回头最寂寞", score: "6543",head: "http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg"}
+            // , { ranking: "5", name: "我怕来不及", score: "5684" ,head:"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg"}
+            // , { ranking: "6", name: "小甜蜜、幸福满溢", score: "5562",head: "http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg"}
+            // , { ranking: "7", name: "哼゜还不是你给宠坏的", score: "4523",head: "http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg" }];
 	
 
 	public constructor() {
 		super();
 		var timestamp=new Date().getTime();
-		PokeMatchvsEngine.getInstance.getRankList(timestamp);
-		PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_RANK_LIST,this.onEvent,this);
+		// PokeMatchvsEngine.getInstance.getRankList(timestamp);
+		// PokeMatchvsRep.getInstance.addEventListener(MatchvsMessage.MATCHVS_RANK_LIST,this.onEvent,this);
+		this.http.GetRankListData(this.RankListRsp.bind(this));
 	}
 
 	protected partAdded(partName:string,instance:any):void{
@@ -35,8 +38,53 @@ class RankList extends eui.Component implements  eui.UIComponent {
 
 	protected childrenCreated():void {
 		super.childrenCreated();
-
+		
 	}
+
+	public RankListRsp(res, err){
+		console.log("请求的数据为：",res);
+		if(res && res.statusCode == 200){
+			let data:Array<any> = res.data;
+			let userList:Array<any> = [];
+			for(var i= 0; i < data.length; i++){
+				let obj = {
+					ranking: data[i].rank + "", 
+					name: data[i].userID, 
+					score: data[i].value ,
+					head:"http://alphazwimg.matchvs.com/egret/Three-Poker/img/images2.jpg"
+				};
+				this.dsListHeros.push(obj);
+				userList.push(data[i].userID);
+			}
+
+			this.http.GetUserInfoList(userList,this.getUserInfoListRsp.bind(this));
+
+
+		}else{
+			console.log("请求错误：", err);
+		}
+	}
+
+	private getUserInfoListRsp(resData, err){
+		if(resData && resData.status == 0 && resData.data){
+			let dataList:Array<any> = resData.data.dataList;
+			// let user_map = this.userMap;
+			this.dsListHeros.forEach( dt => {
+				dataList.forEach( user=>{
+					if(dt.name == user.key){
+						let info = JSON.parse(ArrayTools.Base64Decode(user.value));
+						dt.name = info.name;
+						dt.head = info.avatar;
+					}
+				});
+			} );
+
+			this.rankList.dataProvider  = new eui.ArrayCollection(this.dsListHeros);
+			this.rankList.itemRenderer = RankListItem;
+		}
+	}
+
+
 
 	public onEvent(e:egret.Event):void {
 		switch(e.type) {
@@ -57,10 +105,12 @@ class RankList extends eui.Component implements  eui.UIComponent {
 						obj.head = a[i].avator;
 					}
 					obj.score = a[i].value;
+					// console.log("aaaaaaaaobj:",obj);
 					this.dsListHeros.push(obj);
 				}
-				this.rankList.dataProvider  = new eui.ArrayCollection(this.dsListHeros);
-				this.rankList.itemRenderer = RankListItem;
+				
+				// this.rankList.dataProvider  = new eui.ArrayCollection(this.dsListHeros);
+				// this.rankList.itemRenderer = RankListItem;
 			break;
 		}
 	}
@@ -74,7 +124,4 @@ class RankList extends eui.Component implements  eui.UIComponent {
 	 }
 
 
-	
-
-	
 }
