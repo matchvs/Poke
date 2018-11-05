@@ -93,7 +93,7 @@ class HttpRequest {
      * @param {Function} callback 请求回调 (res, err)=>{}
      */
     post(url, args, callback) {
-        let method = 'post';
+        console.log("创建排行榜：", url);
         this.do(url, 'post', args, callback);
     }
 

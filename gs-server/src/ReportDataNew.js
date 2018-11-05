@@ -211,7 +211,7 @@ class ReportDataNew{
 
         data.sign = this.SignParse(data);
         let param = this.paramsParse(data);
-        http.get(httpReq.url_Join(GameData.HttpApi.ALPHA_HOST, GameData.HttpApi.SET_GAMEDATA) + param, callback);
+        http.get(httpReq.url_Join(rank_host, GameData.HttpApi.SET_GAMEDATA) + param, callback);
     }
 
     /**
@@ -232,7 +232,7 @@ class ReportDataNew{
         }
         data.sign = this.SignParse(data);
         let param = this.paramsParse(data);
-        http.get(httpReq.url_Join(GameData.HttpApi.ALPHA_HOST, GameData.HttpApi.GET_GAMEDATA) + param, callback);
+        http.get(httpReq.url_Join(rank_host, GameData.HttpApi.GET_GAMEDATA) + param, callback);
     }
 
     DeleteRankConfig(callback){

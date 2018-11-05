@@ -25,7 +25,7 @@ var GameData = {
     Conf:{
         MAX_PLAYER_NUM : 3,//一个房间的最大人数
         MAX_LAND_SCORE:3,  //叫地主的最大分数
-        DATA_STORAGE_ENV:0, //0-alpha 1-release
+        DATA_STORAGE_ENV:1, //0-alpha 1-release
         RANK_NUM:10,        //保存排行榜数据人数
         APPKEY:"de7c4a439d2948d880451c25c910b239",
         SECRET:"5667067032b644c687c0a86ca9faa2d6",
