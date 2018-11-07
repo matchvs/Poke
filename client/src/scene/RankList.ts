@@ -40,7 +40,9 @@ class RankList extends eui.Component implements  eui.UIComponent {
 		super.childrenCreated();
 		
 	}
-
+	/**
+	 * 获取排行榜列表回调
+	 */
 	public RankListRsp(res, err){
 		console.log("请求的数据为：",res);
 		if(res && res.statusCode == 200){
@@ -56,10 +58,7 @@ class RankList extends eui.Component implements  eui.UIComponent {
 				this.dsListHeros.push(obj);
 				userList.push(data[i].userID);
 			}
-
 			this.http.GetUserInfoList(userList,this.getUserInfoListRsp.bind(this));
-
-
 		}else{
 			console.log("请求错误：", err);
 		}
