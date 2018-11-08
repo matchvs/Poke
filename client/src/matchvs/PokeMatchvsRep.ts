@@ -37,11 +37,11 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
     initRsp= function(status) {
         if(status === 200) {
-            egret.log("初始化成功"+status);
+            console.log("初始化成功"+status);
             PokeMatchvsEngine.getInstance.registerUser();
             // this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_INIT,false,false,status));
         } else{
-            egret.log("初始化失败，错误码"+status);
+            console.log("初始化失败，错误码"+status);
         }
     }
 
@@ -50,11 +50,11 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
 	registerUserRsp = function(userInfo) {
         if (userInfo.status == 0) {
-            egret.log("注册成功"+userInfo.status);
+            console.log("注册成功"+userInfo.status);
             PokeMatchvsEngine.getInstance.login(userInfo.id,userInfo.token);
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_REGISTERUSER,false,false,userInfo));
         } else {
-            egret.log("注册失败，错误码："+userInfo.status);
+            console.log("注册失败，错误码："+userInfo.status);
         }
 		
 	}
@@ -64,15 +64,15 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
     loginRsp = function(loginRsp) {
         // if(loginRsp.status == 200) {
-        egret.log("登录:"+loginRsp.status);
+        console.log("登录:"+loginRsp.status);
         // 没有断线重连功能，登陆成功后发现还再房间中就退出房间
-        if(loginRsp.roomID != undefined && loginRsp.roomID != "") {
+        if(loginRsp.roomID != undefined && loginRsp.roomID != "0") {
             PokeMatchvsEngine.getInstance.leaveRoom(MatchvsData.getDefaultUserProfile());
         }
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_LOGIN,false,false,loginRsp));
 
         // } else {
-            // egret.log("登录失败，错误码："+loginRsp.status);
+            // console.log("登录失败，错误码："+loginRsp.status);
         // }
     }
 
@@ -81,12 +81,12 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
     joinRsp = function(status,roomUserInfonList,roomInfo) {
         if(status == 200) {
-            egret.log("进入房间成功"+status);
+            console.log("进入房间成功"+status);
             roomUserInfonList.roomID = roomInfo.roomID;
             roomUserInfonList.ownerId = roomInfo.ownerId;
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_JOINROOM_RSP,false,false,roomUserInfonList));
         } else {
-            egret.log("进入房间失败，错误码："+status);
+            console.log("进入房间失败，错误码："+status);
             Toast.show("进入房间失败");
         }
     }
@@ -95,7 +95,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      * 其他玩家进入房间回调
      */
     joinRoomNotify = function(roomUserInfon) {
-        egret.log(roomUserInfon.userId+"进入了房间");
+        console.log(roomUserInfon.userId+"进入了房间");
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_JOINROOM_NOTIFY,false,false,roomUserInfon));
     }
 
@@ -103,7 +103,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      * 其他玩家离开房间通知
      */
     leaveRoomNotify = function(leaveRoomNotify) {
-        egret.log(leaveRoomNotify.userId+"离开了房间");
+        console.log(leaveRoomNotify.userId+"离开了房间");
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_LEVAE_ROOM_NOTIFY,false,false,leaveRoomNotify));
     }
 
@@ -111,7 +111,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      * 离开房间回调函数
      */
     leaveRoomRsp = function(leaveRoomRsp) {
-        egret.log("自己离开了房间");
+        console.log("自己离开了房间");
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_LEVAE_ROOM,false,false,leaveRoomRsp));
     }
 
@@ -120,10 +120,10 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
     createRoomRsp = function(createRoomRsp) {
         // if (createRoomRsp.status == 200) {
-            // egret.log("进入房间成功");
+            // console.log("进入房间成功");
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_CREATE_ROOM,false,false,createRoomRsp));
         // } else {
-            // egret.log("进入房间失败："+createRoomRsp.status);
+            // console.log("进入房间失败："+createRoomRsp.status);
         // }
     }
 
@@ -132,10 +132,10 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
     kickPlayerRsp = function(kickPlayerRsp) {
         if (kickPlayerRsp.status == 200) {
-            egret.log("玩家"+kickPlayerRsp.userID+"踢出房间成功");
+            console.log("玩家"+kickPlayerRsp.userID+"踢出房间成功");
             this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_KICK_PLAYER,false,false,kickPlayerRsp));
         } else {
-           egret.log("玩家"+kickPlayerRsp.userID+"踢出房间失败 status"+kickPlayerRsp.status); 
+           console.log("玩家"+kickPlayerRsp.userID+"踢出房间失败 status"+kickPlayerRsp.status); 
         }
     }
 
@@ -143,7 +143,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      * 有玩家被踢出的通知
      */
     KickPlayerNotify = function(KickPlayerNotify) {
-        egret.log("通知玩家"+KickPlayerNotify.userId+"被踢出");
+        console.log("通知玩家"+KickPlayerNotify.userId+"被踢出");
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY,false,false,KickPlayerNotify));
     }
 
@@ -151,7 +151,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      * 错误回调
      */
     public errorResponse = function(errCode:number, errMsg:string) {
-        egret.log("errCode："+errCode+" errMsg:"+errMsg);
+        console.log("errCode："+errCode+" errMsg:"+errMsg);
         if(errCode == 1001){
             if(errMsg != "" && errMsg.indexOf("hotel") >= 0){
                 errCode = 1002; //这里自定义把hotel断开改为 1002
@@ -175,7 +175,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
     }
 
     public onErr(errCode,errMsg) {
-        egret.log(errCode,errMsg);
+        console.log(errCode,errMsg);
     }
 
     /**
@@ -191,7 +191,7 @@ class PokeMatchvsRep extends egret.EventDispatcher{
      */
     private networkStateNotify(netnotify:MsNetworkStateNotify){
         let event ={userID:netnotify.userID,state:netnotify.state};
-        egret.log("networkStateNotify",event);
+        console.log("networkStateNotify",event);
         this.dispatchEvent(new egret.Event(MatchvsMessage.MATCHVS_NETWORKSTATE,false,false,event));
     }
 

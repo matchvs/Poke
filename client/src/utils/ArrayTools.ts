@@ -197,5 +197,4 @@ class ArrayTools {
 		}
 		return this.UTF8ToUTF16(res.join(''));
 	}
-
 }

@@ -55,6 +55,7 @@
 		"bin-debug/logic/network/Resolver/PlayCards.js",
 		"bin-debug/matchvs/MatchvsData.js",
 		"bin-debug/matchvs/MatchvsMessage.js",
+		"bin-debug/matchvs/MvsHttpApi.js",
 		"bin-debug/matchvs/PokeMatchvsEngine.js",
 		"bin-debug/matchvs/PokeMatchvsRep.js",
 		"bin-debug/scene/Base.js",

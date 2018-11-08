@@ -138,7 +138,6 @@ class PokeMatchvsEngine  {
 		egret.log(rankListUrl,rankListUrl);
 		var http = new MatchvsHttp(PokeMatchvsRep.getInstance);
 		http.get(rankListUrl+"&timer="+key);
-		
 	}
 
 	/**

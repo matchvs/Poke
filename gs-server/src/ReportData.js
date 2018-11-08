@@ -9,6 +9,7 @@ const log = log4js.getLogger();
  */
 var _reportData = null;
 class ReportData{
+    
     constructor(){
         this.gameID = GameData.Conf.GAMEID;
         this.appkey = GameData.Conf.APPKEY;

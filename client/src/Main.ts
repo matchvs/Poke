@@ -74,11 +74,11 @@ class Main extends eui.UILayer {
     //  */
     // private initializeAsync(): void {
     //     FBInstant.initializeAsync().then(function () {
-    //         egret.log("getLocale:", FBInstant.getLocale());
-    //         egret.log("getPlatform:", FBInstant.getPlatform());
-    //         egret.log("getSDKVersion", FBInstant.getSDKVersion());
-    //         egret.log("getSupportedAPIs", FBInstant.getSupportedAPIs());
-    //         egret.log("getEntryPointData", FBInstant.getEntryPointData());
+    //         console.log("getLocale:", FBInstant.getLocale());
+    //         console.log("getPlatform:", FBInstant.getPlatform());
+    //         console.log("getSDKVersion", FBInstant.getSDKVersion());
+    //         console.log("getSupportedAPIs", FBInstant.getSupportedAPIs());
+    //         console.log("getEntryPointData", FBInstant.getEntryPointData());
             
     //     })
     //     setTimeout(function () {
@@ -115,7 +115,7 @@ class Main extends eui.UILayer {
     private getWxUserInfo() {
         try{
             getWxUserInfo(function callback (userinfo){
-                egret.log("main",userinfo);
+                console.log("main",userinfo);
                 var data ;
                 GlobalData.myUser.nickName =  userinfo.nickName;
                 GlobalData.myUser.avator = userinfo.avatarUrl;
@@ -123,7 +123,7 @@ class Main extends eui.UILayer {
                 PokeMatchvsEngine.getInstance.hashGet("integral");
             });
         } catch(e) {
-            egret.log("错误",e.message);
+            console.log("错误",e.message);
         }
         
     }
@@ -163,11 +163,10 @@ class Main extends eui.UILayer {
     }
 
     public onEvent(e:egret.Event):void {
-        egret.log(e);
+        console.log(e);
         switch(e.type) {
             case MatchvsMessage.MATCHVS_INIT:
                     PokeMatchvsEngine.getInstance.registerUser();
-                // }
             break;
             //注册
             case MatchvsMessage.MATCHVS_REGISTERUSER:
@@ -209,7 +208,7 @@ class Main extends eui.UILayer {
             }
             GlobalData.myUser.userID = userInfo.id;
            	GlobalData.myUser.token = userInfo.token;
-            this.getUserPointValue(GlobalData.myUser.userID);
+            this.getUserPointValueNew(GlobalData.myUser.userID);
 
     }
 
@@ -241,7 +240,7 @@ class Main extends eui.UILayer {
                 PokeMatchvsEngine.getInstance.joinRoom(this.roomID,MatchvsData.getDefaultUserProfile());
             }
         } catch(err) {
-            egret.log(err,err.message);
+            console.log(err,err.message);
         }
     }
 
@@ -256,32 +255,17 @@ class Main extends eui.UILayer {
         PokeMatchvsRep.getInstance.removeEventListener(MatchvsMessage.MATCHVS_JOINROOM_RSP,this.onEvent,this);
     }
 
-
-    public getUserPointValue (userID:any) {
-		let keyList = JSON.stringify([{"key":userID}]);
-		var params = "gameID=" + MatchvsData.gameID + "&userID="+userID+ "&keyList=" +keyList;
-		var matchvsMD5 = new MD5();
-		var sign = matchvsMD5.hex_md5(MatchvsData.appKey+"&gameID="+MatchvsData.gameID+"&userID="+userID+"&"+ MatchvsData.secret);
-		var rankListUrl = MatchvsData.alphaHttpUrl+params+"&sign="+sign;
-		var http = new MatchvsHttp({
-            onMsg:function(buf){
-                egret.log("玩家信息拿到了",buf);
-                var buf = JSON.parse(buf);
-                if(buf.data.dataList.length < 1) {
-                    egret.log("没有拿到数据");
-                    GlobalData.myUser.pointValue = MatchvsData.defaultScore;
-                } else {
-                    egret.log("玩家分数是",buf.data.dataList[0].value);
-                    GlobalData.myUser.pointValue = buf.data.dataList[0].value;
+    public getUserPointValueNew (userID:any) {
+		let http = new MvsHttpApi();
+        http.GetUserRank(userID, (res, err)=>{
+            if(res && res.statusCode == 200){
+                if(res.data){
+                    GlobalData.myUser.pointValue = res.data.value;
+                    return;
                 }
-            },
-            onErr:function(errCode,errMsg){
-				egret.log("获取玩家错误信息",errMsg);
-                // GlobalData.myUser.pointValue = ;
-                return null;
-			}
+            }
+            GlobalData.myUser.pointValue = MatchvsData.defaultScore;
         });
-		http.get(rankListUrl);
 	}
 
 
