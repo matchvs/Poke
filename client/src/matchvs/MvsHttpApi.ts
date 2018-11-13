@@ -6,6 +6,14 @@ class MvsHttpApi {
 
 	public static get_game_data:string = "/wc5/getGameData.do?";
 	public static set_game_data:string = "/wc5/setGameData.do?";
+    public static del_game_data:string = "/wc5/delGameData.do?";
+
+    public static set_user_data:string = "/wc5/setUserData.do?";
+    public static get_user_data:string = "/wc5/getUserData.do?";
+    public static del_user_data:string = "/wc5/delUserData.do?";
+
+    public static hase_set:string = "/wc5/hashSet.do?";
+    public static hash_get:string = "/wc5/hashGet.do?";
 	
 	public constructor() {
 	}
@@ -74,11 +82,53 @@ class MvsHttpApi {
             paramStr = MvsHttpApi.paramsParse({ gameID: args.gameID, userID: args.userID });
         }else if (typeof args == "string"){
             paramStr = args;
-        }else{
-            
         }
 		let md5Encode = new MD5()
         let sign = md5Encode.hex_md5(MatchvsData.appKey+"&"+paramStr+"&"+MatchvsData.secret);
+        return sign;
+    }
+    /**
+     * 签名
+     * @param {object|string} args object格式为{gameID:"xx",userID:0} string 格式为 gameID=xx&userID=0
+     * @return {string} MD5 string
+     */
+    public static SignParse2(args, appkey, token){
+        let paramStr = "";
+        if(typeof args == "object"){
+            if (!("gameID" in args) || !("userID" in args)) {
+                console.log("参数中没有 gameID，或者 userID");
+                return;
+            }
+            paramStr = MvsHttpApi.paramsParse({ gameID: args.gameID, userID: args.userID });
+        }else if (typeof args == "string"){
+            paramStr = args;
+        }
+		let md5Encode = new MD5()
+        let sign = md5Encode.hex_md5(appkey+"&"+paramStr+"&"+token);
+        return sign;
+    }
+
+
+    /**
+     * 签名
+     * @param {object|string} args {gameID:, key:, userID:, value:}
+     * @return {string} MD5 string
+     */
+    public static SignParse3(args, appkey, token){
+        let paramStr = "";
+        if(typeof args == "object"){
+            // 这里固定使用这几个参数作为签名
+            // 这里参数的位置必须是按照 a-z 的顺序排序然后再签名，不然会报错
+            if("value" in args){
+                paramStr = MvsHttpApi.paramsParse({gameID:args.gameID, key:args.key, userID:args.userID, value:args.value});
+            }else{
+                paramStr = MvsHttpApi.paramsParse({gameID:args.gameID, key:args.key, userID:args.userID});
+            }
+        }else if (typeof args == "string"){
+            paramStr = args;
+        }
+		let md5Encode = new MD5()
+        let sign = md5Encode.hex_md5(appkey+"&"+paramStr+"&"+token);
         return sign;
     }
 
@@ -143,6 +193,46 @@ class MvsHttpApi {
 		this.http_get(MvsHttpApi.url_Join(MvsHttpApi.open_host, MvsHttpApi.get_game_data)+param, callback);
     }
 
+    /**
+     * 保存全局数据
+     */
+    public setGameData(userID:number, list:Array<any>, callback:Function){
+        let listInfo = [];
+        list.forEach(user=>{
+            listInfo.push({
+                key: user.userID,
+                value: ArrayTools.Base64Encode(JSON.stringify({ name: user.name, avatar: user.avatar })),
+            });
+        });
+        let params = {
+            gameID : MatchvsData.gameID,
+            userID : userID,
+            dataList: listInfo,
+            sign : ""
+        }
+        params.sign = MvsHttpApi.SignParse(params);
+		this.http_post(MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.set_game_data), params, callback);
+    }
+
+    /**
+     * 删除全局接口数据
+     */
+    public delGameData(userID:number, list:Array<any>, callback){
+        let keyList = [];
+        list.forEach(k=>{
+            keyList.push({key:k});
+        });
+        let args = {
+            gameID:  MatchvsData.gameID,
+            userID:  userID,
+            keyList: keyList,
+            sign: ""
+        }
+        args.sign = MvsHttpApi.SignParse(args);
+        let params = MvsHttpApi.paramsParse(args);
+		this.http_get(MvsHttpApi.url_Join(MvsHttpApi.open_host, MvsHttpApi.del_game_data) + params, callback);
+    }
+
     public GetUserRank(userID, callback){
         let grades = {
             userID: userID,
@@ -158,4 +248,96 @@ class MvsHttpApi {
         let param = MvsHttpApi.paramsParse(grades);
 		this.http_get(MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.rank_user)+param,callback);
     }
+
+    /**
+     * 保存用户接口数据
+     */
+    public setUserData(userID, list, callback){
+        let listInfo = [];
+        list.forEach(user=>{
+            listInfo.push({
+                key: user.userID,
+                value: ArrayTools.Base64Encode(JSON.stringify({ name: user.name, avatar: user.avatar })),
+            });
+        });
+        let params = {
+            gameID : MatchvsData.gameID,
+            userID : userID,
+            dataList: listInfo,
+            sign : ""
+        }
+        params.sign = MvsHttpApi.SignParse2(params, "appkey", "token");
+		this.http_post(MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.set_user_data), params, callback);
+    }
+
+    /**
+     * 获取用户接口数据 
+     * @param {Array<number>} List
+     */
+    public getUserData(userID:number, list:Array<number>, callback:Function){
+        let keyList = [];
+        list.forEach(k=>{
+            keyList.push({key:k});
+        });
+        let args = {
+            gameID:  MatchvsData.gameID,
+            userID:  userID,
+            keyList: keyList,
+            sign: ""
+        }
+        args.sign = MvsHttpApi.SignParse2(args, "appkey", "token");
+        let params = MvsHttpApi.paramsParse(args);
+		this.http_get(MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.get_user_data)+params, callback);
+    }
+
+    /**
+     * 删除用户接口数据
+     */
+    public delUserData(userID, list, callback){
+        let keyList = [];
+        list.forEach(k=>{
+            keyList.push({key:k});
+        });
+        let args = {
+            gameID:  MatchvsData.gameID,
+            userID:  userID,
+            keyList: keyList,
+            sign: ""
+        }
+        args.sign = MvsHttpApi.SignParse2(args, "appkey", "token");
+        let params = MvsHttpApi.paramsParse(args);
+		this.http_get(MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.del_user_data)+params, callback);
+    }
+
+    /**
+     * 存哈希
+     */
+    public hashSet(userID:number, k:string, v:string, callback:Function){
+        let params = {
+            gameID: MatchvsData.gameID,
+            key: k,
+            userID: userID,
+            value: v,
+            sign:""
+        }
+        params.sign = MvsHttpApi.SignParse3(params, "appkey", "token")
+        this.http_post(MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.hash_get), params, callback);
+    }
+
+    /**
+     * 取哈希
+     */
+    public hashGet(userID:number, k:string, callback:Function){
+        let params = {
+            gameID: MatchvsData.gameID,
+            key: k,
+            userID: userID,
+            sign:""
+        }
+        params.sign = MvsHttpApi.SignParse3(params, "appkey", "token")
+        this.http_get(MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.hash_get) + params, callback);
+    }
+
+
+
 }
