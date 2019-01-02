@@ -16,12 +16,12 @@ const rank_list         = "/rank/ranking_list?";            // 排版列表
 const rank_delete = "/rank/ranking_list_configs?";
 
 
-
 class ReportDataNew{
     constructor(){
         this.gameID = GameData.Conf.GAMEID;
         this.appkey = GameData.Conf.APPKEY;
         this.secret = GameData.Conf.SECRET;
+        this.Sequence = 1;
         this.rankconfig = {
             gameID: this.gameID,
             rankinglistName: "totlal_rank",
@@ -33,8 +33,9 @@ class ReportDataNew{
             rankNum: 100,
             historyPeriodNum: 0,
             updateRuleType: 2,
-            sign: "xxx",
+            sign: "",
             userID: 0,
+            mode:2,
         };
     }
 
@@ -93,24 +94,40 @@ class ReportDataNew{
         return str;
     }
 
+    getTimeStamp() {
+        return Math.floor(Date.now() / 1000);
+    }
+
+    getSequence() {
+        return this.Sequence++;
+    }
+
     /**
      * 签名
-     * @param {object|string} args object格式为{gameID:"xx",userID:0} string 格式为 gameID=xx&userID=0
-     * @return {string} MD5 string
+     * @param {object|string} args 
+     * @param {Array} points 
      */
-    SignParse(args){
-        let paramStr = "";
-        if(typeof args == "object"){
-            if (!("gameID" in args) || !("userID" in args)) {
-                console.log("参数中没有 gameID，或者 userID");
-                return;
-            }
-            paramStr = this.paramsParse({ gameID: args.gameID, userID: args.userID });
-        }else if (typeof args == "string"){
-            paramStr = args;
-        }else{
-            
+    SignParse(args, points){
+        if (typeof args !== "object") {
+            console.log("args 参数类型不对");
+            return "";
         }
+        points.sort();
+        let tempArgs = {};
+        points.forEach((val)=>{
+            tempArgs[val] = args[val];
+        });
+
+        if("seq" in args){
+            tempArgs["seq"] = args["seq"];
+        }
+
+        if("ts" in args){
+            tempArgs["ts"] = args["ts"];
+        }
+
+        let paramStr = "";
+        paramStr = this.paramsParse(tempArgs);
         let sign = this.md5Encode(this.appkey+"&"+paramStr+"&"+this.secret);
         return sign;
     }
@@ -120,7 +137,9 @@ class ReportDataNew{
      * @param {Function} callback 回调函数
      */
     CreatorRankConfig(callback){
-        this.rankconfig.sign = this.SignParse(this.rankconfig);
+        this.rankconfig["seq"] = this.getSequence();
+        this.rankconfig["ts"]= this.getTimeStamp();
+        this.rankconfig.sign = this.SignParse(this.rankconfig, ["gameID"]);
         http.post(httpReq.url_Join(rank_host, rank_config), this.rankconfig, callback);
     }
 
@@ -136,9 +155,12 @@ class ReportDataNew{
             sign:"",
             items:[
                 {fieldName:this.rankconfig.rankGist, value:args.value}
-            ]
+            ],
+            mode:2,
+            seq:this.getSequence(),
+            ts:this.getTimeStamp()
         };
-        data.sign = this.SignParse(data);
+        data.sign = this.SignParse(data, ["gameID","userID"]);
         let userid = args.userID;
         console.log("上报数据参数：", JSON.stringify(data));
         http.put(httpReq.url_Join(rank_host, rank_score) , data, callback);
@@ -159,8 +181,11 @@ class ReportDataNew{
             rank: 0,                 //范围
             period: 0,               //周期，取值0或1，0当前周期，1上一周期
             sing: "",                //签名
+            mode:2,
+            seq: this.getSequence(),
+            ts: this.getTimeStamp()
         }
-        grades.sign = this.SignParse(grades);
+        grades.sign = this.SignParse(grades, ["gameID", "userID"]);
         let param = this.paramsParse(grades);
         http.get(httpReq.url_Join(rank_host, rank_grades) + param, callback);
     }
@@ -181,8 +206,11 @@ class ReportDataNew{
             pageMax:10,
             self:1,
             sign:"",
+            mode:2,
+            seq: this.getSequence(),
+            ts: this.getTimeStamp()
         }
-        args.sign = this.SignParse(args);
+        args.sign = this.SignParse(args,["gameID", "userID"]);
         let param = this.paramsParse(args);
         http.get(httpReq.url_Join(rank_host, rank_list) + param, callback);
     }
@@ -206,10 +234,13 @@ class ReportDataNew{
             gameID   : this.gameID,
             userID   : userID, 
             dataList : listInfo,
-            sign     : ""
+            sign     : "",
+            mode:2,
+            seq: this.getSequence(),
+            ts: this.getTimeStamp()
         }
 
-        data.sign = this.SignParse(data);
+        data.sign = this.SignParse(data, ["gameID","userID"]);
         let param = this.paramsParse(data);
         http.get(httpReq.url_Join(rank_host, GameData.HttpApi.SET_GAMEDATA) + param, callback);
     }
@@ -229,8 +260,11 @@ class ReportDataNew{
             userID   : userID,
             keyList  : keyList,
             sign : "",
+            mode: 2,
+            seq: this.getSequence(),
+            ts: this.getTimeStamp()
         }
-        data.sign = this.SignParse(data);
+        data.sign = this.SignParse(data, ["gameID", "userID"]);
         let param = this.paramsParse(data);
         http.get(httpReq.url_Join(rank_host, GameData.HttpApi.GET_GAMEDATA) + param, callback);
     }
@@ -239,12 +273,14 @@ class ReportDataNew{
         let args = {
             gameID: this.gameID,
             rankinglistName: this.rankconfig.rankinglistName,
-            userID:0
+            userID:0,
+            mode:2,
+            seq: this.getSequence(),
+            ts: this.getTimeStamp()
         }
-        args.sign = this.SignParse(args);
+        args.sign = this.SignParse(args, ["gameID", "userID"]);
         http.delete(httpReq.url_Join(rank_host, rank_delete),args, callback);
     }
-
 }
 
 module.exports = ReportDataNew;

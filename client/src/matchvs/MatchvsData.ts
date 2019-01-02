@@ -9,8 +9,7 @@ class MatchvsData {
 	public static secret:string = "5667067032b644c687c0a86ca9faa2d6";
 	public static gameVision:number = 1.0;
 	public static DeviceID:string = "0";
-	public static gatewayID: number = 1;
-	public static pChannel:string = "MatchVS"
+	public static pChannel:string = "MatchVS";
 	public static pPlatform:string = "release";
 	public static HtttpUrl:any = "https://vsopen.matchvs.com/wc5/getGameData.do?";
 	public static alphaHttpUrl:any = (MatchvsData.pPlatform == "release" ? "https://vsopen.matchvs.com/wc5/getGameData.do?": "https://alphavsopen.matchvs.com/wc5/getGameData.do?");

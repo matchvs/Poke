@@ -19,7 +19,7 @@ class PokeMatchvsEngine  {
 	 * 初始化
 	 */
 	public init(pChannel: string, pPlatform: string, gameID: number) :number{
-		var result = MatchvsData.MatchvsReq.init( MatchvsData.MatchvsRep,pChannel,pPlatform,gameID);
+		var result = MatchvsData.MatchvsReq.init(MatchvsData.MatchvsRep, pChannel, pPlatform, gameID, MatchvsData.appKey,MatchvsData.gameVision);
 		egret.log("初始化result："+result);
 		return result;
 	}
@@ -37,8 +37,7 @@ class PokeMatchvsEngine  {
 	 * 登录
 	 */
 	public login(pUserID: number, pToken: string,) :number {
-		var result = MatchvsData.MatchvsReq.login(pUserID,pToken,MatchvsData.gameID,MatchvsData.gameVision,
-		MatchvsData.appKey,MatchvsData.secret,MatchvsData.DeviceID,MatchvsData.gatewayID);
+		var result = MatchvsData.MatchvsReq.login(pUserID,pToken, MatchvsData.DeviceID);
 		egret.log("登录result："+result);
 		return result;
 	}
@@ -109,19 +108,19 @@ class PokeMatchvsEngine  {
 
 
 
-	/**
-	 * 存储数据
-	 */
-	public hashSet(key:any,value:any) {
-		MatchvsData.MatchvsReq.hashSet(MatchvsData.gameID,GlobalData.myUser.userID,key,value);
-	}
+	// /**
+	//  * 存储数据
+	//  */
+	// public hashSet(key:any,value:any) {
+	// 	MatchvsData.MatchvsReq.hashSet(MatchvsData.gameID,GlobalData.myUser.userID,key,value);
+	// }
 
-	/**
-	 * 获取数据
-	 */
-	public hashGet(key:any) {
-		MatchvsData.MatchvsReq.hashGet(MatchvsData.gameID,GlobalData.myUser.userID,key);
-	}
+	// /**
+	//  * 获取数据
+	//  */
+	// public hashGet(key:any) {
+	// 	MatchvsData.MatchvsReq.hashGet(MatchvsData.gameID,GlobalData.myUser.userID,key);
+	// }
 
 	/**
 	 * 取全局排行榜数据

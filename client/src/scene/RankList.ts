@@ -46,6 +46,10 @@ class RankList extends eui.Component implements  eui.UIComponent {
 	public RankListRsp(res, err){
 		console.log("请求的数据为：",res);
 		if(res && res.statusCode == 200){
+			if(res.data == null){
+				console.log("暂无排行数据");
+				res.data = [];
+			}
 			let data:Array<any> = res.data;
 			let userList:Array<any> = [];
 			for(var i= 0; i < data.length; i++){

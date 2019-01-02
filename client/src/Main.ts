@@ -114,13 +114,14 @@ class Main extends eui.UILayer {
      */
     private getWxUserInfo() {
         try{
-            getWxUserInfo(function callback (userinfo){
+            var wxm = new Wxmodel();
+            wxm.getWxUserInfo(function callback (userinfo){
                 console.log("main",userinfo);
                 var data ;
                 GlobalData.myUser.nickName =  userinfo.nickName;
                 GlobalData.myUser.avator = userinfo.avatarUrl;
                 //todo 
-                PokeMatchvsEngine.getInstance.hashGet("integral");
+                // PokeMatchvsEngine.getInstance.hashGet("integral");
             });
         } catch(e) {
             console.log("错误",e.message);
@@ -232,7 +233,8 @@ class Main extends eui.UILayer {
      */
     public wxInvite () {
         try {
-            var LaunchOption = getLaunchOptionsSync();
+            var wxm = new Wxmodel();
+            var LaunchOption = wxm.getLaunchOptionsSync();
              this.roomID  =  LaunchOption.query.roomID;
             if(  this.roomID  != null &&   this.roomID  != "" &&  this.roomID  !=0) {
                 //昵称，头像，积分的顺序，用 /n 分割

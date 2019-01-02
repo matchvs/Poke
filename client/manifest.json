@@ -8,7 +8,8 @@
 		"libs/modules/game/game.js",
 		"libs/modules/dragonBones/dragonBones.js",
 		"libs/modules/promise/promise.js",
-		"libs/modules/matchvs/matchvs.js",
+		"libs/modules/socket/socket.js",
+		"libs/matchvs/matchvs.js",
 		"libs/modules/wxshare/wxshare.js"
 	],
 	"game": [

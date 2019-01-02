@@ -1,6 +1,6 @@
 {
-  "engineVersion": "5.2.6",
-  "compilerVersion": "5.2.6",
+  "engineVersion": "5.2.13",
+  "compilerVersion": "5.2.13",
   "template": {},
   "target": {
     "current": "web"
@@ -40,8 +40,11 @@
       "name": "egret-facebook"
     },
     {
+      "name": "socket"
+    },
+    {
       "name": "matchvs",
-      "path": "../matchvs"
+      "path": "./libs/matchvs"
     },
     {
       "name": "wxshare",

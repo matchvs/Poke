@@ -8,9 +8,7 @@ class WxUtils {
 	 * @param query 分享的内容
 	 */
 	public static wxTogether(key:any,query:string) {
-		together(key,query);
+		let wxm=new Wxmodel();
+		wxm.together(key,query);
 	}
-
-
-
 }

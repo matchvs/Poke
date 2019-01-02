@@ -44,7 +44,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 			if(MatchvsData.gameMode) {
 				try {
 					var par = "roomID="+this.roomID;
-					together("邀请好友",par);
+					let wxm = new Wxmodel();
+					wxm.together("邀请好友",par);
 				} catch (e) {
 					console.warn(e,e.message)
 				}
@@ -357,7 +358,8 @@ class Room extends eui.Component implements  eui.UIComponent {
 		} else {
 			try {
 				var par = "roomID="+this.roomID;
-				together("约战",par);
+				let wxm = new Wxmodel();
+				wxm.together("约战",par);
 			} catch (e){
 				console.warn(e,e.message);
 			}

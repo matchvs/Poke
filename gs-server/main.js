@@ -4,7 +4,6 @@ const log4js = require('log4js');
 const GS = require('gameserver-nodejs');
 const App = require('./src/app');
 const ReportDataNew = require("./src/ReportDataNew");
-const Test_01 = require("./src/Test.js");
 const CONFIG_PATH = path.resolve(__dirname, './conf/config.json');
 
 /**
@@ -17,7 +16,7 @@ function main() {
         let conf = JSON.parse(data);
         log4js.configure(conf.log);
         let app = new App();
-        let gs = new GS(conf.addr, app);
+        let gs = new GS(conf.addr, app, conf.register, conf.roomConf);
         let pushHander = gs.start();
         app.setPushHander(pushHander);
         const log = log4js.getLogger();
