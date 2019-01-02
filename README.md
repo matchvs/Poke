@@ -81,7 +81,9 @@ class ReportDataNew{
      * @param {Function} callback 回调函数
      */
     CreatorRankConfig(callback){
-        this.rankconfig.sign = this.SignParse(this.rankconfig);
+        this.rankconfig["seq"] = this.getSequence();
+        this.rankconfig["ts"]= this.getTimeStamp();
+        this.rankconfig.sign = this.SignParse(this.rankconfig, ["gameID"]);
         http.post(httpReq.url_Join(rank_host, rank_config), this.rankconfig, callback);
     }
 	......
@@ -115,9 +117,12 @@ client 打完一局，再离开房间之前需要 调用 MatchvsSDK sendEventEx 
             sign:"",
             items:[
                 {fieldName:this.rankconfig.rankGist, value:args.value}
-            ]
+            ],
+            mode:2,
+            seq:this.getSequence(),
+            ts:this.getTimeStamp()
         };
-        data.sign = this.SignParse(data);
+        data.sign = this.SignParse(data, ["gameID","userID"]);
         let userid = args.userID;
         console.log("上报数据参数：", JSON.stringify(data));
         http.put(httpReq.url_Join(rank_host, rank_score) , data, callback);
@@ -138,8 +143,11 @@ client 打完一局，再离开房间之前需要 调用 MatchvsSDK sendEventEx 
             rank: 0,                 //范围
             period: 0,               //周期，取值0或1，0当前周期，1上一周期
             sing: "",                //签名
+            mode:2,
+            seq: this.getSequence(),
+            ts: this.getTimeStamp()
         }
-        grades.sign = this.SignParse(grades);
+        grades.sign = this.SignParse(grades, ["gameID", "userID"]);
         let param = this.paramsParse(grades);
         http.get(httpReq.url_Join(rank_host, rank_grades) + param, callback);
     }
@@ -162,10 +170,13 @@ client 打完一局，再离开房间之前需要 调用 MatchvsSDK sendEventEx 
             gameID   : this.gameID,
             userID   : userID, 
             dataList : listInfo,
-            sign     : ""
+            sign     : "",
+            mode:2,
+            seq: this.getSequence(),
+            ts: this.getTimeStamp()
         }
 
-        data.sign = this.SignParse(data);
+        data.sign = this.SignParse(data, ["gameID","userID"]);
         let param = this.paramsParse(data);
         http.get(httpReq.url_Join(rank_host, GameData.HttpApi.SET_GAMEDATA) + param, callback);
     }
@@ -271,19 +282,21 @@ gs-server 上报的数据，会根据创建排行榜设置的信息对数据进�
 ```typescript
 public GetRankListData(callback){
     let params = {
-        userID: GlobalData.myUser.userID || 0,
-        gameID: MatchvsData.gameID,
-        rankName:"totlal_rank",
-        period:0,
-        top: 50,
-        pageIndex:1,
-        pageMax:10,
-        self:0,
-        sign:"",
-    }
-    params.sign = MvsHttpApi.SignParse(params);
-    let param = MvsHttpApi.paramsParse(params);
-  this.http_get( MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.rank_list ) + param,call  back);
+            pageMax:10,
+            period:0,
+            rankName:"totlal_rank",
+            self:0,
+            top: 50,
+            userID: this.userID|| 0,
+            gameID: this.userID,
+            pageIndex:1,
+            mode:1,
+            seq: this.getCounter(),
+            ts:this.getTimeStamp(),
+        }
+        params["sign"] = this.SignPoint(params,["gameID","userID"]);
+        let param = MvsHttpApi.paramsParse(params);
+	this.http_get(MvsHttpApi.url_Join(this.open_host,this.rank_list)+param,callback);
 }
 ```
 
@@ -324,16 +337,18 @@ public GetRankListData(callback){
         list.forEach(k=>{
             keyList.push({key:k});
         });
-
         let data = {
-            gameID   : MatchvsData.gameID,
-            userID   : GlobalData.myUser.userID || 0,
+            gameID   : this.gameID,
+            userID   : this.userID || 0,
             keyList  : keyList,
+            mode:2,
             sign : "",
+            seq: this.getCounter(),
+            ts:this.getTimeStamp(),
         }
-        data.sign = MvsHttpApi.SignParse(data);
+        data.sign = this.SignPoint(data,["gameID","userID"]);
         let param = MvsHttpApi.paramsParse(data);
-		this.http_get(MvsHttpApi.url_Join(MvsHttpApi.open_host, MvsHttpApi.get_game_data)+param, callback);
+		this.http_get(MvsHttpApi.url_Join(this.open_host, this.get_game_data)+param, callback);
     }
 ```
 
@@ -346,25 +361,24 @@ public GetRankListData(callback){
 public GetUserRank(userID, callback){
         let grades = {
             userID: userID,
-            gameID: MatchvsData.gameID,
+            gameID: this.gameID,
             type: 0,                 // 类型，取值0或者1，0排行榜，1快照
-            rankName: "totlal_rank",//排行榜名称
-            snapshotName: "",        //快照名称
+            rankName: "totlal_rank", //排行榜名称
             rank: 0,                 //范围
             period: 0,               //周期，取值0或1，0当前周期，1上一周期
-            sign: "",                //签名
+            mode:1,
+            seq: this.getCounter(),
+            ts : this.getTimeStamp(),
         }
-        grades.sign = MvsHttpApi.SignParse(grades);
+        grades["sign"] = this.SignPoint(grades, ["gameID","userID"]);
         let param = MvsHttpApi.paramsParse(grades);
-		this.http_get(MvsHttpApi.url_Join(MvsHttpApi.open_host,MvsHttpApi.rank_user) + param, callback);
+		this.http_get(MvsHttpApi.url_Join(this.open_host, this.rank_user)+param,callback);
     }
 ```
 
 ### 排行榜接入总结
 
 在接入排行榜的过程中，主要就是对 http 接口的调用，开发者只需要关心游戏数据的上报和 http 接口的请求，不要关心排行是怎么计算的。整个过程就是对接口的操作，组数据，解析数据等等。我们这里例子是在 gs-server 中上报分数到 Matchvs Rank System 中的，当然也可以在客户端自己上报分数。但是在 gameServer 中上报分数是相对更安全一些。
-
-
 
 
 
