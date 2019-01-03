@@ -157,13 +157,13 @@ class MvsHttpApi {
             self:0,
             top: 50,
             userID: this.userID|| 0,
-            gameID: this.userID,
+            gameID: this.gameID,
             pageIndex:1,
-            mode:1,
+            mode : 1,
             seq: this.getCounter(),
             ts:this.getTimeStamp(),
         }
-        params["sign"] = this.SignPoint(params,["gameID","userID"]);
+        params["sign"] = this.SignPoint(params, ["gameID","userID"]);
         let param = MvsHttpApi.paramsParse(params);
 		this.http_get(MvsHttpApi.url_Join(this.open_host,this.rank_list)+param,callback);
 	}
@@ -214,6 +214,28 @@ class MvsHttpApi {
         }
         params.sign = this.SignPoint(params, ["gameID","userID"]);
 		this.http_post(MvsHttpApi.url_Join(this.open_host, this.set_game_data), params, callback);
+    }
+
+    /**
+     * 获取全局接口数据
+     */
+    public getGameData(list:Array<any>,callback:Function){
+        let keyList = [];
+        list.forEach(k=>{
+            keyList.push({key:k});
+        });
+        let data = {
+            gameID   : "123456",
+            userID   : GlobalData.myUser.userID || 0,
+            keyList  : keyList,
+            sign : "",
+            mode : 2,
+            seq: this.getCounter(),
+            ts:this.getTimeStamp(),
+        }
+        data.sign = this.SignPoint(data, ["gameID", "userID"]);
+        let param = MvsHttpApi.paramsParse(data);
+		this.http_get(MvsHttpApi.url_Join(this.open_host, this.get_game_data)+param, callback);
     }
 
     /**
@@ -361,6 +383,4 @@ class MvsHttpApi {
         params.sign = this.SignPoint(params, ["gameID", "userID", "key"]);
         this.http_get(MvsHttpApi.url_Join(this.open_host, this.hash_get) + params, callback);
     }
-
-    
 }

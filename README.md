@@ -380,7 +380,9 @@ public GetUserRank(userID, callback){
 
 在接入排行榜的过程中，主要就是对 http 接口的调用，开发者只需要关心游戏数据的上报和 http 接口的请求，不要关心排行是怎么计算的。整个过程就是对接口的操作，组数据，解析数据等等。我们这里例子是在 gs-server 中上报分数到 Matchvs Rank System 中的，当然也可以在客户端自己上报分数。但是在 gameServer 中上报分数是相对更安全一些。
 
+## 发布说明
 
+集成 Matchvs SDK 的程序支持发布 web ， 微信， QQ玩一玩，native平台。发布相应的平台不用做额外的适配，可以直接按照Egret 的发布教程即可。
 
 
 
