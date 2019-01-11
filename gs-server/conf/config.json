@@ -12,5 +12,12 @@
                 "level": "debug"
             }
         }
+    },
+    "roomConf": {
+        "enable": false,
+        "svcName": "svc-200773-0-0",
+        "podName": "deploy-200773-0-0-855ccc667b-jkxmj",
+        "remoteHost": "directory10.matchvs.com",
+        "remotePort": 9982
     }
 }
