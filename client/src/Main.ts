@@ -171,6 +171,7 @@ class Main extends eui.UILayer {
             break;
             //注册
             case MatchvsMessage.MATCHVS_REGISTERUSER:
+                MvsHttpApi.TestReportScore();
                 // this.userID = e.data.id;
                 this.userInfoStore(e.data);
             break;

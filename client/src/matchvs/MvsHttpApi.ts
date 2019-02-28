@@ -3,6 +3,7 @@ class MvsHttpApi {
 	public  open_host:string = MatchvsData.pPlatform == "release"? "https://vsopen.matchvs.com":"https://alphavsopen.matchvs.com";
 	public  rank_list:string = "/rank/ranking_list?";
     public  rank_user:string = "/rank/grades?";
+    public rank_score:string = "/rank/scores?";                  // 上传排行榜分数
 
 	public  get_game_data:string = "/wc5/getGameData.do?";
 	public  set_game_data:string = "/wc5/setGameData.do?";
@@ -119,6 +120,8 @@ class MvsHttpApi {
         var request = new XMLHttpRequest()
         request.open(method, url)
         request.setRequestHeader("Content-Type",headtype);
+        // request.setRequestHeader("Access-Control-Allow-Origin", "true");
+        // request.setRequestHeader("Access-Control-Allow-Credentials", "true");
         if (method == "GET"){
             request.send();
         }else{
@@ -145,6 +148,10 @@ class MvsHttpApi {
 	public http_post(url, params ,callback){
 		this.dohttp(url, "POST", params, callback);
 	}
+
+    public http_put(url, params, callback){
+        this.dohttp(url, "PUT", params, callback);
+    }
 
     /**
      * 获取排行榜数据
@@ -382,5 +389,34 @@ class MvsHttpApi {
         }
         params.sign = this.SignPoint(params, ["gameID", "userID", "key"]);
         this.http_get(MvsHttpApi.url_Join(this.open_host, this.hash_get) + params, callback);
+    }
+
+    public reportScore(args, callback){
+        let data = {
+            userID:args.userID,
+            gameID:this.gameID,
+            sign:"",
+            items:[
+                {fieldName:"score", value:args.value}
+            ],
+            mode:2,
+            seq:this.getCounter(),
+            ts:this.getTimeStamp()
+        };
+        data.sign = this.SignPoint(data, ["gameID","userID"]);
+        let userid = args.userID;
+        console.log("上报数据参数：", JSON.stringify(data));
+        this.http_put(MvsHttpApi.url_Join(this.open_host, this.rank_score) , data, callback);
+    }
+
+    public static TestReportScore(){
+        let test:MvsHttpApi = new MvsHttpApi();
+        test.reportScore({userID:123456, value:1000}, (res, err)=>{
+            if(err){
+                console.log("TestReportScore error ", err);
+                return; 
+            }
+            console.log("TestReportScore success ", res);
+        });
     }
 }
