@@ -65,7 +65,7 @@ module network {
 			let data = e.data;
 			if(data.state == 3){
 				this.CancelListen();
-				SceneManager.ErrorPage("其他玩家网络连接断开，请返回到大厅...",this.returnSceneGameLoy,this);
+				DialogPage.ErrorPage("其他玩家网络连接断开，请返回到大厅...",this.returnSceneGameLoy,this);
 			}
 		}
 
@@ -103,7 +103,7 @@ module network {
 			let errData = this._errCodeMap[Number(data.code)];
 			if(errData){
 				this.CancelListen();
-				SceneManager.ErrorPage(errData.message, errData.callBack,this);
+				DialogPage.ErrorPage(errData.message, errData.callBack,this);
 			}
 			// }else{
 			// 	SceneManager.ErrorPage("服务返回错误："+data.code,this.returnSceneLogin,this);

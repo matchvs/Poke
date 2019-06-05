@@ -1,4 +1,4 @@
-class BattleStageUI extends eui.Component implements eui.UIComponent{
+class BattleStageUI extends  BaseScene{
 
 	public roomID:string = "";
 
@@ -302,7 +302,7 @@ class BattleStageUI extends eui.Component implements eui.UIComponent{
 			this._tablecardControl.ShowTableCard(3, p3.cardList);
 			// this._myCardControl.Release();
 		}
-		SceneManager.JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, this.roomID);
+		DialogPage.JumpResultUI(p3,p1,p2,iswin,islandwin,timestr, this.roomID);
 		this.Release();
 		return;
 	}

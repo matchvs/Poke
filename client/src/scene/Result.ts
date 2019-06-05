@@ -2,7 +2,7 @@
  * 结算页面
  * 
  */
-class ResultUI extends eui.Component implements  eui.UIComponent {
+class ResultUI extends BaseScene implements  eui.UIComponent {
 	private allChildren:{[key:string]:any} = [];
 
 	private roomID:string = "";

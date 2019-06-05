@@ -1,73 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin class="skins.AnimationSkin" width="640" height="1136" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:tween="egret.tween.*" >
-	<w:Declarations>
-		<tween:TweenGroup id="bgAnim">
-			<tween:TweenItem target="{bg}">
-				<tween:To duration="500" ease="sineIn">
-					<tween:props>
-						<e:Object alpha="{0}"/>
-					</tween:props>
-				</tween:To>
-				<tween:To duration="500" ease="sineOut">
-					<tween:props>
-						<e:Object alpha="{1}"/>
-					</tween:props>
-				</tween:To>
-			</tween:TweenItem>
-		</tween:TweenGroup>
-		<tween:TweenGroup id="btnAnim">
-			<tween:TweenItem target="{hero}">
-				<tween:To duration="250">
-					<tween:props>
-						<e:Object y="{1023}" alpha="{0.5}"/>
-					</tween:props>
-				</tween:To>
-				<tween:To duration="250">
-					<tween:props>
-						<e:Object alpha="{1}" y="{1160.79}"/>
-					</tween:props>
-				</tween:To>
-			</tween:TweenItem>
-			<tween:TweenItem target="{about}">
-				<tween:To duration="500">
-				<tween:props>
-					<e:Object y="{1023}" alpha="{0.5}"/>
-				</tween:props>
-				</tween:To>
-				<tween:To duration="500">
-				<tween:props>
-					<e:Object alpha="{1}" y="{1160.79}"/>
-				</tween:props>
-				</tween:To>
-			</tween:TweenItem>
-			<tween:TweenItem target="{player}">
-				<tween:To duration="750">
-				<tween:props>
-					<e:Object y="{1023}" alpha="{0.5}"/>
-				</tween:props>
-				</tween:To>
-				<tween:To duration="500">
-				<tween:props>
-					<e:Object alpha="{1}" y="{1160.79}"/>
-				</tween:props>
-				</tween:To>
-			</tween:TweenItem>
-			<tween:TweenItem target="{thing}">
-				<tween:To duration="800">
-				<tween:props>
-					<e:Object y="{1023}" alpha="{0.5}"/>
-				</tween:props>
-				</tween:To>
-				<tween:To duration="700">
-				<tween:props>
-					<e:Object alpha="{1}" y="{1160.79}"/>
-				</tween:props>
-				</tween:To>
-			</tween:TweenItem>
-		</tween:TweenGroup>
-	</w:Declarations>
 	<w:Config id="1630b19fbde" ></w:Config>
-	<e:Image id="bg" left="0" right="0" top="0" bottom="0" source="resource/assets/bg.jpg" width="640" height="1136"/>
+	<e:Image id="bg" width="100%" height="1136" fillMode="clip" source="bg_jpg" anchorOffsetY="0" x="0" y="0"/>
 	<e:Image id="logo" width="238" height="354" x="207" y="200" source="resource/assets/login/logo.png"/>
 	<e:Button id="btn_login" label="" x="148" y="849" width="344" height="99">
 		<e:skinName>

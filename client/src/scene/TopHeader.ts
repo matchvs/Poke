@@ -1,4 +1,4 @@
-class TopHeader extends eui.Component implements eui.UIComponent{
+class TopHeader extends BaseScene implements eui.UIComponent{
 
 	private allChildren:{[key:string]:any} = [];
 

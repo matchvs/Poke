@@ -1,4 +1,4 @@
-class RankList extends eui.Component implements  eui.UIComponent {
+class RankList extends BaseScene {
 	private rankList:eui.List;
 	private http:MvsHttpApi = new MvsHttpApi();
 	private userMap:{[key:number]:any} = [];

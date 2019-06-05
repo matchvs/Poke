@@ -1,4 +1,4 @@
-class Game extends eui.Component implements eui.UIComponent {
+class Game extends BaseScene {
 
 	private userPlayer = [];
 	private roomName = "我是世界第一，你是谁？";
@@ -7,7 +7,6 @@ class Game extends eui.Component implements eui.UIComponent {
 
 	public constructor() {
 		super();
-		Toast.initRes(this, "resource/loading/toast-bg.png")
 	}
 
 	protected partAdded(partName: string, instance: any): void {

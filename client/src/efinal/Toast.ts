@@ -1,13 +1,23 @@
 class Toast extends egret.DisplayObjectContainer {
-
+    private static _txtrToastBg: egret.Texture;
+    private static context: egret.DisplayObjectContainer;
     public static init(cont: egret.DisplayObjectContainer, txtrToastBg: egret.Texture): void {
+        if(this.context){
+            console.warn("Toast has init, so ignore this action");
+            return;
+        }
         console.log("Toast.init", txtrToastBg);
-        this._cont = cont;
+        this.context = cont;
         this._txtrToastBg = txtrToastBg;
     }
     public static initRes(cont: egret.DisplayObjectContainer, img: string): void {
+        if(this.context){
+            console.warn("Toast has init, so ignore this action");
+            return;
+        }
+
         console.log("Toast.init", img);
-        this._cont = cont;
+        this.context = cont;
       
         var loader: egret.ImageLoader = new egret.ImageLoader();
         //添加加载完成侦听
@@ -27,14 +37,13 @@ class Toast extends egret.DisplayObjectContainer {
     }
 
     public static show(msg: string): void {
-        if (this._cont) {
-            var toast: Toast = new Toast(msg, 650, 1150);
-            this._cont.addChild(toast);
+        if (this.context) {
+            var toast: Toast = new Toast(msg, this.context.stage.stageWidth, this.context.stage.stageHeight);
+            this.context.addChild(toast);
         }
     }
 
-    private static _txtrToastBg: egret.Texture;
-    private static _cont: egret.DisplayObjectContainer;
+
 
     constructor(msg: string, w: number, h: number) {
         super();
@@ -71,12 +80,12 @@ class Toast extends egret.DisplayObjectContainer {
         this.alpha = 0;
 
         egret.Tween.get(this)
-            .to({ alpha: 1 }, 800, egret.Ease.quintOut)
+            .to({ alpha: 1 }, 200, egret.Ease.quintOut)
             //.to( { scaleX: 1.2, scaleY: 1.2 }, 100, egret.Ease.quintOut )
             //.call( ()=>{ console.log( "tween tween tween" ); } ) 
             //.to( { scaleX: 1.0, scaleY: 1.0 }, 300, egret.Ease.quintIn )
-            .wait(1600)
-            .to({ alpha: 0 }, 1200, egret.Ease.quintIn).call(() => {      /*  y: this.y - 50, */
+            .wait(600)
+            .to({ alpha: 0 }, 200, egret.Ease.quintIn).call(() => {      /*  y: this.y - 50, */
                 if (this.parent) {
                     this.parent.removeChild(this);
                 }

@@ -1,4 +1,4 @@
-class Room extends eui.Component implements  eui.UIComponent {
+class Room extends BaseScene implements  eui.UIComponent {
 
 	public roomID:string = "";
 	private countDownLabel:eui.Label = null;
@@ -213,7 +213,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 				}
 				this.userPlayer.length = 0;
 				this.removeEvent();
-				SceneManager.showScene(Game);
+				SceneManager.back();
 			break;
 			case MatchvsMessage.MATCHVS_KICK_PLAYER_NOTIFY:
 				console.log('Room');
@@ -318,7 +318,7 @@ class Room extends eui.Component implements  eui.UIComponent {
 			this.countDownLabel.text = "";
 			this.countDownTimer = 0;
 			this.removeEvent();
-			SceneManager.showScene(Game);
+			SceneManager.back();
 		}
 		var name;
 		if (this.beKickedOutName == "") {
@@ -357,10 +357,12 @@ class Room extends eui.Component implements  eui.UIComponent {
 			this.beKickedOutName = instance.text;
 		} else {
 			try {
+				Toast.show("微信邀请");
 				var par = "roomID="+this.roomID;
 				let wxm = new Wxmodel();
 				wxm.together("约战",par);
 			} catch (e){
+				Toast.show("失败,请在微信中发出邀请");
 				console.warn(e,e.message);
 			}
 

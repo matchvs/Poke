@@ -1,9 +1,8 @@
-class Login extends eui.Component implements eui.UIComponent {
+class Login extends BaseScene {
 	private that: any = this;
 
 	public constructor() {
 		super();
-		Toast.initRes(this, "resource/loading/toast-bg.png");
 
 	}
 	
