@@ -284,9 +284,9 @@ class Room extends BaseScene implements  eui.UIComponent {
 			if(this.nameViewList[i].text == "") {
 				this.nameViewList[i].text = userPlayer.nickName;
 				this.iconViewList[i].source = userPlayer.avator;
-				this.actionViewList[i].strokeColor = "11169372"
-				this.actionTextViewList[i].text = "踢人";
-				this.actionTextViewList[i].textColor = "11169372";
+				// this.actionViewList[i].strokeColor = "11169372"
+				// this.actionTextViewList[i].text = "踢人";
+				// this.actionTextViewList[i].textColor = "11169372";
 				return;
 			}
 		}
